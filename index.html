@@ -7,6 +7,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: "Segoe UI", "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif;
       background: #f0f0f0;
@@ -54,7 +55,9 @@
       min-width: 50px;
     }
 
-    .ribbon-group:last-child { border-right: none; }
+    .ribbon-group:last-child {
+      border-right: none;
+    }
 
     .ribbon-group-label {
       font-size: 11px;
@@ -87,8 +90,15 @@
       gap: 4px;
     }
 
-    button:hover { background: #e8e8e8; border-color: #999; }
-    button:active { background: #d8d8d8; }
+    button:hover {
+      background: #e8e8e8;
+      border-color: #999;
+    }
+
+    button:active {
+      background: #d8d8d8;
+    }
+
     button.active {
       background: #cce4ff;
       border-color: #5b9bd5;
@@ -101,10 +111,23 @@
       color: #fff;
     }
 
-    button.primary:hover { background: #2e86c1; }
-    button.danger { color: #c0392b; }
-    button.danger:hover { background: #fdecea; border-color: #e74c3c; }
-    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    button.primary:hover {
+      background: #2e86c1;
+    }
+
+    button.danger {
+      color: #c0392b;
+    }
+
+    button.danger:hover {
+      background: #fdecea;
+      border-color: #e74c3c;
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
 
     input[type="text"] {
       padding: 4px 8px;
@@ -114,7 +137,10 @@
       width: 140px;
     }
 
-    input[type="text"]:focus { outline: none; border-color: #5b9bd5; }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #5b9bd5;
+    }
 
     select {
       padding: 4px 6px;
@@ -135,7 +161,10 @@
       background: #fff;
     }
 
-    input[type="range"] { width: 70px; vertical-align: middle; }
+    input[type="range"] {
+      width: 70px;
+      vertical-align: middle;
+    }
 
     .value-label {
       font-size: 11px;
@@ -183,7 +212,10 @@
       font-size: 12px;
     }
 
-    .ctrl label { color: #555; white-space: nowrap; }
+    .ctrl label {
+      color: #555;
+      white-space: nowrap;
+    }
 
     .mode-group {
       display: flex;
@@ -200,10 +232,14 @@
       padding: 5px 12px;
     }
 
-    .mode-group button:last-child { border-right: none; }
+    .mode-group button:last-child {
+      border-right: none;
+    }
   </style>
 </head>
+
 <body>
+
   <div class="title-bar">
     <h1>VTuberネームロゴメーカー</h1>
     <span style="color:#999;">|</span>
@@ -211,11 +247,12 @@
   </div>
 
   <div class="ribbon">
+
     <!-- 履歴 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <button id="undoBtn" title="元に戻す (Ctrl+Z)">＜ 戻る</button>
-        <button id="redoBtn" title="やり直す (Ctrl+Y)">進む ＞</button>
+        <button id="redoBtn" title="やり直し (Ctrl+Y)">進む ＞</button>
       </div>
       <div class="ribbon-group-label">履歴</div>
     </div>
@@ -223,7 +260,11 @@
     <!-- テキスト -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
-        <input type="text" id="textInput" placeholder="テキストを入力" value="テストちゃん">
+        <input
+          type="text"
+          id="textInput"
+          placeholder="テキストを入力"
+          value="テストちゃん">
         <button id="addTextBtn" class="primary">追加</button>
       </div>
       <div class="ribbon-group-label">テキスト</div>
@@ -233,536 +274,2342 @@
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <select id="fontSelect">
-          <option value="Yomogi">Yomogi（手書き）</option>
-          <option value="Hachi Maru Pop">Hachi Maru Pop（ポップ）</option>
-          <option value="Zen Maru Gothic">Zen Maru Gothic（丸ゴ）</option>
-          <option value="M PLUS Rounded 1c">M PLUS Rounded</option>
-          <option value="Rampart One">Rampart One（立体）</option>
-          <option value="Dela Gothic One">Dela Gothic One（太ゴ）</option>
-          <option value="Noto Sans JP">Noto Sans JP</option>
-          <option value="Noto Serif JP">Noto Serif JP（明朝）</option>
-          <option value="Shippori Mincho">Shippori Mincho</option>
-          <option value="Kaisei Decol">Kaisei Decol</option>
-          <option value="Reggae One">Reggae One</option>
-          <option value="Potta One">Potta One</option>
-          <option value="Stick">Stick</option>
-          <option value="RocknRoll One">RocknRoll One</option>
-          <option value="DotGothic16">DotGothic16（ドット）</option>
-          <option value="Sawarabi Gothic">Sawarabi Gothic</option>
-          <option value="Sawarabi Mincho">Sawarabi Mincho</option>
-          <option value="Kosugi Maru">Kosugi Maru</option>
-          <option value="Comic Sans MS">Comic Sans MS</option>
-          <option value="Impact">Impact</option>
-          <option value="Arial Black">Arial Black</option>
+
+          <option value="Yomogi">
+            Yomogi（手書き）
+          </option>
+
+          <option value="Hachi Maru Pop">
+            Hachi Maru Pop（ポップ）
+          </option>
+
+          <option value="Zen Maru Gothic">
+            Zen Maru Gothic（丸ゴ）
+          </option>
+
+          <option value="M PLUS Rounded 1c">
+            M PLUS Rounded
+          </option>
+
+          <option value="Rampart One">
+            Rampart One（立体）
+          </option>
+
+          <option value="Dela Gothic One">
+            Dela Gothic One（太ゴ）
+          </option>
+
+          <option value="Noto Sans JP">
+            Noto Sans JP
+          </option>
+
+          <option value="Noto Serif JP">
+            Noto Serif JP（明朝）
+          </option>
+
+          <option value="Shippori Mincho">
+            Shippori Mincho
+          </option>
+
+          <option value="Kaisei Decol">
+            Kaisei Decol
+          </option>
+
+          <option value="Reggae One">
+            Reggae One
+          </option>
+
+          <option value="Potta One">
+            Potta One
+          </option>
+
+          <option value="Stick">
+            Stick
+          </option>
+
+          <option value="RocknRoll One">
+            RocknRoll One
+          </option>
+
+          <option value="DotGothic16">
+            DotGothic16（ドット）
+          </option>
+
+          <option value="Sawarabi Gothic">
+            Sawarabi Gothic
+          </option>
+
+          <option value="Sawarabi Mincho">
+            Sawarabi Mincho
+          </option>
+
+          <option value="Kosugi Maru">
+            Kosugi Maru
+          </option>
+
+          <option value="Comic Sans MS">
+            Comic Sans MS
+          </option>
+
+          <option value="Impact">
+            Impact
+          </option>
+
+          <option value="Arial Black">
+            Arial Black
+          </option>
+
         </select>
       </div>
-      <div class="ribbon-group-label">フォント</div>
+
+      <div class="ribbon-group-label">
+        フォント
+      </div>
     </div>
 
     <!-- サイズ -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
+
         <div class="ctrl">
           <label>サイズ</label>
-          <input type="range" id="fontSize" min="20" max="160" value="72">
-          <span class="value-label" id="fontSizeVal">72</span>
+
+          <input
+            type="range"
+            id="fontSize"
+            min="20"
+            max="160"
+            value="72">
+
+          <span
+            class="value-label"
+            id="fontSizeVal">
+            72
+          </span>
         </div>
+
       </div>
-      <div class="ribbon-group-label">文字サイズ</div>
+
+      <div class="ribbon-group-label">
+        文字サイズ
+      </div>
     </div>
 
     <!-- 色・縁 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
+
         <div class="ctrl">
           <label>文字色</label>
-          <input type="color" id="textColor" value="#ff6b9d">
+
+          <input
+            type="color"
+            id="textColor"
+            value="#ff6b9d">
         </div>
+
         <div class="ctrl">
           <label>縁色</label>
-          <input type="color" id="strokeColor" value="#ffffff">
+
+          <input
+            type="color"
+            id="strokeColor"
+            value="#ffffff">
         </div>
+
         <div class="ctrl">
           <label>縁</label>
-          <input type="range" id="strokeWidth" min="0" max="20" value="4">
-          <span class="value-label" id="strokeWidthVal">4</span>
+
+          <input
+            type="range"
+            id="strokeWidth"
+            min="0"
+            max="24"
+            value="6">
+
+          <span
+            class="value-label"
+            id="strokeWidthVal">
+            6
+          </span>
         </div>
+
       </div>
-      <div class="ribbon-group-label">色・縁</div>
+
+      <div class="ribbon-group-label">
+        色・縁
+      </div>
     </div>
 
     <!-- 描画モード -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
+
         <div class="mode-group">
-          <button id="selectBtn" class="active">選択</button>
-          <button id="penBtn">ペン</button>
-          <button id="eraserBtn">消しゴム</button>
+
+          <button
+            id="selectBtn"
+            class="active">
+            選択
+          </button>
+
+          <button id="penBtn">
+            ペン
+          </button>
+
+          <button id="eraserBtn">
+            消しゴム
+          </button>
+
         </div>
+
         <div class="ctrl">
-          <input type="color" id="penColor" value="#000000">
-          <input type="range" id="penWidth" min="1" max="40" value="6">
-          <span class="value-label" id="penWidthVal">6</span>
+
+          <input
+            type="color"
+            id="penColor"
+            value="#000000">
+
+          <input
+            type="range"
+            id="penWidth"
+            min="1"
+            max="40"
+            value="6">
+
+          <span
+            class="value-label"
+            id="penWidthVal">
+            6
+          </span>
+
         </div>
+
       </div>
-      <div class="ribbon-group-label">描画</div>
+
+      <div class="ribbon-group-label">
+        描画
+      </div>
     </div>
 
     <!-- 配置 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
-        <button id="bringForwardBtn">前面</button>
-        <button id="sendBackwardBtn">背面</button>
-        <button id="deleteBtn" class="danger">削除</button>
+
+        <button id="bringForwardBtn">
+          前面
+        </button>
+
+        <button id="sendBackwardBtn">
+          背面
+        </button>
+
+        <button
+          id="deleteBtn"
+          class="danger">
+          削除
+        </button>
+
       </div>
-      <div class="ribbon-group-label">配置</div>
+
+      <div class="ribbon-group-label">
+        配置
+      </div>
     </div>
 
     <!-- 画像 -->
     <div class="ribbon-group">
+
       <div class="ribbon-buttons">
-        <button id="importImageBtn">画像</button>
-        <input type="file" id="imageInput" accept="image/*" style="display:none;">
+
+        <button id="importImageBtn">
+          画像
+        </button>
+
+        <input
+          type="file"
+          id="imageInput"
+          accept="image/*"
+          style="display:none;">
+
       </div>
-      <div class="ribbon-group-label">画像</div>
+
+      <div class="ribbon-group-label">
+        画像
+      </div>
+
     </div>
 
     <!-- ファイル -->
     <div class="ribbon-group">
+
       <div class="ribbon-buttons">
-        <button id="downloadBtn" class="primary">PNG保存</button>
-        <button id="clearBtn" class="danger">全消去</button>
+
+        <button
+          id="downloadBtn"
+          class="primary">
+          PNG保存
+        </button>
+
+        <button
+          id="clearBtn"
+          class="danger">
+          全消去
+        </button>
+
       </div>
-      <div class="ribbon-group-label">ファイル</div>
+
+      <div class="ribbon-group-label">
+        ファイル
+      </div>
+
     </div>
+
   </div>
 
   <div class="workspace">
+
     <div class="canvas-wrap">
+
       <div id="canvas-container">
-        <canvas id="c" width="900" height="520"></canvas>
+
+        <canvas
+          id="c"
+          width="900"
+          height="520">
+        </canvas>
+
       </div>
+
     </div>
+
   </div>
 
   <div class="status-bar">
-    <span>テキスト追加 → フォント・色・縁を調整 → PNG保存 が基本の流れです</span>
-    <span id="statusInfo">準備完了</span>
+
+    <span>
+      テキスト追加 → フォント・色・縁を調整 → PNG保存 が基本の流れです
+    </span>
+
+    <span id="statusInfo">
+      準備完了
+    </span>
+
   </div>
 
+
   <script>
+
+    // =========================================================
     // Google Fonts
+    // =========================================================
+
     const fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Yomogi&family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Rampart+One&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600&family=Shippori+Mincho:wght@400;600&family=Kaisei+Decol:wght@400;500;700&family=Reggae+One&family=Potta+One&family=Stick&family=RocknRoll+One&family=DotGothic16&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Kosugi+Maru&display=swap';
+
+    fontLink.href =
+      'https://fonts.googleapis.com/css2?family=Yomogi&family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Rampart+One&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600&family=Shippori+Mincho:wght@400;600&family=Kaisei+Decol:wght@400;500;700&family=Reggae+One&family=Potta+One&family=Stick&family=RocknRoll+One&family=DotGothic16&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Kosugi+Maru&display=swap';
+
     fontLink.rel = 'stylesheet';
+
     document.head.appendChild(fontLink);
 
+
+    // =========================================================
+    // Canvas
+    // =========================================================
+
     const canvas = new fabric.Canvas('c', {
+
       backgroundColor: '#ffffff',
+
       preserveObjectStacking: true,
+
       selection: true
+
     });
+
 
     let isEraser = false;
 
+    // 内部処理中かどうか
+    let isInternalOperation = false;
+
+    // 文字同士をつなげるための外側の縁の追加幅
+    //
+    // 例：
+    // 通常の縁 6px
+    // 外側のつながる縁 6 + 14 = 20px
+    //
+    // この数字を大きくすると、
+    // さらに文字同士がつながりやすくなる。
+    const CONNECTED_OUTLINE_EXTRA = 14;
+
+
+    // =========================================================
     // Undo / Redo
+    // =========================================================
+
     const history = [];
+
     let historyIndex = -1;
+
     let isRestoring = false;
+
     const MAX_HISTORY = 50;
 
+
     function saveHistory() {
+
       if (isRestoring) return;
+
       history.splice(historyIndex + 1);
-      history.push(canvas.toJSON(['selectable', 'evented']));
-      if (history.length > MAX_HISTORY) history.shift();
-      else historyIndex++;
+
+      history.push(
+        canvas.toJSON([
+          'selectable',
+          'evented',
+          'isConnectedOutline',
+          'outlineOwnerId',
+          'textObjectId'
+        ])
+      );
+
+      if (history.length > MAX_HISTORY) {
+
+        history.shift();
+
+      } else {
+
+        historyIndex++;
+
+      }
+
       updateHistoryButtons();
+
     }
+
 
     function updateHistoryButtons() {
-      document.getElementById('undoBtn').disabled = historyIndex <= 0;
-      document.getElementById('redoBtn').disabled = historyIndex >= history.length - 1;
+
+      document.getElementById('undoBtn').disabled =
+        historyIndex <= 0;
+
+      document.getElementById('redoBtn').disabled =
+        historyIndex >= history.length - 1;
+
     }
+
 
     function restoreHistory(index) {
-      if (index < 0 || index >= history.length) return;
+
+      if (
+        index < 0 ||
+        index >= history.length
+      ) {
+        return;
+      }
+
       isRestoring = true;
-      canvas.loadFromJSON(history[index], () => {
-        canvas.renderAll();
-        isRestoring = false;
-        historyIndex = index;
-        updateHistoryButtons();
-      });
+
+      canvas.loadFromJSON(
+        history[index],
+        () => {
+
+          canvas.renderAll();
+
+          isRestoring = false;
+
+          historyIndex = index;
+
+          updateHistoryButtons();
+
+        }
+      );
+
     }
 
-    setTimeout(saveHistory, 300);
 
-    canvas.on('object:modified', saveHistory);
-    canvas.on('object:added', () => { if (!isRestoring) saveHistory(); });
-    canvas.on('object:removed', () => { if (!isRestoring) saveHistory(); });
-    canvas.on('path:created', saveHistory);
+    setTimeout(
+      saveHistory,
+      300
+    );
 
-    // DOM
-    const textInput = document.getElementById('textInput');
-    const addTextBtn = document.getElementById('addTextBtn');
-    const fontSelect = document.getElementById('fontSelect');
-    const fontSize = document.getElementById('fontSize');
-    const fontSizeVal = document.getElementById('fontSizeVal');
-    const textColor = document.getElementById('textColor');
-    const strokeColor = document.getElementById('strokeColor');
-    const strokeWidth = document.getElementById('strokeWidth');
-    const strokeWidthVal = document.getElementById('strokeWidthVal');
-    const penColor = document.getElementById('penColor');
-    const penWidth = document.getElementById('penWidth');
-    const penWidthVal = document.getElementById('penWidthVal');
-    const penBtn = document.getElementById('penBtn');
-    const eraserBtn = document.getElementById('eraserBtn');
-    const selectBtn = document.getElementById('selectBtn');
-    const bringForwardBtn = document.getElementById('bringForwardBtn');
-    const sendBackwardBtn = document.getElementById('sendBackwardBtn');
-    const deleteBtn = document.getElementById('deleteBtn');
-    const importImageBtn = document.getElementById('importImageBtn');
-    const imageInput = document.getElementById('imageInput');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const clearBtn = document.getElementById('clearBtn');
-    const statusInfo = document.getElementById('statusInfo');
-    const undoBtn = document.getElementById('undoBtn');
-    const redoBtn = document.getElementById('redoBtn');
 
-    function setStatus(msg) {
-      statusInfo.textContent = msg;
-    }
+    // =========================================================
+    // Canvas Events
+    // =========================================================
 
-    // モード
-    function setMode(mode) {
-      [penBtn, eraserBtn, selectBtn].forEach(b => b.classList.remove('active'));
-      canvas.isDrawingMode = false;
-      isEraser = false;
+    canvas.on(
+      'object:modified',
+      (e) => {
 
-      if (mode === 'pen') {
-        penBtn.classList.add('active');
-        canvas.isDrawingMode = true;
-        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-        canvas.freeDrawingBrush.color = penColor.value;
-        canvas.freeDrawingBrush.width = parseInt(penWidth.value);
-        setStatus('ペンモード');
-      } else if (mode === 'eraser') {
-        eraserBtn.classList.add('active');
-        canvas.isDrawingMode = true;
-        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-        canvas.freeDrawingBrush.color = '#ffffff';
-        canvas.freeDrawingBrush.width = parseInt(penWidth.value) * 2;
-        isEraser = true;
-        setStatus('消しゴムモード');
-      } else {
-        selectBtn.classList.add('active');
-        setStatus('選択モード');
-      }
-    }
+        if (
+          !isRestoring &&
+          e.target &&
+          !e.target.isConnectedOutline
+        ) {
 
-    // テキスト追加
-    function createTextObject(text) {
-      return new fabric.IText(text, {
-        left: canvas.width / 2,
-        top: canvas.height / 2,
-        originX: 'center',
-        originY: 'center',
-        fontFamily: fontSelect.value,
-        fontSize: parseInt(fontSize.value),
-        fill: textColor.value,
-        stroke: strokeColor.value,
-        strokeWidth: parseInt(strokeWidth.value),
-        paintFirst: 'stroke',
-        strokeLineJoin: 'round',
-        strokeLineCap: 'round',
-        editable: true,
-        objectCaching: false
-      });
-    }
+          syncConnectedOutline(
+            e.target
+          );
 
-    addTextBtn.addEventListener('click', () => {
-      const text = textInput.value.trim() || 'テキスト';
-      const textObj = createTextObject(text);
-      canvas.add(textObj);
-      canvas.setActiveObject(textObj);
-      canvas.requestRenderAll();
-      setMode('select');
-      setStatus('テキストを追加しました');
-    });
-
-    textInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') addTextBtn.click();
-    });
-
-    // フォント変更（安定化）
-    function applyFontToActive() {
-      const active = canvas.getActiveObject();
-      if (!active || (active.type !== 'i-text' && active.type !== 'text')) return;
-
-      const newFont = fontSelect.value;
-
-      document.fonts.load(`16px "${newFont}"`).then(() => {
-        active.set({
-          fontFamily: newFont,
-          objectCaching: false
-        });
-        active.dirty = true;
-        active.setCoords();
-        canvas.requestRenderAll();
-        saveHistory();
-        setStatus('フォント変更: ' + newFont);
-      }).catch(() => {
-        active.set({ fontFamily: newFont, objectCaching: false });
-        active.dirty = true;
-        canvas.requestRenderAll();
-        setStatus('フォント変更（読み込み確認失敗）');
-      });
-    }
-
-    fontSelect.addEventListener('change', applyFontToActive);
-
-    // サイズ
-    fontSize.addEventListener('input', () => {
-      fontSizeVal.textContent = fontSize.value;
-      const active = canvas.getActiveObject();
-      if (active && (active.type === 'i-text' || active.type === 'text')) {
-        active.set('fontSize', parseInt(fontSize.value));
-        canvas.requestRenderAll();
-      }
-    });
-
-    fontSize.addEventListener('change', saveHistory);
-
-    // 色
-    textColor.addEventListener('input', () => {
-      const active = canvas.getActiveObject();
-
-      if (active && (active.type === 'i-text' || active.type === 'text')) {
-
-        // テキスト編集中に文字の一部分が選択されている場合
-        // 選択範囲だけの色を変更する
-        if (active.isEditing && active.selectionStart !== active.selectionEnd) {
-          active.setSelectionStyles({
-            fill: textColor.value
-          }, active.selectionStart, active.selectionEnd);
-        } else {
-          // テキストボックス自体を選択している場合は
-          // 今まで通り全体を変更する
-          active.set('fill', textColor.value);
         }
 
-        active.dirty = true;
-        canvas.requestRenderAll();
+        if (!isInternalOperation) {
+
+          saveHistory();
+
+        }
+
       }
-    });
+    );
 
-    textColor.addEventListener('change', saveHistory);
 
-    // 縁
-    function updateStroke() {
-      strokeWidthVal.textContent = strokeWidth.value;
-      const active = canvas.getActiveObject();
-      if (active && (active.type === 'i-text' || active.type === 'text')) {
-        active.set({
-          stroke: strokeColor.value,
-          strokeWidth: parseInt(strokeWidth.value),
-          paintFirst: 'stroke',
-          strokeLineJoin: 'round',
-          strokeLineCap: 'round',
-          objectCaching: false
-        });
-        active.dirty = true;
-        canvas.requestRenderAll();
+    canvas.on(
+      'object:added',
+      () => {
+
+        if (
+          !isRestoring &&
+          !isInternalOperation
+        ) {
+
+          saveHistory();
+
+        }
+
       }
-    }
+    );
 
-    strokeColor.addEventListener('input', updateStroke);
-    strokeWidth.addEventListener('input', updateStroke);
-    strokeColor.addEventListener('change', saveHistory);
-    strokeWidth.addEventListener('change', saveHistory);
 
-    // ペン
-    penWidth.addEventListener('input', () => {
-      penWidthVal.textContent = penWidth.value;
-      if (canvas.isDrawingMode) {
-        canvas.freeDrawingBrush.width = isEraser ? parseInt(penWidth.value) * 2 : parseInt(penWidth.value);
+    canvas.on(
+      'object:removed',
+      () => {
+
+        if (
+          !isRestoring &&
+          !isInternalOperation
+        ) {
+
+          saveHistory();
+
+        }
+
       }
-    });
+    );
 
-    penColor.addEventListener('input', () => {
-      if (canvas.isDrawingMode && !isEraser) {
-        canvas.freeDrawingBrush.color = penColor.value;
+
+    canvas.on(
+      'path:created',
+      () => {
+
+        if (!isInternalOperation) {
+
+          saveHistory();
+
+        }
+
       }
-    });
+    );
 
-    penBtn.addEventListener('click', () => setMode('pen'));
-    eraserBtn.addEventListener('click', () => setMode('eraser'));
-    selectBtn.addEventListener('click', () => setMode('select'));
 
-    // 配置
-    bringForwardBtn.addEventListener('click', () => {
-      const active = canvas.getActiveObject();
-      if (active) {
-        canvas.bringForward(active);
-        canvas.requestRenderAll();
-        saveHistory();
+    // 文字を動かしている途中も縁を追従
+    canvas.on(
+      'object:moving',
+      (e) => {
+
+        if (
+          e.target &&
+          !e.target.isConnectedOutline
+        ) {
+
+          syncConnectedOutline(
+            e.target
+          );
+
+        }
+
       }
-    });
+    );
 
-    sendBackwardBtn.addEventListener('click', () => {
-      const active = canvas.getActiveObject();
-      if (active) {
-        canvas.sendBackwards(active);
-        canvas.requestRenderAll();
-        saveHistory();
+
+    // サイズ変更中も追従
+    canvas.on(
+      'object:scaling',
+      (e) => {
+
+        if (
+          e.target &&
+          !e.target.isConnectedOutline
+        ) {
+
+          syncConnectedOutline(
+            e.target
+          );
+
+        }
+
       }
-    });
+    );
 
-    deleteBtn.addEventListener('click', () => {
-      const active = canvas.getActiveObject();
-      if (active) {
-        canvas.remove(active);
-        canvas.discardActiveObject();
-        canvas.requestRenderAll();
+
+    // 回転中も追従
+    canvas.on(
+      'object:rotating',
+      (e) => {
+
+        if (
+          e.target &&
+          !e.target.isConnectedOutline
+        ) {
+
+          syncConnectedOutline(
+            e.target
+          );
+
+        }
+
       }
-    });
+    );
 
-    // 画像
-    importImageBtn.addEventListener('click', () => imageInput.click());
 
-    imageInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+    // 傾き変更中も追従
+    canvas.on(
+      'object:skewing',
+      (e) => {
 
-      const reader = new FileReader();
+        if (
+          e.target &&
+          !e.target.isConnectedOutline
+        ) {
 
-      reader.onload = (event) => {
-        fabric.Image.fromURL(event.target.result, (img) => {
-          const maxSize = 400;
+          syncConnectedOutline(
+            e.target
+          );
 
-          if (img.width > maxSize || img.height > maxSize) {
-            img.scale(Math.min(maxSize / img.width, maxSize / img.height));
+        }
+
+      }
+    );
+
+
+    // テキスト入力中
+    canvas.on(
+      'text:changed',
+      (e) => {
+
+        if (
+          e.target &&
+          !e.target.isConnectedOutline
+        ) {
+
+          syncConnectedOutline(
+            e.target
+          );
+
+          if (!isInternalOperation) {
+
+            saveHistory();
+
           }
 
-          img.set({
-            left: canvas.width / 2,
-            top: canvas.height / 2,
-            originX: 'center',
-            originY: 'center'
-          });
+        }
 
-          canvas.add(img);
-          canvas.setActiveObject(img);
-          canvas.requestRenderAll();
-          setMode('select');
-          setStatus('画像を追加しました');
-        });
-      };
-
-      reader.readAsDataURL(file);
-      imageInput.value = '';
-    });
-
-    // 保存
-    downloadBtn.addEventListener('click', () => {
-      canvas.discardActiveObject();
-      canvas.requestRenderAll();
-
-      const dataURL = canvas.toDataURL({
-        format: 'png',
-        quality: 1,
-        multiplier: 2
-      });
-
-      const link = document.createElement('a');
-      link.download = 'vtuber-logo.png';
-      link.href = dataURL;
-      link.click();
-
-      setStatus('PNGを保存しました');
-    });
-
-    // 全消去
-    clearBtn.addEventListener('click', () => {
-      if (confirm('キャンバスをすべて消去しますか？')) {
-        canvas.clear();
-        canvas.backgroundColor = '#ffffff';
-        canvas.requestRenderAll();
-        saveHistory();
-        setStatus('すべて消去しました');
       }
-    });
+    );
 
-    // Undo / Redo
-    undoBtn.addEventListener('click', () => {
-      if (historyIndex > 0) restoreHistory(historyIndex - 1);
-    });
 
-    redoBtn.addEventListener('click', () => {
-      if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1);
-    });
+    // =========================================================
+    // DOM
+    // =========================================================
 
-    // キーボード
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey || e.metaKey) {
-        if (e.key === 'z' || e.key === 'Z') {
-          e.preventDefault();
-          if (historyIndex > 0) restoreHistory(historyIndex - 1);
-          return;
-        }
+    const textInput =
+      document.getElementById('textInput');
 
-        if (e.key === 'y' || e.key === 'Y') {
-          e.preventDefault();
-          if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1);
-          return;
-        }
-      }
+    const addTextBtn =
+      document.getElementById('addTextBtn');
 
-      if (e.key === 'Delete' || e.key === 'Backspace') {
-        if (canvas.getActiveObject()?.isEditing) return;
+    const fontSelect =
+      document.getElementById('fontSelect');
 
-        const active = canvas.getActiveObject();
+    const fontSize =
+      document.getElementById('fontSize');
 
-        if (active) {
-          canvas.remove(active);
-          canvas.discardActiveObject();
-          canvas.requestRenderAll();
-        }
-      }
-    });
+    const fontSizeVal =
+      document.getElementById('fontSizeVal');
 
-    // 選択時同期
-    function updateControlsFromObject() {
-      const active = canvas.getActiveObject();
-      if (!active) return;
+    const textColor =
+      document.getElementById('textColor');
 
-      if (active.type === 'i-text' || active.type === 'text') {
-        if (active.fontFamily) {
-          const opt = Array.from(fontSelect.options).find(o => o.value === active.fontFamily);
-          if (opt) fontSelect.value = active.fontFamily;
-        }
+    const strokeColor =
+      document.getElementById('strokeColor');
 
-        if (active.fill) textColor.value = active.fill;
-        if (active.stroke) strokeColor.value = active.stroke;
+    const strokeWidth =
+      document.getElementById('strokeWidth');
 
-        if (typeof active.strokeWidth === 'number') {
-          strokeWidth.value = active.strokeWidth;
-          strokeWidthVal.textContent = active.strokeWidth;
-        }
+    const strokeWidthVal =
+      document.getElementById('strokeWidthVal');
 
-        if (typeof active.fontSize === 'number') {
-          fontSize.value = active.fontSize;
-          fontSizeVal.textContent = active.fontSize;
-        }
-      }
+    const penColor =
+      document.getElementById('penColor');
+
+    const penWidth =
+      document.getElementById('penWidth');
+
+    const penWidthVal =
+      document.getElementById('penWidthVal');
+
+    const penBtn =
+      document.getElementById('penBtn');
+
+    const eraserBtn =
+      document.getElementById('eraserBtn');
+
+    const selectBtn =
+      document.getElementById('selectBtn');
+
+    const bringForwardBtn =
+      document.getElementById('bringForwardBtn');
+
+    const sendBackwardBtn =
+      document.getElementById('sendBackwardBtn');
+
+    const deleteBtn =
+      document.getElementById('deleteBtn');
+
+    const importImageBtn =
+      document.getElementById('importImageBtn');
+
+    const imageInput =
+      document.getElementById('imageInput');
+
+    const downloadBtn =
+      document.getElementById('downloadBtn');
+
+    const clearBtn =
+      document.getElementById('clearBtn');
+
+    const statusInfo =
+      document.getElementById('statusInfo');
+
+    const undoBtn =
+      document.getElementById('undoBtn');
+
+    const redoBtn =
+      document.getElementById('redoBtn');
+
+
+    function setStatus(msg) {
+
+      statusInfo.textContent = msg;
+
     }
 
-    canvas.on('selection:created', updateControlsFromObject);
-    canvas.on('selection:updated', updateControlsFromObject);
 
-    setMode('select');
-    setStatus('準備完了 — テキストを追加してロゴを作ってみよう');
+    // =========================================================
+    // モード
+    // =========================================================
+
+    function setMode(mode) {
+
+      [
+        penBtn,
+        eraserBtn,
+        selectBtn
+      ].forEach(
+        b => b.classList.remove('active')
+      );
+
+
+      canvas.isDrawingMode = false;
+
+      isEraser = false;
+
+
+      if (mode === 'pen') {
+
+        penBtn.classList.add('active');
+
+        canvas.isDrawingMode = true;
+
+        canvas.freeDrawingBrush =
+          new fabric.PencilBrush(canvas);
+
+        canvas.freeDrawingBrush.color =
+          penColor.value;
+
+        canvas.freeDrawingBrush.width =
+          parseInt(
+            penWidth.value
+          );
+
+        setStatus(
+          'ペンモード'
+        );
+
+
+      } else if (mode === 'eraser') {
+
+        eraserBtn.classList.add('active');
+
+        canvas.isDrawingMode = true;
+
+        canvas.freeDrawingBrush =
+          new fabric.PencilBrush(canvas);
+
+        canvas.freeDrawingBrush.color =
+          '#ffffff';
+
+        canvas.freeDrawingBrush.width =
+          parseInt(
+            penWidth.value
+          ) * 2;
+
+        isEraser = true;
+
+        setStatus(
+          '消しゴムモード'
+        );
+
+
+      } else {
+
+        selectBtn.classList.add('active');
+
+        setStatus(
+          '選択モード'
+        );
+
+      }
+
+    }
+
+
+    // =========================================================
+    // テキスト
+    // =========================================================
+
+    function createTextObject(text) {
+
+      return new fabric.IText(
+        text,
+        {
+
+          left:
+            canvas.width / 2,
+
+          top:
+            canvas.height / 2,
+
+          originX:
+            'center',
+
+          originY:
+            'center',
+
+          fontFamily:
+            fontSelect.value,
+
+          fontSize:
+            parseInt(
+              fontSize.value
+            ),
+
+          fill:
+            textColor.value,
+
+          stroke:
+            strokeColor.value,
+
+          strokeWidth:
+            parseInt(
+              strokeWidth.value
+            ),
+
+          paintFirst:
+            'stroke',
+
+          strokeLineJoin:
+            'round',
+
+          strokeLineCap:
+            'round',
+
+          editable:
+            true,
+
+          objectCaching:
+            false,
+
+          // このIDで本体と外側の縁を紐付ける
+          textObjectId:
+            'text_' +
+            Date.now() +
+            '_' +
+            Math.random()
+              .toString(36)
+              .slice(2, 8)
+
+        }
+      );
+
+    }
+
+
+    // =========================================================
+    // つながった外側の縁
+    // =========================================================
+
+    function getConnectedOutline(textObj) {
+
+      if (
+        !textObj ||
+        textObj.isConnectedOutline ||
+        !textObj.textObjectId
+      ) {
+
+        return null;
+
+      }
+
+
+      return canvas
+        .getObjects()
+        .find(
+          obj =>
+            obj.isConnectedOutline &&
+            obj.outlineOwnerId ===
+              textObj.textObjectId
+        ) || null;
+
+    }
+
+
+    function getOuterStrokeWidth(textObj) {
+
+      const width =
+        Math.max(
+          0,
+          parseInt(
+            textObj.strokeWidth
+          ) || 0
+        );
+
+
+      // 縁を0にした場合は
+      // 外側のつながる縁も消す
+      if (width === 0) {
+
+        return 0;
+
+      }
+
+
+      return (
+        width +
+        CONNECTED_OUTLINE_EXTRA
+      );
+
+    }
+
+
+    function createConnectedOutline(textObj) {
+
+      return new fabric.IText(
+        textObj.text,
+        {
+
+          left:
+            textObj.left,
+
+          top:
+            textObj.top,
+
+          originX:
+            textObj.originX,
+
+          originY:
+            textObj.originY,
+
+          scaleX:
+            textObj.scaleX,
+
+          scaleY:
+            textObj.scaleY,
+
+          angle:
+            textObj.angle,
+
+          skewX:
+            textObj.skewX,
+
+          skewY:
+            textObj.skewY,
+
+          flipX:
+            textObj.flipX,
+
+          flipY:
+            textObj.flipY,
+
+          fontFamily:
+            textObj.fontFamily,
+
+          fontSize:
+            textObj.fontSize,
+
+          fontWeight:
+            textObj.fontWeight,
+
+          fontStyle:
+            textObj.fontStyle,
+
+          charSpacing:
+            textObj.charSpacing,
+
+          lineHeight:
+            textObj.lineHeight,
+
+          // 外側は縁色で塗る
+          fill:
+            textObj.stroke ||
+            strokeColor.value,
+
+          stroke:
+            textObj.stroke ||
+            strokeColor.value,
+
+          // 通常の縁よりかなり太くする
+          strokeWidth:
+            getOuterStrokeWidth(
+              textObj
+            ),
+
+          paintFirst:
+            'stroke',
+
+          strokeLineJoin:
+            'round',
+
+          strokeLineCap:
+            'round',
+
+          // 背面用なので操作不可
+          selectable:
+            false,
+
+          evented:
+            false,
+
+          editable:
+            false,
+
+          objectCaching:
+            false,
+
+          // 外側の縁であることを記録
+          isConnectedOutline:
+            true,
+
+          outlineOwnerId:
+            textObj.textObjectId
+
+        }
+      );
+
+    }
+
+
+    // =========================================================
+    // 外側の縁を本体に追従
+    // =========================================================
+
+    function syncConnectedOutline(textObj) {
+
+      if (
+        !textObj ||
+        textObj.isConnectedOutline ||
+        (
+          textObj.type !== 'i-text' &&
+          textObj.type !== 'text'
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      const outline =
+        getConnectedOutline(
+          textObj
+        );
+
+
+      if (!outline) {
+
+        return;
+
+      }
+
+
+      outline.set({
+
+        left:
+          textObj.left,
+
+        top:
+          textObj.top,
+
+        scaleX:
+          textObj.scaleX,
+
+        scaleY:
+          textObj.scaleY,
+
+        angle:
+          textObj.angle,
+
+        skewX:
+          textObj.skewX,
+
+        skewY:
+          textObj.skewY,
+
+        flipX:
+          textObj.flipX,
+
+        flipY:
+          textObj.flipY,
+
+        text:
+          textObj.text,
+
+        fontFamily:
+          textObj.fontFamily,
+
+        fontSize:
+          textObj.fontSize,
+
+        fontWeight:
+          textObj.fontWeight,
+
+        fontStyle:
+          textObj.fontStyle,
+
+        charSpacing:
+          textObj.charSpacing,
+
+        lineHeight:
+          textObj.lineHeight,
+
+        fill:
+          textObj.stroke ||
+          strokeColor.value,
+
+        stroke:
+          textObj.stroke ||
+          strokeColor.value,
+
+        strokeWidth:
+          getOuterStrokeWidth(
+            textObj
+          ),
+
+        objectCaching:
+          false
+
+      });
+
+
+      outline.initDimensions();
+
+      outline.setCoords();
+
+      outline.dirty = true;
+
+    }
+
+
+    // =========================================================
+    // テキスト＋つながる縁を追加
+    // =========================================================
+
+    function addTextWithOutline(textObj) {
+
+      const outline =
+        createConnectedOutline(
+          textObj
+        );
+
+
+      isInternalOperation = true;
+
+
+      // 先に外側の縁
+      canvas.add(
+        outline
+      );
+
+
+      // その上に本体
+      canvas.add(
+        textObj
+      );
+
+
+      isInternalOperation = false;
+
+
+      canvas.setActiveObject(
+        textObj
+      );
+
+
+      canvas.requestRenderAll();
+
+
+      saveHistory();
+
+    }
+
+
+    // =========================================================
+    // テキスト削除時に縁も一緒に削除
+    // =========================================================
+
+    function removeTextWithOutline(textObj) {
+
+      if (!textObj) {
+
+        return;
+
+      }
+
+
+      const outline =
+        getConnectedOutline(
+          textObj
+        );
+
+
+      isInternalOperation = true;
+
+
+      if (outline) {
+
+        canvas.remove(
+          outline
+        );
+
+      }
+
+
+      canvas.remove(
+        textObj
+      );
+
+
+      isInternalOperation = false;
+
+
+      canvas.discardActiveObject();
+
+      canvas.requestRenderAll();
+
+      saveHistory();
+
+    }
+
+
+    // =========================================================
+    // テキスト追加ボタン
+    // =========================================================
+
+    addTextBtn.addEventListener(
+      'click',
+      () => {
+
+        const text =
+          textInput.value.trim() ||
+          'テキスト';
+
+
+        const textObj =
+          createTextObject(
+            text
+          );
+
+
+        addTextWithOutline(
+          textObj
+        );
+
+
+        setMode(
+          'select'
+        );
+
+
+        setStatus(
+          'テキストを追加しました'
+        );
+
+      }
+    );
+
+
+    textInput.addEventListener(
+      'keydown',
+      (e) => {
+
+        if (
+          e.key === 'Enter'
+        ) {
+
+          addTextBtn.click();
+
+        }
+
+      }
+    );
+
+
+    // =========================================================
+    // フォント変更
+    // =========================================================
+
+    function applyFontToActive() {
+
+      const active =
+        canvas.getActiveObject();
+
+
+      if (
+        !active ||
+        (
+          active.type !== 'i-text' &&
+          active.type !== 'text'
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      const newFont =
+        fontSelect.value;
+
+
+      document.fonts
+        .load(
+          `16px "${newFont}"`
+        )
+        .then(
+          () => {
+
+            active.set({
+
+              fontFamily:
+                newFont,
+
+              objectCaching:
+                false
+
+            });
+
+
+            active.dirty = true;
+
+            active.initDimensions();
+
+            active.setCoords();
+
+
+            syncConnectedOutline(
+              active
+            );
+
+
+            canvas.requestRenderAll();
+
+            saveHistory();
+
+
+            setStatus(
+              'フォント変更: ' +
+              newFont
+            );
+
+          }
+        )
+        .catch(
+          () => {
+
+            active.set({
+
+              fontFamily:
+                newFont,
+
+              objectCaching:
+                false
+
+            });
+
+
+            active.dirty = true;
+
+            active.initDimensions();
+
+            syncConnectedOutline(
+              active
+            );
+
+
+            canvas.requestRenderAll();
+
+
+            setStatus(
+              'フォント変更（読み込み確認失敗）'
+            );
+
+          }
+        );
+
+    }
+
+
+    fontSelect.addEventListener(
+      'change',
+      applyFontToActive
+    );
+
+
+    // =========================================================
+    // サイズ
+    // =========================================================
+
+    fontSize.addEventListener(
+      'input',
+      () => {
+
+        fontSizeVal.textContent =
+          fontSize.value;
+
+
+        const active =
+          canvas.getActiveObject();
+
+
+        if (
+          active &&
+          (
+            active.type === 'i-text' ||
+            active.type === 'text'
+          )
+        ) {
+
+          active.set(
+            'fontSize',
+            parseInt(
+              fontSize.value
+            )
+          );
+
+
+          active.initDimensions();
+
+
+          syncConnectedOutline(
+            active
+          );
+
+
+          canvas.requestRenderAll();
+
+        }
+
+      }
+    );
+
+
+    fontSize.addEventListener(
+      'change',
+      saveHistory
+    );
+
+
+    // =========================================================
+    // 文字色
+    // =========================================================
+
+    textColor.addEventListener(
+      'input',
+      () => {
+
+        const active =
+          canvas.getActiveObject();
+
+
+        if (
+          active &&
+          (
+            active.type === 'i-text' ||
+            active.type === 'text'
+          )
+        ) {
+
+          // ---------------------------------------------------
+          // テキスト編集中に一部分を選択している場合
+          // 選択した文字だけ色変更
+          // ---------------------------------------------------
+
+          if (
+            active.isEditing &&
+            active.selectionStart !==
+              active.selectionEnd
+          ) {
+
+            active.setSelectionStyles(
+              {
+                fill:
+                  textColor.value
+              },
+              active.selectionStart,
+              active.selectionEnd
+            );
+
+
+          } else {
+
+            // -------------------------------------------------
+            // テキストボックス自体を選択している場合
+            // 全体の色を変更
+            // -------------------------------------------------
+
+            active.set(
+              'fill',
+              textColor.value
+            );
+
+          }
+
+
+          active.dirty = true;
+
+
+          // 外側の縁は文字色ではなく
+          // 縁色なので、ここでは形だけ同期
+          syncConnectedOutline(
+            active
+          );
+
+
+          canvas.requestRenderAll();
+
+        }
+
+      }
+    );
+
+
+    textColor.addEventListener(
+      'change',
+      saveHistory
+    );
+
+
+    // =========================================================
+    // 縁
+    // =========================================================
+
+    function updateStroke() {
+
+      strokeWidthVal.textContent =
+        strokeWidth.value;
+
+
+      const active =
+        canvas.getActiveObject();
+
+
+      if (
+        active &&
+        (
+          active.type === 'i-text' ||
+          active.type === 'text'
+        )
+      ) {
+
+        active.set({
+
+          stroke:
+            strokeColor.value,
+
+          strokeWidth:
+            parseInt(
+              strokeWidth.value
+            ),
+
+          paintFirst:
+            'stroke',
+
+          strokeLineJoin:
+            'round',
+
+          strokeLineCap:
+            'round',
+
+          objectCaching:
+            false
+
+        });
+
+
+        active.dirty = true;
+
+
+        // 外側の太い縁も同時更新
+        syncConnectedOutline(
+          active
+        );
+
+
+        canvas.requestRenderAll();
+
+      }
+
+    }
+
+
+    strokeColor.addEventListener(
+      'input',
+      updateStroke
+    );
+
+
+    strokeWidth.addEventListener(
+      'input',
+      updateStroke
+    );
+
+
+    strokeColor.addEventListener(
+      'change',
+      saveHistory
+    );
+
+
+    strokeWidth.addEventListener(
+      'change',
+      saveHistory
+    );
+
+
+    // =========================================================
+    // ペン
+    // =========================================================
+
+    penWidth.addEventListener(
+      'input',
+      () => {
+
+        penWidthVal.textContent =
+          penWidth.value;
+
+
+        if (
+          canvas.isDrawingMode
+        ) {
+
+          canvas.freeDrawingBrush.width =
+            isEraser
+              ? parseInt(
+                  penWidth.value
+                ) * 2
+              : parseInt(
+                  penWidth.value
+                );
+
+        }
+
+      }
+    );
+
+
+    penColor.addEventListener(
+      'input',
+      () => {
+
+        if (
+          canvas.isDrawingMode &&
+          !isEraser
+        ) {
+
+          canvas.freeDrawingBrush.color =
+            penColor.value;
+
+        }
+
+      }
+    );
+
+
+    penBtn.addEventListener(
+      'click',
+      () => setMode('pen')
+    );
+
+
+    eraserBtn.addEventListener(
+      'click',
+      () => setMode('eraser')
+    );
+
+
+    selectBtn.addEventListener(
+      'click',
+      () => setMode('select')
+    );
+
+
+    // =========================================================
+    // 配置
+    // =========================================================
+
+    bringForwardBtn.addEventListener(
+      'click',
+      () => {
+
+        const active =
+          canvas.getActiveObject();
+
+
+        if (active) {
+
+          canvas.bringForward(
+            active
+          );
+
+
+          canvas.requestRenderAll();
+
+          saveHistory();
+
+        }
+
+      }
+    );
+
+
+    sendBackwardBtn.addEventListener(
+      'click',
+      () => {
+
+        const active =
+          canvas.getActiveObject();
+
+
+        if (active) {
+
+          canvas.sendBackwards(
+            active
+          );
+
+
+          canvas.requestRenderAll();
+
+          saveHistory();
+
+        }
+
+      }
+    );
+
+
+    // =========================================================
+    // 削除
+    // =========================================================
+
+    deleteBtn.addEventListener(
+      'click',
+      () => {
+
+        const active =
+          canvas.getActiveObject();
+
+
+        if (!active) {
+
+          return;
+
+        }
+
+
+        if (
+          active.type === 'i-text' ||
+          active.type === 'text'
+        ) {
+
+          removeTextWithOutline(
+            active
+          );
+
+
+        } else {
+
+          canvas.remove(
+            active
+          );
+
+
+          canvas.discardActiveObject();
+
+          canvas.requestRenderAll();
+
+          saveHistory();
+
+        }
+
+      }
+    );
+
+
+    // =========================================================
+    // 画像
+    // =========================================================
+
+    importImageBtn.addEventListener(
+      'click',
+      () => {
+
+        imageInput.click();
+
+      }
+    );
+
+
+    imageInput.addEventListener(
+      'change',
+      (e) => {
+
+        const file =
+          e.target.files[0];
+
+
+        if (!file) {
+
+          return;
+
+        }
+
+
+        const reader =
+          new FileReader();
+
+
+        reader.onload =
+          (event) => {
+
+            fabric.Image.fromURL(
+              event.target.result,
+              (img) => {
+
+                const maxSize =
+                  400;
+
+
+                if (
+                  img.width >
+                    maxSize ||
+                  img.height >
+                    maxSize
+                ) {
+
+                  img.scale(
+                    Math.min(
+                      maxSize /
+                        img.width,
+
+                      maxSize /
+                        img.height
+                    )
+                  );
+
+                }
+
+
+                img.set({
+
+                  left:
+                    canvas.width / 2,
+
+                  top:
+                    canvas.height / 2,
+
+                  originX:
+                    'center',
+
+                  originY:
+                    'center'
+
+                });
+
+
+                canvas.add(
+                  img
+                );
+
+
+                canvas.setActiveObject(
+                  img
+                );
+
+
+                canvas.requestRenderAll();
+
+
+                setMode(
+                  'select'
+                );
+
+
+                setStatus(
+                  '画像を追加しました'
+                );
+
+              }
+            );
+
+          };
+
+
+        reader.readAsDataURL(
+          file
+        );
+
+
+        imageInput.value = '';
+
+      }
+    );
+
+
+    // =========================================================
+    // PNG保存
+    // =========================================================
+
+    downloadBtn.addEventListener(
+      'click',
+      () => {
+
+        // 選択枠を消す
+        canvas.discardActiveObject();
+
+        canvas.requestRenderAll();
+
+
+        // 背景を含めずPNG化
+        //
+        // 編集画面では白背景のまま。
+        // 保存したPNGだけ完全透過になる。
+        const dataURL =
+          canvas.toDataURL({
+
+            format:
+              'png',
+
+            quality:
+              1,
+
+            multiplier:
+              2,
+
+            withoutBackground:
+              true
+
+          });
+
+
+        const link =
+          document.createElement(
+            'a'
+          );
+
+
+        link.download =
+          'vtuber-logo.png';
+
+
+        link.href =
+          dataURL;
+
+
+        link.click();
+
+
+        setStatus(
+          '背景透過PNGを保存しました'
+        );
+
+      }
+    );
+
+
+    // =========================================================
+    // 全消去
+    // =========================================================
+
+    clearBtn.addEventListener(
+      'click',
+      () => {
+
+        if (
+          confirm(
+            'キャンバスをすべて消去しますか？'
+          )
+        ) {
+
+          isInternalOperation =
+            true;
+
+
+          canvas.clear();
+
+
+          isInternalOperation =
+            false;
+
+
+          canvas.backgroundColor =
+            '#ffffff';
+
+
+          canvas.requestRenderAll();
+
+
+          saveHistory();
+
+
+          setStatus(
+            'すべて消去しました'
+          );
+
+        }
+
+      }
+    );
+
+
+    // =========================================================
+    // Undo / Redo
+    // =========================================================
+
+    undoBtn.addEventListener(
+      'click',
+      () => {
+
+        if (
+          historyIndex > 0
+        ) {
+
+          restoreHistory(
+            historyIndex - 1
+          );
+
+        }
+
+      }
+    );
+
+
+    redoBtn.addEventListener(
+      'click',
+      () => {
+
+        if (
+          historyIndex <
+          history.length - 1
+        ) {
+
+          restoreHistory(
+            historyIndex + 1
+          );
+
+        }
+
+      }
+    );
+
+
+    // =========================================================
+    // キーボード
+    // =========================================================
+
+    document.addEventListener(
+      'keydown',
+      (e) => {
+
+        // Ctrl + Z
+        if (
+          e.ctrlKey ||
+          e.metaKey
+        ) {
+
+          if (
+            e.key === 'z' ||
+            e.key === 'Z'
+          ) {
+
+            e.preventDefault();
+
+
+            if (
+              historyIndex > 0
+            ) {
+
+              restoreHistory(
+                historyIndex - 1
+              );
+
+            }
+
+
+            return;
+
+          }
+
+
+          // Ctrl + Y
+          if (
+            e.key === 'y' ||
+            e.key === 'Y'
+          ) {
+
+            e.preventDefault();
+
+
+            if (
+              historyIndex <
+              history.length - 1
+            ) {
+
+              restoreHistory(
+                historyIndex + 1
+              );
+
+            }
+
+
+            return;
+
+          }
+
+        }
+
+
+        // Delete / Backspace
+        if (
+          e.key === 'Delete' ||
+          e.key === 'Backspace'
+        ) {
+
+          // テキスト入力中は削除処理しない
+          if (
+            canvas.getActiveObject()
+              ?.isEditing
+          ) {
+
+            return;
+
+          }
+
+
+          const active =
+            canvas.getActiveObject();
+
+
+          if (!active) {
+
+            return;
+
+          }
+
+
+          if (
+            active.type === 'i-text' ||
+            active.type === 'text'
+          ) {
+
+            removeTextWithOutline(
+              active
+            );
+
+
+          } else {
+
+            canvas.remove(
+              active
+            );
+
+
+            canvas.discardActiveObject();
+
+            canvas.requestRenderAll();
+
+            saveHistory();
+
+          }
+
+        }
+
+      }
+    );
+
+
+    // =========================================================
+    // 選択時のコントロール同期
+    // =========================================================
+
+    function updateControlsFromObject() {
+
+      const active =
+        canvas.getActiveObject();
+
+
+      if (!active) {
+
+        return;
+
+      }
+
+
+      if (
+        active.type === 'i-text' ||
+        active.type === 'text'
+      ) {
+
+        // フォント
+        if (
+          active.fontFamily
+        ) {
+
+          const opt =
+            Array
+              .from(
+                fontSelect.options
+              )
+              .find(
+                o =>
+                  o.value ===
+                  active.fontFamily
+              );
+
+
+          if (opt) {
+
+            fontSelect.value =
+              active.fontFamily;
+
+          }
+
+        }
+
+
+        // 文字色
+        if (
+          active.fill
+        ) {
+
+          // 混合色の場合でも、
+          // オブジェクト全体の基本色を表示
+          if (
+            typeof active.fill ===
+              'string'
+          ) {
+
+            textColor.value =
+              active.fill;
+
+          }
+
+        }
+
+
+        // 縁色
+        if (
+          active.stroke
+        ) {
+
+          strokeColor.value =
+            active.stroke;
+
+        }
+
+
+        // 縁幅
+        if (
+          typeof active.strokeWidth ===
+            'number'
+        ) {
+
+          strokeWidth.value =
+            active.strokeWidth;
+
+
+          strokeWidthVal.textContent =
+            active.strokeWidth;
+
+        }
+
+
+        // サイズ
+        if (
+          typeof active.fontSize ===
+            'number'
+        ) {
+
+          fontSize.value =
+            active.fontSize;
+
+
+          fontSizeVal.textContent =
+            active.fontSize;
+
+        }
+
+      }
+
+    }
+
+
+    canvas.on(
+      'selection:created',
+      updateControlsFromObject
+    );
+
+
+    canvas.on(
+      'selection:updated',
+      updateControlsFromObject
+    );
+
+
+    // =========================================================
+    // 初期状態
+    // =========================================================
+
+    setMode(
+      'select'
+    );
+
+
+    setStatus(
+      '準備完了 — テキストを追加してロゴを作ってみよう'
+    );
+
   </script>
+
 </body>
 </html>
