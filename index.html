@@ -352,19 +352,22 @@
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <div class="ctrl">
-          <label>文字色</label>
+          <label>文字の色</label>
           <input type="color" id="textColor" value="#ff6b9d">
         </div>
         <div class="ctrl">
-          <label>中の色</label>
+          <label>文字の中の色</label>
           <input type="color" id="midColor" value="#ffffff">
         </div>
         <div class="ctrl">
-          <label>縁色</label>
+          <button id="syncMidBtn" title="文字の中の色を文字の色と同じにする" style="padding:5px 8px;font-size:11px;">中を同じに</button>
+        </div>
+        <div class="ctrl">
+          <label>縁の色</label>
           <input type="color" id="strokeColor" value="#ffffff">
         </div>
         <div class="ctrl">
-          <label>縁</label>
+          <label>縁の大きさ</label>
           <input type="range" id="strokeWidth" min="0" max="24" value="6">
           <span class="value-label" id="strokeWidthVal">6</span>
         </div>
@@ -390,9 +393,9 @@
 
     <div class="ribbon-group">
       <div class="ribbon-buttons">
-        <button id="addRectBtn" title="四角">■</button>
-        <button id="addCircleBtn" title="丸">●</button>
-        <button id="addTriangleBtn" title="三角">▲</button>
+        <button id="addRectBtn" title="四角を追加" style="font-size:16px;padding:6px 12px;">⬜</button>
+        <button id="addCircleBtn" title="丸を追加" style="font-size:16px;padding:6px 12px;">⚪</button>
+        <button id="addTriangleBtn" title="三角を追加" style="font-size:16px;padding:6px 12px;">△</button>
       </div>
       <div class="ribbon-group-label">図形</div>
     </div>
@@ -511,6 +514,7 @@
     const fontSizeVal = document.getElementById('fontSizeVal');
     const textColor = document.getElementById('textColor');
     const midColor = document.getElementById('midColor');
+    const syncMidBtn = document.getElementById('syncMidBtn');
     const strokeColor = document.getElementById('strokeColor');
     const strokeWidth = document.getElementById('strokeWidth');
     const strokeWidthVal = document.getElementById('strokeWidthVal');
@@ -741,6 +745,13 @@
       }
     });
     midColor.addEventListener('change', saveHistory);
+
+    syncMidBtn.addEventListener('click', () => {
+      midColor.value = textColor.value;
+      const event = new Event('input');
+      midColor.dispatchEvent(event);
+      setStatus('文字の中の色を文字の色と同じにしました');
+    });
 
     function updateStroke() {
       strokeWidthVal.textContent = strokeWidth.value;
