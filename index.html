@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>VTuberネームロゴメーカー（修正版）</title>
+  <title>VTuberネームロゴメーカー（修正版2）</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,11 +30,7 @@
       user-select: none;
       flex-shrink: 0;
     }
-    .title-bar h1 {
-      font-size: 14px;
-      font-weight: 600;
-      color: #222;
-    }
+    .title-bar h1 { font-size: 14px; font-weight: 600; color: #222; }
     .ribbon {
       background: #fff;
       border-bottom: 1px solid #d0d0d0;
@@ -103,10 +99,7 @@
       background: #fdecea;
       border-color: #e74c3c;
     }
-    button:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
     input[type="text"] {
       padding: 4px 8px;
       border: 1px solid #c0c0c0;
@@ -114,10 +107,7 @@
       font-size: 12px;
       width: 140px;
     }
-    input[type="text"]:focus {
-      outline: none;
-      border-color: #5b9bd5;
-    }
+    input[type="text"]:focus { outline: none; border-color: #5b9bd5; }
     select {
       padding: 4px 6px;
       border: 1px solid #c0c0c0;
@@ -135,10 +125,7 @@
       cursor: pointer;
       background: #fff;
     }
-    input[type="range"] {
-      width: 70px;
-      vertical-align: middle;
-    }
+    input[type="range"] { width: 70px; vertical-align: middle; }
     .value-label {
       font-size: 11px;
       color: #666;
@@ -167,10 +154,7 @@
       border: 1px solid #ccc;
       line-height: 0;
     }
-    #c {
-      touch-action: none;
-      display: block;
-    }
+    #c { touch-action: none; display: block; }
     .status-bar {
       background: #f8f8f8;
       border-top: 1px solid #d0d0d0;
@@ -193,10 +177,7 @@
       gap: 4px;
       font-size: 12px;
     }
-    .ctrl label {
-      color: #555;
-      white-space: nowrap;
-    }
+    .ctrl label { color: #555; white-space: nowrap; }
     .mode-group {
       display: flex;
       border: 1px solid #c0c0c0;
@@ -235,13 +216,12 @@
 </head>
 <body>
   <div class="title-bar">
-    <h1>VTuberネームロゴメーカー（修正版）</h1>
+    <h1>VTuberネームロゴメーカー（修正版2）</h1>
     <span style="color:#999;">|</span>
-    <span>アウトライン・履歴・色管理を修正</span>
+    <span>立体フォント縁色・消しゴム修正</span>
   </div>
 
   <div class="ribbon">
-    <!-- 履歴 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <button id="undoBtn" title="元に戻す (Ctrl+Z)">＜ 戻る</button>
@@ -250,7 +230,6 @@
       <div class="ribbon-group-label">履歴</div>
     </div>
 
-    <!-- テキスト -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <input type="text" id="textInput" placeholder="テキストを入力" value="テストちゃん">
@@ -259,7 +238,6 @@
       <div class="ribbon-group-label">テキスト</div>
     </div>
 
-    <!-- フォント -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <select id="fontSelect">
@@ -289,7 +267,6 @@
       <div class="ribbon-group-label">フォント</div>
     </div>
 
-    <!-- 文字サイズ -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <div class="ctrl">
@@ -301,7 +278,6 @@
       <div class="ribbon-group-label">文字サイズ</div>
     </div>
 
-    <!-- 色・縁 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <div class="ctrl">
@@ -328,7 +304,6 @@
       <div class="ribbon-group-label">色・縁</div>
     </div>
 
-    <!-- 描画 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <div class="mode-group">
@@ -345,7 +320,6 @@
       <div class="ribbon-group-label">描画</div>
     </div>
 
-    <!-- 図形 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <button id="addRectBtn" title="四角を追加" style="font-size:16px;padding:6px 12px;">⬜</button>
@@ -355,7 +329,6 @@
       <div class="ribbon-group-label">図形</div>
     </div>
 
-    <!-- 配置 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <button id="bringForwardBtn">前面</button>
@@ -365,7 +338,6 @@
       <div class="ribbon-group-label">配置</div>
     </div>
 
-    <!-- 画像 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <button id="importImageBtn">画像</button>
@@ -374,7 +346,6 @@
       <div class="ribbon-group-label">画像</div>
     </div>
 
-    <!-- ファイル -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <select id="exportScale">
@@ -404,13 +375,11 @@
   </div>
 
   <script>
-    // ========== フォント読み込み ==========
     const fontLink = document.createElement('link');
     fontLink.href = 'https://fonts.googleapis.com/css2?family=Yomogi&family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Rampart+One&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600&family=Shippori+Mincho:wght@400;600&family=Kaisei+Decol:wght@400;500;700&family=Reggae+One&family=Potta+One&family=Stick&family=RocknRoll+One&family=DotGothic16&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Kosugi+Maru&display=swap';
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
 
-    // ========== Canvas ==========
     const canvas = new fabric.Canvas('c', {
       backgroundColor: '#ffffff',
       preserveObjectStacking: true,
@@ -420,11 +389,8 @@
 
     let isEraser = false;
     let isInternalOperation = false;
-
-    // アウトラインの太さを計算する基準
     const CONNECTED_OUTLINE_BASE_EXTRA = 10;
 
-    // ========== 履歴 ==========
     const history = [];
     let historyIndex = -1;
     let isRestoring = false;
@@ -433,16 +399,12 @@
     function saveHistory() {
       if (isRestoring || isInternalOperation) return;
       history.splice(historyIndex + 1);
-      // カスタムプロパティも保存
       history.push(canvas.toJSON([
         'selectable', 'evented', 'isConnectedOutline',
         'outlineOwnerId', 'textObjectId', 'outlineWidth', 'outlineColor'
       ]));
-      if (history.length > MAX_HISTORY) {
-        history.shift();
-      } else {
-        historyIndex++;
-      }
+      if (history.length > MAX_HISTORY) history.shift();
+      else historyIndex++;
       updateHistoryButtons();
     }
 
@@ -455,7 +417,6 @@
       if (index < 0 || index >= history.length) return;
       isRestoring = true;
       canvas.loadFromJSON(history[index], () => {
-        // 復元後にアウトラインの参照を再構築
         canvas.getObjects().forEach(obj => {
           if (obj.isConnectedOutline) {
             obj.selectable = false;
@@ -470,10 +431,8 @@
       });
     }
 
-    // 初期履歴
     setTimeout(saveHistory, 400);
 
-    // ========== イベント ==========
     canvas.on('object:modified', (e) => {
       if (!isRestoring && e.target && !e.target.isConnectedOutline) {
         syncConnectedOutline(e.target);
@@ -508,7 +467,6 @@
       }
     });
 
-    // ========== DOM ==========
     const textInput = document.getElementById('textInput');
     const addTextBtn = document.getElementById('addTextBtn');
     const fontSelect = document.getElementById('fontSelect');
@@ -545,7 +503,7 @@
       statusInfo.textContent = msg;
     }
 
-    // ========== モード ==========
+    // ========== モード切り替え（消しゴム修正） ==========
     function setMode(mode) {
       [penBtn, eraserBtn, selectBtn].forEach(b => b.classList.remove('active'));
       canvas.isDrawingMode = false;
@@ -554,20 +512,22 @@
       if (mode === 'pen') {
         penBtn.classList.add('active');
         canvas.isDrawingMode = true;
-        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-        canvas.freeDrawingBrush.color = penColor.value;
-        canvas.freeDrawingBrush.width = parseInt(penWidth.value);
-        canvas.freeDrawingBrush.globalCompositeOperation = 'source-over';
+        const brush = new fabric.PencilBrush(canvas);
+        brush.color = penColor.value;
+        brush.width = parseInt(penWidth.value);
+        brush.globalCompositeOperation = 'source-over';
+        canvas.freeDrawingBrush = brush;
         setStatus('ペンモード');
       } else if (mode === 'eraser') {
         eraserBtn.classList.add('active');
         canvas.isDrawingMode = true;
-        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-        canvas.freeDrawingBrush.color = '#000000';
-        canvas.freeDrawingBrush.width = parseInt(penWidth.value) * 2;
-        canvas.freeDrawingBrush.globalCompositeOperation = 'destination-out';
+        const brush = new fabric.PencilBrush(canvas);
+        brush.color = '#ffffff';               // 色は何でもいいが黒にしない
+        brush.width = parseInt(penWidth.value) * 2;
+        brush.globalCompositeOperation = 'destination-out';  // 確実に消す
+        canvas.freeDrawingBrush = brush;
         isEraser = true;
-        setStatus('消しゴムモード（描いた線のみ消えます）');
+        setStatus('消しゴムモード（描いた線・上に重ねた部分を透過で消します）');
       } else {
         selectBtn.classList.add('active');
         setStatus('選択モード');
@@ -595,7 +555,7 @@
         editable: true,
         objectCaching: false,
         outlineWidth: outlineW,
-        outlineColor: strokeColor.value,   // ★ オブジェクト自身に縁色を保持
+        outlineColor: strokeColor.value,   // 必ず縁色を保持
         textObjectId: id
       });
     }
@@ -614,9 +574,13 @@
       return width + extra;
     }
 
+    // ★ 立体フォントでも縁色が塗りにならないよう、完全に独立した色を使う
     function createConnectedOutline(textObj) {
       const outerW = getOuterStrokeWidth(textObj);
-      const outlineCol = textObj.outlineColor || strokeColor.value;
+      // outlineColor が必ず優先。存在しなければ現在の strokeColor
+      const outlineCol = (textObj.outlineColor && textObj.outlineColor !== midColor.value)
+        ? textObj.outlineColor
+        : strokeColor.value;
 
       return new fabric.IText(textObj.text, {
         left: textObj.left,
@@ -636,8 +600,8 @@
         fontStyle: textObj.fontStyle,
         charSpacing: textObj.charSpacing,
         lineHeight: textObj.lineHeight,
-        fill: outlineCol,
-        stroke: outlineCol,
+        fill: outlineCol,          // 縁色だけを使う
+        stroke: outlineCol,        // 縁色だけを使う
         strokeWidth: outerW,
         paintFirst: 'stroke',
         strokeLineJoin: 'round',
@@ -651,7 +615,6 @@
       });
     }
 
-    // ★ 修正：オブジェクト自身の outlineColor を使う
     function syncConnectedOutline(textObj) {
       if (!textObj || textObj.isConnectedOutline) return;
       if (textObj.type !== 'i-text' && textObj.type !== 'text') return;
@@ -660,7 +623,8 @@
       if (!outline) return;
 
       const outerW = getOuterStrokeWidth(textObj);
-      const outlineCol = textObj.outlineColor || '#ffffff';
+      // ここでも必ず outlineColor を優先（塗り色を絶対に使わない）
+      const outlineCol = textObj.outlineColor || strokeColor.value;
 
       outline.set({
         left: textObj.left,
@@ -717,7 +681,6 @@
       saveHistory();
     }
 
-    // ========== テキスト追加 ==========
     addTextBtn.addEventListener('click', () => {
       const text = textInput.value.trim() || 'テキスト';
       const newFont = fontSelect.value;
@@ -739,7 +702,6 @@
       if (e.key === 'Enter') addTextBtn.click();
     });
 
-    // ========== フォント適用 ==========
     function applyFontToActive() {
       const active = canvas.getActiveObject();
       if (!active || (active.type !== 'i-text' && active.type !== 'text')) return;
@@ -765,7 +727,6 @@
     }
     fontSelect.addEventListener('change', applyFontToActive);
 
-    // ========== サイズ ==========
     fontSize.addEventListener('input', () => {
       fontSizeVal.textContent = fontSize.value;
       const active = canvas.getActiveObject();
@@ -778,7 +739,6 @@
     });
     fontSize.addEventListener('change', saveHistory);
 
-    // ========== 文字色（細い縁） ==========
     textColor.addEventListener('input', () => {
       const active = canvas.getActiveObject();
       if (active && (active.type === 'i-text' || active.type === 'text')) {
@@ -792,7 +752,6 @@
     });
     textColor.addEventListener('change', saveHistory);
 
-    // ========== 塗り ==========
     midColor.addEventListener('input', () => {
       const active = canvas.getActiveObject();
       if (!active) return;
@@ -804,6 +763,7 @@
           active.set('fill', midColor.value);
         }
         active.dirty = true;
+        // 塗りを変えても縁色は絶対に触らない
         syncConnectedOutline(active);
         canvas.requestRenderAll();
       } else if (['rect', 'circle', 'triangle'].includes(active.type)) {
@@ -820,7 +780,6 @@
       setStatus('塗りを文字色と同じにしました');
     });
 
-    // ========== 縁色・縁幅（★オブジェクト単位で保存） ==========
     function updateStroke() {
       strokeWidthVal.textContent = strokeWidth.value;
       const active = canvas.getActiveObject();
@@ -829,6 +788,7 @@
       const w = parseInt(strokeWidth.value) || 0;
 
       if (active.type === 'i-text' || active.type === 'text') {
+        // 縁色を確実にオブジェクトに保存
         active.set({
           fill: midColor.value,
           stroke: w > 0 ? textColor.value : null,
@@ -838,7 +798,7 @@
           strokeLineCap: 'round',
           objectCaching: false,
           outlineWidth: w,
-          outlineColor: strokeColor.value   // ★ ここに保存
+          outlineColor: strokeColor.value   // ここが最重要
         });
         active.dirty = true;
         syncConnectedOutline(active);
@@ -858,17 +818,16 @@
     strokeColor.addEventListener('change', saveHistory);
     strokeWidth.addEventListener('change', saveHistory);
 
-    // ========== ペン ==========
     penWidth.addEventListener('input', () => {
       penWidthVal.textContent = penWidth.value;
-      if (canvas.isDrawingMode) {
+      if (canvas.isDrawingMode && canvas.freeDrawingBrush) {
         canvas.freeDrawingBrush.width = isEraser
           ? parseInt(penWidth.value) * 2
           : parseInt(penWidth.value);
       }
     });
     penColor.addEventListener('input', () => {
-      if (canvas.isDrawingMode && !isEraser) {
+      if (canvas.isDrawingMode && !isEraser && canvas.freeDrawingBrush) {
         canvas.freeDrawingBrush.color = penColor.value;
       }
     });
@@ -877,21 +836,14 @@
     eraserBtn.addEventListener('click', () => setMode('eraser'));
     selectBtn.addEventListener('click', () => setMode('select'));
 
-    // ========== 配置 ==========
     function moveTextWithOutline(textObj, direction) {
       const outline = getConnectedOutline(textObj);
-      if (direction === 'forward') {
-        canvas.bringForward(textObj);
-      } else {
-        canvas.sendBackwards(textObj);
-      }
+      if (direction === 'forward') canvas.bringForward(textObj);
+      else canvas.sendBackwards(textObj);
       if (outline) {
         const idx = canvas.getObjects().indexOf(textObj);
-        if (idx > 0) {
-          canvas.moveTo(outline, idx - 1);
-        } else {
-          canvas.sendToBack(outline);
-        }
+        if (idx > 0) canvas.moveTo(outline, idx - 1);
+        else canvas.sendToBack(outline);
       }
     }
 
@@ -932,7 +884,6 @@
       }
     });
 
-    // ========== 図形 ==========
     function addShape(type) {
       const w = parseInt(strokeWidth.value) || 0;
       const common = {
@@ -949,13 +900,9 @@
       };
 
       let shape;
-      if (type === 'rect') {
-        shape = new fabric.Rect({ ...common, width: 120, height: 120, rx: 8, ry: 8 });
-      } else if (type === 'circle') {
-        shape = new fabric.Circle({ ...common, radius: 60 });
-      } else if (type === 'triangle') {
-        shape = new fabric.Triangle({ ...common, width: 120, height: 110 });
-      }
+      if (type === 'rect') shape = new fabric.Rect({ ...common, width: 120, height: 120, rx: 8, ry: 8 });
+      else if (type === 'circle') shape = new fabric.Circle({ ...common, radius: 60 });
+      else if (type === 'triangle') shape = new fabric.Triangle({ ...common, width: 120, height: 110 });
       if (!shape) return;
 
       canvas.add(shape);
@@ -970,7 +917,6 @@
     addCircleBtn.addEventListener('click', () => addShape('circle'));
     addTriangleBtn.addEventListener('click', () => addShape('triangle'));
 
-    // ========== 画像 ==========
     importImageBtn.addEventListener('click', () => imageInput.click());
     imageInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
@@ -1000,7 +946,6 @@
       imageInput.value = '';
     });
 
-    // ========== 保存（倍率選択対応） ==========
     downloadBtn.addEventListener('click', () => {
       canvas.discardActiveObject();
       canvas.requestRenderAll();
@@ -1026,7 +971,6 @@
       setStatus(`背景透過PNGを保存しました（${scale}x）`);
     });
 
-    // ========== 全消去 ==========
     clearBtn.addEventListener('click', () => {
       if (confirm('キャンバスをすべて消去しますか？')) {
         isInternalOperation = true;
@@ -1039,7 +983,6 @@
       }
     });
 
-    // ========== 履歴ボタン ==========
     undoBtn.addEventListener('click', () => {
       if (historyIndex > 0) restoreHistory(historyIndex - 1);
     });
@@ -1047,7 +990,6 @@
       if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1);
     });
 
-    // ========== キーボード ==========
     document.addEventListener('keydown', (e) => {
       if (e.ctrlKey || e.metaKey) {
         if (e.key === 'z' || e.key === 'Z') {
@@ -1080,7 +1022,6 @@
       }
     });
 
-    // ========== 選択時にコントロールを同期 ==========
     function updateControlsFromObject() {
       const active = canvas.getActiveObject();
       if (!active) return;
@@ -1100,7 +1041,7 @@
           strokeWidth.value = active.outlineWidth;
           strokeWidthVal.textContent = active.outlineWidth;
         }
-        // ★ オブジェクトの縁色をピッカーに反映
+        // 縁色を確実に反映
         if (active.outlineColor) {
           strokeColor.value = active.outlineColor;
         }
@@ -1125,7 +1066,6 @@
     canvas.on('selection:created', updateControlsFromObject);
     canvas.on('selection:updated', updateControlsFromObject);
 
-    // ========== キャンバスフィット ==========
     function fitCanvasToScreen() {
       const wrap = document.querySelector('.canvas-wrap');
       if (!wrap) return;
@@ -1156,7 +1096,6 @@
     window.addEventListener('resize', () => setTimeout(fitCanvasToScreen, 100));
     window.addEventListener('orientationchange', () => setTimeout(fitCanvasToScreen, 200));
 
-    // ========== 初期化 ==========
     setMode('select');
     setStatus('準備完了 — テキストを追加してロゴを作ってみよう');
     setTimeout(fitCanvasToScreen, 400);
