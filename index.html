@@ -1078,4 +1078,51 @@
         if (a.gradientColorValue) gradientColor.value = a.gradientColorValue;
       } else if (['rect', 'circle', 'triangle'].includes(a.type)) {
         if (a.fill && typeof a.fill === 'string') midColor.value = a.fill;
-        if (a.stroke && 
+        if (a.stroke && typeof a.stroke === 'string') strokeColor.value = a.stroke;
+        if (typeof a.strokeWidth === 'number') {
+          strokeWidth.value = a.strokeWidth;
+          strokeWidthVal.textContent = a.strokeWidth;
+        }
+      }
+    }
+    canvas.on('selection:created', updateControlsFromObject);
+    canvas.on('selection:updated', updateControlsFromObject);
+
+    // ========== キャンバスサイズ調整 ==========
+    function fitCanvas() {
+      const wrap = document.querySelector('.canvas-wrap');
+      if (!wrap) return;
+      const padding = 20;
+      const aw = wrap.clientWidth - padding;
+      const ah = wrap.clientHeight - padding;
+      const baseW = 900;
+      const baseH = 520;
+      const ratio = baseW / baseH;
+
+      let nw, nh;
+      if (aw / ah > ratio) {
+        nh = Math.min(baseH, ah);
+        nw = nh * ratio;
+      } else {
+        nw = Math.min(baseW, aw);
+        nh = nw / ratio;
+      }
+      nw = Math.max(280, Math.round(nw));
+      nh = Math.max(160, Math.round(nh));
+
+      if (Math.abs(canvas.getWidth() - nw) > 4 || Math.abs(canvas.getHeight() - nh) > 4) {
+        canvas.setDimensions({ width: nw, height: nh });
+        canvas.requestRenderAll();
+      }
+    }
+
+    window.addEventListener('resize', () => setTimeout(fitCanvas, 100));
+    window.addEventListener('orientationchange', () => setTimeout(fitCanvas, 200));
+
+    // 初期化
+    setMode('select');
+    setStatus('準備完了');
+    setTimeout(fitCanvas, 400);
+  </script>
+</body>
+</html>
