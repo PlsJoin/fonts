@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>VTuberネームロゴメーカー</title>
+  <title>VTuberネームロゴメーカー（修正版）</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: "Segoe UI", "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif;
       background: #f0f0f0;
@@ -19,7 +18,6 @@
       overflow: hidden;
       -webkit-text-size-adjust: 100%;
     }
-
     .title-bar {
       background: #fff;
       border-bottom: 1px solid #d0d0d0;
@@ -32,13 +30,11 @@
       user-select: none;
       flex-shrink: 0;
     }
-
     .title-bar h1 {
       font-size: 14px;
       font-weight: 600;
       color: #222;
     }
-
     .ribbon {
       background: #fff;
       border-bottom: 1px solid #d0d0d0;
@@ -48,10 +44,9 @@
       gap: 2px;
       align-items: flex-start;
       flex-shrink: 0;
-      max-height: 40vh;
+      max-height: 42vh;
       overflow-y: auto;
     }
-
     .ribbon-group {
       display: flex;
       flex-direction: column;
@@ -60,18 +55,13 @@
       border-right: 1px solid #e8e8e8;
       min-width: 50px;
     }
-
-    .ribbon-group:last-child {
-      border-right: none;
-    }
-
+    .ribbon-group:last-child { border-right: none; }
     .ribbon-group-label {
       font-size: 11px;
       color: #666;
       margin-top: 4px;
       text-align: center;
     }
-
     .ribbon-buttons {
       display: flex;
       gap: 4px;
@@ -79,7 +69,6 @@
       flex-wrap: wrap;
       justify-content: center;
     }
-
     button {
       font-family: inherit;
       font-size: 12px;
@@ -96,46 +85,28 @@
       gap: 4px;
       -webkit-tap-highlight-color: transparent;
     }
-
-    button:hover {
-      background: #e8e8e8;
-      border-color: #999;
-    }
-
-    button:active {
-      background: #d8d8d8;
-    }
-
+    button:hover { background: #e8e8e8; border-color: #999; }
+    button:active { background: #d8d8d8; }
     button.active {
       background: #cce4ff;
       border-color: #5b9bd5;
       color: #1a5276;
     }
-
     button.primary {
       background: #5b9bd5;
       border-color: #2e86c1;
       color: #fff;
     }
-
-    button.primary:hover {
-      background: #2e86c1;
-    }
-
-    button.danger {
-      color: #c0392b;
-    }
-
+    button.primary:hover { background: #2e86c1; }
+    button.danger { color: #c0392b; }
     button.danger:hover {
       background: #fdecea;
       border-color: #e74c3c;
     }
-
     button:disabled {
       opacity: 0.45;
       cursor: not-allowed;
     }
-
     input[type="text"] {
       padding: 4px 8px;
       border: 1px solid #c0c0c0;
@@ -143,12 +114,10 @@
       font-size: 12px;
       width: 140px;
     }
-
     input[type="text"]:focus {
       outline: none;
       border-color: #5b9bd5;
     }
-
     select {
       padding: 4px 6px;
       border: 1px solid #c0c0c0;
@@ -157,7 +126,6 @@
       background: #fff;
       max-width: 150px;
     }
-
     input[type="color"] {
       width: 28px;
       height: 24px;
@@ -167,19 +135,16 @@
       cursor: pointer;
       background: #fff;
     }
-
     input[type="range"] {
       width: 70px;
       vertical-align: middle;
     }
-
     .value-label {
       font-size: 11px;
       color: #666;
       min-width: 20px;
       display: inline-block;
     }
-
     .workspace {
       flex: 1;
       display: flex;
@@ -187,7 +152,6 @@
       overflow: hidden;
       min-height: 0;
     }
-
     .canvas-wrap {
       flex: 1;
       display: flex;
@@ -197,19 +161,16 @@
       padding: 12px;
       -webkit-overflow-scrolling: touch;
     }
-
     #canvas-container {
       background: #fff;
       box-shadow: 0 2px 12px rgba(0,0,0,0.15);
       border: 1px solid #ccc;
       line-height: 0;
     }
-
     #c {
       touch-action: none;
       display: block;
     }
-
     .status-bar {
       background: #f8f8f8;
       border-top: 1px solid #d0d0d0;
@@ -221,32 +182,27 @@
       flex-shrink: 0;
       gap: 8px;
     }
-
     .status-bar span:first-child {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-
     .ctrl {
       display: flex;
       align-items: center;
       gap: 4px;
       font-size: 12px;
     }
-
     .ctrl label {
       color: #555;
       white-space: nowrap;
     }
-
     .mode-group {
       display: flex;
       border: 1px solid #c0c0c0;
       border-radius: 3px;
       overflow: hidden;
     }
-
     .mode-group button {
       border: none;
       border-radius: 0;
@@ -254,11 +210,7 @@
       margin: 0;
       padding: 5px 12px;
     }
-
-    .mode-group button:last-child {
-      border-right: none;
-    }
-
+    .mode-group button:last-child { border-right: none; }
     @media (max-width: 768px) {
       .title-bar { padding: 8px 12px; }
       .title-bar h1 { font-size: 13px; }
@@ -274,7 +226,6 @@
       .canvas-wrap { padding: 8px; }
       .status-bar { font-size: 10px; padding: 4px 8px; }
     }
-
     @media (max-width: 480px) {
       .ribbon-group-label { display: none; }
       .ribbon-group { padding: 3px 4px; }
@@ -282,17 +233,15 @@
     }
   </style>
 </head>
-
 <body>
-
   <div class="title-bar">
-    <h1>VTuberネームロゴメーカー</h1>
+    <h1>VTuberネームロゴメーカー（修正版）</h1>
     <span style="color:#999;">|</span>
-    <span>簡易エディタ</span>
+    <span>アウトライン・履歴・色管理を修正</span>
   </div>
 
   <div class="ribbon">
-
+    <!-- 履歴 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <button id="undoBtn" title="元に戻す (Ctrl+Z)">＜ 戻る</button>
@@ -301,6 +250,7 @@
       <div class="ribbon-group-label">履歴</div>
     </div>
 
+    <!-- テキスト -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <input type="text" id="textInput" placeholder="テキストを入力" value="テストちゃん">
@@ -309,6 +259,7 @@
       <div class="ribbon-group-label">テキスト</div>
     </div>
 
+    <!-- フォント -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <select id="fontSelect">
@@ -338,6 +289,7 @@
       <div class="ribbon-group-label">フォント</div>
     </div>
 
+    <!-- 文字サイズ -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <div class="ctrl">
@@ -349,25 +301,26 @@
       <div class="ribbon-group-label">文字サイズ</div>
     </div>
 
+    <!-- 色・縁 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <div class="ctrl">
-          <label>文字の色</label>
+          <label>文字色</label>
           <input type="color" id="textColor" value="#ff6b9d">
         </div>
         <div class="ctrl">
-          <label>文字の中の色</label>
+          <label>塗り</label>
           <input type="color" id="midColor" value="#ffffff">
         </div>
         <div class="ctrl">
-          <button id="syncMidBtn" title="文字の中の色を文字の色と同じにする" style="padding:5px 8px;font-size:11px;">中を同じに</button>
+          <button id="syncMidBtn" title="塗りを文字色と同じにする" style="padding:5px 8px;font-size:11px;">塗り＝文字色</button>
         </div>
         <div class="ctrl">
-          <label>縁の色</label>
+          <label>縁色</label>
           <input type="color" id="strokeColor" value="#ffffff">
         </div>
         <div class="ctrl">
-          <label>縁の大きさ</label>
+          <label>縁幅</label>
           <input type="range" id="strokeWidth" min="0" max="24" value="6">
           <span class="value-label" id="strokeWidthVal">6</span>
         </div>
@@ -375,6 +328,7 @@
       <div class="ribbon-group-label">色・縁</div>
     </div>
 
+    <!-- 描画 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <div class="mode-group">
@@ -391,6 +345,7 @@
       <div class="ribbon-group-label">描画</div>
     </div>
 
+    <!-- 図形 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <button id="addRectBtn" title="四角を追加" style="font-size:16px;padding:6px 12px;">⬜</button>
@@ -400,6 +355,7 @@
       <div class="ribbon-group-label">図形</div>
     </div>
 
+    <!-- 配置 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <button id="bringForwardBtn">前面</button>
@@ -409,6 +365,7 @@
       <div class="ribbon-group-label">配置</div>
     </div>
 
+    <!-- 画像 -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
         <button id="importImageBtn">画像</button>
@@ -417,14 +374,20 @@
       <div class="ribbon-group-label">画像</div>
     </div>
 
+    <!-- ファイル -->
     <div class="ribbon-group">
       <div class="ribbon-buttons">
+        <select id="exportScale">
+          <option value="1">1x</option>
+          <option value="2" selected>2x</option>
+          <option value="3">3x</option>
+          <option value="4">4x</option>
+        </select>
         <button id="downloadBtn" class="primary">PNG保存</button>
         <button id="clearBtn" class="danger">全消去</button>
       </div>
       <div class="ribbon-group-label">ファイル</div>
     </div>
-
   </div>
 
   <div class="workspace">
@@ -436,16 +399,18 @@
   </div>
 
   <div class="status-bar">
-    <span>テキスト追加 → フォント・色・縁を調整 → PNG保存 が基本の流れです</span>
+    <span>テキスト追加 → フォント・色・縁を調整 → PNG保存</span>
     <span id="statusInfo">準備完了</span>
   </div>
 
   <script>
+    // ========== フォント読み込み ==========
     const fontLink = document.createElement('link');
     fontLink.href = 'https://fonts.googleapis.com/css2?family=Yomogi&family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Rampart+One&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600&family=Shippori+Mincho:wght@400;600&family=Kaisei+Decol:wght@400;500;700&family=Reggae+One&family=Potta+One&family=Stick&family=RocknRoll+One&family=DotGothic16&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Kosugi+Maru&display=swap';
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
 
+    // ========== Canvas ==========
     const canvas = new fabric.Canvas('c', {
       backgroundColor: '#ffffff',
       preserveObjectStacking: true,
@@ -455,19 +420,29 @@
 
     let isEraser = false;
     let isInternalOperation = false;
+
+    // アウトラインの太さを計算する基準
     const CONNECTED_OUTLINE_BASE_EXTRA = 10;
 
+    // ========== 履歴 ==========
     const history = [];
     let historyIndex = -1;
     let isRestoring = false;
     const MAX_HISTORY = 50;
 
     function saveHistory() {
-      if (isRestoring) return;
+      if (isRestoring || isInternalOperation) return;
       history.splice(historyIndex + 1);
-      history.push(canvas.toJSON(['selectable', 'evented', 'isConnectedOutline', 'outlineOwnerId', 'textObjectId', 'outlineWidth']));
-      if (history.length > MAX_HISTORY) history.shift();
-      else historyIndex++;
+      // カスタムプロパティも保存
+      history.push(canvas.toJSON([
+        'selectable', 'evented', 'isConnectedOutline',
+        'outlineOwnerId', 'textObjectId', 'outlineWidth', 'outlineColor'
+      ]));
+      if (history.length > MAX_HISTORY) {
+        history.shift();
+      } else {
+        historyIndex++;
+      }
       updateHistoryButtons();
     }
 
@@ -480,26 +455,52 @@
       if (index < 0 || index >= history.length) return;
       isRestoring = true;
       canvas.loadFromJSON(history[index], () => {
+        // 復元後にアウトラインの参照を再構築
+        canvas.getObjects().forEach(obj => {
+          if (obj.isConnectedOutline) {
+            obj.selectable = false;
+            obj.evented = false;
+          }
+        });
         canvas.renderAll();
         isRestoring = false;
         historyIndex = index;
         updateHistoryButtons();
+        setStatus('履歴を復元しました');
       });
     }
 
-    setTimeout(saveHistory, 300);
+    // 初期履歴
+    setTimeout(saveHistory, 400);
 
+    // ========== イベント ==========
     canvas.on('object:modified', (e) => {
-      if (!isRestoring && e.target && !e.target.isConnectedOutline) syncConnectedOutline(e.target);
+      if (!isRestoring && e.target && !e.target.isConnectedOutline) {
+        syncConnectedOutline(e.target);
+      }
       if (!isInternalOperation) saveHistory();
     });
-    canvas.on('object:added', () => { if (!isRestoring && !isInternalOperation) saveHistory(); });
-    canvas.on('object:removed', () => { if (!isRestoring && !isInternalOperation) saveHistory(); });
-    canvas.on('path:created', () => { if (!isInternalOperation) saveHistory(); });
-    canvas.on('object:moving', (e) => { if (e.target && !e.target.isConnectedOutline) syncConnectedOutline(e.target); });
-    canvas.on('object:scaling', (e) => { if (e.target && !e.target.isConnectedOutline) syncConnectedOutline(e.target); });
-    canvas.on('object:rotating', (e) => { if (e.target && !e.target.isConnectedOutline) syncConnectedOutline(e.target); });
-    canvas.on('object:skewing', (e) => { if (e.target && !e.target.isConnectedOutline) syncConnectedOutline(e.target); });
+    canvas.on('object:added', () => {
+      if (!isRestoring && !isInternalOperation) saveHistory();
+    });
+    canvas.on('object:removed', () => {
+      if (!isRestoring && !isInternalOperation) saveHistory();
+    });
+    canvas.on('path:created', () => {
+      if (!isInternalOperation) saveHistory();
+    });
+    canvas.on('object:moving', (e) => {
+      if (e.target && !e.target.isConnectedOutline) syncConnectedOutline(e.target);
+    });
+    canvas.on('object:scaling', (e) => {
+      if (e.target && !e.target.isConnectedOutline) syncConnectedOutline(e.target);
+    });
+    canvas.on('object:rotating', (e) => {
+      if (e.target && !e.target.isConnectedOutline) syncConnectedOutline(e.target);
+    });
+    canvas.on('object:skewing', (e) => {
+      if (e.target && !e.target.isConnectedOutline) syncConnectedOutline(e.target);
+    });
     canvas.on('text:changed', (e) => {
       if (e.target && !e.target.isConnectedOutline) {
         syncConnectedOutline(e.target);
@@ -507,6 +508,7 @@
       }
     });
 
+    // ========== DOM ==========
     const textInput = document.getElementById('textInput');
     const addTextBtn = document.getElementById('addTextBtn');
     const fontSelect = document.getElementById('fontSelect');
@@ -537,13 +539,18 @@
     const statusInfo = document.getElementById('statusInfo');
     const undoBtn = document.getElementById('undoBtn');
     const redoBtn = document.getElementById('redoBtn');
+    const exportScale = document.getElementById('exportScale');
 
-    function setStatus(msg) { statusInfo.textContent = msg; }
+    function setStatus(msg) {
+      statusInfo.textContent = msg;
+    }
 
+    // ========== モード ==========
     function setMode(mode) {
       [penBtn, eraserBtn, selectBtn].forEach(b => b.classList.remove('active'));
       canvas.isDrawingMode = false;
       isEraser = false;
+
       if (mode === 'pen') {
         penBtn.classList.add('active');
         canvas.isDrawingMode = true;
@@ -560,15 +567,18 @@
         canvas.freeDrawingBrush.width = parseInt(penWidth.value) * 2;
         canvas.freeDrawingBrush.globalCompositeOperation = 'destination-out';
         isEraser = true;
-        setStatus('消しゴムモード（透過で消えます）');
+        setStatus('消しゴムモード（描いた線のみ消えます）');
       } else {
         selectBtn.classList.add('active');
         setStatus('選択モード');
       }
     }
 
+    // ========== テキスト作成 ==========
     function createTextObject(text) {
       const outlineW = parseInt(strokeWidth.value) || 0;
+      const id = 'text_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+
       return new fabric.IText(text, {
         left: canvas.width / 2,
         top: canvas.height / 2,
@@ -585,13 +595,16 @@
         editable: true,
         objectCaching: false,
         outlineWidth: outlineW,
-        textObjectId: 'text_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8)
+        outlineColor: strokeColor.value,   // ★ オブジェクト自身に縁色を保持
+        textObjectId: id
       });
     }
 
     function getConnectedOutline(textObj) {
       if (!textObj || textObj.isConnectedOutline || !textObj.textObjectId) return null;
-      return canvas.getObjects().find(obj => obj.isConnectedOutline && obj.outlineOwnerId === textObj.textObjectId) || null;
+      return canvas.getObjects().find(obj =>
+        obj.isConnectedOutline && obj.outlineOwnerId === textObj.textObjectId
+      ) || null;
     }
 
     function getOuterStrokeWidth(textObj) {
@@ -603,37 +616,73 @@
 
     function createConnectedOutline(textObj) {
       const outerW = getOuterStrokeWidth(textObj);
+      const outlineCol = textObj.outlineColor || strokeColor.value;
+
       return new fabric.IText(textObj.text, {
-        left: textObj.left, top: textObj.top,
-        originX: textObj.originX, originY: textObj.originY,
-        scaleX: textObj.scaleX, scaleY: textObj.scaleY,
-        angle: textObj.angle, skewX: textObj.skewX, skewY: textObj.skewY,
-        flipX: textObj.flipX, flipY: textObj.flipY,
-        fontFamily: textObj.fontFamily, fontSize: textObj.fontSize,
-        fontWeight: textObj.fontWeight, fontStyle: textObj.fontStyle,
-        charSpacing: textObj.charSpacing, lineHeight: textObj.lineHeight,
-        fill: strokeColor.value, stroke: strokeColor.value,
-        strokeWidth: outerW, paintFirst: 'stroke',
-        strokeLineJoin: 'round', strokeLineCap: 'round',
-        selectable: false, evented: false, editable: false, objectCaching: false,
-        isConnectedOutline: true, outlineOwnerId: textObj.textObjectId
+        left: textObj.left,
+        top: textObj.top,
+        originX: textObj.originX,
+        originY: textObj.originY,
+        scaleX: textObj.scaleX,
+        scaleY: textObj.scaleY,
+        angle: textObj.angle,
+        skewX: textObj.skewX,
+        skewY: textObj.skewY,
+        flipX: textObj.flipX,
+        flipY: textObj.flipY,
+        fontFamily: textObj.fontFamily,
+        fontSize: textObj.fontSize,
+        fontWeight: textObj.fontWeight,
+        fontStyle: textObj.fontStyle,
+        charSpacing: textObj.charSpacing,
+        lineHeight: textObj.lineHeight,
+        fill: outlineCol,
+        stroke: outlineCol,
+        strokeWidth: outerW,
+        paintFirst: 'stroke',
+        strokeLineJoin: 'round',
+        strokeLineCap: 'round',
+        selectable: false,
+        evented: false,
+        editable: false,
+        objectCaching: false,
+        isConnectedOutline: true,
+        outlineOwnerId: textObj.textObjectId
       });
     }
 
+    // ★ 修正：オブジェクト自身の outlineColor を使う
     function syncConnectedOutline(textObj) {
-      if (!textObj || textObj.isConnectedOutline || (textObj.type !== 'i-text' && textObj.type !== 'text')) return;
+      if (!textObj || textObj.isConnectedOutline) return;
+      if (textObj.type !== 'i-text' && textObj.type !== 'text') return;
+
       const outline = getConnectedOutline(textObj);
       if (!outline) return;
+
       const outerW = getOuterStrokeWidth(textObj);
+      const outlineCol = textObj.outlineColor || '#ffffff';
+
       outline.set({
-        left: textObj.left, top: textObj.top,
-        scaleX: textObj.scaleX, scaleY: textObj.scaleY,
-        angle: textObj.angle, skewX: textObj.skewX, skewY: textObj.skewY,
-        flipX: textObj.flipX, flipY: textObj.flipY,
-        text: textObj.text, fontFamily: textObj.fontFamily, fontSize: textObj.fontSize,
-        fontWeight: textObj.fontWeight, fontStyle: textObj.fontStyle,
-        charSpacing: textObj.charSpacing, lineHeight: textObj.lineHeight,
-        fill: strokeColor.value, stroke: strokeColor.value, strokeWidth: outerW, objectCaching: false
+        left: textObj.left,
+        top: textObj.top,
+        scaleX: textObj.scaleX,
+        scaleY: textObj.scaleY,
+        angle: textObj.angle,
+        skewX: textObj.skewX,
+        skewY: textObj.skewY,
+        flipX: textObj.flipX,
+        flipY: textObj.flipY,
+        text: textObj.text,
+        fontFamily: textObj.fontFamily,
+        fontSize: textObj.fontSize,
+        fontWeight: textObj.fontWeight,
+        fontStyle: textObj.fontStyle,
+        charSpacing: textObj.charSpacing,
+        lineHeight: textObj.lineHeight,
+        fill: outlineCol,
+        stroke: outlineCol,
+        strokeWidth: outerW,
+        objectCaching: false
       });
       outline.set('opacity', outerW > 0 ? 1 : 0);
       outline.initDimensions();
@@ -648,7 +697,10 @@
       canvas.add(textObj);
       isInternalOperation = false;
       canvas.setActiveObject(textObj);
-      try { textObj.enterEditing(); textObj.selectAll(); } catch (e) {}
+      try {
+        textObj.enterEditing();
+        textObj.selectAll();
+      } catch (e) {}
       canvas.requestRenderAll();
       saveHistory();
     }
@@ -665,9 +717,11 @@
       saveHistory();
     }
 
+    // ========== テキスト追加 ==========
     addTextBtn.addEventListener('click', () => {
       const text = textInput.value.trim() || 'テキスト';
       const newFont = fontSelect.value;
+
       document.fonts.load(`16px "${newFont}"`).then(() => {
         const textObj = createTextObject(text);
         addTextWithOutline(textObj);
@@ -677,25 +731,33 @@
         const textObj = createTextObject(text);
         addTextWithOutline(textObj);
         setMode('select');
-        setStatus('テキストを追加しました（フォント読み込み注意）');
+        setStatus('テキストを追加しました（フォント注意）');
       });
     });
 
-    textInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') addTextBtn.click(); });
+    textInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') addTextBtn.click();
+    });
 
+    // ========== フォント適用 ==========
     function applyFontToActive() {
       const active = canvas.getActiveObject();
       if (!active || (active.type !== 'i-text' && active.type !== 'text')) return;
+
       const newFont = fontSelect.value;
       document.fonts.load(`16px "${newFont}"`).then(() => {
         active.set({ fontFamily: newFont, objectCaching: false });
-        active.dirty = true; active.initDimensions(); active.setCoords();
+        active.dirty = true;
+        active.initDimensions();
+        active.setCoords();
         syncConnectedOutline(active);
-        canvas.requestRenderAll(); saveHistory();
+        canvas.requestRenderAll();
+        saveHistory();
         setStatus('フォント変更: ' + newFont);
       }).catch(() => {
         active.set({ fontFamily: newFont, objectCaching: false });
-        active.dirty = true; active.initDimensions();
+        active.dirty = true;
+        active.initDimensions();
         syncConnectedOutline(active);
         canvas.requestRenderAll();
         setStatus('フォント変更（読み込み確認失敗）');
@@ -703,6 +765,7 @@
     }
     fontSelect.addEventListener('change', applyFontToActive);
 
+    // ========== サイズ ==========
     fontSize.addEventListener('input', () => {
       fontSizeVal.textContent = fontSize.value;
       const active = canvas.getActiveObject();
@@ -715,20 +778,25 @@
     });
     fontSize.addEventListener('change', saveHistory);
 
+    // ========== 文字色（細い縁） ==========
     textColor.addEventListener('input', () => {
       const active = canvas.getActiveObject();
       if (active && (active.type === 'i-text' || active.type === 'text')) {
         const w = active.outlineWidth || 0;
-        if (w > 0) active.set('stroke', textColor.value);
-        active.dirty = true;
-        canvas.requestRenderAll();
+        if (w > 0) {
+          active.set('stroke', textColor.value);
+          active.dirty = true;
+          canvas.requestRenderAll();
+        }
       }
     });
     textColor.addEventListener('change', saveHistory);
 
+    // ========== 塗り ==========
     midColor.addEventListener('input', () => {
       const active = canvas.getActiveObject();
       if (!active) return;
+
       if (active.type === 'i-text' || active.type === 'text') {
         if (active.isEditing && active.selectionStart !== active.selectionEnd) {
           active.setSelectionStyles({ fill: midColor.value }, active.selectionStart, active.selectionEnd);
@@ -738,7 +806,7 @@
         active.dirty = true;
         syncConnectedOutline(active);
         canvas.requestRenderAll();
-      } else if (active.type === 'rect' || active.type === 'circle' || active.type === 'triangle') {
+      } else if (['rect', 'circle', 'triangle'].includes(active.type)) {
         active.set('fill', midColor.value);
         active.dirty = true;
         canvas.requestRenderAll();
@@ -748,16 +816,18 @@
 
     syncMidBtn.addEventListener('click', () => {
       midColor.value = textColor.value;
-      const event = new Event('input');
-      midColor.dispatchEvent(event);
-      setStatus('文字の中の色を文字の色と同じにしました');
+      midColor.dispatchEvent(new Event('input'));
+      setStatus('塗りを文字色と同じにしました');
     });
 
+    // ========== 縁色・縁幅（★オブジェクト単位で保存） ==========
     function updateStroke() {
       strokeWidthVal.textContent = strokeWidth.value;
       const active = canvas.getActiveObject();
       if (!active) return;
+
       const w = parseInt(strokeWidth.value) || 0;
+
       if (active.type === 'i-text' || active.type === 'text') {
         active.set({
           fill: midColor.value,
@@ -767,11 +837,12 @@
           strokeLineJoin: 'round',
           strokeLineCap: 'round',
           objectCaching: false,
-          outlineWidth: w
+          outlineWidth: w,
+          outlineColor: strokeColor.value   // ★ ここに保存
         });
         active.dirty = true;
         syncConnectedOutline(active);
-      } else if (active.type === 'rect' || active.type === 'circle' || active.type === 'triangle') {
+      } else if (['rect', 'circle', 'triangle'].includes(active.type)) {
         active.set({
           fill: midColor.value,
           stroke: w > 0 ? strokeColor.value : null,
@@ -781,40 +852,57 @@
       }
       canvas.requestRenderAll();
     }
+
     strokeColor.addEventListener('input', updateStroke);
     strokeWidth.addEventListener('input', updateStroke);
     strokeColor.addEventListener('change', saveHistory);
     strokeWidth.addEventListener('change', saveHistory);
 
+    // ========== ペン ==========
     penWidth.addEventListener('input', () => {
       penWidthVal.textContent = penWidth.value;
       if (canvas.isDrawingMode) {
-        canvas.freeDrawingBrush.width = isEraser ? parseInt(penWidth.value) * 2 : parseInt(penWidth.value);
+        canvas.freeDrawingBrush.width = isEraser
+          ? parseInt(penWidth.value) * 2
+          : parseInt(penWidth.value);
       }
     });
     penColor.addEventListener('input', () => {
-      if (canvas.isDrawingMode && !isEraser) canvas.freeDrawingBrush.color = penColor.value;
+      if (canvas.isDrawingMode && !isEraser) {
+        canvas.freeDrawingBrush.color = penColor.value;
+      }
     });
+
     penBtn.addEventListener('click', () => setMode('pen'));
     eraserBtn.addEventListener('click', () => setMode('eraser'));
     selectBtn.addEventListener('click', () => setMode('select'));
 
+    // ========== 配置 ==========
     function moveTextWithOutline(textObj, direction) {
       const outline = getConnectedOutline(textObj);
-      if (direction === 'forward') canvas.bringForward(textObj);
-      else canvas.sendBackwards(textObj);
+      if (direction === 'forward') {
+        canvas.bringForward(textObj);
+      } else {
+        canvas.sendBackwards(textObj);
+      }
       if (outline) {
         const idx = canvas.getObjects().indexOf(textObj);
-        if (idx > 0) canvas.moveTo(outline, idx - 1);
-        else canvas.sendToBack(outline);
+        if (idx > 0) {
+          canvas.moveTo(outline, idx - 1);
+        } else {
+          canvas.sendToBack(outline);
+        }
       }
     }
 
     bringForwardBtn.addEventListener('click', () => {
       const active = canvas.getActiveObject();
       if (!active) return;
-      if (active.type === 'i-text' || active.type === 'text') moveTextWithOutline(active, 'forward');
-      else canvas.bringForward(active);
+      if (active.type === 'i-text' || active.type === 'text') {
+        moveTextWithOutline(active, 'forward');
+      } else {
+        canvas.bringForward(active);
+      }
       canvas.requestRenderAll();
       saveHistory();
     });
@@ -822,8 +910,11 @@
     sendBackwardBtn.addEventListener('click', () => {
       const active = canvas.getActiveObject();
       if (!active) return;
-      if (active.type === 'i-text' || active.type === 'text') moveTextWithOutline(active, 'backward');
-      else canvas.sendBackwards(active);
+      if (active.type === 'i-text' || active.type === 'text') {
+        moveTextWithOutline(active, 'backward');
+      } else {
+        canvas.sendBackwards(active);
+      }
       canvas.requestRenderAll();
       saveHistory();
     });
@@ -831,8 +922,9 @@
     deleteBtn.addEventListener('click', () => {
       const active = canvas.getActiveObject();
       if (!active) return;
-      if (active.type === 'i-text' || active.type === 'text') removeTextWithOutline(active);
-      else {
+      if (active.type === 'i-text' || active.type === 'text') {
+        removeTextWithOutline(active);
+      } else {
         canvas.remove(active);
         canvas.discardActiveObject();
         canvas.requestRenderAll();
@@ -840,6 +932,7 @@
       }
     });
 
+    // ========== 図形 ==========
     function addShape(type) {
       const w = parseInt(strokeWidth.value) || 0;
       const common = {
@@ -854,22 +947,30 @@
         strokeLineCap: 'round',
         objectCaching: false
       };
+
       let shape;
-      if (type === 'rect') shape = new fabric.Rect({ ...common, width: 120, height: 120, rx: 8, ry: 8 });
-      else if (type === 'circle') shape = new fabric.Circle({ ...common, radius: 60 });
-      else if (type === 'triangle') shape = new fabric.Triangle({ ...common, width: 120, height: 110 });
+      if (type === 'rect') {
+        shape = new fabric.Rect({ ...common, width: 120, height: 120, rx: 8, ry: 8 });
+      } else if (type === 'circle') {
+        shape = new fabric.Circle({ ...common, radius: 60 });
+      } else if (type === 'triangle') {
+        shape = new fabric.Triangle({ ...common, width: 120, height: 110 });
+      }
       if (!shape) return;
+
       canvas.add(shape);
       canvas.setActiveObject(shape);
       canvas.requestRenderAll();
       setMode('select');
-      setStatus(type === 'rect' ? '四角を追加しました' : type === 'circle' ? '丸を追加しました' : '三角を追加しました');
+      setStatus(type === 'rect' ? '四角を追加' : type === 'circle' ? '丸を追加' : '三角を追加');
       saveHistory();
     }
+
     addRectBtn.addEventListener('click', () => addShape('rect'));
     addCircleBtn.addEventListener('click', () => addShape('circle'));
     addTriangleBtn.addEventListener('click', () => addShape('triangle'));
 
+    // ========== 画像 ==========
     importImageBtn.addEventListener('click', () => imageInput.click());
     imageInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
@@ -881,34 +982,51 @@
           if (img.width > maxSize || img.height > maxSize) {
             img.scale(Math.min(maxSize / img.width, maxSize / img.height));
           }
-          img.set({ left: canvas.width / 2, top: canvas.height / 2, originX: 'center', originY: 'center' });
+          img.set({
+            left: canvas.width / 2,
+            top: canvas.height / 2,
+            originX: 'center',
+            originY: 'center'
+          });
           canvas.add(img);
           canvas.setActiveObject(img);
           canvas.requestRenderAll();
           setMode('select');
           setStatus('画像を追加しました');
+          saveHistory();
         });
       };
       reader.readAsDataURL(file);
       imageInput.value = '';
     });
 
+    // ========== 保存（倍率選択対応） ==========
     downloadBtn.addEventListener('click', () => {
       canvas.discardActiveObject();
       canvas.requestRenderAll();
+
       const originalBg = canvas.backgroundColor;
       canvas.backgroundColor = null;
       canvas.requestRenderAll();
-      const dataURL = canvas.toDataURL({ format: 'png', quality: 1, multiplier: 2 });
+
+      const scale = parseInt(exportScale.value) || 2;
+      const dataURL = canvas.toDataURL({
+        format: 'png',
+        quality: 1,
+        multiplier: scale
+      });
+
       canvas.backgroundColor = originalBg;
       canvas.requestRenderAll();
+
       const link = document.createElement('a');
       link.download = 'vtuber-logo.png';
       link.href = dataURL;
       link.click();
-      setStatus('背景透過PNGを保存しました');
+      setStatus(`背景透過PNGを保存しました（${scale}x）`);
     });
 
+    // ========== 全消去 ==========
     clearBtn.addEventListener('click', () => {
       if (confirm('キャンバスをすべて消去しますか？')) {
         isInternalOperation = true;
@@ -921,9 +1039,15 @@
       }
     });
 
-    undoBtn.addEventListener('click', () => { if (historyIndex > 0) restoreHistory(historyIndex - 1); });
-    redoBtn.addEventListener('click', () => { if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1); });
+    // ========== 履歴ボタン ==========
+    undoBtn.addEventListener('click', () => {
+      if (historyIndex > 0) restoreHistory(historyIndex - 1);
+    });
+    redoBtn.addEventListener('click', () => {
+      if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1);
+    });
 
+    // ========== キーボード ==========
     document.addEventListener('keydown', (e) => {
       if (e.ctrlKey || e.metaKey) {
         if (e.key === 'z' || e.key === 'Z') {
@@ -937,13 +1061,17 @@
           return;
         }
       }
+
       if (e.key === 'Delete' || e.key === 'Backspace') {
         if (canvas.getActiveObject()?.isEditing) return;
         if (document.activeElement === textInput) return;
+
         const active = canvas.getActiveObject();
         if (!active) return;
-        if (active.type === 'i-text' || active.type === 'text') removeTextWithOutline(active);
-        else {
+
+        if (active.type === 'i-text' || active.type === 'text') {
+          removeTextWithOutline(active);
+        } else {
           canvas.remove(active);
           canvas.discardActiveObject();
           canvas.requestRenderAll();
@@ -952,43 +1080,61 @@
       }
     });
 
+    // ========== 選択時にコントロールを同期 ==========
     function updateControlsFromObject() {
       const active = canvas.getActiveObject();
       if (!active) return;
+
       if (active.type === 'i-text' || active.type === 'text') {
         if (active.fontFamily) {
           const opt = Array.from(fontSelect.options).find(o => o.value === active.fontFamily);
           if (opt) fontSelect.value = active.fontFamily;
         }
-        if (active.fill && typeof active.fill === 'string') midColor.value = active.fill;
-        if (active.stroke && typeof active.stroke === 'string') textColor.value = active.stroke;
+        if (active.fill && typeof active.fill === 'string') {
+          midColor.value = active.fill;
+        }
+        if (active.stroke && typeof active.stroke === 'string') {
+          textColor.value = active.stroke;
+        }
         if (typeof active.outlineWidth === 'number') {
           strokeWidth.value = active.outlineWidth;
           strokeWidthVal.textContent = active.outlineWidth;
+        }
+        // ★ オブジェクトの縁色をピッカーに反映
+        if (active.outlineColor) {
+          strokeColor.value = active.outlineColor;
         }
         if (typeof active.fontSize === 'number') {
           fontSize.value = active.fontSize;
           fontSizeVal.textContent = active.fontSize;
         }
-      } else if (active.type === 'rect' || active.type === 'circle' || active.type === 'triangle') {
-        if (active.fill && typeof active.fill === 'string') midColor.value = active.fill;
-        if (active.stroke && typeof active.stroke === 'string') strokeColor.value = active.stroke;
+      } else if (['rect', 'circle', 'triangle'].includes(active.type)) {
+        if (active.fill && typeof active.fill === 'string') {
+          midColor.value = active.fill;
+        }
+        if (active.stroke && typeof active.stroke === 'string') {
+          strokeColor.value = active.stroke;
+        }
         if (typeof active.strokeWidth === 'number') {
           strokeWidth.value = active.strokeWidth;
           strokeWidthVal.textContent = active.strokeWidth;
         }
       }
     }
+
     canvas.on('selection:created', updateControlsFromObject);
     canvas.on('selection:updated', updateControlsFromObject);
 
+    // ========== キャンバスフィット ==========
     function fitCanvasToScreen() {
       const wrap = document.querySelector('.canvas-wrap');
       if (!wrap) return;
+
       const padding = 16;
       const availableW = wrap.clientWidth - padding;
       const availableH = wrap.clientHeight - padding;
       const baseW = 900, baseH = 520, ratio = baseW / baseH;
+
       let newW, newH;
       if (availableW / availableH > ratio) {
         newH = Math.min(baseH, availableH);
@@ -997,16 +1143,20 @@
         newW = Math.min(baseW, availableW);
         newH = newW / ratio;
       }
+
       newW = Math.max(280, Math.round(newW));
       newH = Math.max(160, Math.round(newH));
+
       if (Math.abs(canvas.getWidth() - newW) > 4 || Math.abs(canvas.getHeight() - newH) > 4) {
         canvas.setDimensions({ width: newW, height: newH });
         canvas.requestRenderAll();
       }
     }
+
     window.addEventListener('resize', () => setTimeout(fitCanvasToScreen, 100));
     window.addEventListener('orientationchange', () => setTimeout(fitCanvasToScreen, 200));
 
+    // ========== 初期化 ==========
     setMode('select');
     setStatus('準備完了 — テキストを追加してロゴを作ってみよう');
     setTimeout(fitCanvasToScreen, 400);
