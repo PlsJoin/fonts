@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>VTuberネームロゴメーカー（修正版2）</title>
+  <title>VTuberネームロゴメーカー（修正版3）</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -216,9 +216,9 @@
 </head>
 <body>
   <div class="title-bar">
-    <h1>VTuberネームロゴメーカー（修正版2）</h1>
+    <h1>VTuberネームロゴメーカー（修正版3）</h1>
     <span style="color:#999;">|</span>
-    <span>立体フォント縁色・消しゴム修正</span>
+    <span>消しゴム完全修正 + 縁色独立強化</span>
   </div>
 
   <div class="ribbon">
@@ -232,7 +232,7 @@
 
     <div class="ribbon-group">
       <div class="ribbon-buttons">
-        <input type="text" id="textInput" placeholder="テキストを入力" value="テストちゃん">
+        <input type="text" id="textInput" placeholder="テキストを入力" value="ドル鯖">
         <button id="addTextBtn" class="primary">追加</button>
       </div>
       <div class="ribbon-group-label">テキスト</div>
@@ -245,7 +245,7 @@
           <option value="Hachi Maru Pop">Hachi Maru Pop（ポップ）</option>
           <option value="Zen Maru Gothic">Zen Maru Gothic（丸ゴ）</option>
           <option value="M PLUS Rounded 1c">M PLUS Rounded</option>
-          <option value="Rampart One">Rampart One（立体）</option>
+          <option value="Rampart One" selected>Rampart One（立体）</option>
           <option value="Dela Gothic One">Dela Gothic One（太ゴ）</option>
           <option value="Noto Sans JP">Noto Sans JP</option>
           <option value="Noto Serif JP">Noto Serif JP（明朝）</option>
@@ -282,23 +282,23 @@
       <div class="ribbon-buttons">
         <div class="ctrl">
           <label>文字色</label>
-          <input type="color" id="textColor" value="#ff6b9d">
+          <input type="color" id="textColor" value="#000000">
         </div>
         <div class="ctrl">
           <label>塗り</label>
-          <input type="color" id="midColor" value="#ffffff">
+          <input type="color" id="midColor" value="#8ec8ff">
         </div>
         <div class="ctrl">
           <button id="syncMidBtn" title="塗りを文字色と同じにする" style="padding:5px 8px;font-size:11px;">塗り＝文字色</button>
         </div>
         <div class="ctrl">
           <label>縁色</label>
-          <input type="color" id="strokeColor" value="#ffffff">
+          <input type="color" id="strokeColor" value="#000000">
         </div>
         <div class="ctrl">
           <label>縁幅</label>
-          <input type="range" id="strokeWidth" min="0" max="24" value="6">
-          <span class="value-label" id="strokeWidthVal">6</span>
+          <input type="range" id="strokeWidth" min="0" max="24" value="8">
+          <span class="value-label" id="strokeWidthVal">8</span>
         </div>
       </div>
       <div class="ribbon-group-label">色・縁</div>
@@ -370,7 +370,7 @@
   </div>
 
   <div class="status-bar">
-    <span>テキスト追加 → フォント・色・縁を調整 → PNG保存</span>
+    <span>外側の黒＝縁色　正面の色＝塗り　立体の側面はフォント依存</span>
     <span id="statusInfo">準備完了</span>
   </div>
 
@@ -467,6 +467,13 @@
       }
     });
 
+    // 消しゴムを確実に効かせるためにマウスダウンでも強制
+    canvas.on('mouse:down', () => {
+      if (isEraser && canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.globalCompositeOperation = 'destination-out';
+      }
+    });
+
     const textInput = document.getElementById('textInput');
     const addTextBtn = document.getElementById('addTextBtn');
     const fontSelect = document.getElementById('fontSelect');
@@ -503,7 +510,7 @@
       statusInfo.textContent = msg;
     }
 
-    // ========== モード切り替え（消しゴム修正） ==========
+    // ========== モード（消しゴム完全修正） ==========
     function setMode(mode) {
       [penBtn, eraserBtn, selectBtn].forEach(b => b.classList.remove('active'));
       canvas.isDrawingMode = false;
@@ -522,12 +529,12 @@
         eraserBtn.classList.add('active');
         canvas.isDrawingMode = true;
         const brush = new fabric.PencilBrush(canvas);
-        brush.color = '#ffffff';               // 色は何でもいいが黒にしない
+        brush.color = '#000000';  // 色は無視されるが、白にしない
         brush.width = parseInt(penWidth.value) * 2;
-        brush.globalCompositeOperation = 'destination-out';  // 確実に消す
+        brush.globalCompositeOperation = 'destination-out';
         canvas.freeDrawingBrush = brush;
         isEraser = true;
-        setStatus('消しゴムモード（描いた線・上に重ねた部分を透過で消します）');
+        setStatus('消しゴムモード（透過で消します）');
       } else {
         selectBtn.classList.add('active');
         setStatus('選択モード');
@@ -546,8 +553,8 @@
         originY: 'center',
         fontFamily: fontSelect.value,
         fontSize: parseInt(fontSize.value),
-        fill: midColor.value,
-        stroke: outlineW > 0 ? textColor.value : null,
+        fill: midColor.value,                          // 塗り
+        stroke: outlineW > 0 ? textColor.value : null, // 文字色（細い内側）
         strokeWidth: outlineW > 0 ? Math.min(2.5, outlineW) : 0,
         paintFirst: 'stroke',
         strokeLineJoin: 'round',
@@ -555,7 +562,7 @@
         editable: true,
         objectCaching: false,
         outlineWidth: outlineW,
-        outlineColor: strokeColor.value,   // 必ず縁色を保持
+        outlineColor: strokeColor.value,               // 縁色（外側）
         textObjectId: id
       });
     }
@@ -574,13 +581,10 @@
       return width + extra;
     }
 
-    // ★ 立体フォントでも縁色が塗りにならないよう、完全に独立した色を使う
+    // 縁色を絶対に独立させる
     function createConnectedOutline(textObj) {
       const outerW = getOuterStrokeWidth(textObj);
-      // outlineColor が必ず優先。存在しなければ現在の strokeColor
-      const outlineCol = (textObj.outlineColor && textObj.outlineColor !== midColor.value)
-        ? textObj.outlineColor
-        : strokeColor.value;
+      const outlineCol = textObj.outlineColor || strokeColor.value;
 
       return new fabric.IText(textObj.text, {
         left: textObj.left,
@@ -600,8 +604,8 @@
         fontStyle: textObj.fontStyle,
         charSpacing: textObj.charSpacing,
         lineHeight: textObj.lineHeight,
-        fill: outlineCol,          // 縁色だけを使う
-        stroke: outlineCol,        // 縁色だけを使う
+        fill: outlineCol,
+        stroke: outlineCol,
         strokeWidth: outerW,
         paintFirst: 'stroke',
         strokeLineJoin: 'round',
@@ -623,7 +627,6 @@
       if (!outline) return;
 
       const outerW = getOuterStrokeWidth(textObj);
-      // ここでも必ず outlineColor を優先（塗り色を絶対に使わない）
       const outlineCol = textObj.outlineColor || strokeColor.value;
 
       outline.set({
@@ -788,7 +791,6 @@
       const w = parseInt(strokeWidth.value) || 0;
 
       if (active.type === 'i-text' || active.type === 'text') {
-        // 縁色を確実にオブジェクトに保存
         active.set({
           fill: midColor.value,
           stroke: w > 0 ? textColor.value : null,
@@ -798,7 +800,7 @@
           strokeLineCap: 'round',
           objectCaching: false,
           outlineWidth: w,
-          outlineColor: strokeColor.value   // ここが最重要
+          outlineColor: strokeColor.value   // 縁色を強制保存
         });
         active.dirty = true;
         syncConnectedOutline(active);
@@ -1041,7 +1043,6 @@
           strokeWidth.value = active.outlineWidth;
           strokeWidthVal.textContent = active.outlineWidth;
         }
-        // 縁色を確実に反映
         if (active.outlineColor) {
           strokeColor.value = active.outlineColor;
         }
@@ -1097,7 +1098,7 @@
     window.addEventListener('orientationchange', () => setTimeout(fitCanvasToScreen, 200));
 
     setMode('select');
-    setStatus('準備完了 — テキストを追加してロゴを作ってみよう');
+    setStatus('準備完了');
     setTimeout(fitCanvasToScreen, 400);
   </script>
 </body>
