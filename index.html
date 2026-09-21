@@ -3,634 +3,1079 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>VTuberネームロゴメーカー（修正版3）</title>
+  <title>VTuberネームロゴメーカー</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: "Segoe UI", "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif;
-      background: #f0f0f0;
-      color: #333;
+      background: #f0f2f5;
+      padding: 20px;
+      display: flex;
+      gap: 20px;
       height: 100vh;
       height: 100dvh;
-      display: flex;
-      flex-direction: column;
       overflow: hidden;
-      -webkit-text-size-adjust: 100%;
-    }
-    .title-bar {
-      background: #fff;
-      border-bottom: 1px solid #d0d0d0;
-      padding: 6px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13px;
-      color: #555;
-      user-select: none;
-      flex-shrink: 0;
-    }
-    .title-bar h1 { font-size: 14px; font-weight: 600; color: #222; }
-    .ribbon {
-      background: #fff;
-      border-bottom: 1px solid #d0d0d0;
-      padding: 4px 8px 8px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2px;
-      align-items: flex-start;
-      flex-shrink: 0;
-      max-height: 42vh;
-      overflow-y: auto;
-    }
-    .ribbon-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 4px 8px;
-      border-right: 1px solid #e8e8e8;
-      min-width: 50px;
-    }
-    .ribbon-group:last-child { border-right: none; }
-    .ribbon-group-label {
-      font-size: 11px;
-      color: #666;
-      margin-top: 4px;
-      text-align: center;
-    }
-    .ribbon-buttons {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    button {
-      font-family: inherit;
-      font-size: 12px;
-      padding: 5px 10px;
-      border: 1px solid #c0c0c0;
-      border-radius: 3px;
-      background: #f8f8f8;
       color: #333;
-      cursor: pointer;
-      transition: all 0.1s;
-      white-space: nowrap;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      -webkit-tap-highlight-color: transparent;
     }
-    button:hover { background: #e8e8e8; border-color: #999; }
-    button:active { background: #d8d8d8; }
-    button.active {
-      background: #cce4ff;
-      border-color: #5b9bd5;
-      color: #1a5276;
-    }
-    button.primary {
-      background: #5b9bd5;
-      border-color: #2e86c1;
-      color: #fff;
-    }
-    button.primary:hover { background: #2e86c1; }
-    button.danger { color: #c0392b; }
-    button.danger:hover {
-      background: #fdecea;
-      border-color: #e74c3c;
-    }
-    button:disabled { opacity: 0.45; cursor: not-allowed; }
-    input[type="text"] {
-      padding: 4px 8px;
-      border: 1px solid #c0c0c0;
-      border-radius: 3px;
-      font-size: 12px;
-      width: 140px;
-    }
-    input[type="text"]:focus { outline: none; border-color: #5b9bd5; }
-    select {
-      padding: 4px 6px;
-      border: 1px solid #c0c0c0;
-      border-radius: 3px;
-      font-size: 12px;
+    .panel {
       background: #fff;
-      max-width: 150px;
-    }
-    input[type="color"] {
-      width: 28px;
-      height: 24px;
-      border: 1px solid #c0c0c0;
-      border-radius: 3px;
-      padding: 1px;
-      cursor: pointer;
-      background: #fff;
-    }
-    input[type="range"] { width: 70px; vertical-align: middle; }
-    .value-label {
-      font-size: 11px;
-      color: #666;
-      min-width: 20px;
-      display: inline-block;
-    }
-    .workspace {
-      flex: 1;
+      padding: 15px;
+      border-radius: 8px;
+      width: 340px;
       display: flex;
-      background: #e5e5e5;
-      overflow: hidden;
-      min-height: 0;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.1);
+      overflow: auto;
+      flex-shrink: 0;
+    }
+    .panel h1 { font-size: 16px; margin-bottom: 2px; }
+    .panel small { color: #777; font-size: 11px; }
+    .section { border-top: 1px solid #eee; padding-top: 10px; }
+    .row { display: flex; gap: 8px; align-items: center; }
+    .row label, .field label { font-size: .8rem; font-weight: bold; }
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .row label { flex: 1; }
+    input[type=text], select, input[type=number] {
+      padding: 6px;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    input[type=color] {
+      width: 40px;
+      height: 28px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      padding: 1px;
+    }
+    input[type=range] { width: 100%; }
+    button {
+      padding: 10px;
+      font-weight: bold;
+      background: #4a90e2;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover { background: #357abd; }
+    button.secondary { background: #eee; color: #333; }
+    button.secondary:hover { background: #ddd; }
+    button.danger { background: #d9534f; }
+    button.danger:hover { background: #c9302c; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    .mode { display: flex; gap: 4px; }
+    .mode button { flex: 1; }
+    .mode button.active { background: #357abd; color: #fff; }
+    .value { font-size: 11px; color: #666; min-width: 30px; text-align: right; }
+    .canvas-area {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
     .canvas-wrap {
       flex: 1;
+      min-height: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       overflow: auto;
-      padding: 12px;
-      -webkit-overflow-scrolling: touch;
+      padding: 10px;
     }
     #canvas-container {
       background: #fff;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-      border: 1px solid #ccc;
+      box-shadow: 0 2px 12px rgba(0,0,0,.15);
+      border: 2px dashed #999;
       line-height: 0;
     }
     #c { touch-action: none; display: block; }
-    .status-bar {
-      background: #f8f8f8;
-      border-top: 1px solid #d0d0d0;
-      padding: 3px 12px;
+    .status {
       font-size: 11px;
       color: #666;
-      display: flex;
-      justify-content: space-between;
-      flex-shrink: 0;
-      gap: 8px;
+      background: #fff;
+      border-radius: 4px;
+      padding: 7px 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
     }
-    .status-bar span:first-child {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .ctrl {
+    .preload { position: absolute; left: -9999px; opacity: 0; }
+    .inline-check {
+      font-size: .8rem;
+      font-weight: bold;
       display: flex;
       align-items: center;
-      gap: 4px;
-      font-size: 12px;
+      gap: 5px;
     }
-    .ctrl label { color: #555; white-space: nowrap; }
-    .mode-group {
-      display: flex;
-      border: 1px solid #c0c0c0;
-      border-radius: 3px;
-      overflow: hidden;
-    }
-    .mode-group button {
-      border: none;
-      border-radius: 0;
-      border-right: 1px solid #c0c0c0;
-      margin: 0;
-      padding: 5px 12px;
-    }
-    .mode-group button:last-child { border-right: none; }
-    @media (max-width: 768px) {
-      .title-bar { padding: 8px 12px; }
-      .title-bar h1 { font-size: 13px; }
-      .ribbon { padding: 6px 4px 8px; gap: 0; max-height: 45vh; }
-      .ribbon-group { padding: 4px 6px; min-width: 44px; border-right: 1px solid #eee; }
-      .ribbon-group-label { font-size: 10px; margin-top: 3px; }
-      button { padding: 8px 11px; font-size: 13px; min-height: 36px; }
-      .mode-group button { padding: 8px 14px; }
-      input[type="text"] { width: 110px; padding: 6px 8px; font-size: 14px; min-height: 36px; }
-      select { padding: 6px 6px; font-size: 13px; min-height: 36px; max-width: 130px; }
-      input[type="color"] { width: 36px; height: 32px; }
-      input[type="range"] { width: 60px; }
-      .canvas-wrap { padding: 8px; }
-      .status-bar { font-size: 10px; padding: 4px 8px; }
-    }
-    @media (max-width: 480px) {
-      .ribbon-group-label { display: none; }
-      .ribbon-group { padding: 3px 4px; }
-      input[type="text"] { width: 90px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 900px) {
+      body {
+        padding: 10px;
+        gap: 10px;
+        overflow: auto;
+        height: auto;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+      .panel { width: 100%; max-height: none; }
+      .canvas-area { min-height: 55vh; }
     }
   </style>
-
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:sans-serif;background:#f0f2f5;padding:20px;display:flex;gap:20px;height:100vh;overflow:hidden;color:#333}
-.panel{background:#fff;padding:15px;border-radius:8px;width:340px;display:flex;flex-direction:column;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);overflow:auto;flex-shrink:0}
-.panel h1{font-size:16px;margin-bottom:2px}
-.panel small{color:#777;font-size:11px}
-.section{border-top:1px solid #eee;padding-top:10px}
-.row{display:flex;gap:8px;align-items:center}
-.row label,.field label{font-size:.8rem;font-weight:bold}
-.field{display:flex;flex-direction:column;gap:5px}
-.row label{flex:1}
-input[type=text],select,input[type=number]{padding:6px;width:100%;box-sizing:border-box;border:1px solid #ccc;border-radius:4px}
-input[type=color]{width:40px;height:28px;cursor:pointer;border:1px solid #ccc;padding:1px}
-input[type=range]{width:100%}
-button{padding:10px;font-weight:bold;background:#4a90e2;color:#fff;border:none;border-radius:4px;cursor:pointer}
-button:hover{background:#357abd}
-button.secondary{background:#eee;color:#333}
-button.secondary:hover{background:#ddd}
-button.danger{background:#d9534f}
-button.danger:hover{background:#c9302c}
-button:disabled{opacity:.45;cursor:not-allowed}
-.mode{display:flex;gap:4px}
-.mode button{flex:1}
-.mode button.active{background:#357abd}
-.value{font-size:11px;color:#666;min-width:30px;text-align:right}
-.canvas-area{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
-.canvas-wrap{flex:1;min-height:0;display:flex;justify-content:center;align-items:center;overflow:auto;padding:10px}
-#canvas-container{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.15);border:2px dashed #999;line-height:0}
-#c{touch-action:none;display:block}
-.status{font-size:11px;color:#666;background:#fff;border-radius:4px;padding:7px 10px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.preload{position:absolute;left:-9999px;opacity:0}
-.inline-check{font-size:.8rem;font-weight:bold;display:flex;align-items:center;gap:5px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media(max-width:900px){
- body{padding:10px;gap:10px;overflow:auto;height:auto;min-height:100vh;flex-direction:column}
- .panel{width:100%;max-height:none}
- .canvas-area{min-height:55vh}
-}
-</style>
 </head>
 <body>
-<div class="preload" style="font-family:'Rampart One'">a</div>
-<div class="preload" style="font-family:'Dela Gothic One'">a</div>
-<div class="preload" style="font-family:'Hachi Maru Pop'">a</div>
-<div class="preload" style="font-family:'M PLUS Rounded 1c'">a</div>
+  <!-- フォント先読み用（表示はしない） -->
+  <div class="preload" style="font-family:'Rampart One'">a</div>
+  <div class="preload" style="font-family:'Dela Gothic One'">a</div>
+  <div class="preload" style="font-family:'Hachi Maru Pop'">a</div>
+  <div class="preload" style="font-family:'M PLUS Rounded 1c'">a</div>
+  <div class="preload" style="font-family:'Yomogi'">a</div>
+  <div class="preload" style="font-family:'Zen Maru Gothic'">a</div>
 
-<div class="panel">
-  <h1>VTuberロゴメーカー</h1>
-  <small>テキストの細かい色・縁・影まで調整できます。</small>
+  <div class="panel">
+    <h1>VTuberロゴメーカー</h1>
+    <small>テキストの細かい色・縁・影まで調整できます。</small>
 
-  <div class="field">
-    <label>テキスト</label>
-    <div class="row"><input type="text" id="textInput" value="ドル鯖"><button id="addTextBtn">追加</button></div>
-  </div>
-
-  <div class="field">
-    <label>フォント</label>
-    <select id="fontSelect">
-      <option value="Yomogi">Yomogi（手書き）</option>
-      <option value="Hachi Maru Pop">Hachi Maru Pop（ポップ）</option>
-      <option value="Zen Maru Gothic">Zen Maru Gothic（丸ゴ）</option>
-      <option value="M PLUS Rounded 1c">M PLUS Rounded</option>
-      <option value="Rampart One" selected>Rampart One（立体）</option>
-      <option value="Dela Gothic One">Dela Gothic One（太ゴ）</option>
-      <option value="Noto Sans JP">Noto Sans JP</option>
-      <option value="Noto Serif JP">Noto Serif JP（明朝）</option>
-      <option value="Shippori Mincho">Shippori Mincho</option>
-      <option value="Kaisei Decol">Kaisei Decol</option>
-      <option value="Reggae One">Reggae One</option>
-      <option value="Potta One">Potta One</option>
-      <option value="Stick">Stick</option>
-      <option value="RocknRoll One">RocknRoll One</option>
-      <option value="DotGothic16">DotGothic16（ドット）</option>
-      <option value="Sawarabi Gothic">Sawarabi Gothic</option>
-      <option value="Sawarabi Mincho">Sawarabi Mincho</option>
-      <option value="Kosugi Maru">Kosugi Maru</option>
-      <option value="Comic Sans MS">Comic Sans MS</option>
-      <option value="Impact">Impact</option>
-      <option value="Arial Black">Arial Black</option>
-    </select>
-  </div>
-
-  <div class="field">
-    <label>文字サイズ <span id="fontSizeVal">72</span></label>
-    <input type="range" id="fontSize" min="20" max="160" value="72">
-  </div>
-
-  <div class="field">
-    <label>文字色</label>
-    <div class="row"><input type="color" id="textColor" value="#0055ff"><span>内側・文字色</span></div>
-  </div>
-
-  <div class="field">
-    <label>塗り色</label>
-    <div class="row"><input type="color" id="midColor" value="#8ec8ff"><button class="secondary" id="syncMidBtn">文字色と同じ</button></div>
-  </div>
-
-  <div class="row">
-    <label class="inline-check"><input type="checkbox" id="gradient">グラデーション</label>
-    <input type="color" id="gradientColor" value="#8ec8ff">
-  </div>
-
-  <div class="field">
-    <label>縁色</label>
-    <input type="color" id="strokeColor" value="#ff2200">
-  </div>
-
-  <div class="field">
-    <label>縁の幅 <span id="strokeWidthVal">12</span></label>
-    <input type="range" id="strokeWidth" min="0" max="40" value="12">
-  </div>
-
-  <label class="inline-check"><input type="checkbox" id="outer" checked>外側のみ適用（内側を潰さない）</label>
-
-  <div class="grid2">
-    <div class="field"><label>影色</label><input type="color" id="shadowColor" value="#000000"></div>
-    <div class="field"><label>影ぼかし</label><input type="number" id="shadowBlur" min="0" max="100" value="10"></div>
-  </div>
-  <div class="field"><label>影ズレ <span id="shadowOffsetVal">6</span></label><input type="range" id="shadowOffset" min="-50" max="50" value="6"></div>
-
-  <div class="section">
-    <label>描画</label>
-    <div class="mode">
-      <button id="selectBtn" class="active">選択</button>
-      <button id="penBtn">ペン</button>
-      <button id="eraserBtn">消しゴム</button>
+    <div class="field">
+      <label>テキスト</label>
+      <div class="row">
+        <input type="text" id="textInput" value="ドル鯖">
+        <button id="addTextBtn">追加</button>
+      </div>
     </div>
-    <div class="row" style="margin-top:8px">
-      <input type="color" id="penColor" value="#000000">
-      <input type="range" id="penWidth" min="1" max="40" value="6">
-      <span class="value" id="penWidthVal">6</span>
-    </div>
-  </div>
 
-  <div class="section">
-    <label>図形</label>
-    <div class="grid2">
-      <button id="addRectBtn" class="secondary">四角</button>
-      <button id="addCircleBtn" class="secondary">丸</button>
-      <button id="addTriangleBtn" class="secondary">三角</button>
-      <button id="importImageBtn" class="secondary">画像</button>
-    </div>
-    <input type="file" id="imageInput" accept="image/*" style="display:none">
-  </div>
-
-  <div class="grid2">
-    <button id="bringForwardBtn" class="secondary">前面</button>
-    <button id="sendBackwardBtn" class="secondary">背面</button>
-    <button id="deleteBtn" class="danger">削除</button>
-    <button id="clearBtn" class="danger">全消去</button>
-  </div>
-
-  <div class="grid2">
-    <button id="undoBtn" class="secondary">＜ 戻る</button>
-    <button id="redoBtn" class="secondary">進む ＞</button>
-  </div>
-
-  <div class="section">
-    <label>PNG保存</label>
-    <div class="row">
-      <select id="exportScale">
-        <option value="1">1x</option><option value="2" selected>2x</option><option value="3">3x</option><option value="4">4x</option>
+    <div class="field">
+      <label>フォント</label>
+      <select id="fontSelect">
+        <option value="Yomogi">Yomogi（手書き）</option>
+        <option value="Hachi Maru Pop">Hachi Maru Pop（ポップ）</option>
+        <option value="Zen Maru Gothic">Zen Maru Gothic（丸ゴ）</option>
+        <option value="M PLUS Rounded 1c">M PLUS Rounded</option>
+        <option value="Rampart One" selected>Rampart One（立体）</option>
+        <option value="Dela Gothic One">Dela Gothic One（太ゴ）</option>
+        <option value="Noto Sans JP">Noto Sans JP</option>
+        <option value="Noto Serif JP">Noto Serif JP（明朝）</option>
+        <option value="Shippori Mincho">Shippori Mincho</option>
+        <option value="Kaisei Decol">Kaisei Decol</option>
+        <option value="Reggae One">Reggae One</option>
+        <option value="Potta One">Potta One</option>
+        <option value="Stick">Stick</option>
+        <option value="RocknRoll One">RocknRoll One</option>
+        <option value="DotGothic16">DotGothic16（ドット）</option>
+        <option value="Sawarabi Gothic">Sawarabi Gothic</option>
+        <option value="Sawarabi Mincho">Sawarabi Mincho</option>
+        <option value="Kosugi Maru">Kosugi Maru</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+        <option value="Impact">Impact</option>
+        <option value="Arial Black">Arial Black</option>
       </select>
-      <button id="downloadBtn">背景透過PNG保存</button>
+    </div>
+
+    <div class="field">
+      <label>文字サイズ <span id="fontSizeVal">72</span></label>
+      <input type="range" id="fontSize" min="20" max="160" value="72">
+    </div>
+
+    <div class="field">
+      <label>文字色</label>
+      <div class="row">
+        <input type="color" id="textColor" value="#0055ff">
+        <span>内側・文字色</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>塗り色</label>
+      <div class="row">
+        <input type="color" id="midColor" value="#8ec8ff">
+        <button class="secondary" id="syncMidBtn">文字色と同じ</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <label class="inline-check">
+        <input type="checkbox" id="gradient">グラデーション
+      </label>
+      <input type="color" id="gradientColor" value="#8ec8ff">
+    </div>
+
+    <div class="field">
+      <label>縁色</label>
+      <input type="color" id="strokeColor" value="#ff2200">
+    </div>
+
+    <div class="field">
+      <label>縁の幅 <span id="strokeWidthVal">12</span></label>
+      <input type="range" id="strokeWidth" min="0" max="40" value="12">
+    </div>
+
+    <label class="inline-check">
+      <input type="checkbox" id="outer" checked>外側のみ適用（内側を潰さない）
+    </label>
+
+    <div class="grid2">
+      <div class="field">
+        <label>影色</label>
+        <input type="color" id="shadowColor" value="#000000">
+      </div>
+      <div class="field">
+        <label>影ぼかし</label>
+        <input type="number" id="shadowBlur" min="0" max="100" value="10">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>影ズレ <span id="shadowOffsetVal">6</span></label>
+      <input type="range" id="shadowOffset" min="-50" max="50" value="6">
+    </div>
+
+    <div class="section">
+      <label>描画</label>
+      <div class="mode">
+        <button id="selectBtn" class="active">選択</button>
+        <button id="penBtn">ペン</button>
+        <button id="eraserBtn">消しゴム</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <input type="color" id="penColor" value="#000000">
+        <input type="range" id="penWidth" min="1" max="40" value="6">
+        <span class="value" id="penWidthVal">6</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <label>図形</label>
+      <div class="grid2">
+        <button id="addRectBtn" class="secondary">四角</button>
+        <button id="addCircleBtn" class="secondary">丸</button>
+        <button id="addTriangleBtn" class="secondary">三角</button>
+        <button id="importImageBtn" class="secondary">画像</button>
+      </div>
+      <input type="file" id="imageInput" accept="image/*" style="display:none">
+    </div>
+
+    <div class="grid2">
+      <button id="bringForwardBtn" class="secondary">前面</button>
+      <button id="sendBackwardBtn" class="secondary">背面</button>
+      <button id="deleteBtn" class="danger">削除</button>
+      <button id="clearBtn" class="danger">全消去</button>
+    </div>
+
+    <div class="grid2">
+      <button id="undoBtn" class="secondary">＜ 戻る</button>
+      <button id="redoBtn" class="secondary">進む ＞</button>
+    </div>
+
+    <div class="section">
+      <label>PNG保存</label>
+      <div class="row">
+        <select id="exportScale">
+          <option value="1">1x</option>
+          <option value="2" selected>2x</option>
+          <option value="3">3x</option>
+          <option value="4">4x</option>
+        </select>
+        <button id="downloadBtn">背景透過PNG保存</button>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="canvas-area">
-  <div class="canvas-wrap">
-    <div id="canvas-container"><canvas id="c" width="900" height="520"></canvas></div>
+  <div class="canvas-area">
+    <div class="canvas-wrap">
+      <div id="canvas-container">
+        <canvas id="c" width="900" height="520"></canvas>
+      </div>
+    </div>
+    <div class="status"><span id="statusInfo">準備完了</span></div>
   </div>
-  <div class="status"><span id="statusInfo">準備完了</span></div>
-</div>
 
-<script>
-const fontLink=document.createElement('link');
-fontLink.href='https://fonts.googleapis.com/css2?family=Yomogi&family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Rampart+One&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600&family=Shippori+Mincho:wght@400;600&family=Kaisei+Decol:wght@400;500;700&family=Reggae+One&family=Potta+One&family=Stick&family=RocknRoll+One&family=DotGothic16&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Kosugi+Maru&display=swap';
-fontLink.rel='stylesheet';document.head.appendChild(fontLink);
+  <script>
+    // Google Fonts 読み込み
+    const fontLink = document.createElement('link');
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Yomogi&family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Rampart+One&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600&family=Shippori+Mincho:wght@400;600&family=Kaisei+Decol:wght@400;500;700&family=Reggae+One&family=Potta+One&family=Stick&family=RocknRoll+One&family=DotGothic16&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Kosugi+Maru&display=swap';
+    fontLink.rel = 'stylesheet';
+    document.head.appendChild(fontLink);
 
-const canvas=new fabric.Canvas('c',{backgroundColor:'#fff',preserveObjectStacking:true,selection:true,allowTouchScrolling:false});
-let isEraser=false,isInternalOperation=false,isRestoring=false;
-const history=[];let historyIndex=-1;const MAX_HISTORY=50;
-const CONNECTED_OUTLINE_BASE_EXTRA=10;
+    // Canvas 初期化
+    const canvas = new fabric.Canvas('c', {
+      backgroundColor: '#fff',
+      preserveObjectStacking: true,
+      selection: true,
+      allowTouchScrolling: false
+    });
 
-const $=id=>document.getElementById(id);
-const textInput=$('textInput'),addTextBtn=$('addTextBtn'),fontSelect=$('fontSelect'),fontSize=$('fontSize'),fontSizeVal=$('fontSizeVal');
-const textColor=$('textColor'),midColor=$('midColor'),syncMidBtn=$('syncMidBtn'),gradient=$('gradient'),gradientColor=$('gradientColor');
-const strokeColor=$('strokeColor'),strokeWidth=$('strokeWidth'),strokeWidthVal=$('strokeWidthVal'),outer=$('outer');
-const shadowColor=$('shadowColor'),shadowBlur=$('shadowBlur'),shadowOffset=$('shadowOffset'),shadowOffsetVal=$('shadowOffsetVal');
-const penColor=$('penColor'),penWidth=$('penWidth'),penWidthVal=$('penWidthVal');
-const penBtn=$('penBtn'),eraserBtn=$('eraserBtn'),selectBtn=$('selectBtn');
-const bringForwardBtn=$('bringForwardBtn'),sendBackwardBtn=$('sendBackwardBtn'),deleteBtn=$('deleteBtn');
-const addRectBtn=$('addRectBtn'),addCircleBtn=$('addCircleBtn'),addTriangleBtn=$('addTriangleBtn');
-const importImageBtn=$('importImageBtn'),imageInput=$('imageInput'),downloadBtn=$('downloadBtn'),clearBtn=$('clearBtn');
-const undoBtn=$('undoBtn'),redoBtn=$('redoBtn'),exportScale=$('exportScale'),statusInfo=$('statusInfo');
+    let isEraser = false;
+    let isInternalOperation = false;
+    let isRestoring = false;
+    const history = [];
+    let historyIndex = -1;
+    const MAX_HISTORY = 50;
+    const CONNECTED_OUTLINE_BASE_EXTRA = 10;
 
-function setStatus(msg){statusInfo.textContent=msg}
-function saveHistory(){
- if(isRestoring||isInternalOperation)return;
- history.splice(historyIndex+1);
- history.push(canvas.toJSON(['selectable','evented','isConnectedOutline','outlineOwnerId','textObjectId','outlineWidth','outlineColor','shadowEnabled','shadowBlurValue','shadowOffsetValue','gradientEnabled','gradientColorValue','innerStrokeWidth','outerOnly']));
- if(history.length>MAX_HISTORY)history.shift();else historyIndex++;
- updateHistoryButtons();
-}
-function updateHistoryButtons(){undoBtn.disabled=historyIndex<=0;redoBtn.disabled=historyIndex>=history.length-1}
-function restoreHistory(index){
- if(index<0||index>=history.length)return;
- isRestoring=true;
- canvas.loadFromJSON(history[index],()=>{
-   canvas.getObjects().forEach(o=>{if(o.isConnectedOutline){o.selectable=false;o.evented=false}});
-   canvas.renderAll();isRestoring=false;historyIndex=index;updateHistoryButtons();setStatus('履歴を復元しました');
- });
-}
-setTimeout(saveHistory,300);
+    // 便利関数
+    const $ = id => document.getElementById(id);
+    const textInput = $('textInput');
+    const addTextBtn = $('addTextBtn');
+    const fontSelect = $('fontSelect');
+    const fontSize = $('fontSize');
+    const fontSizeVal = $('fontSizeVal');
+    const textColor = $('textColor');
+    const midColor = $('midColor');
+    const syncMidBtn = $('syncMidBtn');
+    const gradient = $('gradient');
+    const gradientColor = $('gradientColor');
+    const strokeColor = $('strokeColor');
+    const strokeWidth = $('strokeWidth');
+    const strokeWidthVal = $('strokeWidthVal');
+    const outer = $('outer');
+    const shadowColor = $('shadowColor');
+    const shadowBlur = $('shadowBlur');
+    const shadowOffset = $('shadowOffset');
+    const shadowOffsetVal = $('shadowOffsetVal');
+    const penColor = $('penColor');
+    const penWidth = $('penWidth');
+    const penWidthVal = $('penWidthVal');
+    const penBtn = $('penBtn');
+    const eraserBtn = $('eraserBtn');
+    const selectBtn = $('selectBtn');
+    const bringForwardBtn = $('bringForwardBtn');
+    const sendBackwardBtn = $('sendBackwardBtn');
+    const deleteBtn = $('deleteBtn');
+    const addRectBtn = $('addRectBtn');
+    const addCircleBtn = $('addCircleBtn');
+    const addTriangleBtn = $('addTriangleBtn');
+    const importImageBtn = $('importImageBtn');
+    const imageInput = $('imageInput');
+    const downloadBtn = $('downloadBtn');
+    const clearBtn = $('clearBtn');
+    const undoBtn = $('undoBtn');
+    const redoBtn = $('redoBtn');
+    const exportScale = $('exportScale');
+    const statusInfo = $('statusInfo');
 
-canvas.on('object:modified',e=>{if(!isRestoring&&e.target&&!e.target.isConnectedOutline)syncConnectedOutline(e.target);if(!isInternalOperation)saveHistory()});
-canvas.on('object:added',()=>{if(!isRestoring&&!isInternalOperation)saveHistory()});
-canvas.on('object:removed',()=>{if(!isRestoring&&!isInternalOperation)saveHistory()});
-canvas.on('path:created',()=>{if(!isInternalOperation)saveHistory()});
-['moving','scaling','rotating','skewing'].forEach(ev=>canvas.on('object:'+ev,e=>{if(e.target&&!e.target.isConnectedOutline)syncConnectedOutline(e.target)}));
-canvas.on('text:changed',e=>{if(e.target&&!e.target.isConnectedOutline){syncConnectedOutline(e.target);if(!isInternalOperation)saveHistory()}});
-canvas.on('mouse:down',()=>{if(isEraser&&canvas.freeDrawingBrush)canvas.freeDrawingBrush.globalCompositeOperation='destination-out'});
+    function setStatus(msg) {
+      statusInfo.textContent = msg;
+    }
 
-function setMode(mode){
- [penBtn,eraserBtn,selectBtn].forEach(b=>b.classList.remove('active'));
- canvas.isDrawingMode=false;isEraser=false;
- if(mode==='pen'){
-  penBtn.classList.add('active');canvas.isDrawingMode=true;
-  const brush=new fabric.PencilBrush(canvas);brush.color=penColor.value;brush.width=parseInt(penWidth.value);brush.globalCompositeOperation='source-over';canvas.freeDrawingBrush=brush;setStatus('ペンモード');
- }else if(mode==='eraser'){
-  eraserBtn.classList.add('active');canvas.isDrawingMode=true;
-  const brush=new fabric.PencilBrush(canvas);brush.color='#000';brush.width=parseInt(penWidth.value)*2;brush.globalCompositeOperation='destination-out';canvas.freeDrawingBrush=brush;isEraser=true;setStatus('消しゴムモード（透過で消します）');
- }else{selectBtn.classList.add('active');setStatus('選択モード')}
-}
+    // ========== 履歴 ==========
+    function saveHistory() {
+      if (isRestoring || isInternalOperation) return;
+      history.splice(historyIndex + 1);
+      history.push(canvas.toJSON([
+        'selectable', 'evented', 'isConnectedOutline', 'outlineOwnerId',
+        'textObjectId', 'outlineWidth', 'outlineColor', 'shadowEnabled',
+        'shadowBlurValue', 'shadowOffsetValue', 'gradientEnabled',
+        'gradientColorValue', 'innerStrokeWidth', 'outerOnly', 'shadowColorValue'
+      ]));
+      if (history.length > MAX_HISTORY) history.shift();
+      else historyIndex++;
+      updateHistoryButtons();
+    }
 
-function getConnectedOutline(obj){return obj&&!obj.isConnectedOutline&&obj.textObjectId?canvas.getObjects().find(o=>o.isConnectedOutline&&o.outlineOwnerId===obj.textObjectId)||null:null}
-function getOuterStrokeWidth(obj){
- const w=Math.max(0,parseInt(obj.outlineWidth)||0);if(!w)return 0;
- return w+Math.max(CONNECTED_OUTLINE_BASE_EXTRA,Math.round(w*1.4));
-}
-function makeGradient(obj){
- if(!obj.gradientEnabled)return obj.fill||midColor.value;
- const h=Math.max(obj.height||obj.fontSize||72,1);
- const g=new fabric.Gradient({type:'linear',coords:{x1:0,y1:-h/2,x2:0,y2:h/2},colorStops:[{offset:0,color:obj.fill||midColor.value},{offset:1,color:obj.gradientColorValue||gradientColor.value}]});
- return g;
-}
-function makeShadow(obj){
- if(!obj.shadowEnabled)return null;
- const off=parseInt(obj.shadowOffsetValue)||0;
- return new fabric.Shadow({color:obj.shadowColorValue||shadowColor.value,blur:parseInt(obj.shadowBlurValue)||0,offsetX:off,offsetY:off});
-}
+    function updateHistoryButtons() {
+      undoBtn.disabled = historyIndex <= 0;
+      redoBtn.disabled = historyIndex >= history.length - 1;
+    }
 
-function createTextObject(text){
- const w=parseInt(strokeWidth.value)||0;
- const id='text_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
- const obj=new fabric.IText(text,{left:canvas.width/2,top:canvas.height/2,originX:'center',originY:'center',fontFamily:fontSelect.value,fontSize:parseInt(fontSize.value),fill:midColor.value,stroke:w>0?textColor.value:null,strokeWidth:w>0?Math.min(2.5,w):0,paintFirst:'stroke',strokeLineJoin:'round',strokeLineCap:'round',editable:true,objectCaching:false,outlineWidth:w,outlineColor:strokeColor.value,textObjectId:id,shadowEnabled:true,shadowColorValue:shadowColor.value,shadowBlurValue:parseInt(shadowBlur.value)||0,shadowOffsetValue:parseInt(shadowOffset.value)||0,gradientEnabled:gradient.checked,gradientColorValue:gradientColor.value,innerStrokeWidth:w>0?Math.min(2.5,w):0,outerOnly:outer.checked});
- obj.shadow=makeShadow(obj);return obj;
-}
-function createConnectedOutline(textObj){
- const outerW=outer.checked?getOuterStrokeWidth(textObj):Math.max(0,parseInt(textObj.outlineWidth)||0);
- const col=textObj.outlineColor||strokeColor.value;
- return new fabric.IText(textObj.text,{left:textObj.left,top:textObj.top,originX:textObj.originX,originY:textObj.originY,scaleX:textObj.scaleX,scaleY:textObj.scaleY,angle:textObj.angle,skewX:textObj.skewX,skewY:textObj.skewY,flipX:textObj.flipX,flipY:textObj.flipY,fontFamily:textObj.fontFamily,fontSize:textObj.fontSize,fontWeight:textObj.fontWeight,fontStyle:textObj.fontStyle,charSpacing:textObj.charSpacing,lineHeight:textObj.lineHeight,fill:col,stroke:col,strokeWidth:outerW,paintFirst:'stroke',strokeLineJoin:'round',strokeLineCap:'round',selectable:false,evented:false,editable:false,objectCaching:false,isConnectedOutline:true,outlineOwnerId:textObj.textObjectId,opacity:outerW>0?1:0});
-}
-function syncConnectedOutline(obj){
- if(!obj||obj.isConnectedOutline||!['i-text','text'].includes(obj.type))return;
- const o=getConnectedOutline(obj);if(!o)return;
- const ow=obj.outerOnly===false?Math.max(0,parseInt(obj.outlineWidth)||0):getOuterStrokeWidth(obj);
- const col=obj.outlineColor||strokeColor.value;
- o.set({left:obj.left,top:obj.top,scaleX:obj.scaleX,scaleY:obj.scaleY,angle:obj.angle,skewX:obj.skewX,skewY:obj.skewY,flipX:obj.flipX,flipY:obj.flipY,text:obj.text,fontFamily:obj.fontFamily,fontSize:obj.fontSize,fontWeight:obj.fontWeight,fontStyle:obj.fontStyle,charSpacing:obj.charSpacing,lineHeight:obj.lineHeight,fill:col,stroke:col,strokeWidth:ow,opacity:ow>0?1:0,objectCaching:false});
- o.initDimensions();o.setCoords();o.dirty=true;canvas.requestRenderAll();
-}
-function addTextWithOutline(obj){
- const outline=createConnectedOutline(obj);isInternalOperation=true;canvas.add(outline);canvas.add(obj);isInternalOperation=false;canvas.setActiveObject(obj);
- try{obj.enterEditing();obj.selectAll()}catch(e){}
- canvas.requestRenderAll();saveHistory();
-}
-function removeTextWithOutline(obj){
- if(!obj)return;const o=getConnectedOutline(obj);isInternalOperation=true;if(o)canvas.remove(o);canvas.remove(obj);isInternalOperation=false;canvas.discardActiveObject();canvas.requestRenderAll();saveHistory();
-}
+    function restoreHistory(index) {
+      if (index < 0 || index >= history.length) return;
+      isRestoring = true;
+      canvas.loadFromJSON(history[index], () => {
+        canvas.getObjects().forEach(o => {
+          if (o.isConnectedOutline) {
+            o.selectable = false;
+            o.evented = false;
+          }
+        });
+        canvas.renderAll();
+        isRestoring = false;
+        historyIndex = index;
+        updateHistoryButtons();
+        setStatus('履歴を復元しました');
+      });
+    }
 
-addTextBtn.onclick=()=>{
- const text=textInput.value.trim()||'テキスト',f=fontSelect.value;
- document.fonts.load(`16px "${f}"`).then(()=>{addTextWithOutline(createTextObject(text));setMode('select');setStatus('テキストを追加しました')}).catch(()=>{addTextWithOutline(createTextObject(text));setMode('select');setStatus('テキストを追加しました')});
-};
-textInput.onkeydown=e=>{if(e.key==='Enter')addTextBtn.click()};
+    // 初期履歴
+    setTimeout(saveHistory, 300);
 
-fontSelect.onchange=()=>{
- const a=canvas.getActiveObject();if(!a||!['i-text','text'].includes(a.type))return;
- const f=fontSelect.value;
- document.fonts.load(`16px "${f}"`).finally(()=>{a.set({fontFamily:f,objectCaching:false});a.initDimensions();syncConnectedOutline(a);canvas.requestRenderAll();saveHistory();setStatus('フォント変更: '+f)});
-};
-fontSize.oninput=()=>{fontSizeVal.textContent=fontSize.value;const a=canvas.getActiveObject();if(a&&['i-text','text'].includes(a.type)){a.set('fontSize',parseInt(fontSize.value));a.initDimensions();syncConnectedOutline(a);canvas.requestRenderAll()}};
-fontSize.onchange=saveHistory;
+    // イベント
+    canvas.on('object:modified', e => {
+      if (!isRestoring && e.target && !e.target.isConnectedOutline) {
+        syncConnectedOutline(e.target);
+      }
+      if (!isInternalOperation) saveHistory();
+    });
+    canvas.on('object:added', () => {
+      if (!isRestoring && !isInternalOperation) saveHistory();
+    });
+    canvas.on('object:removed', () => {
+      if (!isRestoring && !isInternalOperation) saveHistory();
+    });
+    canvas.on('path:created', () => {
+      if (!isInternalOperation) saveHistory();
+    });
+    ['moving', 'scaling', 'rotating', 'skewing'].forEach(ev => {
+      canvas.on('object:' + ev, e => {
+        if (e.target && !e.target.isConnectedOutline) syncConnectedOutline(e.target);
+      });
+    });
+    canvas.on('text:changed', e => {
+      if (e.target && !e.target.isConnectedOutline) {
+        syncConnectedOutline(e.target);
+        if (!isInternalOperation) saveHistory();
+      }
+    });
+    canvas.on('mouse:down', () => {
+      if (isEraser && canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.globalCompositeOperation = 'destination-out';
+      }
+    });
 
-function applyTextColor(){
- const a=canvas.getActiveObject();if(!a||!['i-text','text'].includes(a.type))return;
- if(a.isEditing&&a.selectionStart!==a.selectionEnd)a.setSelectionStyles({stroke:textColor.value,fill:a.fill},a.selectionStart,a.selectionEnd);
- else a.set({stroke:textColor.value});
- a.innerStrokeWidth=parseInt(strokeWidth.value)||0;a.dirty=true;canvas.requestRenderAll();
-}
-textColor.oninput=applyTextColor;textColor.onchange=saveHistory;
+    // ========== モード切替 ==========
+    function setMode(mode) {
+      [penBtn, eraserBtn, selectBtn].forEach(b => b.classList.remove('active'));
+      canvas.isDrawingMode = false;
+      isEraser = false;
 
-function applyFill(){
- const a=canvas.getActiveObject();if(!a)return;
- if(['i-text','text'].includes(a.type)){
-   if(a.isEditing&&a.selectionStart!==a.selectionEnd)a.setSelectionStyles({fill:midColor.value},a.selectionStart,a.selectionEnd);
-   else a.set({fill:midColor.value});
-   a.gradientEnabled=gradient.checked;a.gradientColorValue=gradientColor.value;
-   if(!a.isEditing||a.selectionStart===a.selectionEnd)a.set('fill',gradient.checked?makeGradient(a):midColor.value);
-   a.dirty=true;syncConnectedOutline(a);
- }else if(['rect','circle','triangle'].includes(a.type))a.set('fill',midColor.value);
- canvas.requestRenderAll();
-}
-midColor.oninput=applyFill;midColor.onchange=saveHistory;
-syncMidBtn.onclick=()=>{midColor.value=textColor.value;applyFill();setStatus('塗りを文字色と同じにしました');saveHistory()};
-gradient.onchange=applyFill;gradientColor.oninput=applyFill;gradientColor.onchange=saveHistory;
+      if (mode === 'pen') {
+        penBtn.classList.add('active');
+        canvas.isDrawingMode = true;
+        const brush = new fabric.PencilBrush(canvas);
+        brush.color = penColor.value;
+        brush.width = parseInt(penWidth.value);
+        brush.globalCompositeOperation = 'source-over';
+        canvas.freeDrawingBrush = brush;
+        setStatus('ペンモード');
+      } else if (mode === 'eraser') {
+        eraserBtn.classList.add('active');
+        canvas.isDrawingMode = true;
+        const brush = new fabric.PencilBrush(canvas);
+        brush.color = '#000';
+        brush.width = parseInt(penWidth.value) * 2;
+        brush.globalCompositeOperation = 'destination-out';
+        canvas.freeDrawingBrush = brush;
+        isEraser = true;
+        setStatus('消しゴムモード（透過で消します）');
+      } else {
+        selectBtn.classList.add('active');
+        setStatus('選択モード');
+      }
+    }
 
-function updateStroke(){
- strokeWidthVal.textContent=strokeWidth.value;const a=canvas.getActiveObject();if(!a)return;const w=parseInt(strokeWidth.value)||0;
- if(['i-text','text'].includes(a.type)){
-  a.set({stroke:w>0?textColor.value:null,strokeWidth:w>0?Math.min(2.5,w):0,paintFirst:'stroke',strokeLineJoin:'round',strokeLineCap:'round',objectCaching:false,outlineWidth:w,outlineColor:strokeColor.value,outerOnly:outer.checked,innerStrokeWidth:w>0?Math.min(2.5,w):0});
-  syncConnectedOutline(a);
- }else if(['rect','circle','triangle'].includes(a.type))a.set({stroke:w>0?strokeColor.value:null,strokeWidth:w});
- canvas.requestRenderAll();
-}
-strokeColor.oninput=updateStroke;strokeWidth.oninput=updateStroke;outer.onchange=updateStroke;
-strokeColor.onchange=saveHistory;strokeWidth.onchange=saveHistory;outer.addEventListener('change',saveHistory);
+    // ========== アウトライン関連 ==========
+    function getConnectedOutline(obj) {
+      if (!obj || obj.isConnectedOutline || !obj.textObjectId) return null;
+      return canvas.getObjects().find(o =>
+        o.isConnectedOutline && o.outlineOwnerId === obj.textObjectId
+      ) || null;
+    }
 
-function updateShadow(){
- const a=canvas.getActiveObject();if(!a)return;
- if(['i-text','text'].includes(a.type)){
-  a.shadowEnabled=true;a.shadowColorValue=shadowColor.value;a.shadowBlurValue=parseInt(shadowBlur.value)||0;a.shadowOffsetValue=parseInt(shadowOffset.value)||0;a.shadow=makeShadow(a);
- }else if(a.type==='path'){a.shadow=null}
- canvas.requestRenderAll();
-}
-shadowColor.oninput=updateShadow;shadowBlur.oninput=updateShadow;shadowOffset.oninput=()=>{shadowOffsetVal.textContent=shadowOffset.value;updateShadow()};
-shadowColor.onchange=saveHistory;shadowBlur.onchange=saveHistory;shadowOffset.onchange=saveHistory;
+    function getOuterStrokeWidth(obj) {
+      const w = Math.max(0, parseInt(obj.outlineWidth) || 0);
+      if (!w) return 0;
+      return w + Math.max(CONNECTED_OUTLINE_BASE_EXTRA, Math.round(w * 1.4));
+    }
 
-penWidth.oninput=()=>{penWidthVal.textContent=penWidth.value;if(canvas.isDrawingMode&&canvas.freeDrawingBrush)canvas.freeDrawingBrush.width=isEraser?parseInt(penWidth.value)*2:parseInt(penWidth.value)};
-penColor.oninput=()=>{if(canvas.isDrawingMode&&!isEraser&&canvas.freeDrawingBrush)canvas.freeDrawingBrush.color=penColor.value};
-penBtn.onclick=()=>setMode('pen');eraserBtn.onclick=()=>setMode('eraser');selectBtn.onclick=()=>setMode('select');
+    function makeGradient(obj) {
+      if (!obj.gradientEnabled) return obj.fill || midColor.value;
+      const h = Math.max(obj.height || obj.fontSize || 72, 1);
+      return new fabric.Gradient({
+        type: 'linear',
+        coords: { x1: 0, y1: -h / 2, x2: 0, y2: h / 2 },
+        colorStops: [
+          { offset: 0, color: obj.fill || midColor.value },
+          { offset: 1, color: obj.gradientColorValue || gradientColor.value }
+        ]
+      });
+    }
 
-function moveTextWithOutline(obj,dir){
- const o=getConnectedOutline(obj);if(dir==='forward')canvas.bringForward(obj);else canvas.sendBackwards(obj);
- if(o){const idx=canvas.getObjects().indexOf(obj);if(idx>0)canvas.moveTo(o,idx-1);else canvas.sendToBack(o)}
-}
-bringForwardBtn.onclick=()=>{const a=canvas.getActiveObject();if(!a)return;if(['i-text','text'].includes(a.type))moveTextWithOutline(a,'forward');else canvas.bringForward(a);canvas.requestRenderAll();saveHistory()};
-sendBackwardBtn.onclick=()=>{const a=canvas.getActiveObject();if(!a)return;if(['i-text','text'].includes(a.type))moveTextWithOutline(a,'backward');else canvas.sendBackwards(a);canvas.requestRenderAll();saveHistory()};
-deleteBtn.onclick=()=>{const a=canvas.getActiveObject();if(!a)return;if(['i-text','text'].includes(a.type))removeTextWithOutline(a);else{canvas.remove(a);canvas.discardActiveObject();canvas.requestRenderAll();saveHistory()}};
+    function makeShadow(obj) {
+      if (!obj.shadowEnabled) return null;
+      const off = parseInt(obj.shadowOffsetValue) || 0;
+      return new fabric.Shadow({
+        color: obj.shadowColorValue || shadowColor.value,
+        blur: parseInt(obj.shadowBlurValue) || 0,
+        offsetX: off,
+        offsetY: off
+      });
+    }
 
-function addShape(type){
- const w=parseInt(strokeWidth.value)||0,common={left:canvas.width/2,top:canvas.height/2,originX:'center',originY:'center',fill:midColor.value,stroke:w>0?strokeColor.value:null,strokeWidth:w,strokeLineJoin:'round',strokeLineCap:'round',objectCaching:false};
- let s;if(type==='rect')s=new fabric.Rect({...common,width:120,height:120,rx:8,ry:8});else if(type==='circle')s=new fabric.Circle({...common,radius:60});else if(type==='triangle')s=new fabric.Triangle({...common,width:120,height:110});if(!s)return;
- canvas.add(s);canvas.setActiveObject(s);canvas.requestRenderAll();setMode('select');setStatus(type==='rect'?'四角を追加':type==='circle'?'丸を追加':'三角を追加');saveHistory();
-}
-addRectBtn.onclick=()=>addShape('rect');addCircleBtn.onclick=()=>addShape('circle');addTriangleBtn.onclick=()=>addShape('triangle');
+    // テキストオブジェクト作成（中心配置を確実に）
+    function createTextObject(text) {
+      const w = parseInt(strokeWidth.value) || 0;
+      const id = 'text_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
 
-importImageBtn.onclick=()=>imageInput.click();
-imageInput.onchange=e=>{
- const file=e.target.files[0];if(!file)return;const reader=new FileReader();
- reader.onload=ev=>fabric.Image.fromURL(ev.target.result,img=>{
-  const max=400;if(img.width>max||img.height>max)img.scale(Math.min(max/img.width,max/img.height));
-  img.set({left:canvas.width/2,top:canvas.height/2,originX:'center',originY:'center'});canvas.add(img);canvas.setActiveObject(img);canvas.requestRenderAll();setMode('select');setStatus('画像を追加しました');saveHistory();
- });reader.readAsDataURL(file);imageInput.value='';
-};
+      const obj = new fabric.IText(text, {
+        left: canvas.getWidth() / 2,
+        top: canvas.getHeight() / 2,
+        originX: 'center',
+        originY: 'center',
+        fontFamily: fontSelect.value,
+        fontSize: parseInt(fontSize.value),
+        fill: midColor.value,
+        stroke: w > 0 ? textColor.value : null,
+        strokeWidth: w > 0 ? Math.min(2.5, w) : 0,
+        paintFirst: 'stroke',
+        strokeLineJoin: 'round',
+        strokeLineCap: 'round',
+        editable: true,
+        objectCaching: false,
+        outlineWidth: w,
+        outlineColor: strokeColor.value,
+        textObjectId: id,
+        shadowEnabled: true,
+        shadowColorValue: shadowColor.value,
+        shadowBlurValue: parseInt(shadowBlur.value) || 0,
+        shadowOffsetValue: parseInt(shadowOffset.value) || 0,
+        gradientEnabled: gradient.checked,
+        gradientColorValue: gradientColor.value,
+        innerStrokeWidth: w > 0 ? Math.min(2.5, w) : 0,
+        outerOnly: outer.checked
+      });
 
-downloadBtn.onclick=()=>{
- canvas.discardActiveObject();canvas.requestRenderAll();const bg=canvas.backgroundColor;canvas.backgroundColor=null;canvas.requestRenderAll();
- const scale=parseInt(exportScale.value)||2;const data=canvas.toDataURL({format:'png',quality:1,multiplier:scale});
- canvas.backgroundColor=bg;canvas.requestRenderAll();const a=document.createElement('a');a.download='vtuber-logo.png';a.href=data;a.click();setStatus(`背景透過PNGを保存しました（${scale}x）`);
-};
-clearBtn.onclick=()=>{if(confirm('キャンバスをすべて消去しますか？')){isInternalOperation=true;canvas.clear();isInternalOperation=false;canvas.backgroundColor='#fff';canvas.requestRenderAll();saveHistory();setStatus('すべて消去しました')}};
-undoBtn.onclick=()=>{if(historyIndex>0)restoreHistory(historyIndex-1)};
-redoBtn.onclick=()=>{if(historyIndex<history.length-1)restoreHistory(historyIndex+1)};
+      // 影を設定
+      obj.shadow = makeShadow(obj);
 
-document.addEventListener('keydown',e=>{
- if(e.ctrlKey||e.metaKey){
-  if(e.key.toLowerCase()==='z'){e.preventDefault();if(historyIndex>0)restoreHistory(historyIndex-1);return}
-  if(e.key.toLowerCase()==='y'){e.preventDefault();if(historyIndex<history.length-1)restoreHistory(historyIndex+1);return}
- }
- if(e.key==='Delete'||e.key==='Backspace'){
-  if(canvas.getActiveObject()?.isEditing||document.activeElement===textInput)return;
-  const a=canvas.getActiveObject();if(!a)return;
-  if(['i-text','text'].includes(a.type))removeTextWithOutline(a);else{canvas.remove(a);canvas.discardActiveObject();canvas.requestRenderAll();saveHistory()}
- }
-});
+      // グラデーションがあれば適用
+      if (obj.gradientEnabled) {
+        obj.set('fill', makeGradient(obj));
+      }
 
-function updateControlsFromObject(){
- const a=canvas.getActiveObject();if(!a)return;
- if(['i-text','text'].includes(a.type)){
-  if(a.fontFamily&&Array.from(fontSelect.options).some(o=>o.value===a.fontFamily))fontSelect.value=a.fontFamily;
-  if(typeof a.fill==='string')midColor.value=a.fill;
-  if(a.stroke&&typeof a.stroke==='string')textColor.value=a.stroke;
-  if(typeof a.outlineWidth==='number'){strokeWidth.value=a.outlineWidth;strokeWidthVal.textContent=a.outlineWidth}
-  if(a.outlineColor)strokeColor.value=a.outlineColor;
-  if(typeof a.fontSize==='number'){fontSize.value=a.fontSize;fontSizeVal.textContent=a.fontSize}
-  if(typeof a.shadowColorValue==='string')shadowColor.value=a.shadowColorValue;
-  if(typeof a.shadowBlurValue==='number')shadowBlur.value=a.shadowBlurValue;
-  if(typeof a.shadowOffsetValue==='number'){shadowOffset.value=a.shadowOffsetValue;shadowOffsetVal.textContent=a.shadowOffsetValue}
-  gradient.checked=!!a.gradientEnabled;if(a.gradientColorValue)gradientColor.value=a.gradientColorValue;
- }else if(['rect','circle','triangle'].includes(a.type)){
-  if(a.fill&&typeof a.fill==='string')midColor.value=a.fill;
-  if(a.stroke&&typeof a.stroke==='string')strokeColor.value=a.stroke;
-  if(typeof a.strokeWidth==='number'){strokeWidth.value=a.strokeWidth;strokeWidthVal.textContent=a.strokeWidth}
- }
-}
-canvas.on('selection:created',updateControlsFromObject);canvas.on('selection:updated',updateControlsFromObject);
+      return obj;
+    }
 
-function fitCanvas(){
- const wrap=document.querySelector('.canvas-wrap');if(!wrap)return;
- const padding=20,aw=wrap.clientWidth-padding,ah=wrap.clientHeight-padding,baseW=900,baseH=520,ratio=baseW/baseH;
- let nw,nh;if(aw/ah>ratio){nh=Math.min(baseH,ah);nw=nh*ratio}else{nw=Math.min(baseW,aw);nh=nw/ratio}
- nw=Math.max(280,Math.round(nw));nh=Math.max(160,Math.round(nh));
- if(Math.abs(canvas.getWidth()-nw)>4||Math.abs(canvas.getHeight()-nh)>4){canvas.setDimensions({width:nw,height:nh});canvas.requestRenderAll()}
-}
-window.addEventListener('resize',()=>setTimeout(fitCanvas,100));window.addEventListener('orientationchange',()=>setTimeout(fitCanvas,200));
-setMode('select');setStatus('準備完了');setTimeout(fitCanvas,400);
-</script>
-</body></html>
+    function createConnectedOutline(textObj) {
+      const outerW = outer.checked
+        ? getOuterStrokeWidth(textObj)
+        : Math.max(0, parseInt(textObj.outlineWidth) || 0);
+      const col = textObj.outlineColor || strokeColor.value;
+
+      return new fabric.IText(textObj.text, {
+        left: textObj.left,
+        top: textObj.top,
+        originX: textObj.originX,
+        originY: textObj.originY,
+        scaleX: textObj.scaleX,
+        scaleY: textObj.scaleY,
+        angle: textObj.angle,
+        skewX: textObj.skewX,
+        skewY: textObj.skewY,
+        flipX: textObj.flipX,
+        flipY: textObj.flipY,
+        fontFamily: textObj.fontFamily,
+        fontSize: textObj.fontSize,
+        fontWeight: textObj.fontWeight,
+        fontStyle: textObj.fontStyle,
+        charSpacing: textObj.charSpacing,
+        lineHeight: textObj.lineHeight,
+        fill: col,
+        stroke: col,
+        strokeWidth: outerW,
+        paintFirst: 'stroke',
+        strokeLineJoin: 'round',
+        strokeLineCap: 'round',
+        selectable: false,
+        evented: false,
+        editable: false,
+        objectCaching: false,
+        isConnectedOutline: true,
+        outlineOwnerId: textObj.textObjectId,
+        opacity: outerW > 0 ? 1 : 0
+      });
+    }
+
+    function syncConnectedOutline(obj) {
+      if (!obj || obj.isConnectedOutline || !['i-text', 'text'].includes(obj.type)) return;
+      const o = getConnectedOutline(obj);
+      if (!o) return;
+
+      const ow = obj.outerOnly === false
+        ? Math.max(0, parseInt(obj.outlineWidth) || 0)
+        : getOuterStrokeWidth(obj);
+      const col = obj.outlineColor || strokeColor.value;
+
+      o.set({
+        left: obj.left,
+        top: obj.top,
+        scaleX: obj.scaleX,
+        scaleY: obj.scaleY,
+        angle: obj.angle,
+        skewX: obj.skewX,
+        skewY: obj.skewY,
+        flipX: obj.flipX,
+        flipY: obj.flipY,
+        text: obj.text,
+        fontFamily: obj.fontFamily,
+        fontSize: obj.fontSize,
+        fontWeight: obj.fontWeight,
+        fontStyle: obj.fontStyle,
+        charSpacing: obj.charSpacing,
+        lineHeight: obj.lineHeight,
+        fill: col,
+        stroke: col,
+        strokeWidth: ow,
+        opacity: ow > 0 ? 1 : 0,
+        objectCaching: false
+      });
+      o.initDimensions();
+      o.setCoords();
+      o.dirty = true;
+      canvas.requestRenderAll();
+    }
+
+    // テキスト追加（位置を確実に中央に）
+    function addTextWithOutline(obj) {
+      // 寸法を先に確定させる
+      obj.initDimensions();
+      obj.setCoords();
+
+      // 改めて中央に配置（フォント読み込み後の寸法変化に対応）
+      obj.set({
+        left: canvas.getWidth() / 2,
+        top: canvas.getHeight() / 2
+      });
+      obj.setCoords();
+
+      const outline = createConnectedOutline(obj);
+
+      isInternalOperation = true;
+      canvas.add(outline);
+      canvas.add(obj);
+      isInternalOperation = false;
+
+      // アウトラインも中央に揃える
+      outline.set({
+        left: obj.left,
+        top: obj.top
+      });
+      outline.initDimensions();
+      outline.setCoords();
+
+      canvas.setActiveObject(obj);
+      canvas.requestRenderAll();
+
+      // 編集モードに入るのは少し遅らせる（位置ズレ防止）
+      setTimeout(() => {
+        try {
+          if (canvas.getActiveObject() === obj) {
+            obj.enterEditing();
+            obj.selectAll();
+          }
+        } catch (e) {}
+        canvas.requestRenderAll();
+      }, 50);
+
+      saveHistory();
+    }
+
+    function removeTextWithOutline(obj) {
+      if (!obj) return;
+      const o = getConnectedOutline(obj);
+      isInternalOperation = true;
+      if (o) canvas.remove(o);
+      canvas.remove(obj);
+      isInternalOperation = false;
+      canvas.discardActiveObject();
+      canvas.requestRenderAll();
+      saveHistory();
+    }
+
+    // ========== テキスト追加ボタン ==========
+    addTextBtn.onclick = () => {
+      const text = textInput.value.trim() || 'テキスト';
+      const f = fontSelect.value;
+
+      // フォントが使えるまで待ってから追加
+      document.fonts.load(`72px "${f}"`).then(() => {
+        const obj = createTextObject(text);
+        addTextWithOutline(obj);
+        setMode('select');
+        setStatus('テキストを追加しました');
+      }).catch(() => {
+        // 失敗しても追加する
+        const obj = createTextObject(text);
+        addTextWithOutline(obj);
+        setMode('select');
+        setStatus('テキストを追加しました');
+      });
+    };
+
+    textInput.onkeydown = e => {
+      if (e.key === 'Enter') addTextBtn.click();
+    };
+
+    // ========== フォント変更 ==========
+    fontSelect.onchange = () => {
+      const a = canvas.getActiveObject();
+      if (!a || !['i-text', 'text'].includes(a.type)) return;
+      const f = fontSelect.value;
+
+      document.fonts.load(`72px "${f}"`).finally(() => {
+        a.set({ fontFamily: f, objectCaching: false });
+        a.initDimensions();
+        a.setCoords();
+        syncConnectedOutline(a);
+        canvas.requestRenderAll();
+        saveHistory();
+        setStatus('フォント変更: ' + f);
+      });
+    };
+
+    // ========== サイズ変更 ==========
+    fontSize.oninput = () => {
+      fontSizeVal.textContent = fontSize.value;
+      const a = canvas.getActiveObject();
+      if (a && ['i-text', 'text'].includes(a.type)) {
+        a.set('fontSize', parseInt(fontSize.value));
+        a.initDimensions();
+        a.setCoords();
+        syncConnectedOutline(a);
+        canvas.requestRenderAll();
+      }
+    };
+    fontSize.onchange = saveHistory;
+
+    // ========== 色関連 ==========
+    function applyTextColor() {
+      const a = canvas.getActiveObject();
+      if (!a || !['i-text', 'text'].includes(a.type)) return;
+      if (a.isEditing && a.selectionStart !== a.selectionEnd) {
+        a.setSelectionStyles({ stroke: textColor.value, fill: a.fill }, a.selectionStart, a.selectionEnd);
+      } else {
+        a.set({ stroke: textColor.value });
+      }
+      a.innerStrokeWidth = parseInt(strokeWidth.value) || 0;
+      a.dirty = true;
+      canvas.requestRenderAll();
+    }
+    textColor.oninput = applyTextColor;
+    textColor.onchange = saveHistory;
+
+    function applyFill() {
+      const a = canvas.getActiveObject();
+      if (!a) return;
+      if (['i-text', 'text'].includes(a.type)) {
+        if (a.isEditing && a.selectionStart !== a.selectionEnd) {
+          a.setSelectionStyles({ fill: midColor.value }, a.selectionStart, a.selectionEnd);
+        } else {
+          a.set({ fill: midColor.value });
+        }
+        a.gradientEnabled = gradient.checked;
+        a.gradientColorValue = gradientColor.value;
+        if (!a.isEditing || a.selectionStart === a.selectionEnd) {
+          a.set('fill', gradient.checked ? makeGradient(a) : midColor.value);
+        }
+        a.dirty = true;
+        syncConnectedOutline(a);
+      } else if (['rect', 'circle', 'triangle'].includes(a.type)) {
+        a.set('fill', midColor.value);
+      }
+      canvas.requestRenderAll();
+    }
+    midColor.oninput = applyFill;
+    midColor.onchange = saveHistory;
+
+    syncMidBtn.onclick = () => {
+      midColor.value = textColor.value;
+      applyFill();
+      setStatus('塗りを文字色と同じにしました');
+      saveHistory();
+    };
+
+    gradient.onchange = applyFill;
+    gradientColor.oninput = applyFill;
+    gradientColor.onchange = saveHistory;
+
+    // ========== 縁取り ==========
+    function updateStroke() {
+      strokeWidthVal.textContent = strokeWidth.value;
+      const a = canvas.getActiveObject();
+      if (!a) return;
+      const w = parseInt(strokeWidth.value) || 0;
+
+      if (['i-text', 'text'].includes(a.type)) {
+        a.set({
+          stroke: w > 0 ? textColor.value : null,
+          strokeWidth: w > 0 ? Math.min(2.5, w) : 0,
+          paintFirst: 'stroke',
+          strokeLineJoin: 'round',
+          strokeLineCap: 'round',
+          objectCaching: false,
+          outlineWidth: w,
+          outlineColor: strokeColor.value,
+          outerOnly: outer.checked,
+          innerStrokeWidth: w > 0 ? Math.min(2.5, w) : 0
+        });
+        syncConnectedOutline(a);
+      } else if (['rect', 'circle', 'triangle'].includes(a.type)) {
+        a.set({
+          stroke: w > 0 ? strokeColor.value : null,
+          strokeWidth: w
+        });
+      }
+      canvas.requestRenderAll();
+    }
+    strokeColor.oninput = updateStroke;
+    strokeWidth.oninput = updateStroke;
+    outer.onchange = updateStroke;
+    strokeColor.onchange = saveHistory;
+    strokeWidth.onchange = saveHistory;
+    outer.addEventListener('change', saveHistory);
+
+    // ========== 影 ==========
+    function updateShadow() {
+      const a = canvas.getActiveObject();
+      if (!a) return;
+      if (['i-text', 'text'].includes(a.type)) {
+        a.shadowEnabled = true;
+        a.shadowColorValue = shadowColor.value;
+        a.shadowBlurValue = parseInt(shadowBlur.value) || 0;
+        a.shadowOffsetValue = parseInt(shadowOffset.value) || 0;
+        a.shadow = makeShadow(a);
+      } else if (a.type === 'path') {
+        a.shadow = null;
+      }
+      canvas.requestRenderAll();
+    }
+    shadowColor.oninput = updateShadow;
+    shadowBlur.oninput = updateShadow;
+    shadowOffset.oninput = () => {
+      shadowOffsetVal.textContent = shadowOffset.value;
+      updateShadow();
+    };
+    shadowColor.onchange = saveHistory;
+    shadowBlur.onchange = saveHistory;
+    shadowOffset.onchange = saveHistory;
+
+    // ========== ペン ==========
+    penWidth.oninput = () => {
+      penWidthVal.textContent = penWidth.value;
+      if (canvas.isDrawingMode && canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.width = isEraser
+          ? parseInt(penWidth.value) * 2
+          : parseInt(penWidth.value);
+      }
+    };
+    penColor.oninput = () => {
+      if (canvas.isDrawingMode && !isEraser && canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.color = penColor.value;
+      }
+    };
+
+    penBtn.onclick = () => setMode('pen');
+    eraserBtn.onclick = () => setMode('eraser');
+    selectBtn.onclick = () => setMode('select');
+
+    // ========== 前後移動 ==========
+    function moveTextWithOutline(obj, dir) {
+      const o = getConnectedOutline(obj);
+      if (dir === 'forward') canvas.bringForward(obj);
+      else canvas.sendBackwards(obj);
+      if (o) {
+        const idx = canvas.getObjects().indexOf(obj);
+        if (idx > 0) canvas.moveTo(o, idx - 1);
+        else canvas.sendToBack(o);
+      }
+    }
+
+    bringForwardBtn.onclick = () => {
+      const a = canvas.getActiveObject();
+      if (!a) return;
+      if (['i-text', 'text'].includes(a.type)) moveTextWithOutline(a, 'forward');
+      else canvas.bringForward(a);
+      canvas.requestRenderAll();
+      saveHistory();
+    };
+
+    sendBackwardBtn.onclick = () => {
+      const a = canvas.getActiveObject();
+      if (!a) return;
+      if (['i-text', 'text'].includes(a.type)) moveTextWithOutline(a, 'backward');
+      else canvas.sendBackwards(a);
+      canvas.requestRenderAll();
+      saveHistory();
+    };
+
+    // ========== 削除 ==========
+    deleteBtn.onclick = () => {
+      const a = canvas.getActiveObject();
+      if (!a) return;
+      if (['i-text', 'text'].includes(a.type)) removeTextWithOutline(a);
+      else {
+        canvas.remove(a);
+        canvas.discardActiveObject();
+        canvas.requestRenderAll();
+        saveHistory();
+      }
+    };
+
+    // ========== 図形追加 ==========
+    function addShape(type) {
+      const w = parseInt(strokeWidth.value) || 0;
+      const common = {
+        left: canvas.getWidth() / 2,
+        top: canvas.getHeight() / 2,
+        originX: 'center',
+        originY: 'center',
+        fill: midColor.value,
+        stroke: w > 0 ? strokeColor.value : null,
+        strokeWidth: w,
+        strokeLineJoin: 'round',
+        strokeLineCap: 'round',
+        objectCaching: false
+      };
+
+      let s;
+      if (type === 'rect') {
+        s = new fabric.Rect({ ...common, width: 120, height: 120, rx: 8, ry: 8 });
+      } else if (type === 'circle') {
+        s = new fabric.Circle({ ...common, radius: 60 });
+      } else if (type === 'triangle') {
+        s = new fabric.Triangle({ ...common, width: 120, height: 110 });
+      }
+      if (!s) return;
+
+      canvas.add(s);
+      canvas.setActiveObject(s);
+      canvas.requestRenderAll();
+      setMode('select');
+      setStatus(type === 'rect' ? '四角を追加' : type === 'circle' ? '丸を追加' : '三角を追加');
+      saveHistory();
+    }
+
+    addRectBtn.onclick = () => addShape('rect');
+    addCircleBtn.onclick = () => addShape('circle');
+    addTriangleBtn.onclick = () => addShape('triangle');
+
+    // ========== 画像 ==========
+    importImageBtn.onclick = () => imageInput.click();
+    imageInput.onchange = e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        fabric.Image.fromURL(ev.target.result, img => {
+          const max = 400;
+          if (img.width > max || img.height > max) {
+            img.scale(Math.min(max / img.width, max / img.height));
+          }
+          img.set({
+            left: canvas.getWidth() / 2,
+            top: canvas.getHeight() / 2,
+            originX: 'center',
+            originY: 'center'
+          });
+          canvas.add(img);
+          canvas.setActiveObject(img);
+          canvas.requestRenderAll();
+          setMode('select');
+          setStatus('画像を追加しました');
+          saveHistory();
+        });
+      };
+      reader.readAsDataURL(file);
+      imageInput.value = '';
+    };
+
+    // ========== 保存 ==========
+    downloadBtn.onclick = () => {
+      canvas.discardActiveObject();
+      canvas.requestRenderAll();
+      const bg = canvas.backgroundColor;
+      canvas.backgroundColor = null;
+      canvas.requestRenderAll();
+
+      const scale = parseInt(exportScale.value) || 2;
+      const data = canvas.toDataURL({ format: 'png', quality: 1, multiplier: scale });
+
+      canvas.backgroundColor = bg;
+      canvas.requestRenderAll();
+
+      const a = document.createElement('a');
+      a.download = 'vtuber-logo.png';
+      a.href = data;
+      a.click();
+      setStatus(`背景透過PNGを保存しました（${scale}x）`);
+    };
+
+    // ========== 全消去 ==========
+    clearBtn.onclick = () => {
+      if (confirm('キャンバスをすべて消去しますか？')) {
+        isInternalOperation = true;
+        canvas.clear();
+        isInternalOperation = false;
+        canvas.backgroundColor = '#fff';
+        canvas.requestRenderAll();
+        saveHistory();
+        setStatus('すべて消去しました');
+      }
+    };
+
+    // ========== Undo / Redo ==========
+    undoBtn.onclick = () => {
+      if (historyIndex > 0) restoreHistory(historyIndex - 1);
+    };
+    redoBtn.onclick = () => {
+      if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1);
+    };
+
+    // ========== キーボード ==========
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey || e.metaKey) {
+        if (e.key.toLowerCase() === 'z') {
+          e.preventDefault();
+          if (historyIndex > 0) restoreHistory(historyIndex - 1);
+          return;
+        }
+        if (e.key.toLowerCase() === 'y') {
+          e.preventDefault();
+          if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1);
+          return;
+        }
+      }
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        if (canvas.getActiveObject()?.isEditing || document.activeElement === textInput) return;
+        const a = canvas.getActiveObject();
+        if (!a) return;
+        if (['i-text', 'text'].includes(a.type)) removeTextWithOutline(a);
+        else {
+          canvas.remove(a);
+          canvas.discardActiveObject();
+          canvas.requestRenderAll();
+          saveHistory();
+        }
+      }
+    });
+
+    // ========== 選択時にコントロール更新 ==========
+    function updateControlsFromObject() {
+      const a = canvas.getActiveObject();
+      if (!a) return;
+      if (['i-text', 'text'].includes(a.type)) {
+        if (a.fontFamily && Array.from(fontSelect.options).some(o => o.value === a.fontFamily)) {
+          fontSelect.value = a.fontFamily;
+        }
+        if (typeof a.fill === 'string') midColor.value = a.fill;
+        if (a.stroke && typeof a.stroke === 'string') textColor.value = a.stroke;
+        if (typeof a.outlineWidth === 'number') {
+          strokeWidth.value = a.outlineWidth;
+          strokeWidthVal.textContent = a.outlineWidth;
+        }
+        if (a.outlineColor) strokeColor.value = a.outlineColor;
+        if (typeof a.fontSize === 'number') {
+          fontSize.value = a.fontSize;
+          fontSizeVal.textContent = a.fontSize;
+        }
+        if (typeof a.shadowColorValue === 'string') shadowColor.value = a.shadowColorValue;
+        if (typeof a.shadowBlurValue === 'number') shadowBlur.value = a.shadowBlurValue;
+        if (typeof a.shadowOffsetValue === 'number') {
+          shadowOffset.value = a.shadowOffsetValue;
+          shadowOffsetVal.textContent = a.shadowOffsetValue;
+        }
+        gradient.checked = !!a.gradientEnabled;
+        if (a.gradientColorValue) gradientColor.value = a.gradientColorValue;
+      } else if (['rect', 'circle', 'triangle'].includes(a.type)) {
+        if (a.fill && typeof a.fill === 'string') midColor.value = a.fill;
+        if (a.stroke && 
