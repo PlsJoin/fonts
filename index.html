@@ -1,230 +1,128 @@
-```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>VTuberネームロゴメーカー（修正版3）</title>
+  <title>VTuberネームロゴメーカー</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
-
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
 body {
   font-family: "Segoe UI", "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif;
-  background: #f0f2f5;
-  color: #333;
+  background: #e8eaed;
+  color: #222;
   display: flex;
-  gap: 16px;
-  padding: 16px;
+  gap: 12px;
+  padding: 12px;
 }
-
-/* =========================
-   左側パネル
-========================= */
-
 .panel {
   background: #fff;
-  width: 340px;
+  width: 360px;
+  min-width: 360px;
   height: 100%;
-  padding: 15px;
-  border-radius: 8px;
+  padding: 14px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  gap: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
   overflow-y: auto;
   overflow-x: hidden;
   flex-shrink: 0;
 }
-
-.panel h1 {
-  font-size: 16px;
-  margin-bottom: 2px;
-}
-
-.panel small {
-  color: #777;
-  font-size: 11px;
-}
-
+.panel h1 { font-size: 17px; margin-bottom: 0; }
+.panel .subtitle { color: #666; font-size: 11px; margin-bottom: 4px; }
 .section {
   border-top: 1px solid #eee;
   padding-top: 10px;
-}
-
-.row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.row label,
-.field label {
-  font-size: .8rem;
-  font-weight: bold;
-}
-
-.row label {
-  flex: 1;
-}
-
-.field {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-}
-
-.grid2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
-
+.section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #444;
+  letter-spacing: .02em;
+  margin-bottom: 2px;
+}
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label, .row label {
+  font-size: .78rem;
+  font-weight: 600;
+  color: #444;
+}
+.row { display: flex; gap: 8px; align-items: center; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .inline-check {
-  font-size: .8rem;
-  font-weight: bold;
+  font-size: .78rem;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
 }
-
-/* =========================
-   入力
-========================= */
-
-input[type="text"],
-input[type="number"],
-select {
+input[type="text"], input[type="number"], select {
   width: 100%;
-  padding: 6px;
+  padding: 7px 8px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 13px;
   background: #fff;
 }
-
-input[type="text"]:focus,
-input[type="number"]:focus,
-select:focus {
+input[type="text"]:focus, input[type="number"]:focus, select:focus {
   outline: none;
   border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74,144,226,.2);
 }
-
 input[type="color"] {
-  width: 40px;
-  height: 28px;
+  width: 42px;
+  height: 30px;
   cursor: pointer;
   border: 1px solid #ccc;
-  padding: 1px;
+  padding: 2px;
   background: #fff;
-  border-radius: 4px;
+  border-radius: 5px;
   flex-shrink: 0;
 }
-
-input[type="range"] {
-  width: 100%;
-}
-
-input[type="checkbox"] {
-  flex-shrink: 0;
-}
-
-/* =========================
-   ボタン
-========================= */
-
+input[type="range"] { width: 100%; accent-color: #4a90e2; }
+input[type="checkbox"] { width: 16px; height: 16px; accent-color: #4a90e2; flex-shrink: 0; }
 button {
-  padding: 10px;
+  padding: 9px 10px;
   font-family: inherit;
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 600;
   background: #4a90e2;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   white-space: nowrap;
-  transition: background .1s;
+  transition: background .12s, transform .05s;
   -webkit-tap-highlight-color: transparent;
 }
-
-button:hover {
-  background: #357abd;
+button:hover { background: #357abd; }
+button:active { background: #2868a8; transform: scale(.98); }
+button.secondary { background: #f0f2f5; color: #333; }
+button.secondary:hover { background: #e0e3e8; }
+button.danger { background: #e74c3c; color: #fff; }
+button.danger:hover { background: #c0392b; }
+button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.mode { display: flex; gap: 4px; }
+.mode button { flex: 1; }
+.mode button.active { background: #2c6cb0; color: #fff; }
+.value { font-size: 11px; color: #666; min-width: 28px; text-align: right; }
+.hint {
+  font-size: 10.5px;
+  color: #888;
+  line-height: 1.4;
+  background: #f7f8fa;
+  padding: 6px 8px;
+  border-radius: 5px;
 }
-
-button:active {
-  background: #2868a8;
-}
-
-button.secondary {
-  background: #eee;
-  color: #333;
-}
-
-button.secondary:hover {
-  background: #ddd;
-}
-
-button.danger {
-  background: #d9534f;
-  color: #fff;
-}
-
-button.danger:hover {
-  background: #c9302c;
-}
-
-button:disabled {
-  opacity: .45;
-  cursor: not-allowed;
-}
-
-/* =========================
-   モードボタン
-========================= */
-
-.mode {
-  display: flex;
-  gap: 4px;
-}
-
-.mode button {
-  flex: 1;
-}
-
-.mode button.active {
-  background: #357abd;
-  color: #fff;
-}
-
-/* =========================
-   数値表示
-========================= */
-
-.value {
-  font-size: 11px;
-  color: #666;
-  min-width: 30px;
-  text-align: right;
-}
-
-/* =========================
-   キャンバス側
-========================= */
-
 .canvas-area {
   flex: 1;
   min-width: 0;
@@ -234,7 +132,6 @@ button:disabled {
   flex-direction: column;
   gap: 8px;
 }
-
 .canvas-wrap {
   flex: 1;
   min-width: 0;
@@ -244,2186 +141,1002 @@ button:disabled {
   align-items: center;
   overflow: auto;
   padding: 12px;
-  background: #e5e5e5;
+  background: #d0d4d8;
+  border-radius: 8px;
   -webkit-overflow-scrolling: touch;
 }
-
 #canvas-container {
   background: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 12px rgba(0,0,0,.15);
+  border: 1px solid #bbb;
+  box-shadow: 0 3px 14px rgba(0,0,0,.12);
   line-height: 0;
   flex-shrink: 0;
 }
-
-#c {
-  display: block;
-  touch-action: none;
-}
-
-/* =========================
-   ステータス
-========================= */
-
+#c { display: block; touch-action: none; }
 .status {
   flex-shrink: 0;
   font-size: 11px;
-  color: #666;
+  color: #555;
   background: #fff;
-  border-radius: 4px;
-  padding: 7px 10px;
+  border-radius: 5px;
+  padding: 7px 12px;
   box-shadow: 0 1px 4px rgba(0,0,0,.06);
 }
-
-/* =========================
-   フォント読み込み用
-========================= */
-
-.preload {
-  position: absolute;
-  left: -9999px;
-  opacity: 0;
-}
-
-/* =========================
-   PC
-========================= */
-
-@media (min-width: 901px) {
-
-  body {
-    flex-direction: row;
-  }
-
-  .panel {
-    width: 340px;
-    min-width: 340px;
-  }
-
-  .canvas-area {
-    height: 100%;
-  }
-
-}
-
-/* =========================
-   タブレット
-========================= */
-
+.preload { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
 @media (max-width: 900px) {
-
-  html,
-  body {
-    overflow: auto;
-    height: auto;
-    min-height: 100%;
-  }
-
-  body {
-    padding: 10px;
-    gap: 10px;
-    flex-direction: column;
-  }
-
-  .panel {
-    width: 100%;
-    height: auto;
-    max-height: none;
-  }
-
-  .canvas-area {
-    width: 100%;
-    min-height: 55vh;
-    height: auto;
-  }
-
+  html, body { overflow: auto; height: auto; min-height: 100%; }
+  body { padding: 8px; gap: 8px; flex-direction: column; }
+  .panel { width: 100%; min-width: 0; height: auto; max-height: none; }
+  .canvas-area { width: 100%; min-height: 50vh; height: auto; }
 }
-
-/* =========================
-   スマホ
-========================= */
-
 @media (max-width: 480px) {
-
-  body {
-    padding: 6px;
-    gap: 8px;
-  }
-
-  .panel {
-    padding: 12px;
-  }
-
-  .grid2 {
-    gap: 6px;
-  }
-
-  button {
-    padding: 9px 7px;
-  }
-
-  .canvas-wrap {
-    padding: 6px;
-  }
-
+  body { padding: 6px; gap: 6px; }
+  .panel { padding: 10px; }
+  button { padding: 8px 6px; font-size: 11px; }
+  .canvas-wrap { padding: 6px; }
 }
 </style>
 </head>
-
 <body>
-
 <div class="preload" style="font-family:'Rampart One'">a</div>
 <div class="preload" style="font-family:'Dela Gothic One'">a</div>
 <div class="preload" style="font-family:'Hachi Maru Pop'">a</div>
 <div class="preload" style="font-family:'M PLUS Rounded 1c'">a</div>
 
 <div class="panel">
-
   <h1>VTuberロゴメーカー</h1>
-  <small>テキストの細かい色・縁・影まで調整できます。</small>
+  <p class="subtitle">テキストを追加 → 選択して色・縁・影を調整。ドラッグで移動できます。</p>
 
-  <div class="field">
-    <label>テキスト</label>
-    <div class="row">
-      <input type="text" id="textInput" value="ドル鯖">
-      <button id="addTextBtn">追加</button>
+  <!-- テキスト追加 -->
+  <div class="section" style="border-top:none;padding-top:0">
+    <div class="section-title">① テキストを追加</div>
+    <div class="field">
+      <label>テキスト</label>
+      <div class="row">
+        <input type="text" id="textInput" value="ドル鯖" placeholder="名前を入力">
+        <button id="addTextBtn">追加</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>フォント</label>
+      <select id="fontSelect">
+        <option value="Rampart One" selected>Rampart One（立体）</option>
+        <option value="Dela Gothic One">Dela Gothic One（太ゴ）</option>
+        <option value="Yomogi">Yomogi（手書き）</option>
+        <option value="Hachi Maru Pop">Hachi Maru Pop（ポップ）</option>
+        <option value="Zen Maru Gothic">Zen Maru Gothic（丸ゴ）</option>
+        <option value="M PLUS Rounded 1c">M PLUS Rounded</option>
+        <option value="Noto Sans JP">Noto Sans JP</option>
+        <option value="Noto Serif JP">Noto Serif JP（明朝）</option>
+        <option value="Shippori Mincho">Shippori Mincho</option>
+        <option value="Kaisei Decol">Kaisei Decol</option>
+        <option value="Reggae One">Reggae One</option>
+        <option value="Potta One">Potta One</option>
+        <option value="Stick">Stick</option>
+        <option value="RocknRoll One">RocknRoll One</option>
+        <option value="DotGothic16">DotGothic16（ドット）</option>
+        <option value="Sawarabi Gothic">Sawarabi Gothic</option>
+        <option value="Sawarabi Mincho">Sawarabi Mincho</option>
+        <option value="Kosugi Maru">Kosugi Maru</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+        <option value="Impact">Impact</option>
+        <option value="Arial Black">Arial Black</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>文字サイズ <span id="fontSizeVal" class="value">72</span></label>
+      <input type="range" id="fontSize" min="20" max="180" value="72">
     </div>
   </div>
 
-  <div class="field">
-    <label>フォント</label>
-    <select id="fontSelect">
-      <option value="Yomogi">Yomogi（手書き）</option>
-      <option value="Hachi Maru Pop">Hachi Maru Pop（ポップ）</option>
-      <option value="Zen Maru Gothic">Zen Maru Gothic（丸ゴ）</option>
-      <option value="M PLUS Rounded 1c">M PLUS Rounded</option>
-      <option value="Rampart One" selected>Rampart One（立体）</option>
-      <option value="Dela Gothic One">Dela Gothic One（太ゴ）</option>
-      <option value="Noto Sans JP">Noto Sans JP</option>
-      <option value="Noto Serif JP">Noto Serif JP（明朝）</option>
-      <option value="Shippori Mincho">Shippori Mincho</option>
-      <option value="Kaisei Decol">Kaisei Decol</option>
-      <option value="Reggae One">Reggae One</option>
-      <option value="Potta One">Potta One</option>
-      <option value="Stick">Stick</option>
-      <option value="RocknRoll One">RocknRoll One</option>
-      <option value="DotGothic16">DotGothic16（ドット）</option>
-      <option value="Sawarabi Gothic">Sawarabi Gothic</option>
-      <option value="Sawarabi Mincho">Sawarabi Mincho</option>
-      <option value="Kosugi Maru">Kosugi Maru</option>
-      <option value="Comic Sans MS">Comic Sans MS</option>
-      <option value="Impact">Impact</option>
-      <option value="Arial Black">Arial Black</option>
-    </select>
-  </div>
-
-  <div class="field">
-    <label>文字サイズ <span id="fontSizeVal">72</span></label>
-    <input type="range" id="fontSize" min="20" max="160" value="72">
-  </div>
-
-  <div class="field">
-    <label>文字色</label>
+  <!-- 文字色・塗り -->
+  <div class="section">
+    <div class="section-title">② 文字の色</div>
     <div class="row">
-      <input type="color" id="textColor" value="#0055ff">
-      <span>内側・文字色</span>
+      <div class="field" style="flex:1">
+        <label>文字色</label>
+        <div class="row">
+          <input type="color" id="textColor" value="#0055ff">
+          <span style="font-size:11px;color:#666">メイン</span>
+        </div>
+      </div>
+      <div class="field" style="flex:1">
+        <label>塗り色（下側）</label>
+        <div class="row">
+          <input type="color" id="midColor" value="#8ec8ff">
+          <button class="secondary" id="syncMidBtn" style="padding:6px 8px;font-size:11px">文字色に合わせる</button>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="field">
-    <label>塗り色</label>
-    <div class="row">
-      <input type="color" id="midColor" value="#8ec8ff">
-      <button class="secondary" id="syncMidBtn">文字色と同じ</button>
-    </div>
-  </div>
-
-  <div class="row">
     <label class="inline-check">
       <input type="checkbox" id="gradient">
-      グラデーション
+      グラデーション（上：文字色 → 下：塗り色）
     </label>
-    <input type="color" id="gradientColor" value="#8ec8ff">
   </div>
 
-  <div class="field">
-    <label>縁色</label>
-    <input type="color" id="strokeColor" value="#ff2200">
-  </div>
-
-  <div class="field">
-    <label>縁の幅 <span id="strokeWidthVal">12</span></label>
-    <input type="range" id="strokeWidth" min="0" max="40" value="12">
-  </div>
-
-  <label class="inline-check">
-    <input type="checkbox" id="outer" checked>
-    外側のみ適用（内側を潰さない）
-  </label>
-
-  <div class="grid2">
-    <div class="field">
-      <label>影色</label>
-      <input type="color" id="shadowColor" value="#000000">
-    </div>
-
-    <div class="field">
-      <label>影ぼかし</label>
-      <input type="number" id="shadowBlur" min="0" max="100" value="10">
-    </div>
-  </div>
-
-  <div class="field">
-    <label>影ズレ <span id="shadowOffsetVal">6</span></label>
-    <input type="range" id="shadowOffset" min="-50" max="50" value="6">
-  </div>
-
+  <!-- 縁 -->
   <div class="section">
-    <label>描画</label>
+    <div class="section-title">③ 縁（アウトライン）</div>
+    <div class="row">
+      <div class="field" style="flex:1">
+        <label>縁の色</label>
+        <input type="color" id="strokeColor" value="#ff2200">
+      </div>
+      <div class="field" style="flex:1">
+        <label>縁の太さ <span id="strokeWidthVal" class="value">12</span></label>
+        <input type="range" id="strokeWidth" min="0" max="40" value="12">
+      </div>
+    </div>
+    <label class="inline-check">
+      <input type="checkbox" id="outer" checked>
+      外側のみ（文字の中を潰さない）
+    </label>
+    <p class="hint">チェックON＝縁は文字の外側だけに付きます。OFF＝通常の縁（中も少し染まります）。</p>
+  </div>
 
+  <!-- 影 -->
+  <div class="section">
+    <div class="section-title">④ 影</div>
+    <div class="grid2">
+      <div class="field">
+        <label>影の色</label>
+        <input type="color" id="shadowColor" value="#000000">
+      </div>
+      <div class="field">
+        <label>ぼかし</label>
+        <input type="number" id="shadowBlur" min="0" max="80" value="8">
+      </div>
+    </div>
+    <div class="field">
+      <label>影のズレ <span id="shadowOffsetVal" class="value">5</span></label>
+      <input type="range" id="shadowOffset" min="-40" max="40" value="5">
+    </div>
+  </div>
+
+  <!-- 描画モード -->
+  <div class="section">
+    <div class="section-title">⑤ 描画・編集</div>
     <div class="mode">
-      <button id="selectBtn" class="active">選択</button>
+      <button id="selectBtn" class="active">選択・移動</button>
       <button id="penBtn">ペン</button>
       <button id="eraserBtn">消しゴム</button>
     </div>
-
-    <div class="row" style="margin-top:8px">
+    <div class="row">
       <input type="color" id="penColor" value="#000000">
       <input type="range" id="penWidth" min="1" max="40" value="6">
       <span class="value" id="penWidthVal">6</span>
     </div>
+    <p class="hint">「選択・移動」でオブジェクトをドラッグして動かせます。ダブルクリックで文字編集。</p>
   </div>
 
+  <!-- 図形・画像 -->
   <div class="section">
-    <label>図形</label>
-
+    <div class="section-title">⑥ 図形・画像を追加</div>
     <div class="grid2">
-      <button id="addRectBtn" class="secondary">四角</button>
-      <button id="addCircleBtn" class="secondary">丸</button>
-      <button id="addTriangleBtn" class="secondary">三角</button>
-      <button id="importImageBtn" class="secondary">画像</button>
+      <button id="addRectBtn" class="secondary">□ 四角</button>
+      <button id="addCircleBtn" class="secondary">○ 丸</button>
+      <button id="addTriangleBtn" class="secondary">△ 三角</button>
+      <button id="importImageBtn" class="secondary">🖼 画像</button>
     </div>
-
     <input type="file" id="imageInput" accept="image/*" style="display:none">
   </div>
 
-  <div class="grid2">
-    <button id="bringForwardBtn" class="secondary">前面</button>
-    <button id="sendBackwardBtn" class="secondary">背面</button>
-    <button id="deleteBtn" class="danger">削除</button>
-    <button id="clearBtn" class="danger">全消去</button>
-  </div>
-
-  <div class="grid2">
-    <button id="undoBtn" class="secondary">＜ 戻る</button>
-    <button id="redoBtn" class="secondary">進む ＞</button>
-  </div>
-
+  <!-- 整列・削除 -->
   <div class="section">
-    <label>PNG保存</label>
+    <div class="section-title">⑦ 並べ替え・削除</div>
+    <div class="grid2">
+      <button id="bringForwardBtn" class="secondary">前面へ</button>
+      <button id="sendBackwardBtn" class="secondary">背面へ</button>
+      <button id="deleteBtn" class="danger">選択を削除</button>
+      <button id="clearBtn" class="danger">全部消す</button>
+    </div>
+    <div class="grid2" style="margin-top:4px">
+      <button id="undoBtn" class="secondary">↩ 戻る</button>
+      <button id="redoBtn" class="secondary">進む ↪</button>
+    </div>
+  </div>
 
+  <!-- 保存 -->
+  <div class="section">
+    <div class="section-title">⑧ 保存</div>
     <div class="row">
-      <select id="exportScale">
+      <select id="exportScale" style="width:auto;min-width:70px">
         <option value="1">1x</option>
         <option value="2" selected>2x</option>
         <option value="3">3x</option>
         <option value="4">4x</option>
       </select>
-
-      <button id="downloadBtn">背景透過PNG保存</button>
+      <button id="downloadBtn" style="flex:1">背景透過PNGで保存</button>
     </div>
   </div>
-
 </div>
 
 <div class="canvas-area">
-
   <div class="canvas-wrap">
     <div id="canvas-container">
       <canvas id="c" width="900" height="520"></canvas>
     </div>
   </div>
-
   <div class="status">
-    <span id="statusInfo">準備完了</span>
+    <span id="statusInfo">準備完了 — 「追加」でテキストを入れて、ドラッグで移動できます</span>
   </div>
-
 </div>
 
 <script>
+(function () {
+  // Google Fonts
+  const fontLink = document.createElement('link');
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=Yomogi&family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Rampart+One&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600&family=Shippori+Mincho:wght@400;600&family=Kaisei+Decol:wght@400;500;700&family=Reggae+One&family=Potta+One&family=Stick&family=RocknRoll+One&family=DotGothic16&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Kosugi+Maru&display=swap';
+  fontLink.rel = 'stylesheet';
+  document.head.appendChild(fontLink);
 
-const fontLink=document.createElement('link');
+  const canvas = new fabric.Canvas('c', {
+    backgroundColor: '#ffffff',
+    preserveObjectStacking: true,
+    selection: true,
+    allowTouchScrolling: false,
+    stopContextMenu: true
+  });
 
-fontLink.href='https://fonts.googleapis.com/css2?family=Yomogi&family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Rampart+One&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600&family=Shippori+Mincho:wght@400;600&family=Kaisei+Decol:wght@400;500;700&family=Reggae+One&family=Potta+One&family=Stick&family=RocknRoll+One&family=DotGothic16&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Kosugi+Maru&display=swap';
+  // テキストのコントロールを大きくして掴みやすく
+  fabric.Object.prototype.set({
+    transparentCorners: false,
+    borderColor: '#4a90e2',
+    cornerColor: '#4a90e2',
+    cornerStyle: 'circle',
+    cornerSize: 12,
+    padding: 6
+  });
 
-fontLink.rel='stylesheet';
+  let isEraser = false;
+  let isInternal = false;
+  let isRestoring = false;
+  const history = [];
+  let historyIndex = -1;
+  const MAX_HISTORY = 40;
 
-document.head.appendChild(fontLink);
+  // 外側縁を少し太くするための加算（見た目が自然になる）
+  const OUTER_EXTRA_RATIO = 1.35;
+  const OUTER_EXTRA_MIN = 8;
 
-const canvas=new fabric.Canvas('c',{
-  backgroundColor:'#fff',
-  preserveObjectStacking:true,
-  selection:true,
-  allowTouchScrolling:false
-});
+  const $ = id => document.getElementById(id);
+  const textInput = $('textInput');
+  const addTextBtn = $('addTextBtn');
+  const fontSelect = $('fontSelect');
+  const fontSize = $('fontSize');
+  const fontSizeVal = $('fontSizeVal');
+  const textColor = $('textColor');
+  const midColor = $('midColor');
+  const syncMidBtn = $('syncMidBtn');
+  const gradient = $('gradient');
+  const strokeColor = $('strokeColor');
+  const strokeWidth = $('strokeWidth');
+  const strokeWidthVal = $('strokeWidthVal');
+  const outer = $('outer');
+  const shadowColor = $('shadowColor');
+  const shadowBlur = $('shadowBlur');
+  const shadowOffset = $('shadowOffset');
+  const shadowOffsetVal = $('shadowOffsetVal');
+  const penColor = $('penColor');
+  const penWidth = $('penWidth');
+  const penWidthVal = $('penWidthVal');
+  const penBtn = $('penBtn');
+  const eraserBtn = $('eraserBtn');
+  const selectBtn = $('selectBtn');
+  const bringForwardBtn = $('bringForwardBtn');
+  const sendBackwardBtn = $('sendBackwardBtn');
+  const deleteBtn = $('deleteBtn');
+  const addRectBtn = $('addRectBtn');
+  const addCircleBtn = $('addCircleBtn');
+  const addTriangleBtn = $('addTriangleBtn');
+  const importImageBtn = $('importImageBtn');
+  const imageInput = $('imageInput');
+  const downloadBtn = $('downloadBtn');
+  const clearBtn = $('clearBtn');
+  const undoBtn = $('undoBtn');
+  const redoBtn = $('redoBtn');
+  const exportScale = $('exportScale');
+  const statusInfo = $('statusInfo');
 
-let isEraser=false,
-    isInternalOperation=false,
-    isRestoring=false;
-
-const history=[];
-let historyIndex=-1;
-
-const MAX_HISTORY=50;
-const CONNECTED_OUTLINE_BASE_EXTRA=10;
-
-const $=id=>document.getElementById(id);
-
-const textInput=$('textInput'),
-      addTextBtn=$('addTextBtn'),
-      fontSelect=$('fontSelect'),
-      fontSize=$('fontSize'),
-      fontSizeVal=$('fontSizeVal');
-
-const textColor=$('textColor'),
-      midColor=$('midColor'),
-      syncMidBtn=$('syncMidBtn'),
-      gradient=$('gradient'),
-      gradientColor=$('gradientColor');
-
-const strokeColor=$('strokeColor'),
-      strokeWidth=$('strokeWidth'),
-      strokeWidthVal=$('strokeWidthVal'),
-      outer=$('outer');
-
-const shadowColor=$('shadowColor'),
-      shadowBlur=$('shadowBlur'),
-      shadowOffset=$('shadowOffset'),
-      shadowOffsetVal=$('shadowOffsetVal');
-
-const penColor=$('penColor'),
-      penWidth=$('penWidth'),
-      penWidthVal=$('penWidthVal');
-
-const penBtn=$('penBtn'),
-      eraserBtn=$('eraserBtn'),
-      selectBtn=$('selectBtn');
-
-const bringForwardBtn=$('bringForwardBtn'),
-      sendBackwardBtn=$('sendBackwardBtn'),
-      deleteBtn=$('deleteBtn');
-
-const addRectBtn=$('addRectBtn'),
-      addCircleBtn=$('addCircleBtn'),
-      addTriangleBtn=$('addTriangleBtn');
-
-const importImageBtn=$('importImageBtn'),
-      imageInput=$('imageInput'),
-      downloadBtn=$('downloadBtn'),
-      clearBtn=$('clearBtn');
-
-const undoBtn=$('undoBtn'),
-      redoBtn=$('redoBtn'),
-      exportScale=$('exportScale'),
-      statusInfo=$('statusInfo');
-
-
-function setStatus(msg){
-  statusInfo.textContent=msg;
-}
-
-
-function saveHistory(){
-
-  if(isRestoring||isInternalOperation)return;
-
-  history.splice(historyIndex+1);
-
-  history.push(
-    canvas.toJSON([
-      'selectable',
-      'evented',
-      'isConnectedOutline',
-      'outlineOwnerId',
-      'textObjectId',
-      'outlineWidth',
-      'outlineColor',
-      'shadowEnabled',
-      'shadowBlurValue',
-      'shadowOffsetValue',
-      'gradientEnabled',
-      'gradientColorValue',
-      'innerStrokeWidth',
-      'outerOnly',
-      'textColorValue',
-      'shadowColorValue'
-    ])
-  );
-
-  if(history.length>MAX_HISTORY){
-    history.shift();
-  }else{
-    historyIndex++;
+  function setStatus(msg) {
+    statusInfo.textContent = msg;
   }
 
-  updateHistoryButtons();
-}
-
-
-function updateHistoryButtons(){
-
-  undoBtn.disabled=historyIndex<=0;
-  redoBtn.disabled=historyIndex>=history.length-1;
-
-}
-
-
-function restoreHistory(index){
-
-  if(index<0||index>=history.length)return;
-
-  isRestoring=true;
-
-  canvas.loadFromJSON(history[index],()=>{
-
-    canvas.getObjects().forEach(o=>{
-
-      if(o.isConnectedOutline){
-        o.selectable=false;
-        o.evented=false;
-      }
-
-    });
-
-    canvas.renderAll();
-
-    isRestoring=false;
-
-    historyIndex=index;
-
+  // ---------- History ----------
+  function saveHistory() {
+    if (isRestoring || isInternal) return;
+    history.splice(historyIndex + 1);
+    history.push(canvas.toJSON([
+      'selectable', 'evented', 'isOutline', 'ownerId', 'textId',
+      'outlineW', 'outlineCol', 'outerOnly',
+      'shadowOn', 'shadowBlurVal', 'shadowOffVal', 'shadowColVal',
+      'gradOn', 'textColVal', 'fillColVal'
+    ]));
+    if (history.length > MAX_HISTORY) history.shift();
+    else historyIndex++;
     updateHistoryButtons();
-
-    setStatus('履歴を復元しました');
-
-  });
-
-}
-
-
-setTimeout(saveHistory,300);
-
-
-canvas.on('object:modified',e=>{
-
-  if(!isRestoring &&
-     e.target &&
-     !e.target.isConnectedOutline){
-
-    syncConnectedOutline(e.target);
-
   }
 
-  if(!isInternalOperation){
-    saveHistory();
+  function updateHistoryButtons() {
+    undoBtn.disabled = historyIndex <= 0;
+    redoBtn.disabled = historyIndex >= history.length - 1;
   }
 
-});
-
-
-canvas.on('object:added',()=>{
-
-  if(!isRestoring&&!isInternalOperation){
-    saveHistory();
+  function restoreHistory(idx) {
+    if (idx < 0 || idx >= history.length) return;
+    isRestoring = true;
+    canvas.loadFromJSON(history[idx], () => {
+      canvas.getObjects().forEach(o => {
+        if (o.isOutline) {
+          o.selectable = false;
+          o.evented = false;
+        }
+      });
+      canvas.renderAll();
+      isRestoring = false;
+      historyIndex = idx;
+      updateHistoryButtons();
+      setStatus('履歴を復元しました');
+    });
   }
 
-});
-
-
-canvas.on('object:removed',()=>{
-
-  if(!isRestoring&&!isInternalOperation){
-    saveHistory();
+  // ---------- Outline helpers ----------
+  function getOutline(textObj) {
+    if (!textObj || textObj.isOutline || !textObj.textId) return null;
+    return canvas.getObjects().find(o => o.isOutline && o.ownerId === textObj.textId) || null;
   }
 
-});
-
-
-canvas.on('path:created',()=>{
-
-  if(!isInternalOperation){
-    saveHistory();
+  function calcOuterWidth(w) {
+    w = Math.max(0, parseInt(w) || 0);
+    if (!w) return 0;
+    return w + Math.max(OUTER_EXTRA_MIN, Math.round(w * OUTER_EXTRA_RATIO));
   }
 
-});
+  function makeGradient(obj) {
+    if (!obj.gradOn) return obj.fillColVal || midColor.value;
+    const h = Math.max(obj.height || obj.fontSize || 72, 1);
+    return new fabric.Gradient({
+      type: 'linear',
+      coords: { x1: 0, y1: -h / 2, x2: 0, y2: h / 2 },
+      colorStops: [
+        { offset: 0, color: obj.textColVal || textColor.value },
+        { offset: 1, color: obj.fillColVal || midColor.value }
+      ]
+    });
+  }
 
+  function makeShadow(obj) {
+    if (!obj.shadowOn) return null;
+    const off = parseInt(obj.shadowOffVal) || 0;
+    return new fabric.Shadow({
+      color: obj.shadowColVal || shadowColor.value,
+      blur: parseInt(obj.shadowBlurVal) || 0,
+      offsetX: off,
+      offsetY: off
+    });
+  }
 
-['moving','scaling','rotating','skewing'].forEach(ev=>{
+  function createText(text) {
+    const id = 't_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+    const w = parseInt(strokeWidth.value) || 0;
+    const obj = new fabric.IText(text, {
+      left: canvas.width / 2,
+      top: canvas.height / 2,
+      originX: 'center',
+      originY: 'center',
+      fontFamily: fontSelect.value,
+      fontSize: parseInt(fontSize.value),
+      fill: gradient.checked ? null : textColor.value,
+      stroke: null,
+      strokeWidth: 0,
+      paintFirst: 'fill',
+      strokeLineJoin: 'round',
+      strokeLineCap: 'round',
+      editable: true,
+      objectCaching: false,
+      selectable: true,
+      evented: true,
+      hasControls: true,
+      hasBorders: true,
+      lockMovementX: false,
+      lockMovementY: false,
+      // custom props
+      textId: id,
+      outlineW: w,
+      outlineCol: strokeColor.value,
+      outerOnly: outer.checked,
+      shadowOn: true,
+      shadowColVal: shadowColor.value,
+      shadowBlurVal: parseInt(shadowBlur.value) || 0,
+      shadowOffVal: parseInt(shadowOffset.value) || 0,
+      gradOn: gradient.checked,
+      textColVal: textColor.value,
+      fillColVal: midColor.value
+    });
+    obj.fill = makeGradient(obj);
+    obj.shadow = makeShadow(obj);
+    return obj;
+  }
 
-  canvas.on('object:'+ev,e=>{
+  function createOutline(textObj) {
+    const useOuter = textObj.outerOnly !== false;
+    const ow = useOuter
+      ? calcOuterWidth(textObj.outlineW)
+      : Math.max(0, parseInt(textObj.outlineW) || 0);
+    const col = textObj.outlineCol || strokeColor.value;
+    return new fabric.IText(textObj.text, {
+      left: textObj.left,
+      top: textObj.top,
+      originX: textObj.originX,
+      originY: textObj.originY,
+      scaleX: textObj.scaleX,
+      scaleY: textObj.scaleY,
+      angle: textObj.angle,
+      skewX: textObj.skewX,
+      skewY: textObj.skewY,
+      flipX: textObj.flipX,
+      flipY: textObj.flipY,
+      fontFamily: textObj.fontFamily,
+      fontSize: textObj.fontSize,
+      fontWeight: textObj.fontWeight,
+      fontStyle: textObj.fontStyle,
+      charSpacing: textObj.charSpacing,
+      lineHeight: textObj.lineHeight,
+      fill: col,
+      stroke: col,
+      strokeWidth: ow,
+      paintFirst: 'stroke',
+      strokeLineJoin: 'round',
+      strokeLineCap: 'round',
+      selectable: false,
+      evented: false,
+      editable: false,
+      objectCaching: false,
+      hasControls: false,
+      hasBorders: false,
+      isOutline: true,
+      ownerId: textObj.textId,
+      opacity: ow > 0 ? 1 : 0
+    });
+  }
 
-    if(e.target&&!e.target.isConnectedOutline){
-      syncConnectedOutline(e.target);
+  function syncOutline(obj) {
+    if (!obj || obj.isOutline || !['i-text', 'text'].includes(obj.type)) return;
+    const o = getOutline(obj);
+    if (!o) return;
+    const useOuter = obj.outerOnly !== false;
+    const ow = useOuter
+      ? calcOuterWidth(obj.outlineW)
+      : Math.max(0, parseInt(obj.outlineW) || 0);
+    const col = obj.outlineCol || strokeColor.value;
+    o.set({
+      left: obj.left,
+      top: obj.top,
+      scaleX: obj.scaleX,
+      scaleY: obj.scaleY,
+      angle: obj.angle,
+      skewX: obj.skewX,
+      skewY: obj.skewY,
+      flipX: obj.flipX,
+      flipY: obj.flipY,
+      text: obj.text,
+      fontFamily: obj.fontFamily,
+      fontSize: obj.fontSize,
+      fontWeight: obj.fontWeight,
+      fontStyle: obj.fontStyle,
+      charSpacing: obj.charSpacing,
+      lineHeight: obj.lineHeight,
+      fill: col,
+      stroke: col,
+      strokeWidth: ow,
+      opacity: ow > 0 ? 1 : 0,
+      objectCaching: false
+    });
+    o.initDimensions();
+    o.setCoords();
+    o.dirty = true;
+    // アウトラインをテキストのすぐ後ろに保つ
+    const idx = canvas.getObjects().indexOf(obj);
+    if (idx > 0) {
+      const oIdx = canvas.getObjects().indexOf(o);
+      if (oIdx !== idx - 1) {
+        canvas.moveTo(o, Math.max(0, idx - 1));
+      }
     }
+    canvas.requestRenderAll();
+  }
 
+  function addTextWithOutline(obj) {
+    const outline = createOutline(obj);
+    isInternal = true;
+    canvas.add(outline);
+    canvas.add(obj);
+    isInternal = false;
+    canvas.setActiveObject(obj);
+    canvas.requestRenderAll();
+    // 編集状態に入ると移動しにくくなるので、追加直後は編集しない
+    setTimeout(() => {
+      try {
+        if (obj.enterEditing) {
+          // 意図的に編集モードにしない（移動優先）
+        }
+      } catch (e) {}
+    }, 0);
+    saveHistory();
+  }
+
+  function removeTextWithOutline(obj) {
+    if (!obj) return;
+    const o = getOutline(obj);
+    isInternal = true;
+    if (o) canvas.remove(o);
+    canvas.remove(obj);
+    isInternal = false;
+    canvas.discardActiveObject();
+    canvas.requestRenderAll();
+    saveHistory();
+  }
+
+  // ---------- Events: keep outline in sync ----------
+  canvas.on('object:modified', e => {
+    if (!isRestoring && e.target && !e.target.isOutline) {
+      syncOutline(e.target);
+    }
+    if (!isInternal) saveHistory();
   });
 
-});
+  canvas.on('object:added', () => {
+    if (!isRestoring && !isInternal) saveHistory();
+  });
 
+  canvas.on('object:removed', () => {
+    if (!isRestoring && !isInternal) saveHistory();
+  });
 
-canvas.on('text:changed',e=>{
+  canvas.on('path:created', () => {
+    if (!isInternal) saveHistory();
+  });
 
-  if(e.target&&!e.target.isConnectedOutline){
+  ['moving', 'scaling', 'rotating', 'skewing'].forEach(ev => {
+    canvas.on('object:' + ev, e => {
+      if (e.target && !e.target.isOutline) syncOutline(e.target);
+    });
+  });
 
-    syncConnectedOutline(e.target);
+  canvas.on('text:changed', e => {
+    if (e.target && !e.target.isOutline) {
+      syncOutline(e.target);
+      if (!isInternal) saveHistory();
+    }
+  });
 
-    if(!isInternalOperation){
+  // 選択時にアウトラインを掴んでしまわないように
+  canvas.on('selection:created', e => {
+    const t = e.selected && e.selected[0];
+    if (t && t.isOutline) {
+      canvas.discardActiveObject();
+      const owner = canvas.getObjects().find(o => o.textId === t.ownerId);
+      if (owner) canvas.setActiveObject(owner);
+      canvas.requestRenderAll();
+    }
+    updateControlsFromObject();
+  });
+
+  canvas.on('selection:updated', updateControlsFromObject);
+
+  // ---------- Mode ----------
+  function setMode(mode) {
+    [penBtn, eraserBtn, selectBtn].forEach(b => b.classList.remove('active'));
+    canvas.isDrawingMode = false;
+    isEraser = false;
+    if (mode === 'pen') {
+      penBtn.classList.add('active');
+      canvas.isDrawingMode = true;
+      const brush = new fabric.PencilBrush(canvas);
+      brush.color = penColor.value;
+      brush.width = parseInt(penWidth.value);
+      brush.globalCompositeOperation = 'source-over';
+      canvas.freeDrawingBrush = brush;
+      setStatus('ペンモード — 線を描けます');
+    } else if (mode === 'eraser') {
+      eraserBtn.classList.add('active');
+      canvas.isDrawingMode = true;
+      const brush = new fabric.PencilBrush(canvas);
+      brush.color = '#000';
+      brush.width = parseInt(penWidth.value) * 2;
+      brush.globalCompositeOperation = 'destination-out';
+      canvas.freeDrawingBrush = brush;
+      isEraser = true;
+      setStatus('消しゴムモード — 透過で消します');
+    } else {
+      selectBtn.classList.add('active');
+      setStatus('選択・移動モード — オブジェクトをドラッグして動かせます');
+    }
+  }
+
+  // ---------- UI bindings ----------
+  addTextBtn.onclick = () => {
+    const text = textInput.value.trim() || 'テキスト';
+    const f = fontSelect.value;
+    document.fonts.load(`16px "${f}"`)
+      .then(() => {
+        addTextWithOutline(createText(text));
+        setMode('select');
+        setStatus('テキストを追加しました — ドラッグで移動、ダブルクリックで編集');
+      })
+      .catch(() => {
+        addTextWithOutline(createText(text));
+        setMode('select');
+        setStatus('テキストを追加しました — ドラッグで移動、ダブルクリックで編集');
+      });
+  };
+
+  textInput.onkeydown = e => {
+    if (e.key === 'Enter') addTextBtn.click();
+  };
+
+  fontSelect.onchange = () => {
+    const a = canvas.getActiveObject();
+    if (!a || !['i-text', 'text'].includes(a.type)) return;
+    const f = fontSelect.value;
+    document.fonts.load(`16px "${f}"`).finally(() => {
+      a.set({ fontFamily: f, objectCaching: false });
+      a.initDimensions();
+      syncOutline(a);
+      canvas.requestRenderAll();
+      saveHistory();
+      setStatus('フォント変更: ' + f);
+    });
+  };
+
+  fontSize.oninput = () => {
+    fontSizeVal.textContent = fontSize.value;
+    const a = canvas.getActiveObject();
+    if (a && ['i-text', 'text'].includes(a.type)) {
+      a.set('fontSize', parseInt(fontSize.value));
+      a.initDimensions();
+      syncOutline(a);
+      canvas.requestRenderAll();
+    }
+  };
+  fontSize.onchange = saveHistory;
+
+  function applyTextColors() {
+    const a = canvas.getActiveObject();
+    if (!a || !['i-text', 'text'].includes(a.type)) return;
+    a.textColVal = textColor.value;
+    a.fillColVal = midColor.value;
+    a.gradOn = gradient.checked;
+    if (a.isEditing && a.selectionStart !== a.selectionEnd) {
+      a.setSelectionStyles({ fill: textColor.value }, a.selectionStart, a.selectionEnd);
+    } else {
+      a.set('fill', makeGradient(a));
+    }
+    a.dirty = true;
+    syncOutline(a);
+    canvas.requestRenderAll();
+  }
+
+  textColor.oninput = applyTextColors;
+  textColor.onchange = saveHistory;
+  midColor.oninput = applyTextColors;
+  midColor.onchange = saveHistory;
+  gradient.onchange = () => {
+    applyTextColors();
+    saveHistory();
+  };
+
+  syncMidBtn.onclick = () => {
+    midColor.value = textColor.value;
+    applyTextColors();
+    setStatus('塗り色を文字色に合わせました');
+    saveHistory();
+  };
+
+  function updateStroke() {
+    strokeWidthVal.textContent = strokeWidth.value;
+    const a = canvas.getActiveObject();
+    if (!a) return;
+    const w = parseInt(strokeWidth.value) || 0;
+    if (['i-text', 'text'].includes(a.type)) {
+      a.set({
+        stroke: null,
+        strokeWidth: 0,
+        paintFirst: 'fill',
+        objectCaching: false,
+        outlineW: w,
+        outlineCol: strokeColor.value,
+        outerOnly: outer.checked
+      });
+      syncOutline(a);
+    } else if (['rect', 'circle', 'triangle'].includes(a.type)) {
+      a.set({
+        stroke: w > 0 ? strokeColor.value : null,
+        strokeWidth: w
+      });
+    }
+    canvas.requestRenderAll();
+  }
+
+  strokeColor.oninput = updateStroke;
+  strokeWidth.oninput = updateStroke;
+  outer.onchange = () => {
+    updateStroke();
+    saveHistory();
+  };
+  strokeColor.onchange = saveHistory;
+  strokeWidth.onchange = saveHistory;
+
+  function updateShadow() {
+    const a = canvas.getActiveObject();
+    if (!a || !['i-text', 'text'].includes(a.type)) return;
+    a.shadowOn = true;
+    a.shadowColVal = shadowColor.value;
+    a.shadowBlurVal = parseInt(shadowBlur.value) || 0;
+    a.shadowOffVal = parseInt(shadowOffset.value) || 0;
+    a.shadow = makeShadow(a);
+    canvas.requestRenderAll();
+  }
+
+  shadowColor.oninput = updateShadow;
+  shadowBlur.oninput = updateShadow;
+  shadowOffset.oninput = () => {
+    shadowOffsetVal.textContent = shadowOffset.value;
+    updateShadow();
+  };
+  shadowColor.onchange = saveHistory;
+  shadowBlur.onchange = saveHistory;
+  shadowOffset.onchange = saveHistory;
+
+  penWidth.oninput = () => {
+    penWidthVal.textContent = penWidth.value;
+    if (canvas.isDrawingMode && canvas.freeDrawingBrush) {
+      canvas.freeDrawingBrush.width = isEraser
+        ? parseInt(penWidth.value) * 2
+        : parseInt(penWidth.value);
+    }
+  };
+  penColor.oninput = () => {
+    if (canvas.isDrawingMode && !isEraser && canvas.freeDrawingBrush) {
+      canvas.freeDrawingBrush.color = penColor.value;
+    }
+  };
+
+  penBtn.onclick = () => setMode('pen');
+  eraserBtn.onclick = () => setMode('eraser');
+  selectBtn.onclick = () => setMode('select');
+
+  function moveWithOutline(obj, dir) {
+    const o = getOutline(obj);
+    if (dir === 'forward') canvas.bringForward(obj);
+    else canvas.sendBackwards(obj);
+    if (o) {
+      const idx = canvas.getObjects().indexOf(obj);
+      if (idx > 0) canvas.moveTo(o, idx - 1);
+      else canvas.sendToBack(o);
+    }
+  }
+
+  bringForwardBtn.onclick = () => {
+    const a = canvas.getActiveObject();
+    if (!a) return;
+    if (['i-text', 'text'].includes(a.type)) moveWithOutline(a, 'forward');
+    else canvas.bringForward(a);
+    canvas.requestRenderAll();
+    saveHistory();
+  };
+
+  sendBackwardBtn.onclick = () => {
+    const a = canvas.getActiveObject();
+    if (!a) return;
+    if (['i-text', 'text'].includes(a.type)) moveWithOutline(a, 'backward');
+    else canvas.sendBackwards(a);
+    canvas.requestRenderAll();
+    saveHistory();
+  };
+
+  deleteBtn.onclick = () => {
+    const a = canvas.getActiveObject();
+    if (!a) return;
+    if (['i-text', 'text'].includes(a.type)) removeTextWithOutline(a);
+    else {
+      canvas.remove(a);
+      canvas.discardActiveObject();
+      canvas.requestRenderAll();
       saveHistory();
     }
-
-  }
-
-});
-
-
-canvas.on('mouse:down',()=>{
-
-  if(isEraser&&canvas.freeDrawingBrush){
-
-    canvas.freeDrawingBrush.globalCompositeOperation='destination-out';
-
-  }
-
-});
-
-
-function setMode(mode){
-
-  [penBtn,eraserBtn,selectBtn].forEach(
-    b=>b.classList.remove('active')
-  );
-
-  canvas.isDrawingMode=false;
-  isEraser=false;
-
-  if(mode==='pen'){
-
-    penBtn.classList.add('active');
-
-    canvas.isDrawingMode=true;
-
-    const brush=new fabric.PencilBrush(canvas);
-
-    brush.color=penColor.value;
-    brush.width=parseInt(penWidth.value);
-    brush.globalCompositeOperation='source-over';
-
-    canvas.freeDrawingBrush=brush;
-
-    setStatus('ペンモード');
-
-  }
-
-  else if(mode==='eraser'){
-
-    eraserBtn.classList.add('active');
-
-    canvas.isDrawingMode=true;
-
-    const brush=new fabric.PencilBrush(canvas);
-
-    brush.color='#000';
-    brush.width=parseInt(penWidth.value)*2;
-    brush.globalCompositeOperation='destination-out';
-
-    canvas.freeDrawingBrush=brush;
-
-    isEraser=true;
-
-    setStatus('消しゴムモード（透過で消します）');
-
-  }
-
-  else{
-
-    selectBtn.classList.add('active');
-
-    setStatus('選択モード');
-
-  }
-
-}
-
-
-function getConnectedOutline(obj){
-
-  return obj &&
-         !obj.isConnectedOutline &&
-         obj.textObjectId
-    ? canvas.getObjects().find(
-        o=>o.isConnectedOutline &&
-            o.outlineOwnerId===obj.textObjectId
-      )||null
-    : null;
-
-}
-
-
-function getOuterStrokeWidth(obj){
-
-  const w=Math.max(
-    0,
-    parseInt(obj.outlineWidth)||0
-  );
-
-  if(!w)return 0;
-
-  return w+
-         Math.max(
-           CONNECTED_OUTLINE_BASE_EXTRA,
-           Math.round(w*1.4)
-         );
-
-}
-
-
-function makeGradient(obj){
-
-  if(!obj.gradientEnabled){
-    return obj.fill||midColor.value;
-  }
-
-  const h=Math.max(
-    obj.height||obj.fontSize||72,
-    1
-  );
-
-  const g=new fabric.Gradient({
-
-    type:'linear',
-
-    coords:{
-      x1:0,
-      y1:-h/2,
-      x2:0,
-      y2:h/2
-    },
-
-    colorStops:[
-      {
-        offset:0,
-        color:obj.textColorValue||textColor.value
-      },
-      {
-        offset:1,
-        color:obj.gradientColorValue||gradientColor.value
-      }
-    ]
-
-  });
-
-  return g;
-
-}
-
-
-function makeShadow(obj){
-
-  if(!obj.shadowEnabled)return null;
-
-  const off=parseInt(
-    obj.shadowOffsetValue
-  )||0;
-
-  return new fabric.Shadow({
-
-    color:obj.shadowColorValue||shadowColor.value,
-
-    blur:parseInt(
-      obj.shadowBlurValue
-    )||0,
-
-    offsetX:off,
-    offsetY:off
-
-  });
-
-}
-
-
-function createTextObject(text){
-
-  const w=parseInt(strokeWidth.value)||0;
-
-  const id=
-    'text_'+
-    Date.now()+
-    '_'+
-    Math.random().toString(36).slice(2,8);
-
-  const obj=new fabric.IText(text,{
-
-    left:canvas.width/2,
-    top:canvas.height/2,
-
-    originX:'center',
-    originY:'center',
-
-    fontFamily:fontSelect.value,
-
-    fontSize:parseInt(fontSize.value),
-
-    fill:textColor.value,
-
-    stroke:null,
-    strokeWidth:0,
-
-    paintFirst:'fill',
-
-    strokeLineJoin:'round',
-    strokeLineCap:'round',
-
-    editable:true,
-
-    objectCaching:false,
-
-    outlineWidth:w,
-
-    outlineColor:strokeColor.value,
-
-    textObjectId:id,
-
-    shadowEnabled:true,
-
-    shadowColorValue:shadowColor.value,
-
-    shadowBlurValue:
-      parseInt(shadowBlur.value)||0,
-
-    shadowOffsetValue:
-      parseInt(shadowOffset.value)||0,
-
-    gradientEnabled:gradient.checked,
-
-    gradientColorValue:gradientColor.value,
-
-    innerStrokeWidth:0,
-
-    outerOnly:outer.checked,
-
-    textColorValue:textColor.value
-
-  });
-
-  obj.shadow=makeShadow(obj);
-
-  return obj;
-
-}
-
-
-function createConnectedOutline(textObj){
-
-  const outerW=
-    outer.checked
-      ? getOuterStrokeWidth(textObj)
-      : Math.max(
-          0,
-          parseInt(textObj.outlineWidth)||0
-        );
-
-  const col=
-    textObj.outlineColor||
-    strokeColor.value;
-
-  return new fabric.IText(textObj.text,{
-
-    left:textObj.left,
-    top:textObj.top,
-
-    originX:textObj.originX,
-    originY:textObj.originY,
-
-    scaleX:textObj.scaleX,
-    scaleY:textObj.scaleY,
-
-    angle:textObj.angle,
-
-    skewX:textObj.skewX,
-    skewY:textObj.skewY,
-
-    flipX:textObj.flipX,
-    flipY:textObj.flipY,
-
-    fontFamily:textObj.fontFamily,
-    fontSize:textObj.fontSize,
-
-    fontWeight:textObj.fontWeight,
-    fontStyle:textObj.fontStyle,
-
-    charSpacing:textObj.charSpacing,
-    lineHeight:textObj.lineHeight,
-
-    fill:col,
-    stroke:col,
-
-    strokeWidth:outerW,
-
-    paintFirst:'stroke',
-
-    strokeLineJoin:'round',
-    strokeLineCap:'round',
-
-    selectable:false,
-    evented:false,
-    editable:false,
-
-    objectCaching:false,
-
-    isConnectedOutline:true,
-
-    outlineOwnerId:textObj.textObjectId,
-
-    opacity:outerW>0?1:0
-
-  });
-
-}
-
-
-function syncConnectedOutline(obj){
-
-  if(
-    !obj||
-    obj.isConnectedOutline||
-    !['i-text','text'].includes(obj.type)
-  )return;
-
-  const o=getConnectedOutline(obj);
-
-  if(!o)return;
-
-  const ow=
-    obj.outerOnly===false
-      ? Math.max(
-          0,
-          parseInt(obj.outlineWidth)||0
-        )
-      : getOuterStrokeWidth(obj);
-
-  const col=
-    obj.outlineColor||
-    strokeColor.value;
-
-  o.set({
-
-    left:obj.left,
-    top:obj.top,
-
-    scaleX:obj.scaleX,
-    scaleY:obj.scaleY,
-
-    angle:obj.angle,
-
-    skewX:obj.skewX,
-    skewY:obj.skewY,
-
-    flipX:obj.flipX,
-    flipY:obj.flipY,
-
-    text:obj.text,
-
-    fontFamily:obj.fontFamily,
-    fontSize:obj.fontSize,
-
-    fontWeight:obj.fontWeight,
-    fontStyle:obj.fontStyle,
-
-    charSpacing:obj.charSpacing,
-    lineHeight:obj.lineHeight,
-
-    fill:col,
-    stroke:col,
-
-    strokeWidth:ow,
-
-    opacity:ow>0?1:0,
-
-    objectCaching:false
-
-  });
-
-  o.initDimensions();
-  o.setCoords();
-
-  o.dirty=true;
-
-  canvas.requestRenderAll();
-
-}
-
-
-function addTextWithOutline(obj){
-
-  const outline=createConnectedOutline(obj);
-
-  isInternalOperation=true;
-
-  canvas.add(outline);
-  canvas.add(obj);
-
-  isInternalOperation=false;
-
-  canvas.setActiveObject(obj);
-
-  try{
-
-    obj.enterEditing();
-    obj.selectAll();
-
-  }catch(e){}
-
-  canvas.requestRenderAll();
-
-  saveHistory();
-
-}
-
-
-function removeTextWithOutline(obj){
-
-  if(!obj)return;
-
-  const o=getConnectedOutline(obj);
-
-  isInternalOperation=true;
-
-  if(o)canvas.remove(o);
-
-  canvas.remove(obj);
-
-  isInternalOperation=false;
-
-  canvas.discardActiveObject();
-
-  canvas.requestRenderAll();
-
-  saveHistory();
-
-}
-
-
-addTextBtn.onclick=()=>{
-
-  const text=
-    textInput.value.trim()||
-    'テキスト';
-
-  const f=fontSelect.value;
-
-  document.fonts.load(
-    `16px "${f}"`
-  )
-  .then(()=>{
-
-    addTextWithOutline(
-      createTextObject(text)
-    );
-
-    setMode('select');
-
-    setStatus('テキストを追加しました');
-
-  })
-  .catch(()=>{
-
-    addTextWithOutline(
-      createTextObject(text)
-    );
-
-    setMode('select');
-
-    setStatus('テキストを追加しました');
-
-  });
-
-};
-
-
-textInput.onkeydown=e=>{
-
-  if(e.key==='Enter'){
-    addTextBtn.click();
-  }
-
-};
-
-
-fontSelect.onchange=()=>{
-
-  const a=canvas.getActiveObject();
-
-  if(
-    !a||
-    !['i-text','text'].includes(a.type)
-  )return;
-
-  const f=fontSelect.value;
-
-  document.fonts.load(
-    `16px "${f}"`
-  )
-  .finally(()=>{
-
-    a.set({
-      fontFamily:f,
-      objectCaching:false
-    });
-
-    a.initDimensions();
-
-    syncConnectedOutline(a);
-
-    canvas.requestRenderAll();
-
-    saveHistory();
-
-    setStatus(
-      'フォント変更: '+f
-    );
-
-  });
-
-};
-
-
-fontSize.oninput=()=>{
-
-  fontSizeVal.textContent=
-    fontSize.value;
-
-  const a=canvas.getActiveObject();
-
-  if(
-    a&&
-    ['i-text','text'].includes(a.type)
-  ){
-
-    a.set(
-      'fontSize',
-      parseInt(fontSize.value)
-    );
-
-    a.initDimensions();
-
-    syncConnectedOutline(a);
-
-    canvas.requestRenderAll();
-
-  }
-
-};
-
-
-fontSize.onchange=saveHistory;
-
-
-function applyTextColor(){
-
-  const a=canvas.getActiveObject();
-
-  if(
-    !a||
-    !['i-text','text'].includes(a.type)
-  )return;
-
-  if(
-    a.isEditing &&
-    a.selectionStart!==a.selectionEnd
-  ){
-
-    a.setSelectionStyles(
-      {fill:textColor.value},
-      a.selectionStart,
-      a.selectionEnd
-    );
-
-  }
-
-  else{
-
-    a.set({
-      fill:textColor.value,
-      textColorValue:textColor.value
-    });
-
-  }
-
-  if(
-    !gradient.checked &&
-    !a.isEditing
-  ){
-
-    a.set(
-      'fill',
-      textColor.value
-    );
-
-  }
-
-  a.dirty=true;
-
-  canvas.requestRenderAll();
-
-}
-
-
-textColor.oninput=applyTextColor;
-textColor.onchange=saveHistory;
-
-
-function applyFill(){
-
-  const a=canvas.getActiveObject();
-
-  if(!a)return;
-
-  if(
-    ['i-text','text'].includes(a.type)
-  ){
-
-    if(
-      a.isEditing &&
-      a.selectionStart!==a.selectionEnd
-    ){
-
-      a.setSelectionStyles(
-        {fill:midColor.value},
-        a.selectionStart,
-        a.selectionEnd
-      );
-
-    }
-
-    else{
-
-      a.textColorValue=
-        midColor.value;
-
-      if(!gradient.checked){
-
-        a.set(
-          'fill',
-          midColor.value
-        );
-
-      }
-
-    }
-
-    a.gradientEnabled=
-      gradient.checked;
-
-    a.gradientColorValue=
-      gradientColor.value;
-
-    if(
-      !a.isEditing||
-      a.selectionStart===a.selectionEnd
-    ){
-
-      a.set(
-        'fill',
-        gradient.checked
-          ? makeGradient(a)
-          : a.textColorValue
-      );
-
-    }
-
-    a.dirty=true;
-
-    syncConnectedOutline(a);
-
-  }
-
-  else if(
-    ['rect','circle','triangle'].includes(a.type)
-  ){
-
-    a.set(
-      'fill',
-      midColor.value
-    );
-
-  }
-
-  canvas.requestRenderAll();
-
-}
-
-
-midColor.oninput=applyFill;
-midColor.onchange=saveHistory;
-
-
-syncMidBtn.onclick=()=>{
-
-  textColor.value=
-    midColor.value;
-
-  applyTextColor();
-
-  setStatus(
-    '文字色を塗り色と同じにしました'
-  );
-
-  saveHistory();
-
-};
-
-
-gradient.onchange=applyFill;
-gradientColor.oninput=applyFill;
-gradientColor.onchange=saveHistory;
-
-
-function updateStroke(){
-
-  strokeWidthVal.textContent=
-    strokeWidth.value;
-
-  const a=canvas.getActiveObject();
-
-  if(!a)return;
-
-  const w=
-    parseInt(strokeWidth.value)||0;
-
-  if(
-    ['i-text','text'].includes(a.type)
-  ){
-
-    a.set({
-
-      stroke:null,
-
-      strokeWidth:0,
-
-      paintFirst:'fill',
-
-      objectCaching:false,
-
-      outlineWidth:w,
-
-      outlineColor:
-        strokeColor.value,
-
-      outerOnly:
-        outer.checked,
-
-      innerStrokeWidth:0
-
-    });
-
-    syncConnectedOutline(a);
-
-  }
-
-  else if(
-    ['rect','circle','triangle'].includes(a.type)
-  ){
-
-    a.set({
-
-      stroke:
-        w>0
-          ? strokeColor.value
-          : null,
-
-      strokeWidth:w
-
-    });
-
-  }
-
-  canvas.requestRenderAll();
-
-}
-
-
-strokeColor.oninput=updateStroke;
-strokeWidth.oninput=updateStroke;
-outer.onchange=updateStroke;
-
-strokeColor.onchange=saveHistory;
-strokeWidth.onchange=saveHistory;
-
-outer.addEventListener(
-  'change',
-  saveHistory
-);
-
-
-function updateShadow(){
-
-  const a=canvas.getActiveObject();
-
-  if(!a)return;
-
-  if(
-    ['i-text','text'].includes(a.type)
-  ){
-
-    a.shadowEnabled=true;
-
-    a.shadowColorValue=
-      shadowColor.value;
-
-    a.shadowBlurValue=
-      parseInt(shadowBlur.value)||0;
-
-    a.shadowOffsetValue=
-      parseInt(shadowOffset.value)||0;
-
-    a.shadow=
-      makeShadow(a);
-
-  }
-
-  else if(a.type==='path'){
-
-    a.shadow=null;
-
-  }
-
-  canvas.requestRenderAll();
-
-}
-
-
-shadowColor.oninput=updateShadow;
-shadowBlur.oninput=updateShadow;
-
-shadowOffset.oninput=()=>{
-
-  shadowOffsetVal.textContent=
-    shadowOffset.value;
-
-  updateShadow();
-
-};
-
-shadowColor.onchange=saveHistory;
-shadowBlur.onchange=saveHistory;
-shadowOffset.onchange=saveHistory;
-
-
-penWidth.oninput=()=>{
-
-  penWidthVal.textContent=
-    penWidth.value;
-
-  if(
-    canvas.isDrawingMode &&
-    canvas.freeDrawingBrush
-  ){
-
-    canvas.freeDrawingBrush.width=
-      isEraser
-        ? parseInt(penWidth.value)*2
-        : parseInt(penWidth.value);
-
-  }
-
-};
-
-
-penColor.oninput=()=>{
-
-  if(
-    canvas.isDrawingMode &&
-    !isEraser &&
-    canvas.freeDrawingBrush
-  ){
-
-    canvas.freeDrawingBrush.color=
-      penColor.value;
-
-  }
-
-};
-
-
-penBtn.onclick=()=>setMode('pen');
-eraserBtn.onclick=()=>setMode('eraser');
-selectBtn.onclick=()=>setMode('select');
-
-
-function moveTextWithOutline(obj,dir){
-
-  const o=getConnectedOutline(obj);
-
-  if(dir==='forward'){
-    canvas.bringForward(obj);
-  }
-  else{
-    canvas.sendBackwards(obj);
-  }
-
-  if(o){
-
-    const idx=
-      canvas.getObjects().indexOf(obj);
-
-    if(idx>0){
-      canvas.moveTo(o,idx-1);
-    }
-    else{
-      canvas.sendToBack(o);
-    }
-
-  }
-
-}
-
-
-bringForwardBtn.onclick=()=>{
-
-  const a=canvas.getActiveObject();
-
-  if(!a)return;
-
-  if(
-    ['i-text','text'].includes(a.type)
-  ){
-
-    moveTextWithOutline(
-      a,
-      'forward'
-    );
-
-  }
-
-  else{
-
-    canvas.bringForward(a);
-
-  }
-
-  canvas.requestRenderAll();
-
-  saveHistory();
-
-};
-
-
-sendBackwardBtn.onclick=()=>{
-
-  const a=canvas.getActiveObject();
-
-  if(!a)return;
-
-  if(
-    ['i-text','text'].includes(a.type)
-  ){
-
-    moveTextWithOutline(
-      a,
-      'backward'
-    );
-
-  }
-
-  else{
-
-    canvas.sendBackwards(a);
-
-  }
-
-  canvas.requestRenderAll();
-
-  saveHistory();
-
-};
-
-
-deleteBtn.onclick=()=>{
-
-  const a=canvas.getActiveObject();
-
-  if(!a)return;
-
-  if(
-    ['i-text','text'].includes(a.type)
-  ){
-
-    removeTextWithOutline(a);
-
-  }
-
-  else{
-
-    canvas.remove(a);
-
-    canvas.discardActiveObject();
-
-    canvas.requestRenderAll();
-
-    saveHistory();
-
-  }
-
-};
-
-
-function addShape(type){
-
-  const w=
-    parseInt(strokeWidth.value)||0;
-
-  const common={
-
-    left:canvas.width/2,
-    top:canvas.height/2,
-
-    originX:'center',
-    originY:'center',
-
-    fill:midColor.value,
-
-    stroke:
-      w>0
-        ? strokeColor.value
-        : null,
-
-    strokeWidth:w,
-
-    strokeLineJoin:'round',
-    strokeLineCap:'round',
-
-    objectCaching:false
-
   };
 
-  let s;
-
-  if(type==='rect'){
-
-    s=new fabric.Rect({
-
-      ...common,
-
-      width:120,
-      height:120,
-      rx:8,
-      ry:8
-
-    });
-
+  function addShape(type) {
+    const w = parseInt(strokeWidth.value) || 0;
+    const common = {
+      left: canvas.width / 2,
+      top: canvas.height / 2,
+      originX: 'center',
+      originY: 'center',
+      fill: midColor.value,
+      stroke: w > 0 ? strokeColor.value : null,
+      strokeWidth: w,
+      strokeLineJoin: 'round',
+      strokeLineCap: 'round',
+      objectCaching: false
+    };
+    let s;
+    if (type === 'rect') s = new fabric.Rect({ ...common, width: 120, height: 120, rx: 8, ry: 8 });
+    else if (type === 'circle') s = new fabric.Circle({ ...common, radius: 60 });
+    else if (type === 'triangle') s = new fabric.Triangle({ ...common, width: 120, height: 110 });
+    if (!s) return;
+    canvas.add(s);
+    canvas.setActiveObject(s);
+    canvas.requestRenderAll();
+    setMode('select');
+    setStatus(type === 'rect' ? '四角を追加' : type === 'circle' ? '丸を追加' : '三角を追加');
+    saveHistory();
   }
 
-  else if(type==='circle'){
+  addRectBtn.onclick = () => addShape('rect');
+  addCircleBtn.onclick = () => addShape('circle');
+  addTriangleBtn.onclick = () => addShape('triangle');
 
-    s=new fabric.Circle({
+  importImageBtn.onclick = () => imageInput.click();
+  imageInput.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      fabric.Image.fromURL(ev.target.result, img => {
+        const max = 400;
+        if (img.width > max || img.height > max) {
+          img.scale(Math.min(max / img.width, max / img.height));
+        }
+        img.set({
+          left: canvas.width / 2,
+          top: canvas.height / 2,
+          originX: 'center',
+          originY: 'center'
+        });
+        canvas.add(img);
+        canvas.setActiveObject(img);
+        canvas.requestRenderAll();
+        setMode('select');
+        setStatus('画像を追加しました');
+        saveHistory();
+      });
+    };
+    reader.readAsDataURL(file);
+    imageInput.value = '';
+  };
 
-      ...common,
+  downloadBtn.onclick = () => {
+    canvas.discardActiveObject();
+    canvas.requestRenderAll();
+    const bg = canvas.backgroundColor;
+    canvas.backgroundColor = null;
+    canvas.requestRenderAll();
+    const scale = parseInt(exportScale.value) || 2;
+    const data = canvas.toDataURL({ format: 'png', quality: 1, multiplier: scale });
+    canvas.backgroundColor = bg;
+    canvas.requestRenderAll();
+    const a = document.createElement('a');
+    a.download = 'vtuber-logo.png';
+    a.href = data;
+    a.click();
+    setStatus(`背景透過PNGを保存しました（${scale}x）`);
+  };
 
-      radius:60
+  clearBtn.onclick = () => {
+    if (confirm('キャンバスをすべて消去しますか？')) {
+      isInternal = true;
+      canvas.clear();
+      isInternal = false;
+      canvas.backgroundColor = '#ffffff';
+      canvas.requestRenderAll();
+      saveHistory();
+      setStatus('すべて消去しました');
+    }
+  };
 
-    });
+  undoBtn.onclick = () => { if (historyIndex > 0) restoreHistory(historyIndex - 1); };
+  redoBtn.onclick = () => { if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1); };
 
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key.toLowerCase() === 'z') {
+        e.preventDefault();
+        if (historyIndex > 0) restoreHistory(historyIndex - 1);
+        return;
+      }
+      if (e.key.toLowerCase() === 'y') {
+        e.preventDefault();
+        if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1);
+        return;
+      }
+    }
+    if (e.key === 'Delete' || e.key === 'Backspace') {
+      if (canvas.getActiveObject()?.isEditing || document.activeElement === textInput) return;
+      const a = canvas.getActiveObject();
+      if (!a) return;
+      if (['i-text', 'text'].includes(a.type)) removeTextWithOutline(a);
+      else {
+        canvas.remove(a);
+        canvas.discardActiveObject();
+        canvas.requestRenderAll();
+        saveHistory();
+      }
+    }
+  });
+
+  function updateControlsFromObject() {
+    const a = canvas.getActiveObject();
+    if (!a) return;
+    if (['i-text', 'text'].includes(a.type)) {
+      if (a.fontFamily && Array.from(fontSelect.options).some(o => o.value === a.fontFamily)) {
+        fontSelect.value = a.fontFamily;
+      }
+      if (a.textColVal) textColor.value = a.textColVal;
+      if (a.fillColVal) midColor.value = a.fillColVal;
+      if (typeof a.outlineW === 'number') {
+        strokeWidth.value = a.outlineW;
+        strokeWidthVal.textContent = a.outlineW;
+      }
+      if (a.outlineCol) strokeColor.value = a.outlineCol;
+      if (typeof a.fontSize === 'number') {
+        fontSize.value = a.fontSize;
+        fontSizeVal.textContent = a.fontSize;
+      }
+      if (typeof a.shadowColVal === 'string') shadowColor.value = a.shadowColVal;
+      if (typeof a.shadowBlurVal === 'number') shadowBlur.value = a.shadowBlurVal;
+      if (typeof a.shadowOffVal === 'number') {
+        shadowOffset.value = a.shadowOffVal;
+        shadowOffsetVal.textContent = a.shadowOffVal;
+      }
+      gradient.checked = !!a.gradOn;
+      outer.checked = a.outerOnly !== false;
+    } else if (['rect', 'circle', 'triangle'].includes(a.type)) {
+      if (a.fill && typeof a.fill === 'string') midColor.value = a.fill;
+      if (a.stroke && typeof a.stroke === 'string') strokeColor.value = a.stroke;
+      if (typeof a.strokeWidth === 'number') {
+        strokeWidth.value = a.strokeWidth;
+        strokeWidthVal.textContent = a.strokeWidth;
+      }
+    }
   }
 
-  else if(type==='triangle'){
-
-    s=new fabric.Triangle({
-
-      ...common,
-
-      width:120,
-      height:110
-
-    });
-
+  // キャンバスサイズフィット
+  function fitCanvas() {
+    const wrap = document.querySelector('.canvas-wrap');
+    if (!wrap) return;
+    const padding = 20;
+    const aw = wrap.clientWidth - padding;
+    const ah = wrap.clientHeight - padding;
+    const baseW = 900, baseH = 520;
+    const ratio = baseW / baseH;
+    let nw, nh;
+    if (aw / ah > ratio) {
+      nh = Math.min(baseH, ah);
+      nw = nh * ratio;
+    } else {
+      nw = Math.min(baseW, aw);
+      nh = nw / ratio;
+    }
+    nw = Math.max(100, Math.round(nw));
+    nh = Math.max(60, Math.round(nh));
+    if (Math.abs(canvas.getWidth() - nw) > 4 || Math.abs(canvas.getHeight() - nh) > 4) {
+      canvas.setDimensions({ width: nw, height: nh });
+      canvas.requestRenderAll();
+    }
   }
 
-  if(!s)return;
-
-  canvas.add(s);
-
-  canvas.setActiveObject(s);
-
-  canvas.requestRenderAll();
+  window.addEventListener('resize', () => setTimeout(fitCanvas, 100));
+  window.addEventListener('orientationchange', () => setTimeout(fitCanvas, 200));
 
   setMode('select');
-
-  setStatus(
-    type==='rect'
-      ? '四角を追加'
-      : type==='circle'
-        ? '丸を追加'
-        : '三角を追加'
-  );
-
-  saveHistory();
-
-}
-
-
-addRectBtn.onclick=
-  ()=>addShape('rect');
-
-addCircleBtn.onclick=
-  ()=>addShape('circle');
-
-addTriangleBtn.onclick=
-  ()=>addShape('triangle');
-
-
-importImageBtn.onclick=
-  ()=>imageInput.click();
-
-
-imageInput.onchange=e=>{
-
-  const file=e.target.files[0];
-
-  if(!file)return;
-
-  const reader=new FileReader();
-
-  reader.onload=ev=>{
-
-    fabric.Image.fromURL(
-      ev.target.result,
-      img=>{
-
-        const max=400;
-
-        if(
-          img.width>max||
-          img.height>max
-        ){
-
-          img.scale(
-            Math.min(
-              max/img.width,
-              max/img.height
-            )
-          );
-
-        }
-
-        img.set({
-
-          left:canvas.width/2,
-          top:canvas.height/2,
-
-          originX:'center',
-          originY:'center'
-
-        });
-
-        canvas.add(img);
-
-        canvas.setActiveObject(img);
-
-        canvas.requestRenderAll();
-
-        setMode('select');
-
-        setStatus(
-          '画像を追加しました'
-        );
-
-        saveHistory();
-
-      }
-    );
-
-  };
-
-  reader.readAsDataURL(file);
-
-  imageInput.value='';
-
-};
-
-
-downloadBtn.onclick=()=>{
-
-  canvas.discardActiveObject();
-
-  canvas.requestRenderAll();
-
-  const bg=canvas.backgroundColor;
-
-  canvas.backgroundColor=null;
-
-  canvas.requestRenderAll();
-
-  const scale=
-    parseInt(exportScale.value)||2;
-
-  const data=
-    canvas.toDataURL({
-
-      format:'png',
-      quality:1,
-      multiplier:scale
-
-    });
-
-  canvas.backgroundColor=bg;
-
-  canvas.requestRenderAll();
-
-  const a=document.createElement('a');
-
-  a.download='vtuber-logo.png';
-
-  a.href=data;
-
-  a.click();
-
-  setStatus(
-    `背景透過PNGを保存しました（${scale}x）`
-  );
-
-};
-
-
-clearBtn.onclick=()=>{
-
-  if(
-    confirm(
-      'キャンバスをすべて消去しますか？'
-    )
-  ){
-
-    isInternalOperation=true;
-
-    canvas.clear();
-
-    isInternalOperation=false;
-
-    canvas.backgroundColor='#fff';
-
-    canvas.requestRenderAll();
-
+  setStatus('準備完了 — 「追加」でテキストを入れて、ドラッグで移動できます');
+  setTimeout(() => {
+    fitCanvas();
     saveHistory();
-
-    setStatus(
-      'すべて消去しました'
-    );
-
-  }
-
-};
-
-
-undoBtn.onclick=()=>{
-
-  if(historyIndex>0){
-
-    restoreHistory(
-      historyIndex-1
-    );
-
-  }
-
-};
-
-
-redoBtn.onclick=()=>{
-
-  if(
-    historyIndex<history.length-1
-  ){
-
-    restoreHistory(
-      historyIndex+1
-    );
-
-  }
-
-};
-
-
-document.addEventListener(
-  'keydown',
-  e=>{
-
-    if(e.ctrlKey||e.metaKey){
-
-      if(
-        e.key.toLowerCase()==='z'
-      ){
-
-        e.preventDefault();
-
-        if(historyIndex>0){
-
-          restoreHistory(
-            historyIndex-1
-          );
-
-        }
-
-        return;
-
-      }
-
-      if(
-        e.key.toLowerCase()==='y'
-      ){
-
-        e.preventDefault();
-
-        if(
-          historyIndex<
-          history.length-1
-        ){
-
-          restoreHistory(
-            historyIndex+1
-          );
-
-        }
-
-        return;
-
-      }
-
-    }
-
-    if(
-      e.key==='Delete'||
-      e.key==='Backspace'
-    ){
-
-      if(
-        canvas.getActiveObject()?.isEditing||
-        document.activeElement===textInput
-      )return;
-
-      const a=
-        canvas.getActiveObject();
-
-      if(!a)return;
-
-      if(
-        ['i-text','text'].includes(a.type)
-      ){
-
-        removeTextWithOutline(a);
-
-      }
-
-      else{
-
-        canvas.remove(a);
-
-        canvas.discardActiveObject();
-
-        canvas.requestRenderAll();
-
-        saveHistory();
-
-      }
-
-    }
-
-  }
-);
-
-
-function updateControlsFromObject(){
-
-  const a=canvas.getActiveObject();
-
-  if(!a)return;
-
-  if(
-    ['i-text','text'].includes(a.type)
-  ){
-
-    if(
-      a.fontFamily &&
-      Array.from(
-        fontSelect.options
-      ).some(
-        o=>o.value===a.fontFamily
-      )
-    ){
-
-      fontSelect.value=
-        a.fontFamily;
-
-    }
-
-    if(
-      typeof a.fill==='string'
-    ){
-
-      textColor.value=
-        a.fill;
-
-      midColor.value=
-        a.fill;
-
-    }
-
-    if(a.textColorValue){
-
-      textColor.value=
-        a.textColorValue;
-
-    }
-
-    if(
-      typeof a.outlineWidth==='number'
-    ){
-
-      strokeWidth.value=
-        a.outlineWidth;
-
-      strokeWidthVal.textContent=
-        a.outlineWidth;
-
-    }
-
-    if(a.outlineColor){
-
-      strokeColor.value=
-        a.outlineColor;
-
-    }
-
-    if(
-      typeof a.fontSize==='number'
-    ){
-
-      fontSize.value=
-        a.fontSize;
-
-      fontSizeVal.textContent=
-        a.fontSize;
-
-    }
-
-    if(
-      typeof a.shadowColorValue==='string'
-    ){
-
-      shadowColor.value=
-        a.shadowColorValue;
-
-    }
-
-    if(
-      typeof a.shadowBlurValue==='number'
-    ){
-
-      shadowBlur.value=
-        a.shadowBlurValue;
-
-    }
-
-    if(
-      typeof a.shadowOffsetValue==='number'
-    ){
-
-      shadowOffset.value=
-        a.shadowOffsetValue;
-
-      shadowOffsetVal.textContent=
-        a.shadowOffsetValue;
-
-    }
-
-    gradient.checked=
-      !!a.gradientEnabled;
-
-    if(a.gradientColorValue){
-
-      gradientColor.value=
-        a.gradientColorValue;
-
-    }
-
-  }
-
-  else if(
-    ['rect','circle','triangle'].includes(a.type)
-  ){
-
-    if(
-      a.fill &&
-      typeof a.fill==='string'
-    ){
-
-      midColor.value=
-        a.fill;
-
-    }
-
-    if(
-      a.stroke &&
-      typeof a.stroke==='string'
-    ){
-
-      strokeColor.value=
-        a.stroke;
-
-    }
-
-    if(
-      typeof a.strokeWidth==='number'
-    ){
-
-      strokeWidth.value=
-        a.strokeWidth;
-
-      strokeWidthVal.textContent=
-        a.strokeWidth;
-
-    }
-
-  }
-
-}
-
-
-canvas.on(
-  'selection:created',
-  updateControlsFromObject
-);
-
-canvas.on(
-  'selection:updated',
-  updateControlsFromObject
-);
-
-
-function fitCanvas(){
-
-  const wrap=
-    document.querySelector(
-      '.canvas-wrap'
-    );
-
-  if(!wrap)return;
-
-  const padding=20;
-
-  const aw=
-    wrap.clientWidth-padding;
-
-  const ah=
-    wrap.clientHeight-padding;
-
-  const baseW=900;
-  const baseH=520;
-
-  const ratio=
-    baseW/baseH;
-
-  let nw,
-      nh;
-
-  if(
-    aw/ah>ratio
-  ){
-
-    nh=
-      Math.min(
-        baseH,
-        ah
-      );
-
-    nw=
-      nh*ratio;
-
-  }
-
-  else{
-
-    nw=
-      Math.min(
-        baseW,
-        aw
-      );
-
-    nh=
-      nw/ratio;
-
-  }
-
-  nw=
-    Math.max(
-      100,
-      Math.round(nw)
-    );
-
-  nh=
-    Math.max(
-      60,
-      Math.round(nh)
-    );
-
-  if(
-    Math.abs(
-      canvas.getWidth()-nw
-    )>4||
-    Math.abs(
-      canvas.getHeight()-nh
-    )>4
-  ){
-
-    canvas.setDimensions({
-
-      width:nw,
-      height:nh
-
-    });
-
-    canvas.requestRenderAll();
-
-  }
-
-}
-
-
-window.addEventListener(
-  'resize',
-  ()=>setTimeout(
-    fitCanvas,
-    100
-  )
-);
-
-
-window.addEventListener(
-  'orientationchange',
-  ()=>setTimeout(
-    fitCanvas,
-    200
-  )
-);
-
-
-setMode('select');
-
-setStatus('準備完了');
-
-setTimeout(
-  fitCanvas,
-  400
-);
-
+  }, 400);
+})();
 </script>
-
 </body>
 </html>
-```
