@@ -10,170 +10,195 @@
 html, body { width: 100%; height: 100%; overflow: hidden; }
 body {
   font-family: "Segoe UI", "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif;
-  background: #e8eaed;
+  background: #f3f3f3;
   color: #222;
   display: flex;
-  gap: 12px;
-  padding: 12px;
+  flex-direction: column;
 }
-.panel {
+
+/* ===== 上部ツールバー（Excel風） ===== */
+.toolbar {
   background: #fff;
-  width: 360px;
-  min-width: 360px;
-  height: 100%;
-  padding: 14px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.08);
-  overflow-y: auto;
-  overflow-x: hidden;
+  border-bottom: 1px solid #d0d0d0;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
   flex-shrink: 0;
+  z-index: 10;
 }
-.panel h1 { font-size: 17px; margin-bottom: 0; }
-.panel .subtitle { color: #666; font-size: 11px; margin-bottom: 4px; }
-.section {
-  border-top: 1px solid #eee;
-  padding-top: 10px;
+.toolbar-row {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 0;
+  border-bottom: 1px solid #eee;
+  padding: 0 4px;
 }
-.section-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: #444;
-  letter-spacing: .02em;
-  margin-bottom: 2px;
-}
-.field { display: flex; flex-direction: column; gap: 4px; }
-.field label, .row label {
-  font-size: .78rem;
-  font-weight: 600;
-  color: #444;
-}
-.row { display: flex; gap: 8px; align-items: center; }
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.inline-check {
-  font-size: .78rem;
-  font-weight: 600;
+.toolbar-row:last-child { border-bottom: none; }
+.group {
   display: flex;
   align-items: center;
   gap: 6px;
-  cursor: pointer;
-  user-select: none;
-}
-input[type="text"], input[type="number"], select {
-  width: 100%;
-  padding: 7px 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-family: inherit;
-  font-size: 13px;
-  background: #fff;
-}
-input[type="text"]:focus, input[type="number"]:focus, select:focus {
-  outline: none;
-  border-color: #4a90e2;
-  box-shadow: 0 0 0 2px rgba(74,144,226,.2);
-}
-input[type="color"] {
-  width: 42px;
-  height: 30px;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  padding: 2px;
-  background: #fff;
-  border-radius: 5px;
+  padding: 6px 10px;
+  border-right: 1px solid #e8e8e8;
   flex-shrink: 0;
 }
-input[type="range"] { width: 100%; accent-color: #4a90e2; }
-input[type="checkbox"] { width: 16px; height: 16px; accent-color: #4a90e2; flex-shrink: 0; }
+.group:last-child { border-right: none; }
+.group-label {
+  font-size: 10px;
+  color: #888;
+  text-align: center;
+  width: 100%;
+  margin-top: 2px;
+  letter-spacing: .02em;
+}
+.group-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.group-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+input[type="text"] {
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 13px;
+  width: 140px;
+  background: #fff;
+}
+input[type="text"]:focus { outline: none; border-color: #4a90e2; }
+select {
+  padding: 5px 6px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 12px;
+  background: #fff;
+  max-width: 160px;
+}
+select:focus { outline: none; border-color: #4a90e2; }
+input[type="color"] {
+  width: 28px;
+  height: 26px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  padding: 1px;
+  background: #fff;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+input[type="range"] {
+  width: 80px;
+  accent-color: #4a90e2;
+  vertical-align: middle;
+}
+input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: #4a90e2;
+  flex-shrink: 0;
+}
+.val {
+  font-size: 11px;
+  color: #555;
+  min-width: 22px;
+  text-align: right;
+}
 button {
-  padding: 9px 10px;
+  padding: 5px 10px;
   font-family: inherit;
   font-size: 12px;
   font-weight: 600;
-  background: #4a90e2;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
+  background: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 3px;
   cursor: pointer;
   white-space: nowrap;
-  transition: background .12s, transform .05s;
+  transition: background .1s;
   -webkit-tap-highlight-color: transparent;
 }
-button:hover { background: #357abd; }
-button:active { background: #2868a8; transform: scale(.98); }
-button.secondary { background: #f0f2f5; color: #333; }
-button.secondary:hover { background: #e0e3e8; }
-button.danger { background: #e74c3c; color: #fff; }
-button.danger:hover { background: #c0392b; }
-button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
-.mode { display: flex; gap: 4px; }
-.mode button { flex: 1; }
-.mode button.active { background: #2c6cb0; color: #fff; }
-.value { font-size: 11px; color: #666; min-width: 28px; text-align: right; }
-.hint {
-  font-size: 10.5px;
-  color: #888;
-  line-height: 1.4;
-  background: #f7f8fa;
-  padding: 6px 8px;
-  border-radius: 5px;
+button:hover { background: #e4e4e4; }
+button:active { background: #d8d8d8; }
+button.primary {
+  background: #4a90e2;
+  color: #fff;
+  border-color: #3a7bc8;
 }
-.canvas-area {
+button.primary:hover { background: #357abd; }
+button.danger {
+  background: #fff;
+  color: #c0392b;
+  border-color: #e0b0b0;
+}
+button.danger:hover { background: #fdecea; }
+button:disabled { opacity: .4; cursor: not-allowed; }
+button.active {
+  background: #4a90e2;
+  color: #fff;
+  border-color: #3a7bc8;
+}
+.chk {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* ===== キャンバス ===== */
+.main {
   flex: 1;
-  min-width: 0;
   min-height: 0;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  background: #c8ccd0;
 }
 .canvas-wrap {
   flex: 1;
-  min-width: 0;
   min-height: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: auto;
-  padding: 12px;
-  background: #d0d4d8;
-  border-radius: 8px;
+  padding: 16px;
   -webkit-overflow-scrolling: touch;
 }
 #canvas-container {
   background: #fff;
-  border: 1px solid #bbb;
-  box-shadow: 0 3px 14px rgba(0,0,0,.12);
+  border: 1px solid #aaa;
+  box-shadow: 0 2px 12px rgba(0,0,0,.15);
   line-height: 0;
   flex-shrink: 0;
 }
 #c { display: block; touch-action: none; }
+
+/* ===== ステータスバー ===== */
 .status {
   flex-shrink: 0;
   font-size: 11px;
   color: #555;
-  background: #fff;
-  border-radius: 5px;
-  padding: 7px 12px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  background: #f0f0f0;
+  border-top: 1px solid #d0d0d0;
+  padding: 4px 12px;
 }
+
 .preload { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
+
 @media (max-width: 900px) {
-  html, body { overflow: auto; height: auto; min-height: 100%; }
-  body { padding: 8px; gap: 8px; flex-direction: column; }
-  .panel { width: 100%; min-width: 0; height: auto; max-height: none; }
-  .canvas-area { width: 100%; min-height: 50vh; height: auto; }
-}
-@media (max-width: 480px) {
-  body { padding: 6px; gap: 6px; }
-  .panel { padding: 10px; }
-  button { padding: 8px 6px; font-size: 11px; }
-  .canvas-wrap { padding: 6px; }
+  .toolbar-row { flex-wrap: wrap; }
+  .group { border-right: none; border-bottom: 1px solid #eee; }
+  input[type="text"] { width: 110px; }
+  select { max-width: 130px; }
+  input[type="range"] { width: 60px; }
 }
 </style>
 </head>
@@ -183,188 +208,167 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 <div class="preload" style="font-family:'Hachi Maru Pop'">a</div>
 <div class="preload" style="font-family:'M PLUS Rounded 1c'">a</div>
 
-<div class="panel">
-  <h1>VTuberロゴメーカー</h1>
-  <p class="subtitle">テキストを追加 → 選択して色・縁・影を調整。ドラッグで移動できます。</p>
-
-  <!-- テキスト追加 -->
-  <div class="section" style="border-top:none;padding-top:0">
-    <div class="section-title">① テキストを追加</div>
-    <div class="field">
-      <label>テキスト</label>
-      <div class="row">
-        <input type="text" id="textInput" value="ドル鯖" placeholder="名前を入力">
-        <button id="addTextBtn">追加</button>
-      </div>
-    </div>
-    <div class="field">
-      <label>フォント</label>
-      <select id="fontSelect">
-        <option value="Rampart One" selected>Rampart One（立体）</option>
-        <option value="Dela Gothic One">Dela Gothic One（太ゴ）</option>
-        <option value="Yomogi">Yomogi（手書き）</option>
-        <option value="Hachi Maru Pop">Hachi Maru Pop（ポップ）</option>
-        <option value="Zen Maru Gothic">Zen Maru Gothic（丸ゴ）</option>
-        <option value="M PLUS Rounded 1c">M PLUS Rounded</option>
-        <option value="Noto Sans JP">Noto Sans JP</option>
-        <option value="Noto Serif JP">Noto Serif JP（明朝）</option>
-        <option value="Shippori Mincho">Shippori Mincho</option>
-        <option value="Kaisei Decol">Kaisei Decol</option>
-        <option value="Reggae One">Reggae One</option>
-        <option value="Potta One">Potta One</option>
-        <option value="Stick">Stick</option>
-        <option value="RocknRoll One">RocknRoll One</option>
-        <option value="DotGothic16">DotGothic16（ドット）</option>
-        <option value="Sawarabi Gothic">Sawarabi Gothic</option>
-        <option value="Sawarabi Mincho">Sawarabi Mincho</option>
-        <option value="Kosugi Maru">Kosugi Maru</option>
-        <option value="Comic Sans MS">Comic Sans MS</option>
-        <option value="Impact">Impact</option>
-        <option value="Arial Black">Arial Black</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>文字サイズ <span id="fontSizeVal" class="value">72</span></label>
-      <input type="range" id="fontSize" min="20" max="180" value="72">
-    </div>
-  </div>
-
-  <!-- 文字色・塗り -->
-  <div class="section">
-    <div class="section-title">② 文字の色</div>
-    <div class="row">
-      <div class="field" style="flex:1">
-        <label>文字色</label>
-        <div class="row">
-          <input type="color" id="textColor" value="#0055ff">
-          <span style="font-size:11px;color:#666">メイン</span>
+<!-- ===== 上部ツールバー ===== -->
+<div class="toolbar">
+  <!-- 1行目：テキスト・フォント・サイズ・色・縁 -->
+  <div class="toolbar-row">
+    <div class="group">
+      <div class="group-inner">
+        <div class="group-controls">
+          <input type="text" id="textInput" value="ドル鯖" placeholder="テキスト">
+          <button class="primary" id="addTextBtn">追加</button>
         </div>
+        <div class="group-label">テキスト</div>
       </div>
-      <div class="field" style="flex:1">
-        <label>塗り色（下側）</label>
-        <div class="row">
-          <input type="color" id="midColor" value="#8ec8ff">
-          <button class="secondary" id="syncMidBtn" style="padding:6px 8px;font-size:11px">文字色に合わせる</button>
+    </div>
+
+    <div class="group">
+      <div class="group-inner">
+        <div class="group-controls">
+          <select id="fontSelect">
+            <option value="Rampart One" selected>Rampart One</option>
+            <option value="Dela Gothic One">Dela Gothic One</option>
+            <option value="Yomogi">Yomogi</option>
+            <option value="Hachi Maru Pop">Hachi Maru Pop</option>
+            <option value="Zen Maru Gothic">Zen Maru Gothic</option>
+            <option value="M PLUS Rounded 1c">M PLUS Rounded</option>
+            <option value="Noto Sans JP">Noto Sans JP</option>
+            <option value="Noto Serif JP">Noto Serif JP</option>
+            <option value="Shippori Mincho">Shippori Mincho</option>
+            <option value="Kaisei Decol">Kaisei Decol</option>
+            <option value="Reggae One">Reggae One</option>
+            <option value="Potta One">Potta One</option>
+            <option value="Stick">Stick</option>
+            <option value="RocknRoll One">RocknRoll One</option>
+            <option value="DotGothic16">DotGothic16</option>
+            <option value="Sawarabi Gothic">Sawarabi Gothic</option>
+            <option value="Sawarabi Mincho">Sawarabi Mincho</option>
+            <option value="Kosugi Maru">Kosugi Maru</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+            <option value="Impact">Impact</option>
+            <option value="Arial Black">Arial Black</option>
+          </select>
         </div>
+        <div class="group-label">フォント</div>
       </div>
     </div>
-    <label class="inline-check">
-      <input type="checkbox" id="gradient">
-      グラデーション（上：文字色 → 下：塗り色）
-    </label>
-  </div>
 
-  <!-- 縁 -->
-  <div class="section">
-    <div class="section-title">③ 縁（アウトライン）</div>
-    <div class="row">
-      <div class="field" style="flex:1">
-        <label>縁の色</label>
-        <input type="color" id="strokeColor" value="#ff2200">
-      </div>
-      <div class="field" style="flex:1">
-        <label>縁の太さ <span id="strokeWidthVal" class="value">12</span></label>
-        <input type="range" id="strokeWidth" min="0" max="40" value="12">
+    <div class="group">
+      <div class="group-inner">
+        <div class="group-controls">
+          <input type="range" id="fontSize" min="20" max="180" value="72">
+          <span class="val" id="fontSizeVal">72</span>
+        </div>
+        <div class="group-label">サイズ</div>
       </div>
     </div>
-    <label class="inline-check">
-      <input type="checkbox" id="outer" checked>
-      外側のみ（文字の中を潰さない）
-    </label>
-    <p class="hint">チェックON＝縁は文字の外側だけに付きます。OFF＝通常の縁（中も少し染まります）。</p>
-  </div>
 
-  <!-- 影 -->
-  <div class="section">
-    <div class="section-title">④ 影</div>
-    <div class="grid2">
-      <div class="field">
-        <label>影の色</label>
-        <input type="color" id="shadowColor" value="#000000">
-      </div>
-      <div class="field">
-        <label>ぼかし</label>
-        <input type="number" id="shadowBlur" min="0" max="80" value="8">
+    <div class="group">
+      <div class="group-inner">
+        <div class="group-controls">
+          <input type="color" id="textColor" value="#0055ff" title="文字色">
+          <input type="color" id="midColor" value="#8ec8ff" title="塗り色">
+          <label class="chk"><input type="checkbox" id="gradient"> グラデ</label>
+        </div>
+        <div class="group-label">文字色 / 塗り色</div>
       </div>
     </div>
-    <div class="field">
-      <label>影のズレ <span id="shadowOffsetVal" class="value">5</span></label>
-      <input type="range" id="shadowOffset" min="-40" max="40" value="5">
+
+    <div class="group">
+      <div class="group-inner">
+        <div class="group-controls">
+          <input type="color" id="strokeColor" value="#ff2200" title="縁色">
+          <input type="range" id="strokeWidth" min="0" max="40" value="12">
+          <span class="val" id="strokeWidthVal">12</span>
+          <label class="chk"><input type="checkbox" id="outer" checked> 外側のみ</label>
+        </div>
+        <div class="group-label">縁</div>
+      </div>
     </div>
   </div>
 
-  <!-- 描画モード -->
-  <div class="section">
-    <div class="section-title">⑤ 描画・編集</div>
-    <div class="mode">
-      <button id="selectBtn" class="active">選択・移動</button>
-      <button id="penBtn">ペン</button>
-      <button id="eraserBtn">消しゴム</button>
+  <!-- 2行目：モード・図形・操作・保存 -->
+  <div class="toolbar-row">
+    <div class="group">
+      <div class="group-inner">
+        <div class="group-controls">
+          <button id="selectBtn" class="active">選択</button>
+          <button id="penBtn">ペン</button>
+          <button id="eraserBtn">消</button>
+          <input type="color" id="penColor" value="#000000" title="ペン色">
+          <input type="range" id="penWidth" min="1" max="40" value="6">
+          <span class="val" id="penWidthVal">6</span>
+        </div>
+        <div class="group-label">モード</div>
+      </div>
     </div>
-    <div class="row">
-      <input type="color" id="penColor" value="#000000">
-      <input type="range" id="penWidth" min="1" max="40" value="6">
-      <span class="value" id="penWidthVal">6</span>
-    </div>
-    <p class="hint">「選択・移動」でオブジェクトをドラッグして動かせます。ダブルクリックで文字編集。</p>
-  </div>
 
-  <!-- 図形・画像 -->
-  <div class="section">
-    <div class="section-title">⑥ 図形・画像を追加</div>
-    <div class="grid2">
-      <button id="addRectBtn" class="secondary">□ 四角</button>
-      <button id="addCircleBtn" class="secondary">○ 丸</button>
-      <button id="addTriangleBtn" class="secondary">△ 三角</button>
-      <button id="importImageBtn" class="secondary">🖼 画像</button>
+    <div class="group">
+      <div class="group-inner">
+        <div class="group-controls">
+          <button id="addRectBtn">□</button>
+          <button id="addCircleBtn">○</button>
+          <button id="addTriangleBtn">△</button>
+          <button id="importImageBtn">画像</button>
+        </div>
+        <div class="group-label">図形</div>
+      </div>
     </div>
     <input type="file" id="imageInput" accept="image/*" style="display:none">
-  </div>
 
-  <!-- 整列・削除 -->
-  <div class="section">
-    <div class="section-title">⑦ 並べ替え・削除</div>
-    <div class="grid2">
-      <button id="bringForwardBtn" class="secondary">前面へ</button>
-      <button id="sendBackwardBtn" class="secondary">背面へ</button>
-      <button id="deleteBtn" class="danger">選択を削除</button>
-      <button id="clearBtn" class="danger">全部消す</button>
+    <div class="group">
+      <div class="group-inner">
+        <div class="group-controls">
+          <button id="bringForwardBtn">前面</button>
+          <button id="sendBackwardBtn">背面</button>
+          <button id="deleteBtn" class="danger">削除</button>
+          <button id="clearBtn" class="danger">全消</button>
+        </div>
+        <div class="group-label">操作</div>
+      </div>
     </div>
-    <div class="grid2" style="margin-top:4px">
-      <button id="undoBtn" class="secondary">↩ 戻る</button>
-      <button id="redoBtn" class="secondary">進む ↪</button>
-    </div>
-  </div>
 
-  <!-- 保存 -->
-  <div class="section">
-    <div class="section-title">⑧ 保存</div>
-    <div class="row">
-      <select id="exportScale" style="width:auto;min-width:70px">
-        <option value="1">1x</option>
-        <option value="2" selected>2x</option>
-        <option value="3">3x</option>
-        <option value="4">4x</option>
-      </select>
-      <button id="downloadBtn" style="flex:1">背景透過PNGで保存</button>
+    <div class="group">
+      <div class="group-inner">
+        <div class="group-controls">
+          <button id="undoBtn">↩</button>
+          <button id="redoBtn">↪</button>
+        </div>
+        <div class="group-label">履歴</div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-inner">
+        <div class="group-controls">
+          <select id="exportScale">
+            <option value="1">1x</option>
+            <option value="2" selected>2x</option>
+            <option value="3">3x</option>
+            <option value="4">4x</option>
+          </select>
+          <button class="primary" id="downloadBtn">PNG保存</button>
+        </div>
+        <div class="group-label">保存</div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="canvas-area">
+<!-- ===== キャンバス ===== -->
+<div class="main">
   <div class="canvas-wrap">
     <div id="canvas-container">
       <canvas id="c" width="900" height="520"></canvas>
     </div>
   </div>
   <div class="status">
-    <span id="statusInfo">準備完了 — 「追加」でテキストを入れて、ドラッグで移動できます</span>
+    <span id="statusInfo">準備完了 — テキスト追加 → ドラッグで移動</span>
   </div>
 </div>
 
 <script>
 (function () {
-  // Google Fonts
   const fontLink = document.createElement('link');
   fontLink.href = 'https://fonts.googleapis.com/css2?family=Yomogi&family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Rampart+One&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600&family=Shippori+Mincho:wght@400;600&family=Kaisei+Decol:wght@400;500;700&family=Reggae+One&family=Potta+One&family=Stick&family=RocknRoll+One&family=DotGothic16&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Kosugi+Maru&display=swap';
   fontLink.rel = 'stylesheet';
@@ -378,7 +382,6 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     stopContextMenu: true
   });
 
-  // テキストのコントロールを大きくして掴みやすく
   fabric.Object.prototype.set({
     transparentCorners: false,
     borderColor: '#4a90e2',
@@ -394,8 +397,6 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
   const history = [];
   let historyIndex = -1;
   const MAX_HISTORY = 40;
-
-  // 外側縁を少し太くするための加算（見た目が自然になる）
   const OUTER_EXTRA_RATIO = 1.35;
   const OUTER_EXTRA_MIN = 8;
 
@@ -407,16 +408,11 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
   const fontSizeVal = $('fontSizeVal');
   const textColor = $('textColor');
   const midColor = $('midColor');
-  const syncMidBtn = $('syncMidBtn');
   const gradient = $('gradient');
   const strokeColor = $('strokeColor');
   const strokeWidth = $('strokeWidth');
   const strokeWidthVal = $('strokeWidthVal');
   const outer = $('outer');
-  const shadowColor = $('shadowColor');
-  const shadowBlur = $('shadowBlur');
-  const shadowOffset = $('shadowOffset');
-  const shadowOffsetVal = $('shadowOffsetVal');
   const penColor = $('penColor');
   const penWidth = $('penWidth');
   const penWidthVal = $('penWidthVal');
@@ -438,18 +434,14 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
   const exportScale = $('exportScale');
   const statusInfo = $('statusInfo');
 
-  function setStatus(msg) {
-    statusInfo.textContent = msg;
-  }
+  function setStatus(msg) { statusInfo.textContent = msg; }
 
-  // ---------- History ----------
   function saveHistory() {
     if (isRestoring || isInternal) return;
     history.splice(historyIndex + 1);
     history.push(canvas.toJSON([
       'selectable', 'evented', 'isOutline', 'ownerId', 'textId',
       'outlineW', 'outlineCol', 'outerOnly',
-      'shadowOn', 'shadowBlurVal', 'shadowOffVal', 'shadowColVal',
       'gradOn', 'textColVal', 'fillColVal'
     ]));
     if (history.length > MAX_HISTORY) history.shift();
@@ -467,20 +459,16 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     isRestoring = true;
     canvas.loadFromJSON(history[idx], () => {
       canvas.getObjects().forEach(o => {
-        if (o.isOutline) {
-          o.selectable = false;
-          o.evented = false;
-        }
+        if (o.isOutline) { o.selectable = false; o.evented = false; }
       });
       canvas.renderAll();
       isRestoring = false;
       historyIndex = idx;
       updateHistoryButtons();
-      setStatus('履歴を復元しました');
+      setStatus('履歴を復元');
     });
   }
 
-  // ---------- Outline helpers ----------
   function getOutline(textObj) {
     if (!textObj || textObj.isOutline || !textObj.textId) return null;
     return canvas.getObjects().find(o => o.isOutline && o.ownerId === textObj.textId) || null;
@@ -502,17 +490,6 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
         { offset: 0, color: obj.textColVal || textColor.value },
         { offset: 1, color: obj.fillColVal || midColor.value }
       ]
-    });
-  }
-
-  function makeShadow(obj) {
-    if (!obj.shadowOn) return null;
-    const off = parseInt(obj.shadowOffVal) || 0;
-    return new fabric.Shadow({
-      color: obj.shadowColVal || shadowColor.value,
-      blur: parseInt(obj.shadowBlurVal) || 0,
-      offsetX: off,
-      offsetY: off
     });
   }
 
@@ -540,21 +517,15 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
       hasBorders: true,
       lockMovementX: false,
       lockMovementY: false,
-      // custom props
       textId: id,
       outlineW: w,
       outlineCol: strokeColor.value,
       outerOnly: outer.checked,
-      shadowOn: true,
-      shadowColVal: shadowColor.value,
-      shadowBlurVal: parseInt(shadowBlur.value) || 0,
-      shadowOffVal: parseInt(shadowOffset.value) || 0,
       gradOn: gradient.checked,
       textColVal: textColor.value,
       fillColVal: midColor.value
     });
     obj.fill = makeGradient(obj);
-    obj.shadow = makeShadow(obj);
     return obj;
   }
 
@@ -610,38 +581,25 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
       : Math.max(0, parseInt(obj.outlineW) || 0);
     const col = obj.outlineCol || strokeColor.value;
     o.set({
-      left: obj.left,
-      top: obj.top,
-      scaleX: obj.scaleX,
-      scaleY: obj.scaleY,
-      angle: obj.angle,
-      skewX: obj.skewX,
-      skewY: obj.skewY,
-      flipX: obj.flipX,
-      flipY: obj.flipY,
+      left: obj.left, top: obj.top,
+      scaleX: obj.scaleX, scaleY: obj.scaleY,
+      angle: obj.angle, skewX: obj.skewX, skewY: obj.skewY,
+      flipX: obj.flipX, flipY: obj.flipY,
       text: obj.text,
-      fontFamily: obj.fontFamily,
-      fontSize: obj.fontSize,
-      fontWeight: obj.fontWeight,
-      fontStyle: obj.fontStyle,
-      charSpacing: obj.charSpacing,
-      lineHeight: obj.lineHeight,
-      fill: col,
-      stroke: col,
-      strokeWidth: ow,
+      fontFamily: obj.fontFamily, fontSize: obj.fontSize,
+      fontWeight: obj.fontWeight, fontStyle: obj.fontStyle,
+      charSpacing: obj.charSpacing, lineHeight: obj.lineHeight,
+      fill: col, stroke: col, strokeWidth: ow,
       opacity: ow > 0 ? 1 : 0,
       objectCaching: false
     });
     o.initDimensions();
     o.setCoords();
     o.dirty = true;
-    // アウトラインをテキストのすぐ後ろに保つ
     const idx = canvas.getObjects().indexOf(obj);
     if (idx > 0) {
       const oIdx = canvas.getObjects().indexOf(o);
-      if (oIdx !== idx - 1) {
-        canvas.moveTo(o, Math.max(0, idx - 1));
-      }
+      if (oIdx !== idx - 1) canvas.moveTo(o, Math.max(0, idx - 1));
     }
     canvas.requestRenderAll();
   }
@@ -654,14 +612,6 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     isInternal = false;
     canvas.setActiveObject(obj);
     canvas.requestRenderAll();
-    // 編集状態に入ると移動しにくくなるので、追加直後は編集しない
-    setTimeout(() => {
-      try {
-        if (obj.enterEditing) {
-          // 意図的に編集モードにしない（移動優先）
-        }
-      } catch (e) {}
-    }, 0);
     saveHistory();
   }
 
@@ -677,40 +627,24 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     saveHistory();
   }
 
-  // ---------- Events: keep outline in sync ----------
   canvas.on('object:modified', e => {
-    if (!isRestoring && e.target && !e.target.isOutline) {
-      syncOutline(e.target);
-    }
+    if (!isRestoring && e.target && !e.target.isOutline) syncOutline(e.target);
     if (!isInternal) saveHistory();
   });
-
-  canvas.on('object:added', () => {
-    if (!isRestoring && !isInternal) saveHistory();
-  });
-
-  canvas.on('object:removed', () => {
-    if (!isRestoring && !isInternal) saveHistory();
-  });
-
-  canvas.on('path:created', () => {
-    if (!isInternal) saveHistory();
-  });
-
+  canvas.on('object:added', () => { if (!isRestoring && !isInternal) saveHistory(); });
+  canvas.on('object:removed', () => { if (!isRestoring && !isInternal) saveHistory(); });
+  canvas.on('path:created', () => { if (!isInternal) saveHistory(); });
   ['moving', 'scaling', 'rotating', 'skewing'].forEach(ev => {
     canvas.on('object:' + ev, e => {
       if (e.target && !e.target.isOutline) syncOutline(e.target);
     });
   });
-
   canvas.on('text:changed', e => {
     if (e.target && !e.target.isOutline) {
       syncOutline(e.target);
       if (!isInternal) saveHistory();
     }
   });
-
-  // 選択時にアウトラインを掴んでしまわないように
   canvas.on('selection:created', e => {
     const t = e.selected && e.selected[0];
     if (t && t.isOutline) {
@@ -721,10 +655,8 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     }
     updateControlsFromObject();
   });
-
   canvas.on('selection:updated', updateControlsFromObject);
 
-  // ---------- Mode ----------
   function setMode(mode) {
     [penBtn, eraserBtn, selectBtn].forEach(b => b.classList.remove('active'));
     canvas.isDrawingMode = false;
@@ -737,7 +669,7 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
       brush.width = parseInt(penWidth.value);
       brush.globalCompositeOperation = 'source-over';
       canvas.freeDrawingBrush = brush;
-      setStatus('ペンモード — 線を描けます');
+      setStatus('ペンモード');
     } else if (mode === 'eraser') {
       eraserBtn.classList.add('active');
       canvas.isDrawingMode = true;
@@ -747,33 +679,21 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
       brush.globalCompositeOperation = 'destination-out';
       canvas.freeDrawingBrush = brush;
       isEraser = true;
-      setStatus('消しゴムモード — 透過で消します');
+      setStatus('消しゴム');
     } else {
       selectBtn.classList.add('active');
-      setStatus('選択・移動モード — オブジェクトをドラッグして動かせます');
+      setStatus('選択・移動 — ドラッグで移動、ダブルクリックで編集');
     }
   }
 
-  // ---------- UI bindings ----------
   addTextBtn.onclick = () => {
     const text = textInput.value.trim() || 'テキスト';
     const f = fontSelect.value;
     document.fonts.load(`16px "${f}"`)
-      .then(() => {
-        addTextWithOutline(createText(text));
-        setMode('select');
-        setStatus('テキストを追加しました — ドラッグで移動、ダブルクリックで編集');
-      })
-      .catch(() => {
-        addTextWithOutline(createText(text));
-        setMode('select');
-        setStatus('テキストを追加しました — ドラッグで移動、ダブルクリックで編集');
-      });
+      .then(() => { addTextWithOutline(createText(text)); setMode('select'); setStatus('テキスト追加 — ドラッグで移動'); })
+      .catch(() => { addTextWithOutline(createText(text)); setMode('select'); setStatus('テキスト追加 — ドラッグで移動'); });
   };
-
-  textInput.onkeydown = e => {
-    if (e.key === 'Enter') addTextBtn.click();
-  };
+  textInput.onkeydown = e => { if (e.key === 'Enter') addTextBtn.click(); };
 
   fontSelect.onchange = () => {
     const a = canvas.getActiveObject();
@@ -785,7 +705,6 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
       syncOutline(a);
       canvas.requestRenderAll();
       saveHistory();
-      setStatus('フォント変更: ' + f);
     });
   };
 
@@ -816,22 +735,11 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     syncOutline(a);
     canvas.requestRenderAll();
   }
-
   textColor.oninput = applyTextColors;
   textColor.onchange = saveHistory;
   midColor.oninput = applyTextColors;
   midColor.onchange = saveHistory;
-  gradient.onchange = () => {
-    applyTextColors();
-    saveHistory();
-  };
-
-  syncMidBtn.onclick = () => {
-    midColor.value = textColor.value;
-    applyTextColors();
-    setStatus('塗り色を文字色に合わせました');
-    saveHistory();
-  };
+  gradient.onchange = () => { applyTextColors(); saveHistory(); };
 
   function updateStroke() {
     strokeWidthVal.textContent = strokeWidth.value;
@@ -840,60 +748,25 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     const w = parseInt(strokeWidth.value) || 0;
     if (['i-text', 'text'].includes(a.type)) {
       a.set({
-        stroke: null,
-        strokeWidth: 0,
-        paintFirst: 'fill',
-        objectCaching: false,
-        outlineW: w,
-        outlineCol: strokeColor.value,
-        outerOnly: outer.checked
+        stroke: null, strokeWidth: 0, paintFirst: 'fill', objectCaching: false,
+        outlineW: w, outlineCol: strokeColor.value, outerOnly: outer.checked
       });
       syncOutline(a);
     } else if (['rect', 'circle', 'triangle'].includes(a.type)) {
-      a.set({
-        stroke: w > 0 ? strokeColor.value : null,
-        strokeWidth: w
-      });
+      a.set({ stroke: w > 0 ? strokeColor.value : null, strokeWidth: w });
     }
     canvas.requestRenderAll();
   }
-
   strokeColor.oninput = updateStroke;
   strokeWidth.oninput = updateStroke;
-  outer.onchange = () => {
-    updateStroke();
-    saveHistory();
-  };
+  outer.onchange = () => { updateStroke(); saveHistory(); };
   strokeColor.onchange = saveHistory;
   strokeWidth.onchange = saveHistory;
-
-  function updateShadow() {
-    const a = canvas.getActiveObject();
-    if (!a || !['i-text', 'text'].includes(a.type)) return;
-    a.shadowOn = true;
-    a.shadowColVal = shadowColor.value;
-    a.shadowBlurVal = parseInt(shadowBlur.value) || 0;
-    a.shadowOffVal = parseInt(shadowOffset.value) || 0;
-    a.shadow = makeShadow(a);
-    canvas.requestRenderAll();
-  }
-
-  shadowColor.oninput = updateShadow;
-  shadowBlur.oninput = updateShadow;
-  shadowOffset.oninput = () => {
-    shadowOffsetVal.textContent = shadowOffset.value;
-    updateShadow();
-  };
-  shadowColor.onchange = saveHistory;
-  shadowBlur.onchange = saveHistory;
-  shadowOffset.onchange = saveHistory;
 
   penWidth.oninput = () => {
     penWidthVal.textContent = penWidth.value;
     if (canvas.isDrawingMode && canvas.freeDrawingBrush) {
-      canvas.freeDrawingBrush.width = isEraser
-        ? parseInt(penWidth.value) * 2
-        : parseInt(penWidth.value);
+      canvas.freeDrawingBrush.width = isEraser ? parseInt(penWidth.value) * 2 : parseInt(penWidth.value);
     }
   };
   penColor.oninput = () => {
@@ -901,7 +774,6 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
       canvas.freeDrawingBrush.color = penColor.value;
     }
   };
-
   penBtn.onclick = () => setMode('pen');
   eraserBtn.onclick = () => setMode('eraser');
   selectBtn.onclick = () => setMode('select');
@@ -916,7 +788,6 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
       else canvas.sendToBack(o);
     }
   }
-
   bringForwardBtn.onclick = () => {
     const a = canvas.getActiveObject();
     if (!a) return;
@@ -925,7 +796,6 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     canvas.requestRenderAll();
     saveHistory();
   };
-
   sendBackwardBtn.onclick = () => {
     const a = canvas.getActiveObject();
     if (!a) return;
@@ -934,7 +804,6 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     canvas.requestRenderAll();
     saveHistory();
   };
-
   deleteBtn.onclick = () => {
     const a = canvas.getActiveObject();
     if (!a) return;
@@ -950,15 +819,12 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
   function addShape(type) {
     const w = parseInt(strokeWidth.value) || 0;
     const common = {
-      left: canvas.width / 2,
-      top: canvas.height / 2,
-      originX: 'center',
-      originY: 'center',
+      left: canvas.width / 2, top: canvas.height / 2,
+      originX: 'center', originY: 'center',
       fill: midColor.value,
       stroke: w > 0 ? strokeColor.value : null,
       strokeWidth: w,
-      strokeLineJoin: 'round',
-      strokeLineCap: 'round',
+      strokeLineJoin: 'round', strokeLineCap: 'round',
       objectCaching: false
     };
     let s;
@@ -970,10 +836,8 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     canvas.setActiveObject(s);
     canvas.requestRenderAll();
     setMode('select');
-    setStatus(type === 'rect' ? '四角を追加' : type === 'circle' ? '丸を追加' : '三角を追加');
     saveHistory();
   }
-
   addRectBtn.onclick = () => addShape('rect');
   addCircleBtn.onclick = () => addShape('circle');
   addTriangleBtn.onclick = () => addShape('triangle');
@@ -986,20 +850,12 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     reader.onload = ev => {
       fabric.Image.fromURL(ev.target.result, img => {
         const max = 400;
-        if (img.width > max || img.height > max) {
-          img.scale(Math.min(max / img.width, max / img.height));
-        }
-        img.set({
-          left: canvas.width / 2,
-          top: canvas.height / 2,
-          originX: 'center',
-          originY: 'center'
-        });
+        if (img.width > max || img.height > max) img.scale(Math.min(max / img.width, max / img.height));
+        img.set({ left: canvas.width / 2, top: canvas.height / 2, originX: 'center', originY: 'center' });
         canvas.add(img);
         canvas.setActiveObject(img);
         canvas.requestRenderAll();
         setMode('select');
-        setStatus('画像を追加しました');
         saveHistory();
       });
     };
@@ -1021,18 +877,18 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     a.download = 'vtuber-logo.png';
     a.href = data;
     a.click();
-    setStatus(`背景透過PNGを保存しました（${scale}x）`);
+    setStatus(`PNG保存完了（${scale}x）`);
   };
 
   clearBtn.onclick = () => {
-    if (confirm('キャンバスをすべて消去しますか？')) {
+    if (confirm('すべて消去しますか？')) {
       isInternal = true;
       canvas.clear();
       isInternal = false;
       canvas.backgroundColor = '#ffffff';
       canvas.requestRenderAll();
       saveHistory();
-      setStatus('すべて消去しました');
+      setStatus('すべて消去');
     }
   };
 
@@ -1041,16 +897,8 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
   document.addEventListener('keydown', e => {
     if (e.ctrlKey || e.metaKey) {
-      if (e.key.toLowerCase() === 'z') {
-        e.preventDefault();
-        if (historyIndex > 0) restoreHistory(historyIndex - 1);
-        return;
-      }
-      if (e.key.toLowerCase() === 'y') {
-        e.preventDefault();
-        if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1);
-        return;
-      }
+      if (e.key.toLowerCase() === 'z') { e.preventDefault(); if (historyIndex > 0) restoreHistory(historyIndex - 1); return; }
+      if (e.key.toLowerCase() === 'y') { e.preventDefault(); if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1); return; }
     }
     if (e.key === 'Delete' || e.key === 'Backspace') {
       if (canvas.getActiveObject()?.isEditing || document.activeElement === textInput) return;
@@ -1070,55 +918,32 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
     const a = canvas.getActiveObject();
     if (!a) return;
     if (['i-text', 'text'].includes(a.type)) {
-      if (a.fontFamily && Array.from(fontSelect.options).some(o => o.value === a.fontFamily)) {
-        fontSelect.value = a.fontFamily;
-      }
+      if (a.fontFamily && Array.from(fontSelect.options).some(o => o.value === a.fontFamily)) fontSelect.value = a.fontFamily;
       if (a.textColVal) textColor.value = a.textColVal;
       if (a.fillColVal) midColor.value = a.fillColVal;
-      if (typeof a.outlineW === 'number') {
-        strokeWidth.value = a.outlineW;
-        strokeWidthVal.textContent = a.outlineW;
-      }
+      if (typeof a.outlineW === 'number') { strokeWidth.value = a.outlineW; strokeWidthVal.textContent = a.outlineW; }
       if (a.outlineCol) strokeColor.value = a.outlineCol;
-      if (typeof a.fontSize === 'number') {
-        fontSize.value = a.fontSize;
-        fontSizeVal.textContent = a.fontSize;
-      }
-      if (typeof a.shadowColVal === 'string') shadowColor.value = a.shadowColVal;
-      if (typeof a.shadowBlurVal === 'number') shadowBlur.value = a.shadowBlurVal;
-      if (typeof a.shadowOffVal === 'number') {
-        shadowOffset.value = a.shadowOffVal;
-        shadowOffsetVal.textContent = a.shadowOffVal;
-      }
+      if (typeof a.fontSize === 'number') { fontSize.value = a.fontSize; fontSizeVal.textContent = a.fontSize; }
       gradient.checked = !!a.gradOn;
       outer.checked = a.outerOnly !== false;
     } else if (['rect', 'circle', 'triangle'].includes(a.type)) {
       if (a.fill && typeof a.fill === 'string') midColor.value = a.fill;
       if (a.stroke && typeof a.stroke === 'string') strokeColor.value = a.stroke;
-      if (typeof a.strokeWidth === 'number') {
-        strokeWidth.value = a.strokeWidth;
-        strokeWidthVal.textContent = a.strokeWidth;
-      }
+      if (typeof a.strokeWidth === 'number') { strokeWidth.value = a.strokeWidth; strokeWidthVal.textContent = a.strokeWidth; }
     }
   }
 
-  // キャンバスサイズフィット
   function fitCanvas() {
     const wrap = document.querySelector('.canvas-wrap');
     if (!wrap) return;
-    const padding = 20;
+    const padding = 24;
     const aw = wrap.clientWidth - padding;
     const ah = wrap.clientHeight - padding;
     const baseW = 900, baseH = 520;
     const ratio = baseW / baseH;
     let nw, nh;
-    if (aw / ah > ratio) {
-      nh = Math.min(baseH, ah);
-      nw = nh * ratio;
-    } else {
-      nw = Math.min(baseW, aw);
-      nh = nw / ratio;
-    }
+    if (aw / ah > ratio) { nh = Math.min(baseH, ah); nw = nh * ratio; }
+    else { nw = Math.min(baseW, aw); nh = nw / ratio; }
     nw = Math.max(100, Math.round(nw));
     nh = Math.max(60, Math.round(nh));
     if (Math.abs(canvas.getWidth() - nw) > 4 || Math.abs(canvas.getHeight() - nh) > 4) {
@@ -1131,11 +956,8 @@ button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
   window.addEventListener('orientationchange', () => setTimeout(fitCanvas, 200));
 
   setMode('select');
-  setStatus('準備完了 — 「追加」でテキストを入れて、ドラッグで移動できます');
-  setTimeout(() => {
-    fitCanvas();
-    saveHistory();
-  }, 400);
+  setStatus('準備完了 — テキスト追加 → ドラッグで移動');
+  setTimeout(() => { fitCanvas(); saveHistory(); }, 400);
 })();
 </script>
 </body>
