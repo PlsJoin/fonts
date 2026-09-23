@@ -15,8 +15,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-
-/* ===== 上部ツールバー（Excel風） ===== */
 .toolbar {
   background: #fff;
   border-bottom: 1px solid #d0d0d0;
@@ -61,7 +59,6 @@ body {
   align-items: center;
   gap: 5px;
 }
-
 input[type="text"] {
   padding: 5px 8px;
   border: 1px solid #ccc;
@@ -79,7 +76,7 @@ select {
   font-family: inherit;
   font-size: 12px;
   background: #fff;
-  max-width: 160px;
+  max-width: 200px;
 }
 select:focus { outline: none; border-color: #4a90e2; }
 input[type="color"] {
@@ -153,8 +150,6 @@ button.active {
   user-select: none;
   white-space: nowrap;
 }
-
-/* ===== キャンバス ===== */
 .main {
   flex: 1;
   min-height: 0;
@@ -180,8 +175,6 @@ button.active {
   flex-shrink: 0;
 }
 #c { display: block; touch-action: none; }
-
-/* ===== ステータスバー ===== */
 .status {
   flex-shrink: 0;
   font-size: 11px;
@@ -190,14 +183,12 @@ button.active {
   border-top: 1px solid #d0d0d0;
   padding: 4px 12px;
 }
-
 .preload { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
-
 @media (max-width: 900px) {
   .toolbar-row { flex-wrap: wrap; }
   .group { border-right: none; border-bottom: 1px solid #eee; }
   input[type="text"] { width: 110px; }
-  select { max-width: 130px; }
+  select { max-width: 160px; }
   input[type="range"] { width: 60px; }
 }
 </style>
@@ -208,9 +199,7 @@ button.active {
 <div class="preload" style="font-family:'Hachi Maru Pop'">a</div>
 <div class="preload" style="font-family:'M PLUS Rounded 1c'">a</div>
 
-<!-- ===== 上部ツールバー ===== -->
 <div class="toolbar">
-  <!-- 1行目：テキスト・フォント・サイズ・色・縁 -->
   <div class="toolbar-row">
     <div class="group">
       <div class="group-inner">
@@ -221,26 +210,25 @@ button.active {
         <div class="group-label">テキスト</div>
       </div>
     </div>
-
     <div class="group">
       <div class="group-inner">
         <div class="group-controls">
           <select id="fontSelect">
-            <option value="Rampart One" selected>Rampart One</option>
-            <option value="Dela Gothic One">Dela Gothic One</option>
-            <option value="Yomogi">Yomogi</option>
-            <option value="Hachi Maru Pop">Hachi Maru Pop</option>
-            <option value="Zen Maru Gothic">Zen Maru Gothic</option>
+            <option value="Rampart One" selected>Rampart One（立体）</option>
+            <option value="Dela Gothic One">Dela Gothic One（太ゴ）</option>
+            <option value="Yomogi">Yomogi（手書き）</option>
+            <option value="Hachi Maru Pop">Hachi Maru Pop（ポップ）</option>
+            <option value="Zen Maru Gothic">Zen Maru Gothic（丸ゴ）</option>
             <option value="M PLUS Rounded 1c">M PLUS Rounded</option>
             <option value="Noto Sans JP">Noto Sans JP</option>
-            <option value="Noto Serif JP">Noto Serif JP</option>
+            <option value="Noto Serif JP">Noto Serif JP（明朝）</option>
             <option value="Shippori Mincho">Shippori Mincho</option>
             <option value="Kaisei Decol">Kaisei Decol</option>
             <option value="Reggae One">Reggae One</option>
             <option value="Potta One">Potta One</option>
             <option value="Stick">Stick</option>
             <option value="RocknRoll One">RocknRoll One</option>
-            <option value="DotGothic16">DotGothic16</option>
+            <option value="DotGothic16">DotGothic16（ドット）</option>
             <option value="Sawarabi Gothic">Sawarabi Gothic</option>
             <option value="Sawarabi Mincho">Sawarabi Mincho</option>
             <option value="Kosugi Maru">Kosugi Maru</option>
@@ -252,7 +240,6 @@ button.active {
         <div class="group-label">フォント</div>
       </div>
     </div>
-
     <div class="group">
       <div class="group-inner">
         <div class="group-controls">
@@ -262,7 +249,6 @@ button.active {
         <div class="group-label">サイズ</div>
       </div>
     </div>
-
     <div class="group">
       <div class="group-inner">
         <div class="group-controls">
@@ -273,7 +259,6 @@ button.active {
         <div class="group-label">文字色 / 塗り色</div>
       </div>
     </div>
-
     <div class="group">
       <div class="group-inner">
         <div class="group-controls">
@@ -286,8 +271,6 @@ button.active {
       </div>
     </div>
   </div>
-
-  <!-- 2行目：モード・図形・操作・保存 -->
   <div class="toolbar-row">
     <div class="group">
       <div class="group-inner">
@@ -302,42 +285,50 @@ button.active {
         <div class="group-label">モード</div>
       </div>
     </div>
-
     <div class="group">
       <div class="group-inner">
         <div class="group-controls">
-          <button id="addRectBtn">□</button>
-          <button id="addCircleBtn">○</button>
-          <button id="addTriangleBtn">△</button>
+          <button id="addRectBtn">□ 四角</button>
+          <button id="addCircleBtn">○ 丸</button>
+          <button id="addTriangleBtn">△ 三角</button>
           <button id="importImageBtn">画像</button>
         </div>
         <div class="group-label">図形</div>
       </div>
     </div>
     <input type="file" id="imageInput" accept="image/*" style="display:none">
-
     <div class="group">
       <div class="group-inner">
         <div class="group-controls">
-          <button id="bringForwardBtn">前面</button>
-          <button id="sendBackwardBtn">背面</button>
-          <button id="deleteBtn" class="danger">削除</button>
-          <button id="clearBtn" class="danger">全消</button>
+          <span style="font-size:11px;color:#666">角丸</span>
+          <input type="range" id="cornerRadius" min="0" max="60" value="0" title="四角の角の丸み">
+          <span class="val" id="cornerRadiusVal">0</span>
         </div>
-        <div class="group-label">操作</div>
+        <div class="group-label">四角の角</div>
       </div>
     </div>
-
     <div class="group">
       <div class="group-inner">
         <div class="group-controls">
+          <button id="bringForwardBtn">前面へ</button>
+          <button id="sendBackwardBtn">背面へ</button>
+          <button id="bringToFrontBtn">最前面</button>
+          <button id="sendToBackBtn">最背面</button>
+        </div>
+        <div class="group-label">重ね順</div>
+      </div>
+    </div>
+    <div class="group">
+      <div class="group-inner">
+        <div class="group-controls">
+          <button id="deleteBtn" class="danger">削除</button>
+          <button id="clearBtn" class="danger">全消</button>
           <button id="undoBtn">↩</button>
           <button id="redoBtn">↪</button>
         </div>
-        <div class="group-label">履歴</div>
+        <div class="group-label">操作 / 履歴</div>
       </div>
     </div>
-
     <div class="group">
       <div class="group-inner">
         <div class="group-controls">
@@ -355,7 +346,6 @@ button.active {
   </div>
 </div>
 
-<!-- ===== キャンバス ===== -->
 <div class="main">
   <div class="canvas-wrap">
     <div id="canvas-container">
@@ -413,6 +403,8 @@ button.active {
   const strokeWidth = $('strokeWidth');
   const strokeWidthVal = $('strokeWidthVal');
   const outer = $('outer');
+  const cornerRadius = $('cornerRadius');
+  const cornerRadiusVal = $('cornerRadiusVal');
   const penColor = $('penColor');
   const penWidth = $('penWidth');
   const penWidthVal = $('penWidthVal');
@@ -421,6 +413,8 @@ button.active {
   const selectBtn = $('selectBtn');
   const bringForwardBtn = $('bringForwardBtn');
   const sendBackwardBtn = $('sendBackwardBtn');
+  const bringToFrontBtn = $('bringToFrontBtn');
+  const sendToBackBtn = $('sendToBackBtn');
   const deleteBtn = $('deleteBtn');
   const addRectBtn = $('addRectBtn');
   const addCircleBtn = $('addCircleBtn');
@@ -627,6 +621,43 @@ button.active {
     saveHistory();
   }
 
+  function moveObjectLayer(obj, action) {
+    if (!obj || obj.isOutline) return;
+    const outline = getOutline(obj);
+    isInternal = true;
+    if (action === 'forward') {
+      canvas.bringForward(obj);
+      if (outline) {
+        const idx = canvas.getObjects().indexOf(obj);
+        canvas.moveTo(outline, Math.max(0, idx - 1));
+      }
+    } else if (action === 'backward') {
+      if (outline) canvas.sendBackwards(outline);
+      canvas.sendBackwards(obj);
+      if (outline) {
+        const idx = canvas.getObjects().indexOf(obj);
+        canvas.moveTo(outline, Math.max(0, idx - 1));
+      }
+    } else if (action === 'front') {
+      canvas.bringToFront(obj);
+      if (outline) {
+        const idx = canvas.getObjects().indexOf(obj);
+        canvas.moveTo(outline, Math.max(0, idx - 1));
+      }
+    } else if (action === 'back') {
+      if (outline) canvas.sendToBack(outline);
+      canvas.sendToBack(obj);
+      if (outline) {
+        const idx = canvas.getObjects().indexOf(obj);
+        if (idx > 0) canvas.moveTo(outline, idx - 1);
+        else canvas.sendToBack(outline);
+      }
+    }
+    isInternal = false;
+    canvas.requestRenderAll();
+    saveHistory();
+  }
+
   canvas.on('object:modified', e => {
     if (!isRestoring && e.target && !e.target.isOutline) syncOutline(e.target);
     if (!isInternal) saveHistory();
@@ -689,7 +720,7 @@ button.active {
   addTextBtn.onclick = () => {
     const text = textInput.value.trim() || 'テキスト';
     const f = fontSelect.value;
-    document.fonts.load(`16px "${f}"`)
+    document.fonts.load('16px "' + f + '"')
       .then(() => { addTextWithOutline(createText(text)); setMode('select'); setStatus('テキスト追加 — ドラッグで移動'); })
       .catch(() => { addTextWithOutline(createText(text)); setMode('select'); setStatus('テキスト追加 — ドラッグで移動'); });
   };
@@ -699,7 +730,7 @@ button.active {
     const a = canvas.getActiveObject();
     if (!a || !['i-text', 'text'].includes(a.type)) return;
     const f = fontSelect.value;
-    document.fonts.load(`16px "${f}"`).finally(() => {
+    document.fonts.load('16px "' + f + '"').finally(() => {
       a.set({ fontFamily: f, objectCaching: false });
       a.initDimensions();
       syncOutline(a);
@@ -763,6 +794,17 @@ button.active {
   strokeColor.onchange = saveHistory;
   strokeWidth.onchange = saveHistory;
 
+  cornerRadius.oninput = () => {
+    cornerRadiusVal.textContent = cornerRadius.value;
+    const a = canvas.getActiveObject();
+    if (a && a.type === 'rect') {
+      const r = parseInt(cornerRadius.value) || 0;
+      a.set({ rx: r, ry: r });
+      canvas.requestRenderAll();
+    }
+  };
+  cornerRadius.onchange = saveHistory;
+
   penWidth.oninput = () => {
     penWidthVal.textContent = penWidth.value;
     if (canvas.isDrawingMode && canvas.freeDrawingBrush) {
@@ -778,32 +820,35 @@ button.active {
   eraserBtn.onclick = () => setMode('eraser');
   selectBtn.onclick = () => setMode('select');
 
-  function moveWithOutline(obj, dir) {
-    const o = getOutline(obj);
-    if (dir === 'forward') canvas.bringForward(obj);
-    else canvas.sendBackwards(obj);
-    if (o) {
-      const idx = canvas.getObjects().indexOf(obj);
-      if (idx > 0) canvas.moveTo(o, idx - 1);
-      else canvas.sendToBack(o);
-    }
-  }
   bringForwardBtn.onclick = () => {
     const a = canvas.getActiveObject();
-    if (!a) return;
-    if (['i-text', 'text'].includes(a.type)) moveWithOutline(a, 'forward');
-    else canvas.bringForward(a);
-    canvas.requestRenderAll();
-    saveHistory();
+    if (!a) { setStatus('オブジェクトを選択してください'); return; }
+    if (['i-text', 'text'].includes(a.type)) moveObjectLayer(a, 'forward');
+    else { canvas.bringForward(a); canvas.requestRenderAll(); saveHistory(); }
+    setStatus('前面へ移動');
   };
   sendBackwardBtn.onclick = () => {
     const a = canvas.getActiveObject();
-    if (!a) return;
-    if (['i-text', 'text'].includes(a.type)) moveWithOutline(a, 'backward');
-    else canvas.sendBackwards(a);
-    canvas.requestRenderAll();
-    saveHistory();
+    if (!a) { setStatus('オブジェクトを選択してください'); return; }
+    if (['i-text', 'text'].includes(a.type)) moveObjectLayer(a, 'backward');
+    else { canvas.sendBackwards(a); canvas.requestRenderAll(); saveHistory(); }
+    setStatus('背面へ移動');
   };
+  bringToFrontBtn.onclick = () => {
+    const a = canvas.getActiveObject();
+    if (!a) { setStatus('オブジェクトを選択してください'); return; }
+    if (['i-text', 'text'].includes(a.type)) moveObjectLayer(a, 'front');
+    else { canvas.bringToFront(a); canvas.requestRenderAll(); saveHistory(); }
+    setStatus('最前面へ');
+  };
+  sendToBackBtn.onclick = () => {
+    const a = canvas.getActiveObject();
+    if (!a) { setStatus('オブジェクトを選択してください'); return; }
+    if (['i-text', 'text'].includes(a.type)) moveObjectLayer(a, 'back');
+    else { canvas.sendToBack(a); canvas.requestRenderAll(); saveHistory(); }
+    setStatus('最背面へ');
+  };
+
   deleteBtn.onclick = () => {
     const a = canvas.getActiveObject();
     if (!a) return;
@@ -818,24 +863,33 @@ button.active {
 
   function addShape(type) {
     const w = parseInt(strokeWidth.value) || 0;
+    const r = parseInt(cornerRadius.value) || 0;
     const common = {
       left: canvas.width / 2, top: canvas.height / 2,
       originX: 'center', originY: 'center',
       fill: midColor.value,
       stroke: w > 0 ? strokeColor.value : null,
       strokeWidth: w,
-      strokeLineJoin: 'round', strokeLineCap: 'round',
-      objectCaching: false
+      strokeLineJoin: 'miter',
+      strokeLineCap: 'butt',
+      objectCaching: false,
+      selectable: true,
+      evented: true
     };
     let s;
-    if (type === 'rect') s = new fabric.Rect({ ...common, width: 120, height: 120, rx: 8, ry: 8 });
-    else if (type === 'circle') s = new fabric.Circle({ ...common, radius: 60 });
-    else if (type === 'triangle') s = new fabric.Triangle({ ...common, width: 120, height: 110 });
+    if (type === 'rect') {
+      s = new fabric.Rect({ ...common, width: 120, height: 120, rx: r, ry: r });
+    } else if (type === 'circle') {
+      s = new fabric.Circle({ ...common, radius: 60 });
+    } else if (type === 'triangle') {
+      s = new fabric.Triangle({ ...common, width: 120, height: 110 });
+    }
     if (!s) return;
     canvas.add(s);
     canvas.setActiveObject(s);
     canvas.requestRenderAll();
     setMode('select');
+    setStatus(type === 'rect' ? '四角を追加' : type === 'circle' ? '丸を追加' : '三角を追加');
     saveHistory();
   }
   addRectBtn.onclick = () => addShape('rect');
@@ -877,7 +931,7 @@ button.active {
     a.download = 'vtuber-logo.png';
     a.href = data;
     a.click();
-    setStatus(`PNG保存完了（${scale}x）`);
+    setStatus('PNG保存完了（' + scale + 'x）');
   };
 
   clearBtn.onclick = () => {
@@ -901,7 +955,8 @@ button.active {
       if (e.key.toLowerCase() === 'y') { e.preventDefault(); if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1); return; }
     }
     if (e.key === 'Delete' || e.key === 'Backspace') {
-      if (canvas.getActiveObject()?.isEditing || document.activeElement === textInput) return;
+      if (canvas.getActiveObject() && canvas.getActiveObject().isEditing) return;
+      if (document.activeElement === textInput) return;
       const a = canvas.getActiveObject();
       if (!a) return;
       if (['i-text', 'text'].includes(a.type)) removeTextWithOutline(a);
@@ -930,6 +985,11 @@ button.active {
       if (a.fill && typeof a.fill === 'string') midColor.value = a.fill;
       if (a.stroke && typeof a.stroke === 'string') strokeColor.value = a.stroke;
       if (typeof a.strokeWidth === 'number') { strokeWidth.value = a.strokeWidth; strokeWidthVal.textContent = a.strokeWidth; }
+      if (a.type === 'rect') {
+        const r = typeof a.rx === 'number' ? a.rx : 0;
+        cornerRadius.value = r;
+        cornerRadiusVal.textContent = r;
+      }
     }
   }
 
