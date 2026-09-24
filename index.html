@@ -1407,6 +1407,19 @@ function setTool(tool){
     }
 
 
+    if(tool === "image"){
+
+        const input = document.getElementById("imageInput");
+        if(input){
+            input.value = "";
+            input.click();
+        }
+        currentTool = "select";
+        canvas.selection = true;
+        canvas.isDrawingMode = false;
+    }
+
+
     const names = {
 
         select:"選択ツール",
@@ -1796,15 +1809,6 @@ canvas.on(
         }
 
 
-        if(currentTool === "image"){
-
-            document
-                .getElementById("imageInput")
-                .click();
-
-            setTool("select");
-
-        }
 
     }
 );
@@ -2531,7 +2535,6 @@ function textPanel(obj){
 
         ${shadowPanel(obj)}
 
-        ${glossPanel(obj)}
 
     `;
 
@@ -2817,7 +2820,6 @@ function shapePanel(obj){
 
         ${shadowPanel(obj)}
 
-        ${glossPanel(obj)}
 
     `;
 
@@ -3193,15 +3195,6 @@ function changeFill(color){
     );
 
 
-    /*
-       光沢がONの場合は
-       色変更後にも光沢を再適用
-    */
-
-    if(obj._glossEnabled)
-        applyGloss(obj);
-
-
     canvas.requestRenderAll();
 
     saveHistory();
@@ -3256,15 +3249,6 @@ function toggleGradient(enabled){
     }
 
 
-    /*
-       光沢はグラデーションの上に
-       直接書き換えない。
-    */
-
-    if(obj._glossEnabled)
-        applyGloss(obj);
-
-
     canvas.requestRenderAll();
 
     saveHistory();
@@ -3294,10 +3278,6 @@ function setGradientColor(number,color){
         applyGradient(obj);
 
 
-    if(obj._glossEnabled)
-        applyGloss(obj);
-
-
     canvas.requestRenderAll();
 
     saveHistory();
@@ -3322,10 +3302,6 @@ function setGradientDirection(direction){
 
     if(obj._gradientEnabled)
         applyGradient(obj);
-
-
-    if(obj._glossEnabled)
-        applyGloss(obj);
 
 
     canvas.requestRenderAll();
@@ -3485,10 +3461,6 @@ function setGlossStrength(value){
 
     obj._glossStrength =
         Number(value);
-
-
-    if(obj._glossEnabled)
-        applyGloss(obj);
 
 
     canvas.requestRenderAll();
