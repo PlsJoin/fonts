@@ -1482,6 +1482,10 @@ function addText(x,y){
 
                 strokeWidth:0,
 
+                paintFirst:"stroke",
+
+                strokeUniform:true,
+
                 originX:"left",
 
                 originY:"top",
@@ -1534,6 +1538,10 @@ function addRect(x,y){
 
             strokeWidth:0,
 
+            paintFirst:"stroke",
+
+            strokeUniform:true,
+
             rx:0,
 
             ry:0,
@@ -1571,6 +1579,10 @@ function addCircle(x,y){
 
             strokeWidth:0,
 
+            paintFirst:"stroke",
+
+            strokeUniform:true,
+
             originX:"center",
 
             originY:"center"
@@ -1605,6 +1617,10 @@ function addTriangle(x,y){
             stroke:null,
 
             strokeWidth:0,
+
+            paintFirst:"stroke",
+
+            strokeUniform:true,
 
             originX:"center",
 
@@ -1680,6 +1696,10 @@ function addStar(x,y){
                 stroke:null,
 
                 strokeWidth:0,
+
+                paintFirst:"stroke",
+
+                strokeUniform:true,
 
                 originX:"center",
 
@@ -2948,642 +2968,6 @@ function shadowPanel(obj){
 
 
 /* =========================================================
-   光沢
-========================================================= */
-
-function glossPanel(obj){
-
-    return `
-
-        <div class="section">
-
-            <div class="section-title">
-                光沢
-            </div>
-
-
-            <label class="check">
-
-                <input
-                    type="checkbox"
-                    ${obj._glossEnabled?"checked":""}
-                    onchange="toggleGloss(this.checked)"
-                >
-
-                光沢を使用
-
-            </label>
-
-
-            <div class="row">
-
-                <div class="label">
-                    強さ
-                </div>
-
-                <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value="${obj._glossStrength ?? 30}"
-                    oninput="setGlossStrength(this.value)"
-                >
-
-                <div class="range-value">
-                    ${obj._glossStrength ?? 30}
-                </div>
-
-            </div>
-
-
-            <div
-                style="
-                    font-size:10px;
-                    color:#888;
-                    line-height:1.6
-                "
-            >
-                元の色やグラデーションを壊さず、
-                上側に白いハイライトを加えます。
-            </div>
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   ペンツール設定
-========================================================= */
-
-function penToolPanel(){
-
-    return `
-
-        <div class="section">
-
-            <div class="section-title">
-                ペン設定
-            </div>
-
-            <div class="row">
-
-                <div class="label">
-                    色
-                </div>
-
-                <input
-                    type="color"
-                    value="${penColor}"
-                    oninput="changePenToolColor(this.value)"
-                >
-
-            </div>
-
-            <div class="row">
-
-                <div class="label">
-                    太さ
-                </div>
-
-                <input
-                    type="range"
-                    min="1"
-                    max="80"
-                    value="${penWidth}"
-                    oninput="changePenToolWidth(this.value)"
-                >
-
-                <div class="range-value" id="penToolWidthValue">
-                    ${penWidth}
-                </div>
-
-            </div>
-
-            <div style="
-                font-size:10px;
-                color:#888;
-                line-height:1.6;
-                margin-top:8px
-            ">
-                ペンを選んでいる間は、ここで設定した色と太さが
-                次に描く線へすぐ反映されます。
-            </div>
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   ペン
-========================================================= */
-
-function penPanel(obj){
-
-    return `
-
-        <div class="section">
-
-            <div class="section-title">
-                ペン
-            </div>
-
-
-            <div class="row">
-
-                <div class="label">
-                    色
-                </div>
-
-                <input
-                    type="color"
-                    value="${getColor(obj.stroke || '#222222')}"
-                    onchange="changePenColor(this.value)"
-                >
-
-            </div>
-
-
-            <div class="row">
-
-                <div class="label">
-                    太さ
-                </div>
-
-                <input
-                    type="range"
-                    min="1"
-                    max="80"
-                    value="${obj.strokeWidth || 8}"
-                    oninput="changePenWidth(this.value)"
-                >
-
-                <div class="range-value">
-                    ${obj.strokeWidth || 8}
-                </div>
-
-            </div>
-
-
-            ${shadowPanel(obj)}
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   画像
-========================================================= */
-
-function imagePanel(){
-
-    return `
-
-        <div class="section">
-
-            <div class="section-title">
-                画像
-            </div>
-
-            <div class="no-selection"
-                 style="padding:4px 0">
-
-                位置・大きさ・透明度などを
-                基本設定から変更できます。
-
-            </div>
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   色
-========================================================= */
-
-function changeFill(color){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    obj._baseFill =
-        color;
-
-
-    obj._gradientEnabled =
-        false;
-
-
-    obj.set(
-        "fill",
-        color
-    );
-
-
-    canvas.requestRenderAll();
-
-    saveHistory();
-
-    updateUI();
-
-}
-
-
-/* =========================================================
-   グラデーション
-========================================================= */
-
-let gradientMode="vertical";
-
-
-function toggleGradient(enabled){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    obj._gradientEnabled =
-        enabled;
-
-
-    if(enabled){
-
-        obj._gradientColor1 =
-            obj._gradientColor1 ||
-            "#ffffff";
-
-        obj._gradientColor2 =
-            obj._gradientColor2 ||
-            "#555555";
-
-
-        applyGradient(obj);
-
-    }
-    else{
-
-        obj.set(
-            "fill",
-            obj._baseFill ||
-            "#222222"
-        );
-
-    }
-
-
-    canvas.requestRenderAll();
-
-    saveHistory();
-
-    updateUI();
-
-}
-
-
-function setGradientColor(number,color){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    if(number===1)
-        obj._gradientColor1=color;
-
-    if(number===2)
-        obj._gradientColor2=color;
-
-
-    if(obj._gradientEnabled)
-        applyGradient(obj);
-
-
-    canvas.requestRenderAll();
-
-    saveHistory();
-
-    updateUI();
-
-}
-
-
-function setGradientDirection(direction){
-
-    gradientMode =
-        direction;
-
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    if(obj._gradientEnabled)
-        applyGradient(obj);
-
-
-    canvas.requestRenderAll();
-
-}
-
-
-function applyGradient(obj){
-
-    const c1 =
-        obj._gradientColor1 ||
-        "#ffffff";
-
-    const c2 =
-        obj._gradientColor2 ||
-        "#555555";
-
-
-    let coords;
-
-
-    if(gradientMode==="horizontal"){
-
-        coords={
-
-            x1:0,
-            y1:0,
-
-            x2:obj.width || 1,
-            y2:0
-
-        };
-
-    }
-    else if(
-        gradientMode==="diagonal"
-    ){
-
-        coords={
-
-            x1:0,
-            y1:0,
-
-            x2:obj.width || 1,
-            y2:obj.height || 1
-
-        };
-
-    }
-    else{
-
-        coords={
-
-            x1:0,
-            y1:0,
-
-            x2:0,
-            y2:obj.height || 1
-
-        };
-
-    }
-
-
-    obj.set(
-        "fill",
-        new fabric.Gradient({
-
-            type:"linear",
-
-            coords:coords,
-
-            colorStops:[
-
-                {
-                    offset:0,
-                    color:c1
-                },
-
-                {
-                    offset:1,
-                    color:c2
-                }
-
-            ]
-
-        })
-    );
-
-}
-
-
-/* =========================================================
-   光沢
-========================================================= */
-
-function toggleGloss(enabled){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    obj._glossEnabled =
-        enabled;
-
-
-    if(enabled){
-
-        applyGloss(obj);
-
-    }
-    else{
-
-        /*
-           光沢OFFなら
-           本来の塗りを復元
-        */
-
-        if(obj._gradientEnabled){
-
-            applyGradient(obj);
-
-        }
-        else{
-
-            obj.set(
-                "fill",
-                obj._baseFill ||
-                "#222222"
-            );
-
-        }
-
-    }
-
-
-    canvas.requestRenderAll();
-
-    saveHistory();
-
-    updateUI();
-
-}
-
-
-function setGlossStrength(value){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    obj._glossStrength =
-        Number(value);
-
-
-    canvas.requestRenderAll();
-
-}
-
-
-function applyGloss(obj){
-
-    /*
-       Fabric.jsのfillを直接
-       書き換える旧方式を廃止。
-
-       光沢は「白い上方向の
-       ソフトシャドウ」として表現する。
-
-       そのため、
-
-       ・単色
-       ・グラデーション
-       ・文字
-       ・図形
-
-       の元のfillを壊さない。
-    */
-
-
-    const strength =
-        (obj._glossStrength ?? 30)/100;
-
-
-    const alpha =
-        Math.min(
-            .75,
-            strength*.75
-        );
-
-
-    obj.set(
-        "shadow",
-        obj._manualShadow ||
-        null
-    );
-
-
-    obj._glossShadow =
-        new fabric.Shadow({
-
-            color:
-                `rgba(255,255,255,${alpha})`,
-
-            blur:Math.max(
-                1,
-                3 + strength*8
-            ),
-
-            offsetX:0,
-
-            offsetY:
-                -Math.max(
-                    2,
-                    3 + strength*6
-                )
-
-        });
-
-
-    /*
-       影と光沢を同時に使うため、
-       Fabric単体では1つのshadowしか
-       持てない。
-
-       そのため光沢は
-       「白い上側の縁取り」に寄せる。
-    */
-
-    const originalStroke =
-        obj._manualStroke ??
-        obj.stroke;
-
-
-    if(
-        obj.type==="i-text" ||
-        obj.type==="rect" ||
-        obj.type==="circle" ||
-        obj.type==="triangle" ||
-        obj.type==="polygon"
-    ){
-
-        obj.set(
-            "stroke",
-            originalStroke
-        );
-
-        /*
-           光沢用の白いstrokeを
-           元のstrokeがない場合だけ
-           薄く追加する。
-
-           元の太さは変更しない。
-        */
-
-        obj._glossStroke =
-            Math.max(
-                1,
-                Math.round(
-                    strength*3
-                )
-            );
-
-    }
-
-
-    /*
-       元のshadowがある場合は
-       そちらを優先。
-       光沢自体はfillを触らない。
-    */
-
-}
-
-
-/* =========================================================
    縁取り
 ========================================================= */
 
@@ -3600,8 +2984,12 @@ function setStrokeColor(color){
         obj._manualStroke = color;
         obj.set({
             stroke: color,
+            // 塗りを最後に描くことで、縁が文字の内側へ食い込みにくい
+            paintFirst: "stroke",
             strokeWidth: Math.max(1, Number(obj.strokeWidth) || 0),
-            strokeUniform: true
+            strokeUniform: true,
+            strokeLineJoin: "round",
+            strokeLineCap: "round"
         });
         obj.dirty = true;
     });
@@ -3625,7 +3013,10 @@ function setStrokeWidth(value){
 
         obj.set({
             strokeWidth: width,
-            strokeUniform: true
+            paintFirst: "stroke",
+            strokeUniform: true,
+            strokeLineJoin: "round",
+            strokeLineCap: "round"
         });
 
         // 太さを0にした場合だけ、縁取りを完全にOFFにする
@@ -4708,9 +4099,6 @@ function saveHistory(){
 
                 "_gradientColor2",
 
-                "_glossEnabled",
-
-                "_glossStrength",
 
                 "_baseFill",
 
