@@ -4,820 +4,554 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ロゴ作成ツール</title>
+<title>ロゴメーカー</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=BIZ+UDPMincho:wght@400;700&family=Dela+Gothic+One&family=Kosugi&family=Kosugi+Maru&family=M+PLUS+1p:wght@400;500;700;800;900&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
 
 <style>
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
-html,
-body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-
+html,body{
+    width:100%;
+    height:100%;
+    margin:0;
+    overflow:hidden;
     font-family:
-        "Yu Gothic UI",
-        "Meiryo",
         "Noto Sans JP",
-        Arial,
+        "BIZ UDPGothic",
         sans-serif;
-
-    color: #222;
-    background: #e9e9e9;
+    background:#f2f3f5;
+    color:#222;
 }
 
 button,
 input,
-select {
-    font-family: inherit;
+select{
+    font-family:inherit;
 }
 
-button {
-    cursor: pointer;
+button{
+    cursor:pointer;
 }
 
-/* =========================================================
-   全体
-========================================================= */
-
-.app {
-    width: 100vw;
-    height: 100vh;
-
-    display: flex;
-    flex-direction: column;
+.app{
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
 }
 
+/* =========================
+   ヘッダー
+========================= */
 
-/* =========================================================
-   上部ツールバー
-========================================================= */
-
-.topbar {
-    height: 46px;
-
-    background: #f7f7f7;
-
-    border-bottom: 1px solid #bdbdbd;
-
-    display: flex;
-    align-items: center;
-
-    padding: 0 8px;
-
-    gap: 4px;
-
-    flex-shrink: 0;
+.topbar{
+    height:54px;
+    background:#fff;
+    border-bottom:1px solid #d9dce1;
+    display:flex;
+    align-items:center;
+    padding:0 12px;
+    gap:8px;
+    flex-shrink:0;
 }
 
-.file-title {
-    min-width: 150px;
-
-    padding: 0 12px;
-
-    font-size: 14px;
-
-    font-weight: 600;
-
-    color: #333;
+.logo{
+    font-weight:800;
+    font-size:16px;
+    margin-right:12px;
+    white-space:nowrap;
 }
 
-.toolbar-separator {
-    width: 1px;
-    height: 25px;
-
-    background: #c9c9c9;
-
-    margin: 0 4px;
+.logo span{
+    color:#777;
+    font-size:12px;
+    font-weight:500;
+    margin-left:5px;
 }
 
-.tool-button {
-    height: 30px;
-
-    min-width: 34px;
-
-    padding: 0 9px;
-
-    border: 1px solid transparent;
-
-    background: transparent;
-
-    color: #222;
-
-    font-size: 13px;
-
-    border-radius: 2px;
+.toolbar-group{
+    display:flex;
+    align-items:center;
+    gap:3px;
+    padding-right:8px;
+    margin-right:5px;
+    border-right:1px solid #ddd;
 }
 
-.tool-button:hover {
-    background: #e5e5e5;
-
-    border-color: #c8c8c8;
+.tool-btn{
+    height:34px;
+    min-width:34px;
+    padding:0 9px;
+    border:1px solid transparent;
+    background:#fff;
+    border-radius:5px;
+    font-size:13px;
+    color:#333;
 }
 
-.tool-button:active {
-    background: #d8d8d8;
+.tool-btn:hover{
+    background:#f0f2f4;
+    border-color:#d7d9dd;
 }
 
-.tool-button.primary {
-    background: #ffffff;
-
-    border: 1px solid #aaa;
+.tool-btn.active{
+    background:#e9edf1;
+    border-color:#c9cdd2;
 }
 
-.tool-button.primary:hover {
-    background: #eeeeee;
+.tool-btn.danger:hover{
+    color:#d33;
 }
 
-.spacer {
-    flex: 1;
+.zoom-box{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    margin-left:auto;
 }
 
-.zoom-area {
-    display: flex;
-
-    align-items: center;
-
-    gap: 5px;
+.zoom-box button{
+    width:30px;
+    height:30px;
+    border:1px solid #d5d8dc;
+    background:#fff;
+    border-radius:4px;
 }
 
-.zoom-area button {
-    width: 28px;
-    height: 28px;
-
-    border: 1px solid #bbb;
-
-    background: #fff;
-
-    border-radius: 2px;
+.zoom-value{
+    min-width:48px;
+    text-align:center;
+    font-size:12px;
 }
 
-.zoom-value {
-    width: 55px;
-
-    text-align: center;
-
-    font-size: 12px;
-}
-
-
-/* =========================================================
+/* =========================
    メイン
-========================================================= */
+========================= */
 
-.main {
-    flex: 1;
-
-    min-height: 0;
-
-    display: flex;
+.main{
+    flex:1;
+    min-height:0;
+    display:flex;
 }
 
-
-/* =========================================================
+/* =========================
    左ツール
-========================================================= */
+========================= */
 
-.left-panel {
-    width: 58px;
-
-    background: #f4f4f4;
-
-    border-right: 1px solid #bdbdbd;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    padding-top: 5px;
-
-    flex-shrink: 0;
+.leftbar{
+    width:70px;
+    background:#fff;
+    border-right:1px solid #d9dce1;
+    padding:7px 5px;
+    flex-shrink:0;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
 }
 
-.left-tool {
-    width: 48px;
-    height: 46px;
-
-    margin-bottom: 2px;
-
-    border: 1px solid transparent;
-
-    background: transparent;
-
-    color: #222;
-
-    border-radius: 2px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 2px;
-
-    font-size: 11px;
+.left-tool{
+    width:60px;
+    min-height:48px;
+    border:1px solid transparent;
+    background:#fff;
+    border-radius:5px;
+    color:#333;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    font-size:10px;
 }
 
-.left-tool .icon {
-    font-size: 18px;
-
-    line-height: 18px;
+.left-tool .icon{
+    font-size:19px;
+    line-height:1;
 }
 
-.left-tool:hover {
-    background: #e5e5e5;
-
-    border-color: #ccc;
+.left-tool:hover{
+    background:#f2f4f6;
 }
 
-.left-tool.active {
-    background: #dcdcdc;
-
-    border-color: #aaa;
+.left-tool.active{
+    background:#e7ebef;
+    border-color:#c9cdd1;
 }
 
-
-/* =========================================================
-   中央作業領域
-========================================================= */
-
-.workspace {
-    flex: 1;
-
-    min-width: 0;
-
-    min-height: 0;
-
-    position: relative;
-
-    overflow: hidden;
-
-    background: #dcdcdc;
+.tool-separator{
+    height:1px;
+    background:#ddd;
+    margin:5px 7px;
 }
 
-.canvas-wrapper {
-    position: absolute;
+/* =========================
+   キャンバス
+========================= */
 
-    inset: 0;
-
-    overflow: auto;
+.canvas-area{
+    flex:1;
+    min-width:0;
+    min-height:0;
+    background:#e7e9ec;
+    overflow:auto;
+    position:relative;
 }
 
-.canvas-wrapper::-webkit-scrollbar {
-    width: 14px;
-    height: 14px;
-}
-
-.canvas-wrapper::-webkit-scrollbar-track {
-    background: #eeeeee;
-}
-
-.canvas-wrapper::-webkit-scrollbar-thumb {
-    background: #b5b5b5;
-
-    border: 3px solid #eeeeee;
-}
-
-.canvas-area {
-    position: relative;
-
-    margin: 60px auto;
-
-    width: 1200px;
-    height: 800px;
-
-    background: #fff;
-
+.canvas-wrap{
+    position:relative;
+    width:1200px;
+    height:800px;
+    margin:35px auto;
+    background:#fff;
     box-shadow:
-        0 1px 4px rgba(0,0,0,0.25);
+        0 2px 12px rgba(0,0,0,.14);
 }
 
-
-/* =========================================================
-   グリッド
-========================================================= */
-
-.grid {
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
+.grid{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
     background-image:
-        linear-gradient(
-            to right,
-            #e8e8e8 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            to bottom,
-            #e8e8e8 1px,
-            transparent 1px
-        );
-
-    background-size:
-        20px 20px;
-
-    z-index: 0;
+        linear-gradient(#eeeeee 1px,transparent 1px),
+        linear-gradient(90deg,#eeeeee 1px,transparent 1px);
+    background-size:20px 20px;
 }
 
-.grid.large {
-    background-image:
-        linear-gradient(
-            to right,
-            #d5d5d5 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            to bottom,
-            #d5d5d5 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            to right,
-            #e8e8e8 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            to bottom,
-            #e8e8e8 1px,
-            transparent 1px
-        );
-
-    background-size:
-        100px 100px,
-        100px 100px,
-        20px 20px,
-        20px 20px;
+.canvas-container{
+    position:absolute !important;
+    left:0 !important;
+    top:0 !important;
+    width:1200px !important;
+    height:800px !important;
+    z-index:2;
 }
 
-
-/*
-    重要
-    Fabric.jsのcanvasそのものには
-    position:absoluteを指定しない。
-*/
-
-.canvas-area .canvas-container {
-    position: relative !important;
-
-    left: 0 !important;
-    top: 0 !important;
-
-    width: 1200px !important;
-    height: 800px !important;
-
-    z-index: 2;
-}
-
-.canvas-area .canvas-container canvas {
-    display: block;
-}
-
-
-/* =========================================================
+/* =========================
    右プロパティ
-========================================================= */
+========================= */
 
-.right-panel {
-    width: 280px;
-
-    background: #f6f6f6;
-
-    border-left: 1px solid #bdbdbd;
-
-    display: flex;
-
-    flex-direction: column;
-
-    flex-shrink: 0;
-
-    overflow: hidden;
+.rightbar{
+    width:330px;
+    background:#fff;
+    border-left:1px solid #d9dce1;
+    flex-shrink:0;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
 }
 
-.panel-title {
-    height: 38px;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 0 12px;
-
-    border-bottom: 1px solid #c5c5c5;
-
-    font-size: 13px;
-
-    font-weight: 600;
-
-    background: #ededed;
+.panel-title{
+    font-size:13px;
+    font-weight:700;
+    padding:11px 13px;
+    border-bottom:1px solid #ddd;
 }
 
-.property-content {
-    padding: 10px;
-
-    overflow-y: auto;
+.properties{
+    flex:1;
+    overflow:auto;
+    padding-bottom:15px;
 }
 
-.property-section {
-    border-bottom: 1px solid #d2d2d2;
-
-    padding-bottom: 12px;
-
-    margin-bottom: 12px;
+.section{
+    border-bottom:1px solid #e2e3e5;
+    padding:11px 13px;
 }
 
-.property-section:last-child {
-    border-bottom: 0;
+.section-title{
+    font-size:11px;
+    color:#666;
+    font-weight:700;
+    margin-bottom:9px;
 }
 
-.section-title {
-    font-size: 12px;
-
-    font-weight: 600;
-
-    margin-bottom: 8px;
-
-    color: #444;
+.row{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:7px;
 }
 
-.property-row {
-    display: flex;
-
-    align-items: center;
-
-    min-height: 30px;
-
-    margin-bottom: 5px;
+.row:last-child{
+    margin-bottom:0;
 }
 
-.property-label {
-    width: 70px;
-
-    font-size: 12px;
-
-    color: #444;
+.label{
+    width:72px;
+    flex-shrink:0;
+    font-size:11px;
+    color:#555;
 }
 
-.property-input {
-    flex: 1;
-
-    height: 27px;
-
-    border: 1px solid #aaa;
-
-    background: #fff;
-
-    padding: 3px 6px;
-
-    font-size: 12px;
-
-    border-radius: 1px;
+input[type="text"],
+input[type="number"],
+select{
+    width:100%;
+    height:30px;
+    border:1px solid #cfd3d8;
+    border-radius:4px;
+    background:#fff;
+    padding:0 7px;
+    font-size:12px;
+    outline:none;
 }
 
-.property-input:focus {
-    outline: none;
-
-    border-color: #777;
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus{
+    border-color:#777;
 }
 
-.property-select {
-    flex: 1;
-
-    height: 27px;
-
-    border: 1px solid #aaa;
-
-    background: #fff;
-
-    font-size: 12px;
+input[type="color"]{
+    width:42px;
+    height:30px;
+    border:1px solid #ccc;
+    padding:2px;
+    background:#fff;
+    border-radius:4px;
 }
 
-.color-input {
-    width: 48px;
-    height: 27px;
-
-    padding: 1px;
-
-    border: 1px solid #aaa;
-
-    background: white;
+input[type="range"]{
+    flex:1;
 }
 
-.checkbox-row {
-    display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    font-size: 12px;
+.range-value{
+    width:38px;
+    text-align:right;
+    font-size:11px;
+    color:#666;
 }
 
-.checkbox-row input {
-    margin: 0;
+.check{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:11px;
+    margin-bottom:8px;
 }
 
-.no-selection {
-    color: #777;
-
-    font-size: 12px;
-
-    line-height: 1.7;
-
-    padding: 8px 0;
+.check input{
+    margin:0;
 }
 
+.color-stop{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:6px;
+}
 
-/* =========================================================
+.gradient-preview{
+    height:25px;
+    border:1px solid #ccc;
+    border-radius:4px;
+    margin-bottom:8px;
+}
+
+/* =========================
+   ボタン
+========================= */
+
+.small-btn{
+    height:30px;
+    border:1px solid #ccd0d5;
+    background:#fff;
+    border-radius:4px;
+    font-size:11px;
+    padding:0 9px;
+}
+
+.small-btn:hover{
+    background:#f0f2f4;
+}
+
+.btn-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:5px;
+}
+
+.full-btn{
+    width:100%;
+    height:32px;
+    border:1px solid #cdd1d5;
+    background:#fff;
+    border-radius:4px;
+    font-size:11px;
+}
+
+.full-btn:hover{
+    background:#f1f3f5;
+}
+
+/* =========================
    レイヤー
-========================================================= */
+========================= */
 
-.layers {
-    border-top: 1px solid #c5c5c5;
-
-    flex: 1;
-
-    min-height: 150px;
-
-    display: flex;
-
-    flex-direction: column;
+.layers{
+    height:210px;
+    border-top:1px solid #d9dce1;
+    flex-shrink:0;
+    display:flex;
+    flex-direction:column;
 }
 
-.layer-list {
-    overflow-y: auto;
-
-    flex: 1;
+.layer-list{
+    flex:1;
+    overflow:auto;
 }
 
-.layer-item {
-    height: 34px;
-
-    border-bottom: 1px solid #ddd;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 0 8px;
-
-    gap: 7px;
-
-    font-size: 12px;
-
-    cursor: pointer;
+.layer-item{
+    height:32px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:0 9px;
+    border-bottom:1px solid #eee;
+    font-size:11px;
+    cursor:pointer;
 }
 
-.layer-item:hover {
-    background: #e8e8e8;
+.layer-item:hover{
+    background:#f3f4f5;
 }
 
-.layer-item.selected {
-    background: #d9d9d9;
+.layer-item.selected{
+    background:#e9edf1;
 }
 
-.layer-number {
-    width: 20px;
-
-    color: #777;
-
-    text-align: center;
+.layer-icon{
+    width:20px;
+    text-align:center;
 }
 
-.layer-name {
-    flex: 1;
-
-    overflow: hidden;
-
-    white-space: nowrap;
-
-    text-overflow: ellipsis;
+.layer-name{
+    flex:1;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
-.layer-actions {
-    height: 35px;
+/* =========================
+   下部ステータス
+========================= */
 
-    display: flex;
-
-    border-top: 1px solid #ccc;
+.statusbar{
+    height:27px;
+    background:#fff;
+    border-top:1px solid #d9dce1;
+    display:flex;
+    align-items:center;
+    padding:0 10px;
+    gap:18px;
+    font-size:10px;
+    color:#666;
+    flex-shrink:0;
 }
 
-.layer-actions button {
-    flex: 1;
-
-    border: 0;
-
-    border-right: 1px solid #ccc;
-
-    background: #f2f2f2;
-
-    font-size: 11px;
-}
-
-.layer-actions button:hover {
-    background: #e3e3e3;
-}
-
-
-/* =========================================================
-   ステータス
-========================================================= */
-
-.statusbar {
-    height: 25px;
-
-    background: #ededed;
-
-    border-top: 1px solid #bdbdbd;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 0 10px;
-
-    font-size: 11px;
-
-    color: #555;
-
-    flex-shrink: 0;
-}
-
-.status-left {
-    display: flex;
-
-    gap: 18px;
-}
-
-.status-right {
-    margin-left: auto;
-}
-
-
-/* =========================================================
-   コンテキストメニュー
-========================================================= */
-
-.context-menu {
-    display: none;
-
-    position: fixed;
-
-    width: 180px;
-
-    background: #fff;
-
-    border: 1px solid #999;
-
-    box-shadow:
-        2px 3px 8px rgba(0,0,0,0.2);
-
-    z-index: 9999;
-
-    padding: 3px 0;
-}
-
-.context-menu-item {
-    height: 29px;
-
-    padding: 0 12px;
-
-    display: flex;
-
-    align-items: center;
-
-    font-size: 12px;
-}
-
-.context-menu-item:hover {
-    background: #e6e6e6;
-}
-
-
-/* =========================================================
+/* =========================
    モーダル
-========================================================= */
+========================= */
 
-.modal-bg {
-    display: none;
-
-    position: fixed;
-
-    inset: 0;
-
-    background: rgba(0,0,0,0.28);
-
-    z-index: 10000;
-
-    align-items: center;
-
-    justify-content: center;
+.modal-bg{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.35);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:1000;
 }
 
-.modal {
-    width: 390px;
-
-    background: #f7f7f7;
-
-    border: 1px solid #999;
-
-    box-shadow:
-        0 5px 20px rgba(0,0,0,0.3);
+.modal{
+    width:390px;
+    background:#fff;
+    border-radius:7px;
+    box-shadow:0 10px 35px rgba(0,0,0,.25);
+    overflow:hidden;
 }
 
-.modal-header {
-    height: 40px;
-
-    border-bottom: 1px solid #ccc;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 0 12px;
-
-    font-size: 13px;
-
-    font-weight: 600;
+.modal-head{
+    padding:13px 15px;
+    border-bottom:1px solid #ddd;
+    font-size:14px;
+    font-weight:700;
 }
 
-.modal-body {
-    padding: 15px;
+.modal-body{
+    padding:15px;
 }
 
-.modal-footer {
-    height: 50px;
-
-    border-top: 1px solid #ccc;
-
-    display: flex;
-
-    justify-content: flex-end;
-
-    align-items: center;
-
-    gap: 6px;
-
-    padding: 0 10px;
+.modal-foot{
+    padding:10px 15px;
+    border-top:1px solid #ddd;
+    display:flex;
+    justify-content:flex-end;
+    gap:7px;
 }
 
-.modal-button {
-    min-width: 75px;
-
-    height: 29px;
-
-    border: 1px solid #aaa;
-
-    background: #fff;
-
-    font-size: 12px;
+.primary{
+    background:#222;
+    color:#fff;
+    border-color:#222;
 }
 
-.modal-button:hover {
-    background: #e8e8e8;
+/* =========================
+   コンテキストメニュー
+========================= */
+
+.context-menu{
+    position:fixed;
+    display:none;
+    width:180px;
+    background:#fff;
+    border:1px solid #ccc;
+    box-shadow:0 4px 16px rgba(0,0,0,.18);
+    z-index:2000;
+    padding:4px 0;
+    border-radius:5px;
 }
 
-
-/* =========================================================
-   レスポンシブ
-========================================================= */
-
-@media (max-width: 900px) {
-
-    .right-panel {
-        width: 240px;
-    }
-
-    .file-title {
-        min-width: 100px;
-    }
+.context-menu button{
+    width:100%;
+    height:30px;
+    border:0;
+    background:#fff;
+    text-align:left;
+    padding:0 12px;
+    font-size:11px;
 }
 
-@media (max-width: 700px) {
+.context-menu button:hover{
+    background:#eef0f2;
+}
 
-    .right-panel {
-        display: none;
-    }
+/* =========================
+   無選択
+========================= */
 
-    .left-panel {
-        width: 52px;
-    }
+.no-selection{
+    padding:25px 14px;
+    color:#888;
+    font-size:11px;
+    line-height:1.8;
+}
 
-    .left-tool {
-        width: 44px;
-    }
+/* =========================
+   無効
+========================= */
+
+.disabled{
+    opacity:.45;
+    pointer-events:none;
 }
 </style>
 </head>
@@ -826,260 +560,171 @@ button {
 
 <div class="app">
 
-    <!-- =====================================================
-         上部ツールバー
-    ====================================================== -->
+    <!-- =====================
+         上部
+    ====================== -->
+    <header class="topbar">
 
-    <div class="topbar">
-
-        <div class="file-title">
-            ロゴ作成
+        <div class="logo">
+            ロゴメーカー
+            <span>Logo Editor</span>
         </div>
 
-        <div class="toolbar-separator"></div>
+        <div class="toolbar-group">
 
-        <button
-            class="tool-button primary"
-            id="undoButton">
-            元に戻す
-        </button>
+            <button class="tool-btn" onclick="undo()">↶</button>
+            <button class="tool-btn" onclick="redo()">↷</button>
 
-        <button
-            class="tool-button primary"
-            id="redoButton">
-            やり直す
-        </button>
+        </div>
 
-        <div class="toolbar-separator"></div>
+        <div class="toolbar-group">
 
-        <button
-            class="tool-button"
-            id="copyButton">
-            コピー
-        </button>
+            <button class="tool-btn" onclick="copyObject()">コピー</button>
+            <button class="tool-btn" onclick="pasteObject()">貼り付け</button>
+            <button class="tool-btn" onclick="duplicateObject()">複製</button>
+            <button class="tool-btn danger" onclick="deleteObject()">削除</button>
 
-        <button
-            class="tool-button"
-            id="pasteButton">
-            貼り付け
-        </button>
+        </div>
 
-        <button
-            class="tool-button"
-            id="duplicateButton">
-            複製
-        </button>
+        <div class="toolbar-group">
 
-        <button
-            class="tool-button"
-            id="deleteButton">
-            削除
-        </button>
+            <button class="tool-btn" onclick="bringFront()">最前面</button>
+            <button class="tool-btn" onclick="sendBack()">最背面</button>
 
-        <div class="toolbar-separator"></div>
+        </div>
 
-        <button
-            class="tool-button"
-            id="frontButton">
-            前面へ
-        </button>
+        <div class="toolbar-group">
 
-        <button
-            class="tool-button"
-            id="backButton">
-            背面へ
-        </button>
+            <button class="tool-btn" onclick="alignLeft()">左揃え</button>
+            <button class="tool-btn" onclick="alignCenter()">中央</button>
+            <button class="tool-btn" onclick="alignRight()">右揃え</button>
 
-        <div class="spacer"></div>
+        </div>
 
-        <div class="zoom-area">
+        <div class="zoom-box">
 
-            <button id="zoomOut">
-                −
-            </button>
+            <button onclick="changeZoom(-0.1)">−</button>
 
-            <div
-                class="zoom-value"
-                id="zoomValue">
+            <div class="zoom-value" id="zoomValue">
                 100%
             </div>
 
-            <button id="zoomIn">
-                ＋
-            </button>
+            <button onclick="changeZoom(0.1)">＋</button>
 
         </div>
 
-        <div class="toolbar-separator"></div>
-
-        <button
-            class="tool-button primary"
-            id="exportButton">
+        <button class="tool-btn" onclick="openExport()">
             PNG出力
         </button>
 
-    </div>
+    </header>
 
 
-    <!-- =====================================================
+    <!-- =====================
          メイン
-    ====================================================== -->
+    ====================== -->
 
-    <div class="main">
+    <main class="main">
 
+        <!-- 左 -->
+        <aside class="leftbar">
 
-        <!-- =================================================
-             左ツール
-        ================================================== -->
-
-        <div class="left-panel">
-
-            <button
-                class="left-tool active"
-                id="selectTool">
-
-                <div class="icon">
-                    ↖
-                </div>
-
-                <div>
-                    選択
-                </div>
-
+            <button class="left-tool active" data-tool="select" onclick="setTool('select')">
+                <span class="icon">↖</span>
+                選択
             </button>
 
-
-            <button
-                class="left-tool"
-                id="textTool">
-
-                <div class="icon">
-                    T
-                </div>
-
-                <div>
-                    文字
-                </div>
-
+            <button class="left-tool" data-tool="text" onclick="setTool('text')">
+                <span class="icon">T</span>
+                文字
             </button>
 
-
-            <button
-                class="left-tool"
-                id="rectTool">
-
-                <div class="icon">
-                    □
-                </div>
-
-                <div>
-                    四角形
-                </div>
-
+            <button class="left-tool" data-tool="rect" onclick="setTool('rect')">
+                <span class="icon">□</span>
+                四角
             </button>
 
-
-            <button
-                class="left-tool"
-                id="circleTool">
-
-                <div class="icon">
-                    ○
-                </div>
-
-                <div>
-                    円
-                </div>
-
+            <button class="left-tool" data-tool="circle" onclick="setTool('circle')">
+                <span class="icon">○</span>
+                円
             </button>
 
-
-            <button
-                class="left-tool"
-                id="lineTool">
-
-                <div class="icon">
-                    ／
-                </div>
-
-                <div>
-                    線
-                </div>
-
+            <button class="left-tool" data-tool="triangle" onclick="setTool('triangle')">
+                <span class="icon">△</span>
+                三角
             </button>
 
-
-            <button
-                class="left-tool"
-                id="imageTool">
-
-                <div class="icon">
-                    ▧
-                </div>
-
-                <div>
-                    画像
-                </div>
-
+            <button class="left-tool" data-tool="star" onclick="setTool('star')">
+                <span class="icon">☆</span>
+                星
             </button>
 
+            <button class="left-tool" data-tool="line" onclick="setTool('line')">
+                <span class="icon">／</span>
+                線
+            </button>
+
+            <div class="tool-separator"></div>
+
+            <button class="left-tool" data-tool="pen" onclick="setTool('pen')">
+                <span class="icon">✎</span>
+                ペン
+            </button>
+
+            <button class="left-tool" data-tool="image" onclick="setTool('image')">
+                <span class="icon">▧</span>
+                画像
+            </button>
 
             <input
                 type="file"
                 id="imageInput"
                 accept="image/*"
-                style="display:none;">
+                style="display:none"
+            >
 
-        </div>
+        </aside>
 
 
-        <!-- =================================================
-             作業領域
-        ================================================== -->
+        <!-- キャンバス -->
+        <section class="canvas-area" id="canvasArea">
 
-        <div class="workspace">
+            <div class="canvas-wrap">
 
-            <div class="canvas-wrapper">
+                <div class="grid"></div>
 
-                <div class="canvas-area">
-
-                    <div class="grid"></div>
-
-                    <canvas
-                        id="canvas"
-                        width="1200"
-                        height="800">
-                    </canvas>
-
-                </div>
+                <canvas
+                    id="logoCanvas"
+                    width="1200"
+                    height="800"
+                ></canvas>
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!-- =================================================
-             右
-        ================================================== -->
+        <!-- =====================
+             右側
+        ====================== -->
 
-        <div class="right-panel">
+        <aside class="rightbar">
 
             <div class="panel-title">
-                オブジェクト
+                プロパティ
             </div>
 
-            <div
-                class="property-content"
-                id="propertyContent">
+            <div class="properties" id="properties">
 
                 <div class="no-selection">
-                    オブジェクトを選択すると、<br>
-                    ここに設定項目が表示されます。
+                    オブジェクトを選択してください。<br>
+                    文字や図形を選ぶと、ここから細かく編集できます。
                 </div>
 
             </div>
 
 
+            <!-- レイヤー -->
             <div class="layers">
 
                 <div class="panel-title">
@@ -1088,198 +733,112 @@ button {
 
                 <div
                     class="layer-list"
-                    id="layerList">
-                </div>
-
-                <div class="layer-actions">
-
-                    <button id="layerUp">
-                        ↑ 前面
-                    </button>
-
-                    <button id="layerDown">
-                        ↓ 背面
-                    </button>
-
-                    <button id="layerTop">
-                        最前面
-                    </button>
-
-                    <button id="layerBottom">
-                        最背面
-                    </button>
-
-                </div>
+                    id="layerList"
+                ></div>
 
             </div>
 
-        </div>
+        </aside>
 
-    </div>
+    </main>
 
 
-    <!-- =====================================================
-         ステータス
-    ====================================================== -->
+    <footer class="statusbar">
 
-    <div class="statusbar">
+        <span id="objectStatus">
+            オブジェクトなし
+        </span>
 
-        <div class="status-left">
+        <span id="positionStatus">
+            X: -　Y: -
+        </span>
 
-            <span id="objectStatus">
-                オブジェクト 0
-            </span>
+        <span id="sizeStatus">
+            W: -　H: -
+        </span>
 
-            <span id="positionStatus">
-                X: -　Y: -
-            </span>
+        <span id="toolStatus">
+            選択ツール
+        </span>
 
-            <span id="sizeStatus">
-                W: -　H: -
-            </span>
-
-        </div>
-
-        <div class="status-right">
-            1200 × 800 px
-        </div>
-
-    </div>
+    </footer>
 
 </div>
 
 
-<!-- =========================================================
-     右クリックメニュー
-========================================================= -->
+<!-- =====================
+     PNG出力
+====================== -->
 
-<div
-    class="context-menu"
-    id="contextMenu">
-
-    <div
-        class="context-menu-item"
-        data-action="copy">
-        コピー
-    </div>
-
-    <div
-        class="context-menu-item"
-        data-action="paste">
-        貼り付け
-    </div>
-
-    <div
-        class="context-menu-item"
-        data-action="duplicate">
-        複製
-    </div>
-
-    <div
-        class="context-menu-item"
-        data-action="delete">
-        削除
-    </div>
-
-    <div
-        style="
-            height:1px;
-            background:#ddd;
-            margin:3px 0;
-        ">
-    </div>
-
-    <div
-        class="context-menu-item"
-        data-action="front">
-        前面へ
-    </div>
-
-    <div
-        class="context-menu-item"
-        data-action="back">
-        背面へ
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     PNG設定
-========================================================= -->
-
-<div
-    class="modal-bg"
-    id="exportModal">
+<div class="modal-bg" id="exportModal">
 
     <div class="modal">
 
-        <div class="modal-header">
-            PNG画像を書き出す
+        <div class="modal-head">
+            PNGとして書き出す
         </div>
 
         <div class="modal-body">
 
-            <div class="property-row">
+            <div class="row">
+                <div class="label">倍率</div>
 
-                <div class="property-label">
-                    サイズ
-                </div>
-
-                <select
-                    class="property-select"
-                    id="exportSize">
-
-                    <option value="1">
-                        元のサイズ（1200 × 800）
-                    </option>
-
-                    <option value="2">
-                        2倍（2400 × 1600）
-                    </option>
-
-                    <option value="3">
-                        3倍（3600 × 2400）
-                    </option>
-
+                <select id="exportScale">
+                    <option value="1">1倍</option>
+                    <option value="2" selected>2倍</option>
+                    <option value="3">3倍</option>
+                    <option value="4">4倍</option>
                 </select>
-
             </div>
 
-            <div
-                class="checkbox-row"
-                style="margin-top:12px;">
-
+            <label class="check">
                 <input
                     type="checkbox"
-                    id="transparentBackground"
-                    checked>
-
-                <label for="transparentBackground">
-                    背景を透過する
-                </label>
-
-            </div>
+                    id="transparentExport"
+                    checked
+                >
+                背景を透明にする
+            </label>
 
         </div>
 
-        <div class="modal-footer">
+        <div class="modal-foot">
 
             <button
-                class="modal-button"
-                id="cancelExport">
+                class="small-btn"
+                onclick="closeExport()"
+            >
                 キャンセル
             </button>
 
             <button
-                class="modal-button"
-                id="confirmExport">
-                書き出す
+                class="small-btn primary"
+                onclick="exportPNG()"
+            >
+                PNGを書き出す
             </button>
 
         </div>
 
     </div>
+
+</div>
+
+
+<!-- コンテキストメニュー -->
+
+<div
+    class="context-menu"
+    id="contextMenu"
+>
+
+    <button onclick="contextCopy()">コピー</button>
+    <button onclick="contextPaste()">貼り付け</button>
+    <button onclick="duplicateObject();hideContext()">複製</button>
+    <button onclick="deleteObject();hideContext()">削除</button>
+
+    <button onclick="bringFront();hideContext()">最前面へ</button>
+    <button onclick="sendBack();hideContext()">最背面へ</button>
 
 </div>
 
@@ -1290,549 +849,414 @@ button {
    基本設定
 ========================================================= */
 
-const canvas = new fabric.Canvas("canvas", {
+const canvas = new fabric.Canvas("logoCanvas", {
+    width:1200,
+    height:800,
 
-    preserveObjectStacking: true,
+    selection:true,
 
-    selection: true,
+    preserveObjectStacking:true,
 
-    selectionColor: "rgba(70, 130, 220, 0.12)",
+    selectionColor:"rgba(50,100,255,.12)",
+    selectionBorderColor:"#4d72ff",
+    selectionLineWidth:1,
 
-    selectionBorderColor: "#4d90fe",
-
-    selectionLineWidth: 1,
-
-    perPixelTargetFind: false,
-
-    targetFindTolerance: 5,
-
-    uniformScaling: false
-
+    backgroundColor:"#ffffff"
 });
-
-
-canvas.setWidth(1200);
-canvas.setHeight(800);
-
-
-const canvasWidth = 1200;
-const canvasHeight = 800;
-
 
 let currentTool = "select";
 
-let copiedObject = null;
+let clipboard = null;
 
 let history = [];
-
 let historyIndex = -1;
+let restoringHistory = false;
 
-let isRestoringHistory = false;
+let zoom = 1;
 
+let drawing = false;
+let penPoints = [];
 
-/* =========================================================
-   Fabricのキャンバス位置を正しく設定
-========================================================= */
-
-function fixCanvasSize() {
-
-    canvas.setDimensions({
-
-        width: canvasWidth,
-        height: canvasHeight
-
-    });
-
-    canvas.calcOffset();
-
-    canvas.renderAll();
-
-}
+let gradientMode = "vertical";
 
 
 /* =========================================================
-   履歴
+   フォント
 ========================================================= */
 
-function saveHistory() {
+const fonts = [
 
-    if (isRestoringHistory) {
-        return;
-    }
+    ["Noto Sans JP","Noto Sans JP"],
+    ["Noto Serif JP","Noto Serif JP"],
 
+    ["Zen Kaku Gothic New","Zen Kaku Gothic New"],
+    ["Zen Maru Gothic","Zen Maru Gothic"],
 
-    const json =
-        JSON.stringify(canvas.toJSON());
+    ["M PLUS 1p","M PLUS 1p"],
+    ["M PLUS Rounded 1c","M PLUS Rounded 1c"],
 
+    ["BIZ UDPゴシック","BIZ UDGothic"],
+    ["BIZ UDP明朝","BIZ UDPMincho"],
 
-    history =
-        history.slice(
-            0,
-            historyIndex + 1
-        );
+    ["Dela Gothic One","Dela Gothic One"],
 
+    ["Kosugi","Kosugi"],
+    ["Kosugi Maru","Kosugi Maru"],
 
-    history.push(json);
+    ["sans-serif","sans-serif"],
+    ["serif","serif"],
+    ["monospace","monospace"]
 
-    historyIndex++;
-
-
-    if (history.length > 50) {
-
-        history.shift();
-
-        historyIndex--;
-
-    }
-
-}
+];
 
 
-function restoreHistory(index) {
+/* =========================================================
+   ユーティリティ
+========================================================= */
 
-    if (
-        index < 0 ||
-        index >= history.length
-    ) {
-        return;
-    }
+function selectedObject(){
 
-
-    isRestoringHistory = true;
-
-
-    canvas.loadFromJSON(
-        history[index],
-        function() {
-
-            canvas.renderAll();
-
-
-            isRestoringHistory = false;
-
-
-            updateProperties();
-
-            updateLayers();
-
-            updateStatus();
-
-        }
-    );
-
-
-    historyIndex = index;
+    return canvas.getActiveObject();
 
 }
 
 
-function undo() {
+function selectedObjects(){
 
-    if (historyIndex <= 0) {
-        return;
+    const obj = canvas.getActiveObject();
+
+    if(!obj) return [];
+
+    if(obj.type === "activeSelection"){
+
+        return obj.getObjects();
+
     }
 
-    restoreHistory(
-        historyIndex - 1
-    );
+    return [obj];
 
 }
 
 
-function redo() {
+function escapeHtml(text){
 
-    if (
-        historyIndex >=
-        history.length - 1
-    ) {
-        return;
-    }
-
-    restoreHistory(
-        historyIndex + 1
-    );
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;");
 
 }
 
 
 /* =========================================================
-   ツール切り替え
+   ツール
 ========================================================= */
 
-function setTool(tool) {
+function setTool(tool){
 
     currentTool = tool;
 
-
     document
         .querySelectorAll(".left-tool")
-        .forEach(function(button) {
-
-            button.classList.remove(
-                "active"
+        .forEach(btn=>{
+            btn.classList.toggle(
+                "active",
+                btn.dataset.tool === tool
             );
-
         });
 
+    canvas.isDrawingMode = tool === "pen";
 
-    if (tool === "select") {
+    canvas.selection = tool === "select";
 
-        document
-            .getElementById("selectTool")
-            .classList.add("active");
+    canvas.defaultCursor =
+        tool === "select"
+            ? "default"
+            : "crosshair";
 
+    const names = {
 
-        canvas.selection = true;
+        select:"選択ツール",
+        text:"文字ツール",
+        rect:"四角形ツール",
+        circle:"円ツール",
+        triangle:"三角形ツール",
+        star:"星ツール",
+        line:"線ツール",
+        pen:"ペンツール",
+        image:"画像ツール"
 
-        canvas.defaultCursor =
-            "default";
+    };
 
-        canvas.hoverCursor =
-            "move";
-
-        canvas.moveCursor =
-            "move";
-
-    }
-
-
-    if (tool === "text") {
-
-        document
-            .getElementById("textTool")
-            .classList.add("active");
-
-
-        canvas.selection = false;
-
-        canvas.defaultCursor =
-            "text";
-
-        canvas.hoverCursor =
-            "text";
-
-    }
-
-
-    if (tool === "rect") {
-
-        document
-            .getElementById("rectTool")
-            .classList.add("active");
-
-
-        canvas.selection = false;
-
-        canvas.defaultCursor =
-            "crosshair";
-
-    }
-
-
-    if (tool === "circle") {
-
-        document
-            .getElementById("circleTool")
-            .classList.add("active");
-
-
-        canvas.selection = false;
-
-        canvas.defaultCursor =
-            "crosshair";
-
-    }
-
-
-    if (tool === "line") {
-
-        document
-            .getElementById("lineTool")
-            .classList.add("active");
-
-
-        canvas.selection = false;
-
-        canvas.defaultCursor =
-            "crosshair";
-
-    }
-
-
-    if (tool === "image") {
-
-        document
-            .getElementById("imageTool")
-            .classList.add("active");
-
-
-        canvas.selection = false;
-
-        canvas.defaultCursor =
-            "default";
-
-    }
-
-
-    canvas.calcOffset();
+    document.getElementById("toolStatus").textContent =
+        names[tool] || tool;
 
 }
 
 
 /* =========================================================
-   テキスト追加
+   キャンバス座標
 ========================================================= */
 
-function addText(x, y) {
+function pointer(e){
 
-    const text =
-        new fabric.IText(
-            "文字を入力",
-            {
+    return canvas.getPointer(e.e);
 
-                left: x,
+}
 
-                top: y,
 
-                fontFamily:
-                    "Yu Gothic",
+/* =========================================================
+   文字
+========================================================= */
 
-                fontSize: 60,
+function addText(x,y){
 
-                fill: "#222222",
+    const text = new fabric.IText(
+        "ロゴ文字",
+        {
+            left:x,
+            top:y,
 
-                fontWeight:
-                    "normal",
+            fontFamily:"Noto Sans JP",
 
-                fontStyle:
-                    "normal",
+            fontSize:120,
 
-                originX: "left",
+            fontWeight:"700",
 
-                originY: "top",
+            fill:"#222222",
 
-                transparentCorners:
-                    false,
+            stroke:null,
 
-                cornerColor:
-                    "#ffffff",
+            strokeWidth:0,
 
-                cornerStrokeColor:
-                    "#555555",
+            originX:"left",
+            originY:"top",
 
-                borderColor:
-                    "#555555",
+            editable:true,
 
-                padding: 5
+            padding:5,
 
-            }
-        );
-
+            shadow:null
+        }
+    );
 
     canvas.add(text);
 
     canvas.setActiveObject(text);
 
-
     text.enterEditing();
-
     text.selectAll();
 
-
-    canvas.renderAll();
-
+    canvas.requestRenderAll();
 
     saveHistory();
-
-
-    updateProperties();
-
-    updateLayers();
-
-    updateStatus();
 
 }
 
 
 /* =========================================================
-   四角形
+   図形
 ========================================================= */
 
-function addRect(x, y) {
+function addRect(x,y){
 
-    const rect =
-        new fabric.Rect({
+    const obj = new fabric.Rect({
 
-            left: x,
+        left:x,
+        top:y,
 
-            top: y,
+        width:260,
+        height:160,
 
-            width: 200,
+        fill:"#222222",
 
-            height: 120,
+        stroke:null,
 
-            fill: "#d9d9d9",
+        strokeWidth:0,
 
-            stroke: "#333333",
+        rx:0,
+        ry:0,
 
-            strokeWidth: 2,
+        originX:"center",
+        originY:"center"
 
-            originX: "left",
+    });
 
-            originY: "top",
+    canvas.add(obj);
 
-            transparentCorners:
-                false,
+    canvas.setActiveObject(obj);
 
-            cornerColor:
-                "#ffffff",
+    saveHistory();
 
-            cornerStrokeColor:
-                "#555555",
+}
 
-            borderColor:
-                "#555555",
 
-            padding: 0
+function addCircle(x,y){
+
+    const obj = new fabric.Circle({
+
+        left:x,
+        top:y,
+
+        radius:100,
+
+        fill:"#222222",
+
+        stroke:null,
+
+        strokeWidth:0,
+
+        originX:"center",
+        originY:"center"
+
+    });
+
+    canvas.add(obj);
+
+    canvas.setActiveObject(obj);
+
+    saveHistory();
+
+}
+
+
+function addTriangle(x,y){
+
+    const obj = new fabric.Triangle({
+
+        left:x,
+        top:y,
+
+        width:220,
+        height:190,
+
+        fill:"#222222",
+
+        stroke:null,
+        strokeWidth:0,
+
+        originX:"center",
+        originY:"center"
+
+    });
+
+    canvas.add(obj);
+
+    canvas.setActiveObject(obj);
+
+    saveHistory();
+
+}
+
+
+function createStarPoints(){
+
+    const points = [];
+
+    const outer = 110;
+    const inner = 48;
+
+    for(let i=0;i<10;i++){
+
+        const angle =
+            (-90 + i*36) *
+            Math.PI /
+            180;
+
+        const radius =
+            i % 2 === 0
+                ? outer
+                : inner;
+
+        points.push({
+
+            x:Math.cos(angle)*radius,
+            y:Math.sin(angle)*radius
 
         });
 
+    }
 
-    canvas.add(rect);
+    return points;
 
-    canvas.setActiveObject(rect);
+}
 
 
-    canvas.renderAll();
+function addStar(x,y){
 
+    const obj = new fabric.Polygon(
+        createStarPoints(),
+        {
+
+            left:x,
+            top:y,
+
+            fill:"#222222",
+
+            stroke:null,
+
+            strokeWidth:0,
+
+            originX:"center",
+            originY:"center"
+
+        }
+    );
+
+    canvas.add(obj);
+
+    canvas.setActiveObject(obj);
 
     saveHistory();
 
+}
 
-    updateProperties();
 
-    updateLayers();
+function addLine(x,y){
 
-    updateStatus();
+    const obj = new fabric.Line(
+        [
+            x - 130,
+            y,
+            x + 130,
+            y
+        ],
+        {
+
+            stroke:"#222222",
+
+            strokeWidth:8,
+
+            originX:"center",
+            originY:"center"
+
+        }
+    );
+
+    canvas.add(obj);
+
+    canvas.setActiveObject(obj);
+
+    saveHistory();
 
 }
 
 
 /* =========================================================
-   円
+   ペン
 ========================================================= */
 
-function addCircle(x, y) {
+function setupPen(){
 
-    const circle =
-        new fabric.Circle({
+    canvas.freeDrawingBrush =
+        new fabric.PencilBrush(canvas);
 
-            left: x,
+    canvas.freeDrawingBrush.color =
+        "#222222";
 
-            top: y,
-
-            radius: 70,
-
-            fill: "#d9d9d9",
-
-            stroke: "#333333",
-
-            strokeWidth: 2,
-
-            originX: "left",
-
-            originY: "top",
-
-            transparentCorners:
-                false,
-
-            cornerColor:
-                "#ffffff",
-
-            cornerStrokeColor:
-                "#555555",
-
-            borderColor:
-                "#555555"
-
-        });
-
-
-    canvas.add(circle);
-
-    canvas.setActiveObject(circle);
-
-
-    canvas.renderAll();
-
-
-    saveHistory();
-
-
-    updateProperties();
-
-    updateLayers();
-
-    updateStatus();
-
-}
-
-
-/* =========================================================
-   線
-========================================================= */
-
-function addLine(x, y) {
-
-    const line =
-        new fabric.Line(
-            [0, 0, 200, 0],
-            {
-
-                left: x,
-
-                top: y,
-
-                stroke: "#222222",
-
-                strokeWidth: 3,
-
-                originX: "left",
-
-                originY: "top",
-
-                transparentCorners:
-                    false,
-
-                cornerColor:
-                    "#ffffff",
-
-                cornerStrokeColor:
-                    "#555555",
-
-                borderColor:
-                    "#555555"
-
-            }
-        );
-
-
-    canvas.add(line);
-
-    canvas.setActiveObject(line);
-
-
-    canvas.renderAll();
-
-
-    saveHistory();
-
-
-    updateProperties();
-
-    updateLayers();
-
-    updateStatus();
+    canvas.freeDrawingBrush.width =
+        8;
 
 }
 
@@ -1841,402 +1265,201 @@ function addLine(x, y) {
    画像
 ========================================================= */
 
-function addImage(file) {
+document
+.getElementById("imageInput")
+.addEventListener("change",function(){
 
-    if (!file) {
-        return;
-    }
+    const file = this.files[0];
 
+    if(!file) return;
 
-    const reader =
-        new FileReader();
+    const reader = new FileReader();
 
+    reader.onload = function(e){
 
-    reader.onload =
-        function(event) {
+        fabric.Image.fromURL(
+            e.target.result,
+            function(img){
 
-            fabric.Image.fromURL(
-                event.target.result,
-                function(img) {
+                img.set({
 
-                    const maxWidth =
-                        400;
+                    left:600,
+                    top:400,
 
-                    const maxHeight =
-                        300;
+                    originX:"center",
+                    originY:"center",
 
-
-                    const scaleX =
-                        maxWidth /
-                        img.width;
-
-                    const scaleY =
-                        maxHeight /
-                        img.height;
-
-
-                    const scale =
+                    scaleX:
                         Math.min(
-                            scaleX,
-                            scaleY,
-                            1
-                        );
+                            1,
+                            500 / img.width
+                        ),
 
+                    scaleY:
+                        Math.min(
+                            1,
+                            500 / img.height
+                        )
 
-                    img.set({
+                });
 
-                        left: 100,
+                canvas.add(img);
 
-                        top: 100,
+                canvas.setActiveObject(img);
 
-                        scaleX: scale,
+                saveHistory();
 
-                        scaleY: scale,
+            },
+            {
+                crossOrigin:"anonymous"
+            }
+        );
 
-                        transparentCorners:
-                            false,
-
-                        cornerColor:
-                            "#ffffff",
-
-                        cornerStrokeColor:
-                            "#555555",
-
-                        borderColor:
-                            "#555555"
-
-                    });
-
-
-                    canvas.add(img);
-
-
-                    canvas.setActiveObject(
-                        img
-                    );
-
-
-                    canvas.renderAll();
-
-
-                    saveHistory();
-
-
-                    updateProperties();
-
-                    updateLayers();
-
-                    updateStatus();
-
-
-                    setTool("select");
-
-                }
-            );
-
-        };
-
+    };
 
     reader.readAsDataURL(file);
 
-}
+    this.value="";
+
+});
 
 
 /* =========================================================
-   キャンバスクリック
+   マウス
 ========================================================= */
 
-canvas.on(
-    "mouse:down",
-    function(event) {
+canvas.on("mouse:down",function(opt){
 
-        /*
-            選択ツールの場合は
-            Fabric.js自身に任せる。
-
-            これで空白部分をドラッグすると
-            範囲選択が動作する。
-        */
-
-        if (
-            currentTool ===
-            "select"
-        ) {
-
-            return;
-
-        }
-
-
-        if (
-            currentTool ===
-            "image"
-        ) {
-
-            document
-                .getElementById(
-                    "imageInput"
-                )
-                .click();
-
-            return;
-
-        }
-
-
-        const pointer =
-            canvas.getPointer(
-                event.e
-            );
-
-
-        if (
-            currentTool ===
-            "text"
-        ) {
-
-            addText(
-                pointer.x,
-                pointer.y
-            );
-
-            setTool("select");
-
-            return;
-
-        }
-
-
-        if (
-            currentTool ===
-            "rect"
-        ) {
-
-            addRect(
-                pointer.x,
-                pointer.y
-            );
-
-            setTool("select");
-
-            return;
-
-        }
-
-
-        if (
-            currentTool ===
-            "circle"
-        ) {
-
-            addCircle(
-                pointer.x,
-                pointer.y
-            );
-
-            setTool("select");
-
-            return;
-
-        }
-
-
-        if (
-            currentTool ===
-            "line"
-        ) {
-
-            addLine(
-                pointer.x,
-                pointer.y
-            );
-
-            setTool("select");
-
-            return;
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   選択開始
-========================================================= */
-
-canvas.on(
-    "selection:created",
-    function(event) {
-
-        updateProperties();
-
-        updateLayers();
-
-        updateStatus();
-
-    }
-);
-
-
-canvas.on(
-    "selection:updated",
-    function(event) {
-
-        updateProperties();
-
-        updateLayers();
-
-        updateStatus();
-
-    }
-);
-
-
-canvas.on(
-    "selection:cleared",
-    function(event) {
-
-        updateProperties();
-
-        updateLayers();
-
-        updateStatus();
-
-    }
-);
-
-
-/* =========================================================
-   オブジェクト移動
-========================================================= */
-
-canvas.on(
-    "object:moving",
-    function(event) {
-
-        /*
-            複数選択時は
-            FabricのActiveSelection自体を動かす。
-
-            そのため個別オブジェクトだけを
-            スナップしない。
-        */
-
-        if (
-            event.target &&
-            event.target.type !==
-                "activeSelection"
-        ) {
-
-            snapObject(
-                event.target
-            );
-
-        }
-
-
-        updateProperties();
-
-        updateStatus();
-
-    }
-);
-
-
-/* =========================================================
-   サイズ変更
-========================================================= */
-
-canvas.on(
-    "object:scaling",
-    function() {
-
-        updateProperties();
-
-        updateStatus();
-
-    }
-);
-
-
-/* =========================================================
-   回転
-========================================================= */
-
-canvas.on(
-    "object:rotating",
-    function() {
-
-        updateProperties();
-
-        updateStatus();
-
-    }
-);
-
-
-/* =========================================================
-   オブジェクト変更完了
-========================================================= */
-
-canvas.on(
-    "object:modified",
-    function() {
-
-        saveHistory();
-
-        updateProperties();
-
-        updateLayers();
-
-        updateStatus();
-
-    }
-);
-
-
-/* =========================================================
-   グリッド吸着
-========================================================= */
-
-function snapObject(object) {
-
-    /*
-        複数選択はここでは処理しない
-    */
-
-    if (
-        object.type ===
-        "activeSelection"
-    ) {
+    if(currentTool === "select"){
 
         return;
 
     }
 
+    const p = canvas.getPointer(opt.e);
 
-    const gridSize = 20;
+    if(currentTool === "text"){
+
+        addText(p.x,p.y);
+
+        setTool("select");
+
+        return;
+
+    }
+
+    if(currentTool === "rect"){
+
+        addRect(p.x,p.y);
+
+        setTool("select");
+
+        return;
+
+    }
+
+    if(currentTool === "circle"){
+
+        addCircle(p.x,p.y);
+
+        setTool("select");
+
+        return;
+
+    }
+
+    if(currentTool === "triangle"){
+
+        addTriangle(p.x,p.y);
+
+        setTool("select");
+
+        return;
+
+    }
+
+    if(currentTool === "star"){
+
+        addStar(p.x,p.y);
+
+        setTool("select");
+
+        return;
+
+    }
+
+    if(currentTool === "line"){
+
+        addLine(p.x,p.y);
+
+        setTool("select");
+
+        return;
+
+    }
+
+    if(currentTool === "image"){
+
+        document
+            .getElementById("imageInput")
+            .click();
+
+        setTool("select");
+
+    }
+
+});
 
 
-    object.set({
+/* =========================================================
+   選択イベント
+========================================================= */
+
+canvas.on("selection:created",updateUI);
+canvas.on("selection:updated",updateUI);
+canvas.on("selection:cleared",updateUI);
+
+canvas.on("object:modified",function(){
+
+    saveHistory();
+
+    updateUI();
+
+});
+
+
+canvas.on("object:moving",function(e){
+
+    snapObject(e.target);
+
+    updateStatus();
+
+});
+
+
+canvas.on("object:scaling",updateStatus);
+canvas.on("object:rotating",updateStatus);
+
+
+/* =========================================================
+   スナップ
+========================================================= */
+
+function snapObject(obj){
+
+    if(!obj) return;
+
+    const grid = 10;
+
+    obj.set({
 
         left:
-            Math.round(
-                object.left /
-                gridSize
-            ) * gridSize,
+            Math.round(obj.left/grid)*grid,
 
         top:
-            Math.round(
-                object.top /
-                gridSize
-            ) * gridSize
+            Math.round(obj.top/grid)*grid
 
     });
-
-
-    object.setCoords();
 
 }
 
@@ -2245,63 +1468,141 @@ function snapObject(object) {
    プロパティ表示
 ========================================================= */
 
-function updateProperties() {
+function updateUI(){
 
-    const content =
-        document.getElementById(
-            "propertyContent"
-        );
+    updateProperties();
+
+    updateLayers();
+
+    updateStatus();
+
+}
 
 
-    const object =
-        canvas.getActiveObject();
+function updateStatus(){
+
+    const obj = selectedObject();
+
+    if(!obj){
+
+        document.getElementById("objectStatus").textContent =
+            "オブジェクトなし";
+
+        document.getElementById("positionStatus").textContent =
+            "X: -　Y: -";
+
+        document.getElementById("sizeStatus").textContent =
+            "W: -　H: -";
+
+        return;
+
+    }
+
+    document.getElementById("objectStatus").textContent =
+        typeName(obj);
+
+    document.getElementById("positionStatus").textContent =
+        "X: " + Math.round(obj.left) +
+        "　Y: " + Math.round(obj.top);
+
+    document.getElementById("sizeStatus").textContent =
+        "W: " +
+        Math.round(obj.getScaledWidth()) +
+        "　H: " +
+        Math.round(obj.getScaledHeight());
+
+}
 
 
-    if (!object) {
+function typeName(obj){
 
-        content.innerHTML = `
+    if(obj.type === "i-text") return "文字";
 
+    if(obj.type === "rect") return "四角形";
+
+    if(obj.type === "circle") return "円";
+
+    if(obj.type === "triangle") return "三角形";
+
+    if(obj.type === "polygon") return "図形";
+
+    if(obj.type === "line") return "線";
+
+    if(obj.type === "path") return "ペン";
+
+    if(obj.type === "image") return "画像";
+
+    if(obj.type === "activeSelection") return "複数選択";
+
+    return obj.type;
+
+}
+
+
+/* =========================================================
+   プロパティ
+========================================================= */
+
+function updateProperties(){
+
+    const area =
+        document.getElementById("properties");
+
+    const obj = selectedObject();
+
+    if(!obj){
+
+        area.innerHTML = `
             <div class="no-selection">
-
-                オブジェクトを選択すると、<br>
-
-                ここに設定項目が表示されます。
-
+                オブジェクトを選択してください。<br>
+                文字や図形を選ぶと、ここから細かく編集できます。
             </div>
-
         `;
 
         return;
 
     }
 
+    if(obj.type === "activeSelection"){
 
-    /*
-        複数選択
-    */
+        area.innerHTML = `
 
-    if (
-        object.type ===
-        "activeSelection"
-    ) {
+            <div class="section">
 
-        const selectedCount =
-            object.getObjects().length;
+                <div class="section-title">
+                    複数選択
+                </div>
 
+                <div class="no-selection" style="padding:5px 0">
+                    ${obj.getObjects().length}個のオブジェクトを選択中
+                </div>
 
-        content.innerHTML = `
+            </div>
 
-            <div class="no-selection">
+            <div class="section">
 
-                ${selectedCount}個のオブジェクトを選択中です。
+                <div class="section-title">
+                    整列
+                </div>
 
-                <br><br>
+                <div class="btn-grid">
 
-                ドラッグでまとめて移動できます。
+                    <button class="small-btn"
+                        onclick="alignLeft()">
+                        左
+                    </button>
 
-                <br>
+                    <button class="small-btn"
+                        onclick="alignCenter()">
+                        中央
+                    </button>
 
-                Deleteキーでまとめて削除できます。
+                    <button class="small-btn"
+                        onclick="alignRight()">
+                        右
+                    </button>
+
+                </div>
 
             </div>
 
@@ -2315,136 +1616,772 @@ function updateProperties() {
     let html = "";
 
 
+    /* 基本 */
+
     html += `
 
-        <div class="property-section">
+        <div class="section">
 
             <div class="section-title">
-                位置
+                基本
             </div>
 
-            <div class="property-row">
+            <div class="row">
+                <div class="label">X</div>
+                <input
+                    type="number"
+                    value="${Math.round(obj.left)}"
+                    onchange="setProp('left',this.value)"
+                >
+            </div>
 
-                <div class="property-label">
+            <div class="row">
+                <div class="label">Y</div>
+                <input
+                    type="number"
+                    value="${Math.round(obj.top)}"
+                    onchange="setProp('top',this.value)"
+                >
+            </div>
+
+            <div class="row">
+                <div class="label">幅</div>
+                <input
+                    type="number"
+                    value="${Math.round(obj.getScaledWidth())}"
+                    onchange="setWidth(this.value)"
+                >
+            </div>
+
+            <div class="row">
+                <div class="label">高さ</div>
+                <input
+                    type="number"
+                    value="${Math.round(obj.getScaledHeight())}"
+                    onchange="setHeight(this.value)"
+                >
+            </div>
+
+            <div class="row">
+                <div class="label">回転</div>
+
+                <input
+                    type="number"
+                    value="${Math.round(obj.angle || 0)}"
+                    onchange="setProp('angle',this.value)"
+                >
+
+            </div>
+
+            <div class="row">
+
+                <div class="label">
+                    不透明度
+                </div>
+
+                <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="${Math.round((obj.opacity ?? 1)*100)}"
+                    oninput="setOpacity(this.value)"
+                >
+
+                <div
+                    class="range-value"
+                    id="opacityValue"
+                >
+                    ${Math.round((obj.opacity ?? 1)*100)}%
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    /* 文字 */
+
+    if(obj.type === "i-text"){
+
+        html += textPanel(obj);
+
+    }
+
+
+    /* 図形 */
+
+    if(
+        [
+            "rect",
+            "circle",
+            "triangle",
+            "polygon",
+            "line"
+        ].includes(obj.type)
+    ){
+
+        html += shapePanel(obj);
+
+    }
+
+
+    /* ペン */
+
+    if(obj.type === "path"){
+
+        html += penPanel(obj);
+
+    }
+
+
+    /* 画像 */
+
+    if(obj.type === "image"){
+
+        html += imagePanel(obj);
+
+    }
+
+
+    area.innerHTML = html;
+
+    updateGradientPreview(obj);
+
+}
+
+
+/* =========================================================
+   文字パネル
+========================================================= */
+
+function textPanel(obj){
+
+    return `
+
+        <div class="section">
+
+            <div class="section-title">
+                文字
+            </div>
+
+            <div class="row">
+
+                <div class="label">
+                    フォント
+                </div>
+
+                <select onchange="changeFont(this.value)">
+
+                    ${fonts.map(f => `
+
+                        <option
+                            value="${escapeHtml(f[1])}"
+                            ${obj.fontFamily === f[1] ? "selected" : ""}
+                        >
+                            ${escapeHtml(f[0])}
+                        </option>
+
+                    `).join("")}
+
+                </select>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="label">
+                    サイズ
+                </div>
+
+                <input
+                    type="number"
+                    min="1"
+                    value="${Math.round(obj.fontSize || 100)}"
+                    onchange="changeFontSize(this.value)"
+                >
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="label">
+                    文字間隔
+                </div>
+
+                <input
+                    type="number"
+                    value="${obj.charSpacing || 0}"
+                    onchange="setProp('charSpacing',this.value)"
+                >
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="label">
+                    行間
+                </div>
+
+                <input
+                    type="number"
+                    step="0.1"
+                    value="${obj.lineHeight || 1.16}"
+                    onchange="setProp('lineHeight',this.value)"
+                >
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="label">
+                    文字色
+                </div>
+
+                <input
+                    type="color"
+                    value="${getColor(obj.fill)}"
+                    onchange="changeFill(this.value)"
+                >
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="label">
+                    太さ
+                </div>
+
+                <select onchange="setProp('fontWeight',this.value)">
+
+                    <option value="400" ${obj.fontWeight=="400"?"selected":""}>標準</option>
+                    <option value="500" ${obj.fontWeight=="500"?"selected":""}>中太</option>
+                    <option value="700" ${obj.fontWeight=="700"?"selected":""}>太字</option>
+                    <option value="900" ${obj.fontWeight=="900"?"selected":""}>極太</option>
+
+                </select>
+
+            </div>
+
+
+            <label class="check">
+
+                <input
+                    type="checkbox"
+                    ${obj.fontStyle === "italic" ? "checked" : ""}
+                    onchange="toggleItalic(this.checked)"
+                >
+
+                斜体
+
+            </label>
+
+        </div>
+
+
+        <!-- グラデーション -->
+
+        <div class="section">
+
+            <div class="section-title">
+                グラデーション
+            </div>
+
+            <label class="check">
+
+                <input
+                    type="checkbox"
+                    id="gradientEnabled"
+                    ${obj._gradientEnabled ? "checked" : ""}
+                    onchange="toggleGradient(this.checked)"
+                >
+
+                グラデーションを使用
+
+            </label>
+
+            <div class="color-stop">
+
+                <span style="font-size:11px;width:40px">
+                    色1
+                </span>
+
+                <input
+                    type="color"
+                    value="${obj._gradientColor1 || '#ffffff'}"
+                    onchange="setGradientColor(1,this.value)"
+                >
+
+            </div>
+
+            <div class="color-stop">
+
+                <span style="font-size:11px;width:40px">
+                    色2
+                </span>
+
+                <input
+                    type="color"
+                    value="${obj._gradientColor2 || '#555555'}"
+                    onchange="setGradientColor(2,this.value)"
+                >
+
+            </div>
+
+            <select onchange="setGradientDirection(this.value)">
+
+                <option value="vertical">
+                    上 → 下
+                </option>
+
+                <option value="horizontal">
+                    左 → 右
+                </option>
+
+                <option value="diagonal">
+                    斜め
+                </option>
+
+            </select>
+
+            <div
+                id="gradientPreview"
+                class="gradient-preview"
+            ></div>
+
+        </div>
+
+
+        <!-- 縁取り -->
+
+        <div class="section">
+
+            <div class="section-title">
+                縁取り
+            </div>
+
+            <div class="row">
+
+                <div class="label">
+                    色
+                </div>
+
+                <input
+                    type="color"
+                    value="${getColor(obj.stroke || '#000000')}"
+                    onchange="setStrokeColor(this.value)"
+                >
+
+            </div>
+
+            <div class="row">
+
+                <div class="label">
+                    太さ
+                </div>
+
+                <input
+                    type="range"
+                    min="0"
+                    max="50"
+                    value="${obj.strokeWidth || 0}"
+                    oninput="setStrokeWidth(this.value)"
+                >
+
+                <div
+                    class="range-value"
+                    id="strokeValue"
+                >
+                    ${obj.strokeWidth || 0}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- 影 -->
+
+        ${shadowPanel(obj)}
+
+        <!-- 光沢 -->
+
+        ${glossPanel(obj)}
+
+    `;
+
+}
+
+
+/* =========================================================
+   図形パネル
+========================================================= */
+
+function shapePanel(obj){
+
+    return `
+
+        <div class="section">
+
+            <div class="section-title">
+                塗り
+            </div>
+
+            <div class="row">
+
+                <div class="label">
+                    色
+                </div>
+
+                <input
+                    type="color"
+                    value="${getColor(obj.fill || '#222222')}"
+                    onchange="changeFill(this.value)"
+                >
+
+            </div>
+
+            <label class="check">
+
+                <input
+                    type="checkbox"
+                    ${obj._gradientEnabled ? "checked" : ""}
+                    onchange="toggleGradient(this.checked)"
+                >
+
+                グラデーション
+
+            </label>
+
+            <div class="color-stop">
+
+                <span style="font-size:11px;width:40px">
+                    色1
+                </span>
+
+                <input
+                    type="color"
+                    value="${obj._gradientColor1 || '#ffffff'}"
+                    onchange="setGradientColor(1,this.value)"
+                >
+
+            </div>
+
+            <div class="color-stop">
+
+                <span style="font-size:11px;width:40px">
+                    色2
+                </span>
+
+                <input
+                    type="color"
+                    value="${obj._gradientColor2 || '#555555'}"
+                    onchange="setGradientColor(2,this.value)"
+                >
+
+            </div>
+
+            <select onchange="setGradientDirection(this.value)">
+
+                <option value="vertical">
+                    上 → 下
+                </option>
+
+                <option value="horizontal">
+                    左 → 右
+                </option>
+
+                <option value="diagonal">
+                    斜め
+                </option>
+
+            </select>
+
+            <div
+                id="gradientPreview"
+                class="gradient-preview"
+            ></div>
+
+        </div>
+
+
+        <div class="section">
+
+            <div class="section-title">
+                枠線
+            </div>
+
+            <div class="row">
+
+                <div class="label">
+                    色
+                </div>
+
+                <input
+                    type="color"
+                    value="${getColor(obj.stroke || '#000000')}"
+                    onchange="setStrokeColor(this.value)"
+                >
+
+            </div>
+
+            <div class="row">
+
+                <div class="label">
+                    太さ
+                </div>
+
+                <input
+                    type="range"
+                    min="0"
+                    max="50"
+                    value="${obj.strokeWidth || 0}"
+                    oninput="setStrokeWidth(this.value)"
+                >
+
+                <div
+                    class="range-value"
+                    id="strokeValue"
+                >
+                    ${obj.strokeWidth || 0}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        ${
+            obj.type === "rect"
+            ? `
+            <div class="section">
+
+                <div class="section-title">
+                    角丸
+                </div>
+
+                <div class="row">
+
+                    <div class="label">
+                        半径
+                    </div>
+
+                    <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value="${obj.rx || 0}"
+                        oninput="setRound(this.value)"
+                    >
+
+                    <div class="range-value">
+                        ${obj.rx || 0}
+                    </div>
+
+                </div>
+
+            </div>
+            `
+            : ""
+        }
+
+
+        ${shadowPanel(obj)}
+
+        ${glossPanel(obj)}
+
+    `;
+
+}
+
+
+/* =========================================================
+   ペン
+========================================================= */
+
+function penPanel(obj){
+
+    return `
+
+        <div class="section">
+
+            <div class="section-title">
+                ペン
+            </div>
+
+            <div class="row">
+
+                <div class="label">
+                    色
+                </div>
+
+                <input
+                    type="color"
+                    value="${getColor(obj.stroke || '#222222')}"
+                    onchange="setStrokeColor(this.value)"
+                >
+
+            </div>
+
+            <div class="row">
+
+                <div class="label">
+                    太さ
+                </div>
+
+                <input
+                    type="range"
+                    min="1"
+                    max="80"
+                    value="${obj.strokeWidth || 8}"
+                    oninput="setStrokeWidth(this.value)"
+                >
+
+            </div>
+
+            ${shadowPanel(obj)}
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   画像
+========================================================= */
+
+function imagePanel(obj){
+
+    return `
+
+        <div class="section">
+
+            <div class="section-title">
+                画像
+            </div>
+
+            <div class="no-selection" style="padding:3px 0">
+                画像の位置・大きさ・透明度などを調整できます。
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   影
+========================================================= */
+
+function shadowPanel(obj){
+
+    const shadow = obj.shadow;
+
+    return `
+
+        <div class="section">
+
+            <div class="section-title">
+                影
+            </div>
+
+            <label class="check">
+
+                <input
+                    type="checkbox"
+                    ${shadow ? "checked" : ""}
+                    onchange="toggleShadow(this.checked)"
+                >
+
+                影を使用
+
+            </label>
+
+            <div class="row">
+
+                <div class="label">
+                    色
+                </div>
+
+                <input
+                    type="color"
+                    value="${shadow?.color || '#000000'}"
+                    onchange="changeShadowColor(this.value)"
+                >
+
+            </div>
+
+            <div class="row">
+
+                <div class="label">
                     X
                 </div>
 
                 <input
-                    class="property-input"
-                    id="propX"
-                    type="number"
-                    value="${Math.round(object.left)}">
+                    type="range"
+                    min="-50"
+                    max="50"
+                    value="${shadow?.offsetX || 0}"
+                    oninput="changeShadowX(this.value)"
+                >
 
             </div>
 
+            <div class="row">
 
-            <div class="property-row">
-
-                <div class="property-label">
+                <div class="label">
                     Y
                 </div>
 
                 <input
-                    class="property-input"
-                    id="propY"
-                    type="number"
-                    value="${Math.round(object.top)}">
+                    type="range"
+                    min="-50"
+                    max="50"
+                    value="${shadow?.offsetY || 0}"
+                    oninput="changeShadowY(this.value)"
+                >
 
             </div>
 
-        </div>
+            <div class="row">
 
-    `;
-
-
-    html += `
-
-        <div class="property-section">
-
-            <div class="section-title">
-                サイズ
-            </div>
-
-            <div class="property-row">
-
-                <div class="property-label">
-                    幅
+                <div class="label">
+                    ぼかし
                 </div>
 
                 <input
-                    class="property-input"
-                    id="propWidth"
-                    type="number"
-                    value="${Math.round(
-                        object.getScaledWidth()
-                    )}">
+                    type="range"
+                    min="0"
+                    max="50"
+                    value="${shadow?.blur || 0}"
+                    oninput="changeShadowBlur(this.value)"
+                >
 
             </div>
 
+            <div class="row">
 
-            <div class="property-row">
-
-                <div class="property-label">
-                    高さ
-                </div>
-
-                <input
-                    class="property-input"
-                    id="propHeight"
-                    type="number"
-                    value="${Math.round(
-                        object.getScaledHeight()
-                    )}">
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    html += `
-
-        <div class="property-section">
-
-            <div class="section-title">
-                表示
-            </div>
-
-
-            <div class="property-row">
-
-                <div class="property-label">
+                <div class="label">
                     透明度
                 </div>
 
                 <input
-                    class="property-input"
-                    id="propOpacity"
-                    type="number"
+                    type="range"
                     min="0"
                     max="100"
-                    value="${Math.round(
-                        (object.opacity || 1) *
-                        100
-                    )}">
-
-            </div>
-
-
-            <div class="property-row">
-
-                <div class="property-label">
-                    回転
-                </div>
-
-                <input
-                    class="property-input"
-                    id="propAngle"
-                    type="number"
-                    value="${Math.round(
-                        object.angle || 0
-                    )}">
+                    value="${shadow ? Math.round((1 - getShadowAlpha(shadow))*100) : 50}"
+                    oninput="changeShadowOpacity(this.value)"
+                >
 
             </div>
 
@@ -2452,879 +2389,908 @@ function updateProperties() {
 
     `;
 
+}
 
-    /*
-        テキスト
-    */
 
-    if (
-        object.type === "i-text" ||
-        object.type === "text"
-    ) {
+/* =========================================================
+   光沢
+========================================================= */
 
-        html += `
+function glossPanel(obj){
 
-            <div class="property-section">
+    return `
 
-                <div class="section-title">
-                    文字
+        <div class="section">
+
+            <div class="section-title">
+                光沢
+            </div>
+
+            <label class="check">
+
+                <input
+                    type="checkbox"
+                    ${obj._glossEnabled ? "checked" : ""}
+                    onchange="toggleGloss(this.checked)"
+                >
+
+                上部に光沢を追加
+
+            </label>
+
+            <div class="row">
+
+                <div class="label">
+                    強さ
                 </div>
 
+                <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="${obj._glossStrength || 30}"
+                    oninput="setGlossStrength(this.value)"
+                >
 
-                <div class="property-row">
-
-                    <div class="property-label">
-                        フォント
-                    </div>
-
-
-                    <select
-                        class="property-select"
-                        id="propFont">
-
-                        <option
-                            value="Yu Gothic"
-                            ${
-                                object.fontFamily ===
-                                "Yu Gothic"
-                                ? "selected"
-                                : ""
-                            }>
-                            游ゴシック
-                        </option>
-
-
-                        <option
-                            value="Meiryo"
-                            ${
-                                object.fontFamily ===
-                                "Meiryo"
-                                ? "selected"
-                                : ""
-                            }>
-                            メイリオ
-                        </option>
-
-
-                        <option
-                            value="Arial"
-                            ${
-                                object.fontFamily ===
-                                "Arial"
-                                ? "selected"
-                                : ""
-                            }>
-                            Arial
-                        </option>
-
-
-                        <option
-                            value="sans-serif"
-                            ${
-                                object.fontFamily ===
-                                "sans-serif"
-                                ? "selected"
-                                : ""
-                            }>
-                            Sans Serif
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="property-row">
-
-                    <div class="property-label">
-                        サイズ
-                    </div>
-
-
-                    <input
-                        class="property-input"
-                        id="propFontSize"
-                        type="number"
-                        min="1"
-                        value="${Math.round(
-                            object.fontSize || 60
-                        )}">
-
-                </div>
-
-
-                <div class="property-row">
-
-                    <div class="property-label">
-                        文字色
-                    </div>
-
-
-                    <input
-                        class="color-input"
-                        id="propFill"
-                        type="color"
-                        value="${toHex(
-                            object.fill ||
-                            "#222222"
-                        )}">
-
-                </div>
-
-
-                <div class="checkbox-row">
-
-                    <input
-                        type="checkbox"
-                        id="propBold"
-                        ${
-                            object.fontWeight ===
-                            "bold"
-                            ? "checked"
-                            : ""
-                        }>
-
-                    <label for="propBold">
-                        太字
-                    </label>
-
-                </div>
-
-
-                <div
-                    class="checkbox-row"
-                    style="margin-top:7px;">
-
-                    <input
-                        type="checkbox"
-                        id="propItalic"
-                        ${
-                            object.fontStyle ===
-                            "italic"
-                            ? "checked"
-                            : ""
-                        }>
-
-                    <label for="propItalic">
-                        斜体
-                    </label>
-
+                <div class="range-value">
+                    ${obj._glossStrength || 30}
                 </div>
 
             </div>
 
-        `;
-
-    }
-
-
-    /*
-        図形
-    */
-
-    if (
-        object.type === "rect" ||
-        object.type === "circle"
-    ) {
-
-        html += `
-
-            <div class="property-section">
-
-                <div class="section-title">
-                    塗り
-                </div>
-
-
-                <div class="property-row">
-
-                    <div class="property-label">
-                        色
-                    </div>
-
-
-                    <input
-                        class="color-input"
-                        id="propFill"
-                        type="color"
-                        value="${toHex(
-                            object.fill ||
-                            "#ffffff"
-                        )}">
-
-                </div>
-
+            <div style="font-size:10px;color:#888;line-height:1.6">
+                文字や図形の上側を少し明るくして、
+                ロゴらしい立体感を作ります。
             </div>
 
+        </div>
 
-            <div class="property-section">
-
-                <div class="section-title">
-                    線
-                </div>
-
-
-                <div class="property-row">
-
-                    <div class="property-label">
-                        色
-                    </div>
-
-
-                    <input
-                        class="color-input"
-                        id="propStroke"
-                        type="color"
-                        value="${toHex(
-                            object.stroke ||
-                            "#000000"
-                        )}">
-
-                </div>
-
-
-                <div class="property-row">
-
-                    <div class="property-label">
-                        太さ
-                    </div>
-
-
-                    <input
-                        class="property-input"
-                        id="propStrokeWidth"
-                        type="number"
-                        min="0"
-                        value="${Math.round(
-                            object.strokeWidth ||
-                            0
-                        )}">
-
-                </div>
-
-            </div>
-
-        `;
-
-    }
-
-
-    /*
-        線
-    */
-
-    if (
-        object.type === "line"
-    ) {
-
-        html += `
-
-            <div class="property-section">
-
-                <div class="section-title">
-                    線
-                </div>
-
-
-                <div class="property-row">
-
-                    <div class="property-label">
-                        色
-                    </div>
-
-
-                    <input
-                        class="color-input"
-                        id="propStroke"
-                        type="color"
-                        value="${toHex(
-                            object.stroke ||
-                            "#000000"
-                        )}">
-
-                </div>
-
-
-                <div class="property-row">
-
-                    <div class="property-label">
-                        太さ
-                    </div>
-
-
-                    <input
-                        class="property-input"
-                        id="propStrokeWidth"
-                        type="number"
-                        min="1"
-                        value="${Math.round(
-                            object.strokeWidth ||
-                            1
-                        )}">
-
-                </div>
-
-            </div>
-
-        `;
-
-    }
-
-
-    content.innerHTML = html;
-
-
-    attachPropertyEvents(
-        object
-    );
+    `;
 
 }
 
 
 /* =========================================================
-   プロパティイベント
+   色
 ========================================================= */
 
-function attachPropertyEvents(
-    object
-) {
+function getColor(value){
 
-    const x =
-        document.getElementById(
-            "propX"
-        );
+    if(!value) return "#000000";
 
+    if(typeof value === "string"){
 
-    if (x) {
+        if(value.startsWith("#"))
+            return value;
 
-        x.addEventListener(
-            "change",
-            function() {
-
-                object.set(
-                    "left",
-                    Number(
-                        this.value
-                    )
-                );
-
-
-                object.setCoords();
-
-
-                canvas.renderAll();
-
-
-                saveHistory();
-
-
-                updateLayers();
-
-                updateStatus();
-
-            }
-        );
-
-    }
-
-
-    const y =
-        document.getElementById(
-            "propY"
-        );
-
-
-    if (y) {
-
-        y.addEventListener(
-            "change",
-            function() {
-
-                object.set(
-                    "top",
-                    Number(
-                        this.value
-                    )
-                );
-
-
-                object.setCoords();
-
-
-                canvas.renderAll();
-
-
-                saveHistory();
-
-
-                updateLayers();
-
-                updateStatus();
-
-            }
-        );
-
-    }
-
-
-    const width =
-        document.getElementById(
-            "propWidth"
-        );
-
-
-    if (width) {
-
-        width.addEventListener(
-            "change",
-            function() {
-
-                const newWidth =
-                    Number(
-                        this.value
-                    );
-
-
-                if (object.width) {
-
-                    object.scaleX =
-                        newWidth /
-                        object.width;
-
-                }
-
-
-                object.setCoords();
-
-
-                canvas.renderAll();
-
-
-                saveHistory();
-
-
-                updateProperties();
-
-                updateStatus();
-
-            }
-        );
-
-    }
-
-
-    const height =
-        document.getElementById(
-            "propHeight"
-        );
-
-
-    if (height) {
-
-        height.addEventListener(
-            "change",
-            function() {
-
-                const newHeight =
-                    Number(
-                        this.value
-                    );
-
-
-                if (object.height) {
-
-                    object.scaleY =
-                        newHeight /
-                        object.height;
-
-                }
-
-
-                object.setCoords();
-
-
-                canvas.renderAll();
-
-
-                saveHistory();
-
-
-                updateProperties();
-
-                updateStatus();
-
-            }
-        );
-
-    }
-
-
-    const opacity =
-        document.getElementById(
-            "propOpacity"
-        );
-
-
-    if (opacity) {
-
-        opacity.addEventListener(
-            "change",
-            function() {
-
-                let value =
-                    Number(
-                        this.value
-                    );
-
-
-                value =
-                    Math.max(
-                        0,
-                        Math.min(
-                            100,
-                            value
-                        )
-                    );
-
-
-                object.set(
-                    "opacity",
-                    value / 100
-                );
-
-
-                canvas.renderAll();
-
-
-                saveHistory();
-
-            }
-        );
-
-    }
-
-
-    const angle =
-        document.getElementById(
-            "propAngle"
-        );
-
-
-    if (angle) {
-
-        angle.addEventListener(
-            "change",
-            function() {
-
-                object.set(
-                    "angle",
-                    Number(
-                        this.value
-                    )
-                );
-
-
-                object.setCoords();
-
-
-                canvas.renderAll();
-
-
-                saveHistory();
-
-
-                updateStatus();
-
-            }
-        );
-
-    }
-
-
-    const fill =
-        document.getElementById(
-            "propFill"
-        );
-
-
-    if (fill) {
-
-        fill.addEventListener(
-            "input",
-            function() {
-
-                object.set(
-                    "fill",
-                    this.value
-                );
-
-
-                canvas.renderAll();
-
-            }
-        );
-
-
-        fill.addEventListener(
-            "change",
-            function() {
-
-                saveHistory();
-
-            }
-        );
-
-    }
-
-
-    const stroke =
-        document.getElementById(
-            "propStroke"
-        );
-
-
-    if (stroke) {
-
-        stroke.addEventListener(
-            "input",
-            function() {
-
-                object.set(
-                    "stroke",
-                    this.value
-                );
-
-
-                canvas.renderAll();
-
-            }
-        );
-
-
-        stroke.addEventListener(
-            "change",
-            function() {
-
-                saveHistory();
-
-            }
-        );
-
-    }
-
-
-    const strokeWidth =
-        document.getElementById(
-            "propStrokeWidth"
-        );
-
-
-    if (strokeWidth) {
-
-        strokeWidth.addEventListener(
-            "change",
-            function() {
-
-                object.set(
-                    "strokeWidth",
-                    Number(
-                        this.value
-                    )
-                );
-
-
-                object.setCoords();
-
-
-                canvas.renderAll();
-
-
-                saveHistory();
-
-
-                updateStatus();
-
-            }
-        );
-
-    }
-
-
-    const font =
-        document.getElementById(
-            "propFont"
-        );
-
-
-    if (font) {
-
-        font.addEventListener(
-            "change",
-            function() {
-
-                object.set(
-                    "fontFamily",
-                    this.value
-                );
-
-
-                canvas.renderAll();
-
-
-                saveHistory();
-
-            }
-        );
-
-    }
-
-
-    const fontSize =
-        document.getElementById(
-            "propFontSize"
-        );
-
-
-    if (fontSize) {
-
-        fontSize.addEventListener(
-            "change",
-            function() {
-
-                object.set(
-                    "fontSize",
-                    Number(
-                        this.value
-                    )
-                );
-
-
-                object.setCoords();
-
-
-                canvas.renderAll();
-
-
-                saveHistory();
-
-
-                updateProperties();
-
-                updateStatus();
-
-            }
-        );
-
-    }
-
-
-    const bold =
-        document.getElementById(
-            "propBold"
-        );
-
-
-    if (bold) {
-
-        bold.addEventListener(
-            "change",
-            function() {
-
-                object.set(
-                    "fontWeight",
-                    this.checked
-                        ? "bold"
-                        : "normal"
-                );
-
-
-                canvas.renderAll();
-
-
-                saveHistory();
-
-            }
-        );
-
-    }
-
-
-    const italic =
-        document.getElementById(
-            "propItalic"
-        );
-
-
-    if (italic) {
-
-        italic.addEventListener(
-            "change",
-            function() {
-
-                object.set(
-                    "fontStyle",
-                    this.checked
-                        ? "italic"
-                        : "normal"
-                );
-
-
-                canvas.renderAll();
-
-
-                saveHistory();
-
-            }
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   HEX
-========================================================= */
-
-function toHex(color) {
-
-    if (!color) {
         return "#000000";
+
     }
 
+    return "#000000";
 
-    if (
-        typeof color ===
-        "string" &&
-        color.startsWith("#")
-    ) {
+}
 
+
+function changeFill(color){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    obj.set("fill",color);
+
+    obj._gradientEnabled = false;
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+    updateUI();
+
+}
+
+
+/* =========================================================
+   グラデーション
+========================================================= */
+
+function toggleGradient(enabled){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    obj._gradientEnabled = enabled;
+
+    if(enabled){
+
+        obj._gradientColor1 =
+            obj._gradientColor1 ||
+            "#ffffff";
+
+        obj._gradientColor2 =
+            obj._gradientColor2 ||
+            "#555555";
+
+        applyGradient();
+
+    }
+    else{
+
+        obj.set(
+            "fill",
+            obj._gradientColor1 || "#222222"
+        );
+
+    }
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+    updateUI();
+
+}
+
+
+function setGradientColor(number,color){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    if(number === 1)
+        obj._gradientColor1 = color;
+
+    if(number === 2)
+        obj._gradientColor2 = color;
+
+    if(obj._gradientEnabled)
+        applyGradient();
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+    updateUI();
+
+}
+
+
+function setGradientDirection(direction){
+
+    gradientMode = direction;
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    if(obj._gradientEnabled)
+        applyGradient();
+
+    canvas.requestRenderAll();
+
+}
+
+
+function applyGradient(){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    const c1 =
+        obj._gradientColor1 ||
+        "#ffffff";
+
+    const c2 =
+        obj._gradientColor2 ||
+        "#555555";
+
+    let coords;
+
+    if(gradientMode === "horizontal"){
+
+        coords = {
+            x1:0,
+            y1:0,
+            x2:obj.width || 1,
+            y2:0
+        };
+
+    }
+    else if(gradientMode === "diagonal"){
+
+        coords = {
+            x1:0,
+            y1:0,
+            x2:obj.width || 1,
+            y2:obj.height || 1
+        };
+
+    }
+    else{
+
+        coords = {
+            x1:0,
+            y1:0,
+            x2:0,
+            y2:obj.height || 1
+        };
+
+    }
+
+    const gradient =
+        new fabric.Gradient({
+
+            type:"linear",
+
+            coords:coords,
+
+            colorStops:[
+                {
+                    offset:0,
+                    color:c1
+                },
+                {
+                    offset:1,
+                    color:c2
+                }
+            ]
+
+        });
+
+    obj.set("fill",gradient);
+
+    updateGradientPreview(obj);
+
+}
+
+
+function updateGradientPreview(obj){
+
+    const preview =
+        document.getElementById("gradientPreview");
+
+    if(!preview) return;
+
+    const c1 =
+        obj._gradientColor1 ||
+        "#ffffff";
+
+    const c2 =
+        obj._gradientColor2 ||
+        "#555555";
+
+    let direction = "to bottom";
+
+    if(gradientMode === "horizontal")
+        direction = "to right";
+
+    if(gradientMode === "diagonal")
+        direction = "to bottom right";
+
+    preview.style.background =
+        `linear-gradient(${direction},${c1},${c2})`;
+
+}
+
+
+/* =========================================================
+   縁取り
+========================================================= */
+
+function setStrokeColor(color){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    obj.set("stroke",color);
+
+    if(!obj.strokeWidth)
+        obj.set("strokeWidth",2);
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+    updateUI();
+
+}
+
+
+function setStrokeWidth(value){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    obj.set("strokeWidth",Number(value));
+
+    canvas.requestRenderAll();
+
+    const v =
+        document.getElementById("strokeValue");
+
+    if(v)
+        v.textContent = value;
+
+    saveHistory();
+
+}
+
+
+/* =========================================================
+   影
+========================================================= */
+
+function toggleShadow(enabled){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    if(enabled){
+
+        obj.set(
+            "shadow",
+            new fabric.Shadow({
+
+                color:"rgba(0,0,0,0.5)",
+
+                blur:10,
+
+                offsetX:8,
+
+                offsetY:8
+
+            })
+        );
+
+    }
+    else{
+
+        obj.set("shadow",null);
+
+    }
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+    updateUI();
+
+}
+
+
+function changeShadowColor(color){
+
+    const obj = selectedObject();
+
+    if(!obj || !obj.shadow) return;
+
+    const alpha =
+        getShadowAlpha(obj.shadow);
+
+    obj.shadow =
+        new fabric.Shadow({
+
+            color:hexToRgba(color,alpha),
+
+            blur:obj.shadow.blur,
+
+            offsetX:obj.shadow.offsetX,
+
+            offsetY:obj.shadow.offsetY
+
+        });
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+}
+
+
+function changeShadowX(value){
+
+    const obj = selectedObject();
+
+    if(!obj || !obj.shadow) return;
+
+    obj.shadow.offsetX =
+        Number(value);
+
+    canvas.requestRenderAll();
+
+}
+
+
+function changeShadowY(value){
+
+    const obj = selectedObject();
+
+    if(!obj || !obj.shadow) return;
+
+    obj.shadow.offsetY =
+        Number(value);
+
+    canvas.requestRenderAll();
+
+}
+
+
+function changeShadowBlur(value){
+
+    const obj = selectedObject();
+
+    if(!obj || !obj.shadow) return;
+
+    obj.shadow.blur =
+        Number(value);
+
+    canvas.requestRenderAll();
+
+}
+
+
+function changeShadowOpacity(value){
+
+    const obj = selectedObject();
+
+    if(!obj || !obj.shadow) return;
+
+    const alpha =
+        1 - Number(value)/100;
+
+    const color =
+        extractShadowBaseColor(
+            obj.shadow.color
+        );
+
+    obj.shadow =
+        new fabric.Shadow({
+
+            color:hexToRgba(color,alpha),
+
+            blur:obj.shadow.blur,
+
+            offsetX:obj.shadow.offsetX,
+
+            offsetY:obj.shadow.offsetY
+
+        });
+
+    canvas.requestRenderAll();
+
+}
+
+
+function getShadowAlpha(shadow){
+
+    if(!shadow || !shadow.color)
+        return .5;
+
+    const match =
+        shadow.color.match(
+            /rgba?\([^,]+,[^,]+,[^,]+,?\s*([0-9.]+)?\)/
+        );
+
+    if(match && match[1])
+        return Number(match[1]);
+
+    return 1;
+
+}
+
+
+function extractShadowBaseColor(color){
+
+    if(!color)
+        return "#000000";
+
+    if(color.startsWith("#"))
         return color;
 
+    return "#000000";
+
+}
+
+
+/* =========================================================
+   光沢
+========================================================= */
+
+function toggleGloss(enabled){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    obj._glossEnabled = enabled;
+
+    if(enabled){
+
+        obj._glossStrength =
+            obj._glossStrength || 30;
+
+        createGloss(obj);
+
+    }
+    else{
+
+        removeGloss(obj);
+
     }
 
+    canvas.requestRenderAll();
 
-    if (
-        color ===
-        "transparent"
-    ) {
+    saveHistory();
 
-        return "#ffffff";
+    updateUI();
+
+}
+
+
+function setGlossStrength(value){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    obj._glossStrength =
+        Number(value);
+
+    if(obj._glossEnabled)
+        createGloss(obj);
+
+    canvas.requestRenderAll();
+
+}
+
+
+function createGloss(obj){
+
+    /*
+       Fabricの単一オブジェクトに
+       本物の内部ハイライトを適用するのは
+       制約があるため、疑似光沢として
+       半透明グラデーションを使用。
+    */
+
+    const strength =
+        (obj._glossStrength || 30) / 100;
+
+    if(!obj._originalFill){
+
+        obj._originalFill =
+            obj.fill;
 
     }
 
+    if(obj._gradientEnabled){
 
-    const ctx =
-        document
-            .createElement("canvas")
-            .getContext("2d");
+        return;
+
+    }
+
+    const base =
+        getColor(
+            obj._originalFill ||
+            obj.fill ||
+            "#222222"
+        );
+
+    const gloss =
+        new fabric.Gradient({
+
+            type:"linear",
+
+            coords:{
+                x1:0,
+                y1:0,
+                x2:0,
+                y2:obj.height || 100
+            },
+
+            colorStops:[
+
+                {
+                    offset:0,
+                    color:hexToRgba(
+                        "#ffffff",
+                        strength
+                    )
+                },
+
+                {
+                    offset:.35,
+                    color:base
+                },
+
+                {
+                    offset:1,
+                    color:base
+                }
+
+            ]
+
+        });
+
+    obj.set("fill",gloss);
+
+}
 
 
-    ctx.fillStyle =
-        color;
+function removeGloss(obj){
+
+    if(obj._originalFill){
+
+        obj.set(
+            "fill",
+            obj._originalFill
+        );
+
+    }
+
+}
 
 
-    return ctx.fillStyle;
+/* =========================================================
+   その他プロパティ
+========================================================= */
+
+function setProp(prop,value){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    obj.set(
+        prop,
+        prop === "angle" ||
+        prop === "left" ||
+        prop === "top"
+            ? Number(value)
+            : value
+    );
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+    updateUI();
+
+}
+
+
+function setWidth(value){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    const width =
+        obj.getScaledWidth();
+
+    if(width <= 0) return;
+
+    obj.scaleX =
+        Number(value) / obj.width;
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+    updateUI();
+
+}
+
+
+function setHeight(value){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    if(obj.height <= 0) return;
+
+    obj.scaleY =
+        Number(value) / obj.height;
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+    updateUI();
+
+}
+
+
+function setOpacity(value){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    obj.opacity =
+        Number(value)/100;
+
+    canvas.requestRenderAll();
+
+    const v =
+        document.getElementById("opacityValue");
+
+    if(v)
+        v.textContent =
+            value + "%";
+
+}
+
+
+function changeFont(font){
+
+    const obj = selectedObject();
+
+    if(!obj || obj.type !== "i-text")
+        return;
+
+    obj.fontFamily = font;
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+}
+
+
+function changeFontSize(size){
+
+    const obj = selectedObject();
+
+    if(!obj || obj.type !== "i-text")
+        return;
+
+    obj.fontSize =
+        Number(size);
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+    updateUI();
+
+}
+
+
+function toggleItalic(enabled){
+
+    const obj = selectedObject();
+
+    if(!obj) return;
+
+    obj.fontStyle =
+        enabled
+            ? "italic"
+            : "normal";
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+}
+
+
+/* =========================================================
+   角丸
+========================================================= */
+
+function setRound(value){
+
+    const obj = selectedObject();
+
+    if(!obj || obj.type !== "rect")
+        return;
+
+    obj.rx =
+        Number(value);
+
+    obj.ry =
+        Number(value);
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+}
+
+
+/* =========================================================
+   整列
+========================================================= */
+
+function alignLeft(){
+
+    const objects =
+        selectedObjects();
+
+    if(objects.length < 2)
+        return;
+
+    const min =
+        Math.min(
+            ...objects.map(o=>o.left)
+        );
+
+    objects.forEach(o=>{
+        o.set("left",min);
+        o.setCoords();
+    });
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+}
+
+
+function alignCenter(){
+
+    const objects =
+        selectedObjects();
+
+    if(objects.length < 2)
+        return;
+
+    const avg =
+        objects.reduce(
+            (sum,o)=>sum+o.left,
+            0
+        ) / objects.length;
+
+    objects.forEach(o=>{
+        o.set("left",avg);
+        o.setCoords();
+    });
+
+    canvas.requestRenderAll();
+
+    saveHistory();
+
+}
+
+
+function alignRight(){
+
+    const objects =
+        selectedObjects();
+
+    if(objects.length < 2)
+        return;
+
+    const max =
+        Math.max(
+            ...objects.map(
+                o=>o.left+o.getScaledWidth()
+            )
+        );
+
+    objects.forEach(o=>{
+
+        o.set(
+            "left",
+            max-o.getScaledWidth()
+        );
+
+        o.setCoords();
+
+    });
+
+    canvas.requestRenderAll();
+
+    saveHistory();
 
 }
 
@@ -3333,297 +3299,96 @@ function toHex(color) {
    レイヤー
 ========================================================= */
 
-function updateLayers() {
+function updateLayers(){
 
     const list =
-        document.getElementById(
-            "layerList"
-        );
-
+        document.getElementById("layerList");
 
     list.innerHTML = "";
 
-
     const objects =
         canvas.getObjects();
 
+    const active =
+        selectedObject();
 
-    const selected =
-        canvas.getActiveObject();
-
-
-    objects
-        .slice()
+    [...objects]
         .reverse()
-        .forEach(
-            function(
-                object,
-                reverseIndex
-            ) {
+        .forEach((obj,index)=>{
 
-                const actualIndex =
-                    objects.length -
-                    1 -
-                    reverseIndex;
+            const item =
+                document.createElement("div");
 
+            item.className =
+                "layer-item";
 
-                const item =
-                    document.createElement(
-                        "div"
-                    );
+            if(
+                active &&
+                (
+                    active === obj ||
+                    (
+                        active.type === "activeSelection" &&
+                        active.getObjects().includes(obj)
+                    )
+                )
+            ){
 
-
-                item.className =
-                    "layer-item";
-
-
-                if (
-                    selected ===
-                    object
-                ) {
-
-                    item.classList.add(
-                        "selected"
-                    );
-
-                }
-
-
-                const number =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                number.className =
-                    "layer-number";
-
-
-                number.textContent =
-                    actualIndex + 1;
-
-
-                const name =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                name.className =
-                    "layer-name";
-
-
-                name.textContent =
-                    getObjectName(
-                        object
-                    );
-
-
-                item.appendChild(
-                    number
-                );
-
-
-                item.appendChild(
-                    name
-                );
-
-
-                item.addEventListener(
-                    "click",
-                    function() {
-
-                        canvas.setActiveObject(
-                            object
-                        );
-
-
-                        canvas.renderAll();
-
-
-                        updateProperties();
-
-                        updateLayers();
-
-                        updateStatus();
-
-                    }
-                );
-
-
-                list.appendChild(
-                    item
-                );
+                item.classList.add("selected");
 
             }
-        );
+
+            let icon = "□";
+
+            if(obj.type === "i-text")
+                icon = "T";
+
+            if(obj.type === "circle")
+                icon = "○";
+
+            if(obj.type === "triangle")
+                icon = "△";
+
+            if(obj.type === "path")
+                icon = "✎";
+
+            if(obj.type === "image")
+                icon = "▧";
+
+            item.innerHTML = `
+
+                <span class="layer-icon">
+                    ${icon}
+                </span>
+
+                <span class="layer-name">
+                    ${getLayerName(obj)}
+                </span>
+
+            `;
+
+            item.onclick = function(){
+
+                canvas.setActiveObject(obj);
+
+                canvas.requestRenderAll();
+
+                updateUI();
+
+            };
+
+            list.appendChild(item);
+
+        });
 
 }
 
 
-function getObjectName(
-    object
-) {
+function getLayerName(obj){
 
-    if (
-        object.type ===
-        "i-text" ||
-        object.type ===
-        "text"
-    ) {
+    if(obj.type === "i-text")
+        return obj.text || "文字";
 
-        return object.text ||
-            "文字";
-
-    }
-
-
-    if (
-        object.type ===
-        "rect"
-    ) {
-
-        return "四角形";
-
-    }
-
-
-    if (
-        object.type ===
-        "circle"
-    ) {
-
-        return "円";
-
-    }
-
-
-    if (
-        object.type ===
-        "line"
-    ) {
-
-        return "線";
-
-    }
-
-
-    if (
-        object.type ===
-        "image"
-    ) {
-
-        return "画像";
-
-    }
-
-
-    return "オブジェクト";
-
-}
-
-
-/* =========================================================
-   ステータス
-========================================================= */
-
-function updateStatus() {
-
-    const objects =
-        canvas.getObjects();
-
-
-    document
-        .getElementById(
-            "objectStatus"
-        )
-        .textContent =
-        "オブジェクト " +
-        objects.length;
-
-
-    const object =
-        canvas.getActiveObject();
-
-
-    if (!object) {
-
-        document
-            .getElementById(
-                "positionStatus"
-            )
-            .textContent =
-            "X: -　Y: -";
-
-
-        document
-            .getElementById(
-                "sizeStatus"
-            )
-            .textContent =
-            "W: -　H: -";
-
-
-        return;
-
-    }
-
-
-    if (
-        object.type ===
-        "activeSelection"
-    ) {
-
-        document
-            .getElementById(
-                "positionStatus"
-            )
-            .textContent =
-            "複数選択";
-
-
-        document
-            .getElementById(
-                "sizeStatus"
-            )
-            .textContent =
-            object.getObjects().length +
-            "個";
-
-
-        return;
-
-    }
-
-
-    document
-        .getElementById(
-            "positionStatus"
-        )
-        .textContent =
-        "X: " +
-        Math.round(
-            object.left
-        ) +
-        "　Y: " +
-        Math.round(
-            object.top
-        );
-
-
-    document
-        .getElementById(
-            "sizeStatus"
-        )
-        .textContent =
-        "W: " +
-        Math.round(
-            object.getScaledWidth()
-        ) +
-        "　H: " +
-        Math.round(
-            object.getScaledHeight()
-        );
+    return typeName(obj);
 
 }
 
@@ -3632,105 +3397,79 @@ function updateStatus() {
    コピー
 ========================================================= */
 
-function copyObject() {
+function copyObject(){
 
-    const object =
-        canvas.getActiveObject();
+    const obj =
+        selectedObject();
 
+    if(!obj) return;
 
-    if (!object) {
-        return;
-    }
+    obj.clone(function(cloned){
 
+        clipboard = cloned;
 
-    object.clone(
-        function(cloned) {
-
-            copiedObject =
-                cloned;
-
-        }
-    );
+    });
 
 }
 
 
-/* =========================================================
-   貼り付け
-========================================================= */
+function pasteObject(){
 
-function pasteObject() {
+    if(!clipboard) return;
 
-    if (!copiedObject) {
-        return;
-    }
+    clipboard.clone(function(cloned){
 
+        canvas.discardActiveObject();
 
-    copiedObject.clone(
-        function(clonedObj) {
+        cloned.set({
 
-            clonedObj.set({
+            left:
+                (cloned.left || 0)+25,
 
-                left:
-                    (
-                        clonedObj.left ||
-                        0
-                    ) + 20,
+            top:
+                (cloned.top || 0)+25,
 
-                top:
-                    (
-                        clonedObj.top ||
-                        0
-                    ) + 20
+            evented:true
+
+        });
+
+        if(
+            cloned.type === "activeSelection"
+        ){
+
+            cloned.canvas = canvas;
+
+            cloned.forEachObject(function(obj){
+
+                canvas.add(obj);
 
             });
 
-
-            canvas.add(
-                clonedObj
-            );
-
-
-            canvas.setActiveObject(
-                clonedObj
-            );
-
-
-            canvas.renderAll();
-
-
-            saveHistory();
-
-
-            updateProperties();
-
-            updateLayers();
-
-            updateStatus();
+            cloned.setCoords();
 
         }
-    );
+        else{
+
+            canvas.add(cloned);
+
+        }
+
+        canvas.setActiveObject(cloned);
+
+        canvas.requestRenderAll();
+
+        saveHistory();
+
+    });
 
 }
 
 
-/* =========================================================
-   複製
-========================================================= */
-
-function duplicateObject() {
+function duplicateObject(){
 
     copyObject();
 
-
-    setTimeout(
-        function() {
-
-            pasteObject();
-
-        },
-        10
-    );
+    pasteObject();
 
 }
 
@@ -3739,665 +3478,158 @@ function duplicateObject() {
    削除
 ========================================================= */
 
-function deleteObject() {
+function deleteObject(){
 
-    const active =
-        canvas.getActiveObjects();
+    const objects =
+        selectedObjects();
 
-
-    if (
-        !active.length
-    ) {
-
+    if(!objects.length)
         return;
 
-    }
-
-
-    active.forEach(
-        function(object) {
-
-            canvas.remove(
-                object
-            );
-
-        }
-    );
-
+    objects.forEach(obj=>{
+        canvas.remove(obj);
+    });
 
     canvas.discardActiveObject();
 
-
-    canvas.renderAll();
-
+    canvas.requestRenderAll();
 
     saveHistory();
 
-
-    updateProperties();
-
-    updateLayers();
-
-    updateStatus();
+    updateUI();
 
 }
 
 
 /* =========================================================
-   レイヤー
+   前後
 ========================================================= */
 
-function bringForward() {
+function bringFront(){
 
-    const object =
-        canvas.getActiveObject();
+    const obj =
+        selectedObject();
 
+    if(!obj) return;
 
-    if (!object) {
-        return;
-    }
+    canvas.bringToFront(obj);
 
-
-    canvas.bringForward(
-        object
-    );
-
-
-    canvas.renderAll();
-
+    canvas.requestRenderAll();
 
     saveHistory();
 
-
-    updateLayers();
+    updateUI();
 
 }
 
 
-function sendBackward() {
+function sendBack(){
 
-    const object =
-        canvas.getActiveObject();
+    const obj =
+        selectedObject();
 
+    if(!obj) return;
 
-    if (!object) {
-        return;
-    }
+    canvas.sendToBack(obj);
 
-
-    canvas.sendBackwards(
-        object
-    );
-
-
-    canvas.renderAll();
-
+    canvas.requestRenderAll();
 
     saveHistory();
 
-
-    updateLayers();
-
-}
-
-
-function bringToFront() {
-
-    const object =
-        canvas.getActiveObject();
-
-
-    if (!object) {
-        return;
-    }
-
-
-    canvas.bringToFront(
-        object
-    );
-
-
-    canvas.renderAll();
-
-
-    saveHistory();
-
-
-    updateLayers();
-
-}
-
-
-function sendToBack() {
-
-    const object =
-        canvas.getActiveObject();
-
-
-    if (!object) {
-        return;
-    }
-
-
-    canvas.sendToBack(
-        object
-    );
-
-
-    canvas.renderAll();
-
-
-    saveHistory();
-
-
-    updateLayers();
+    updateUI();
 
 }
 
 
 /* =========================================================
-   ボタン
+   Undo / Redo
 ========================================================= */
 
-document
-    .getElementById(
-        "selectTool"
-    )
-    .addEventListener(
-        "click",
-        function() {
+function saveHistory(){
 
-            setTool(
-                "select"
-            );
+    if(restoringHistory)
+        return;
 
-        }
+    const json =
+        JSON.stringify(
+            canvas.toJSON([
+                "_gradientEnabled",
+                "_gradientColor1",
+                "_gradientColor2",
+                "_glossEnabled",
+                "_glossStrength",
+                "_originalFill"
+            ])
+        );
+
+    if(
+        historyIndex >= 0 &&
+        history[historyIndex] === json
+    ){
+
+        return;
+
+    }
+
+    history =
+        history.slice(
+            0,
+            historyIndex + 1
+        );
+
+    history.push(json);
+
+    historyIndex =
+        history.length - 1;
+
+}
+
+
+function undo(){
+
+    if(historyIndex <= 0)
+        return;
+
+    historyIndex--;
+
+    restoreHistory(
+        history[historyIndex]
     );
 
+}
 
-document
-    .getElementById(
-        "textTool"
-    )
-    .addEventListener(
-        "click",
-        function() {
 
-            setTool(
-                "text"
-            );
+function redo(){
 
-        }
+    if(historyIndex >= history.length-1)
+        return;
+
+    historyIndex++;
+
+    restoreHistory(
+        history[historyIndex]
     );
 
+}
 
-document
-    .getElementById(
-        "rectTool"
-    )
-    .addEventListener(
-        "click",
-        function() {
 
-            setTool(
-                "rect"
-            );
+function restoreHistory(json){
 
-        }
-    );
+    restoringHistory = true;
 
-
-document
-    .getElementById(
-        "circleTool"
-    )
-    .addEventListener(
-        "click",
-        function() {
-
-            setTool(
-                "circle"
-            );
-
-        }
-    );
-
-
-document
-    .getElementById(
-        "lineTool"
-    )
-    .addEventListener(
-        "click",
-        function() {
-
-            setTool(
-                "line"
-            );
-
-        }
-    );
-
-
-document
-    .getElementById(
-        "imageTool"
-    )
-    .addEventListener(
-        "click",
-        function() {
-
-            document
-                .getElementById(
-                    "imageInput"
-                )
-                .click();
-
-        }
-    );
-
-
-document
-    .getElementById(
-        "imageInput"
-    )
-    .addEventListener(
-        "change",
-        function() {
-
-            if (
-                this.files.length >
-                0
-            ) {
-
-                addImage(
-                    this.files[0]
-                );
-
-
-                this.value =
-                    "";
-
-            }
-
-        }
-    );
-
-
-document
-    .getElementById(
-        "undoButton"
-    )
-    .addEventListener(
-        "click",
-        undo
-    );
-
-
-document
-    .getElementById(
-        "redoButton"
-    )
-    .addEventListener(
-        "click",
-        redo
-    );
-
-
-document
-    .getElementById(
-        "copyButton"
-    )
-    .addEventListener(
-        "click",
-        copyObject
-    );
-
-
-document
-    .getElementById(
-        "pasteButton"
-    )
-    .addEventListener(
-        "click",
-        pasteObject
-    );
-
-
-document
-    .getElementById(
-        "duplicateButton"
-    )
-    .addEventListener(
-        "click",
-        duplicateObject
-    );
-
-
-document
-    .getElementById(
-        "deleteButton"
-    )
-    .addEventListener(
-        "click",
-        deleteObject
-    );
-
-
-document
-    .getElementById(
-        "frontButton"
-    )
-    .addEventListener(
-        "click",
-        bringForward
-    );
-
-
-document
-    .getElementById(
-        "backButton"
-    )
-    .addEventListener(
-        "click",
-        sendBackward
-    );
-
-
-document
-    .getElementById(
-        "layerUp"
-    )
-    .addEventListener(
-        "click",
-        bringForward
-    );
-
-
-document
-    .getElementById(
-        "layerDown"
-    )
-    .addEventListener(
-        "click",
-        sendBackward
-    );
-
-
-document
-    .getElementById(
-        "layerTop"
-    )
-    .addEventListener(
-        "click",
-        bringToFront
-    );
-
-
-document
-    .getElementById(
-        "layerBottom"
-    )
-    .addEventListener(
-        "click",
-        sendToBack
-    );
-
-
-/* =========================================================
-   キーボード
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        const active =
-            canvas.getActiveObject();
-
-
-        /*
-            Ctrl + Z
-        */
-
-        if (
-            event.ctrlKey &&
-            !event.shiftKey &&
-            event.key.toLowerCase() ===
-                "z"
-        ) {
-
-            event.preventDefault();
-
-            undo();
-
-            return;
-
-        }
-
-
-        /*
-            Ctrl + Y
-        */
-
-        if (
-            event.ctrlKey &&
-            event.key.toLowerCase() ===
-                "y"
-        ) {
-
-            event.preventDefault();
-
-            redo();
-
-            return;
-
-        }
-
-
-        /*
-            Ctrl + C
-        */
-
-        if (
-            event.ctrlKey &&
-            event.key.toLowerCase() ===
-                "c"
-        ) {
-
-            if (
-                active &&
-                !isTextEditing()
-            ) {
-
-                event.preventDefault();
-
-                copyObject();
-
-            }
-
-            return;
-
-        }
-
-
-        /*
-            Ctrl + V
-        */
-
-        if (
-            event.ctrlKey &&
-            event.key.toLowerCase() ===
-                "v"
-        ) {
-
-            if (
-                !isTextEditing()
-            ) {
-
-                event.preventDefault();
-
-                pasteObject();
-
-            }
-
-            return;
-
-        }
-
-
-        /*
-            Ctrl + D
-        */
-
-        if (
-            event.ctrlKey &&
-            event.key.toLowerCase() ===
-                "d"
-        ) {
-
-            if (
-                active &&
-                !isTextEditing()
-            ) {
-
-                event.preventDefault();
-
-                duplicateObject();
-
-            }
-
-            return;
-
-        }
-
-
-        /*
-            Delete
-        */
-
-        if (
-            event.key ===
-                "Delete" &&
-            !isTextEditing()
-        ) {
-
-            deleteObject();
-
-            return;
-
-        }
-
-
-        /*
-            矢印
-        */
-
-        if (
-            active &&
-            !isTextEditing() &&
-            [
-                "ArrowUp",
-                "ArrowDown",
-                "ArrowLeft",
-                "ArrowRight"
-            ].includes(
-                event.key
-            )
-        ) {
-
-            event.preventDefault();
-
-
-            const step =
-                event.shiftKey
-                    ? 10
-                    : 1;
-
-
-            if (
-                event.key ===
-                "ArrowUp"
-            ) {
-
-                active.top -=
-                    step;
-
-            }
-
-
-            if (
-                event.key ===
-                "ArrowDown"
-            ) {
-
-                active.top +=
-                    step;
-
-            }
-
-
-            if (
-                event.key ===
-                "ArrowLeft"
-            ) {
-
-                active.left -=
-                    step;
-
-            }
-
-
-            if (
-                event.key ===
-                "ArrowRight"
-            ) {
-
-                active.left +=
-                    step;
-
-            }
-
-
-            active.setCoords();
-
+    canvas.loadFromJSON(
+        json,
+        function(){
 
             canvas.renderAll();
 
+            canvas.discardActiveObject();
 
-            updateProperties();
+            restoringHistory = false;
 
-            updateStatus();
-
-
-            return;
+            updateUI();
 
         }
-
-    }
-);
-
-
-function isTextEditing() {
-
-    const active =
-        canvas.getActiveObject();
-
-
-    return (
-
-        active &&
-
-        (
-            active.type ===
-                "i-text" ||
-
-            active.type ===
-                "text"
-        ) &&
-
-        active.isEditing
-
     );
 
 }
@@ -4407,392 +3639,414 @@ function isTextEditing() {
    ズーム
 ========================================================= */
 
-let zoom = 1;
+function changeZoom(delta){
 
-
-function setZoom(value) {
+    zoom += delta;
 
     zoom =
         Math.max(
-            0.5,
-            Math.min(
-                2,
-                value
-            )
+            .25,
+            Math.min(2,zoom)
         );
 
+    canvas.setZoom(zoom);
 
-    canvas.setZoom(
-        zoom
-    );
+    canvas.setDimensions({
 
+        width:1200*zoom,
+        height:800*zoom
 
-    document
-        .getElementById(
-            "zoomValue"
-        )
+    });
+
+    document.getElementById("zoomValue")
         .textContent =
-        Math.round(
-            zoom * 100
-        ) +
-        "%";
-
-
-    canvas.calcOffset();
+        Math.round(zoom*100) + "%";
 
 }
 
 
-document
-    .getElementById(
-        "zoomIn"
-    )
-    .addEventListener(
-        "click",
-        function() {
+/* =========================================================
+   PNG
+========================================================= */
 
-            setZoom(
-                zoom + 0.1
-            );
+function openExport(){
 
-        }
-    );
+    document.getElementById(
+        "exportModal"
+    ).style.display = "flex";
+
+}
 
 
-document
-    .getElementById(
-        "zoomOut"
-    )
-    .addEventListener(
-        "click",
-        function() {
+function closeExport(){
 
-            setZoom(
-                zoom - 0.1
-            );
+    document.getElementById(
+        "exportModal"
+    ).style.display = "none";
 
-        }
-    );
+}
+
+
+function exportPNG(){
+
+    const scale =
+        Number(
+            document.getElementById(
+                "exportScale"
+            ).value
+        );
+
+    const transparent =
+        document.getElementById(
+            "transparentExport"
+        ).checked;
+
+    const oldBackground =
+        canvas.backgroundColor;
+
+    if(transparent){
+
+        canvas.backgroundColor =
+            null;
+
+    }
+
+    canvas.discardActiveObject();
+
+    canvas.renderAll();
+
+    const data =
+        canvas.toDataURL({
+
+            format:"png",
+
+            multiplier:scale,
+
+            enableRetinaScaling:true
+
+        });
+
+    canvas.backgroundColor =
+        oldBackground;
+
+    canvas.renderAll();
+
+    const link =
+        document.createElement("a");
+
+    link.href = data;
+
+    link.download =
+        "logo-" +
+        Date.now() +
+        ".png";
+
+    link.click();
+
+    closeExport();
+
+}
 
 
 /* =========================================================
    右クリック
 ========================================================= */
 
-document.addEventListener(
+const contextMenu =
+    document.getElementById(
+        "contextMenu"
+    );
+
+
+canvas.upperCanvasEl.addEventListener(
     "contextmenu",
-    function(event) {
+    function(e){
 
-        const menu =
-            document.getElementById(
-                "contextMenu"
-            );
+        e.preventDefault();
 
+        const obj =
+            selectedObject();
 
-        if (
-            event.target.closest(
-                ".canvas-container"
-            )
-        ) {
+        if(!obj)
+            return;
 
-            event.preventDefault();
+        contextMenu.style.display =
+            "block";
 
+        contextMenu.style.left =
+            e.clientX + "px";
 
-            menu.style.display =
-                "block";
-
-
-            menu.style.left =
-                event.clientX +
-                "px";
-
-
-            menu.style.top =
-                event.clientY +
-                "px";
-
-        } else {
-
-            menu.style.display =
-                "none";
-
-        }
+        contextMenu.style.top =
+            e.clientY + "px";
 
     }
 );
+
+
+function hideContext(){
+
+    contextMenu.style.display =
+        "none";
+
+}
 
 
 document.addEventListener(
     "click",
-    function() {
+    function(e){
 
-        document
-            .getElementById(
-                "contextMenu"
-            )
-            .style.display =
-            "none";
+        if(
+            !contextMenu.contains(e.target)
+        ){
+
+            hideContext();
+
+        }
 
     }
 );
 
 
-document
-    .querySelectorAll(
-        ".context-menu-item"
-    )
-    .forEach(
-        function(item) {
+function contextCopy(){
 
-            item.addEventListener(
-                "click",
-                function(event) {
+    copyObject();
 
-                    event.stopPropagation();
+    hideContext();
+
+}
 
 
-                    const action =
-                        this.dataset.action;
+function contextPaste(){
 
+    pasteObject();
 
-                    if (
-                        action ===
-                        "copy"
-                    ) {
+    hideContext();
 
-                        copyObject();
-
-                    }
-
-
-                    if (
-                        action ===
-                        "paste"
-                    ) {
-
-                        pasteObject();
-
-                    }
-
-
-                    if (
-                        action ===
-                        "duplicate"
-                    ) {
-
-                        duplicateObject();
-
-                    }
-
-
-                    if (
-                        action ===
-                        "delete"
-                    ) {
-
-                        deleteObject();
-
-                    }
-
-
-                    if (
-                        action ===
-                        "front"
-                    ) {
-
-                        bringForward();
-
-                    }
-
-
-                    if (
-                        action ===
-                        "back"
-                    ) {
-
-                        sendBackward();
-
-                    }
-
-                }
-            );
-
-        }
-    );
+}
 
 
 /* =========================================================
-   PNG出力
+   キーボード
 ========================================================= */
 
-document
-    .getElementById(
-        "exportButton"
-    )
-    .addEventListener(
-        "click",
-        function() {
+document.addEventListener(
+    "keydown",
+    function(e){
 
-            document
-                .getElementById(
-                    "exportModal"
-                )
-                .style.display =
-                "flex";
+        const active =
+            document.activeElement;
 
-        }
-    );
+        const editing =
+            active &&
+            (
+                active.tagName === "INPUT" ||
+                active.tagName === "TEXTAREA" ||
+                active.tagName === "SELECT"
+            );
+
+        if(editing)
+            return;
 
 
-document
-    .getElementById(
-        "cancelExport"
-    )
-    .addEventListener(
-        "click",
-        function() {
+        if(e.ctrlKey && e.key.toLowerCase() === "z"){
 
-            document
-                .getElementById(
-                    "exportModal"
-                )
-                .style.display =
-                "none";
+            e.preventDefault();
+
+            undo();
+
+            return;
 
         }
-    );
 
 
-document
-    .getElementById(
-        "confirmExport"
-    )
-    .addEventListener(
-        "click",
-        function() {
+        if(
+            e.ctrlKey &&
+            e.key.toLowerCase() === "y"
+        ){
 
-            const multiplier =
-                Number(
-                    document
-                        .getElementById(
-                            "exportSize"
-                        )
-                        .value
-                );
+            e.preventDefault();
+
+            redo();
+
+            return;
+
+        }
 
 
-            const transparent =
-                document
-                    .getElementById(
-                        "transparentBackground"
-                    )
-                    .checked;
+        if(
+            e.ctrlKey &&
+            e.key.toLowerCase() === "c"
+        ){
+
+            e.preventDefault();
+
+            copyObject();
+
+            return;
+
+        }
 
 
-            const oldBackground =
-                canvas.backgroundColor;
+        if(
+            e.ctrlKey &&
+            e.key.toLowerCase() === "v"
+        ){
+
+            e.preventDefault();
+
+            pasteObject();
+
+            return;
+
+        }
 
 
-            if (
-                transparent
-            ) {
+        if(
+            e.ctrlKey &&
+            e.key.toLowerCase() === "d"
+        ){
 
-                canvas.backgroundColor =
-                    "transparent";
+            e.preventDefault();
 
-            } else {
+            duplicateObject();
 
-                canvas.backgroundColor =
-                    "#ffffff";
+            return;
+
+        }
+
+
+        if(
+            e.key === "Delete" ||
+            e.key === "Backspace"
+        ){
+
+            const obj =
+                selectedObject();
+
+            if(obj){
+
+                e.preventDefault();
+
+                deleteObject();
 
             }
 
-
-            canvas.discardActiveObject();
-
-
-            canvas.renderAll();
-
-
-            const dataURL =
-                canvas.toDataURL({
-
-                    format:
-                        "png",
-
-                    multiplier:
-                        multiplier,
-
-                    enableRetinaScaling:
-                        false
-
-                });
-
-
-            canvas.backgroundColor =
-                oldBackground;
-
-
-            canvas.renderAll();
-
-
-            const link =
-                document.createElement(
-                    "a"
-                );
-
-
-            link.href =
-                dataURL;
-
-
-            link.download =
-                "logo.png";
-
-
-            document
-                .body
-                .appendChild(
-                    link
-                );
-
-
-            link.click();
-
-
-            document
-                .body
-                .removeChild(
-                    link
-                );
-
-
-            document
-                .getElementById(
-                    "exportModal"
-                )
-                .style.display =
-                "none";
+            return;
 
         }
-    );
+
+
+        const obj =
+            selectedObject();
+
+        if(!obj)
+            return;
+
+
+        const step =
+            e.shiftKey
+                ? 10
+                : 1;
+
+
+        if(e.key === "ArrowLeft"){
+
+            e.preventDefault();
+
+            obj.left -= step;
+
+        }
+
+
+        if(e.key === "ArrowRight"){
+
+            e.preventDefault();
+
+            obj.left += step;
+
+        }
+
+
+        if(e.key === "ArrowUp"){
+
+            e.preventDefault();
+
+            obj.top -= step;
+
+        }
+
+
+        if(e.key === "ArrowDown"){
+
+            e.preventDefault();
+
+            obj.top += step;
+
+        }
+
+
+        obj.setCoords();
+
+        canvas.requestRenderAll();
+
+        updateStatus();
+
+    }
+);
+
+
+/* =========================================================
+   HEX → RGBA
+========================================================= */
+
+function hexToRgba(hex,alpha){
+
+    hex =
+        hex.replace("#","");
+
+    if(hex.length === 3){
+
+        hex =
+            hex.split("")
+                .map(x=>x+x)
+                .join("");
+
+    }
+
+    const r =
+        parseInt(
+            hex.substring(0,2),
+            16
+        );
+
+    const g =
+        parseInt(
+            hex.substring(2,4),
+            16
+        );
+
+    const b =
+        parseInt(
+            hex.substring(4,6),
+            16
+        );
+
+    return `rgba(${r},${g},${b},${alpha})`;
+
+}
 
 
 /* =========================================================
    初期化
 ========================================================= */
 
-fixCanvasSize();
-
-saveHistory();
-
-updateLayers();
-
-updateStatus();
+setupPen();
 
 setTool("select");
 
-canvas.renderAll();
+saveHistory();
+
+updateUI();
 
 </script>
 
