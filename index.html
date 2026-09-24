@@ -4,6408 +4,3190 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>白紙シート2 | テキストレイアウト</title>
+<title>ロゴ作成ツール</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@400;500;700&family=Yomogi&family=Dela+Gothic+One&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
 
 <style>
-:root{
-  --bg:#f3f5f8;
-  --panel:#ffffff;
-  --panel-soft:#f8f9fb;
-  --line:#e2e6ec;
-  --line-dark:#d4d9e1;
-
-  --text:#20252d;
-  --text-soft:#606a78;
-  --text-faint:#9099a7;
-
-  --accent:#3478f6;
-  --accent-dark:#2465dc;
-  --accent-soft:#edf4ff;
-
-  --danger:#e05252;
-  --danger-soft:#fff1f1;
-
-  --shadow:0 1px 2px rgba(20,30,50,.04),
-           0 6px 22px rgba(20,30,50,.06);
-
-  --font-ui:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    "Noto Sans JP",
-    "Hiragino Sans",
-    Meiryo,
-    sans-serif;
-}
-
-*{
-  box-sizing:border-box;
+* {
+    box-sizing: border-box;
 }
 
 html,
-body{
-  width:100%;
-  height:100%;
-  margin:0;
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family:
+        "Yu Gothic UI",
+        "Meiryo",
+        "Noto Sans JP",
+        Arial,
+        sans-serif;
+    color: #222;
+    background: #e9e9e9;
 }
 
-body{
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-
-  background:var(--bg);
-  color:var(--text);
-
-  font-family:var(--font-ui);
-  font-size:13px;
+button,
+input,
+select {
+    font-family: inherit;
 }
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-#topbar{
-  height:58px;
-  flex:0 0 58px;
 
-  display:flex;
-  align-items:center;
-
-  padding:0 18px;
-
-  background:#fff;
-  border-bottom:1px solid var(--line);
-
-  z-index:20;
+button {
+    cursor: pointer;
 }
 
-.brand-area{
-  display:flex;
-  align-items:center;
-  gap:12px;
+/* =========================
+   全体
+========================= */
 
-  min-width:230px;
+.app {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
-
-.logo-mark{
-  width:32px;
-  height:32px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
 
-  border-radius:8px;
+/* =========================
+   上部ツールバー
+========================= */
 
-  background:#20252d;
-  color:#fff;
-
-  font-size:15px;
-  font-weight:700;
+.topbar {
+    height: 46px;
+    background: #f7f7f7;
+    border-bottom: 1px solid #bdbdbd;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    gap: 4px;
+    flex-shrink: 0;
 }
 
-.brand-title{
-  font-size:14px;
-  font-weight:700;
-  letter-spacing:.01em;
+.file-title {
+    min-width: 150px;
+    padding: 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
 }
-
-.brand-sub{
-  margin-top:2px;
 
-  color:var(--text-faint);
-  font-size:10px;
+.toolbar-separator {
+    width: 1px;
+    height: 25px;
+    background: #c9c9c9;
+    margin: 0 4px;
 }
 
-.top-actions{
-  display:flex;
-  align-items:center;
-  gap:6px;
-
-  margin-left:auto;
+.tool-button {
+    height: 30px;
+    min-width: 34px;
+    padding: 0 9px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #222;
+    font-size: 13px;
+    border-radius: 2px;
 }
-
-/* =========================================================
-   BUTTON
-========================================================= */
-
-.btn{
-  height:32px;
-
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:5px;
-
-  padding:0 10px;
-
-  border:1px solid var(--line);
-  border-radius:7px;
-
-  background:#fff;
-  color:var(--text);
-
-  font:inherit;
-  font-size:12px;
 
-  cursor:pointer;
-  user-select:none;
-
-  transition:
-    background .12s,
-    border-color .12s,
-    color .12s,
-    box-shadow .12s,
-    transform .08s;
+.tool-button:hover {
+    background: #e5e5e5;
+    border-color: #c8c8c8;
 }
 
-.btn:hover{
-  background:#f7f9fc;
-  border-color:var(--line-dark);
+.tool-button:active {
+    background: #d8d8d8;
 }
 
-.btn:active{
-  transform:translateY(1px);
+.tool-button.primary {
+    background: #ffffff;
+    border: 1px solid #aaa;
 }
 
-.btn:disabled{
-  opacity:.4;
-  pointer-events:none;
+.tool-button.primary:hover {
+    background: #eeeeee;
 }
 
-.btn.primary{
-  color:#fff;
-  background:var(--accent);
-  border-color:var(--accent);
-  font-weight:600;
+.spacer {
+    flex: 1;
 }
 
-.btn.primary:hover{
-  background:var(--accent-dark);
-  border-color:var(--accent-dark);
+.zoom-area {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.btn.danger:hover{
-  background:var(--danger-soft);
-  border-color:#edbcbc;
-  color:var(--danger);
+.zoom-area button {
+    width: 28px;
+    height: 28px;
+    border: 1px solid #bbb;
+    background: #fff;
+    border-radius: 2px;
 }
 
-.btn.icon{
-  width:32px;
-  padding:0;
-  font-size:15px;
+.zoom-value {
+    width: 55px;
+    text-align: center;
+    font-size: 12px;
 }
 
-.btn.small{
-  height:29px;
-  padding:0 8px;
-  font-size:11.5px;
-}
+/* =========================
+   メイン
+========================= */
 
-.btn.active{
-  background:var(--accent-soft);
-  color:var(--accent);
-  border-color:#bcd2ff;
+.main {
+    flex: 1;
+    min-height: 0;
+    display: flex;
 }
-
-/* =========================================================
-   TOOLBAR
-========================================================= */
-
-#toolbar{
-  min-height:56px;
-  flex:0 0 auto;
 
-  display:flex;
-  align-items:center;
-  gap:7px;
+/* =========================
+   左ツール
+========================= */
 
-  padding:9px 16px;
-
-  background:#fff;
-  border-bottom:1px solid var(--line);
-
-  overflow-x:auto;
-  overflow-y:hidden;
-
-  scrollbar-width:thin;
-
-  z-index:15;
+.left-panel {
+    width: 58px;
+    background: #f4f4f4;
+    border-right: 1px solid #bdbdbd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5px;
+    flex-shrink: 0;
 }
-
-.tool-section{
-  display:flex;
-  align-items:center;
-  gap:5px;
 
-  padding-right:9px;
-  margin-right:2px;
-
-  border-right:1px solid var(--line);
+.left-tool {
+    width: 48px;
+    height: 46px;
+    margin-bottom: 2px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #222;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    font-size: 11px;
 }
 
-.tool-section:last-child{
-  border-right:none;
+.left-tool .icon {
+    font-size: 18px;
+    line-height: 18px;
 }
-
-.tool-label{
-  color:var(--text-faint);
-  font-size:10px;
-  font-weight:600;
 
-  margin-right:2px;
-
-  white-space:nowrap;
+.left-tool:hover {
+    background: #e5e5e5;
+    border-color: #ccc;
 }
-
-/* =========================================================
-   FORM
-========================================================= */
-
-select,
-input[type="number"],
-input[type="text"]{
-  height:30px;
 
-  padding:0 8px;
-
-  border:1px solid var(--line);
-  border-radius:7px;
-
-  background:#fff;
-  color:var(--text);
-
-  font:inherit;
-  font-size:12px;
-
-  outline:none;
+.left-tool.active {
+    background: #dcdcdc;
+    border-color: #aaa;
 }
 
-select:focus,
-input[type="number"]:focus,
-input[type="text"]:focus{
-  border-color:#a9c5ff;
-  box-shadow:0 0 0 3px rgba(52,120,246,.10);
-}
+/* =========================
+   中央作業領域
+========================= */
 
-input[type="number"]{
-  width:62px;
+.workspace {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    background: #dcdcdc;
 }
 
-/* =========================================================
-   COLOR
-========================================================= */
+/* Fabric Canvas を置く場所 */
 
-.color-control{
-  height:30px;
-
-  display:flex;
-  align-items:center;
-  gap:5px;
-
-  padding:0 7px;
-
-  border:1px solid var(--line);
-  border-radius:7px;
-
-  background:#fff;
-
-  color:var(--text-soft);
-  font-size:11px;
+.canvas-wrapper {
+    position: absolute;
+    inset: 0;
+    overflow: auto;
 }
-
-.color-control input[type="color"]{
-  width:21px;
-  height:21px;
 
-  padding:0;
+/* スクロールバー */
 
-  border:0;
-  background:none;
-
-  cursor:pointer;
+.canvas-wrapper::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
 }
 
-.color-control input[type="color"]::-webkit-color-swatch-wrapper{
-  padding:0;
+.canvas-wrapper::-webkit-scrollbar-track {
+    background: #eeeeee;
 }
 
-.color-control input[type="color"]::-webkit-color-swatch{
-  border:1px solid #cfd5de;
-  border-radius:5px;
+.canvas-wrapper::-webkit-scrollbar-thumb {
+    background: #b5b5b5;
+    border: 3px solid #eeeeee;
 }
-
-/* =========================================================
-   WORKSPACE
-========================================================= */
-
-#workspace{
-  flex:1 1 auto;
-  min-height:0;
 
-  display:flex;
-  overflow:hidden;
+.canvas-area {
+    position: relative;
+    margin: 60px auto;
+    width: 1200px;
+    height: 800px;
+    background: #fff;
+    box-shadow:
+        0 1px 4px rgba(0,0,0,0.25);
 }
 
-/* =========================================================
-   LEFT SIDEBAR
-========================================================= */
+/* グリッド */
 
-#sidebar{
-  width:218px;
-  flex:0 0 218px;
-
-  display:flex;
-  flex-direction:column;
-
-  background:#fff;
-  border-right:1px solid var(--line);
-
-  z-index:10;
+.grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(to right, #e8e8e8 1px, transparent 1px),
+        linear-gradient(to bottom, #e8e8e8 1px, transparent 1px);
+    background-size: 20px 20px;
+    z-index: 0;
 }
 
-.sidebar-section{
-  padding:15px 14px;
-
-  border-bottom:1px solid var(--line);
+.grid.large {
+    background-image:
+        linear-gradient(to right, #d5d5d5 1px, transparent 1px),
+        linear-gradient(to bottom, #d5d5d5 1px, transparent 1px),
+        linear-gradient(to right, #e8e8e8 1px, transparent 1px),
+        linear-gradient(to bottom, #e8e8e8 1px, transparent 1px);
+    background-size:
+        100px 100px,
+        100px 100px,
+        20px 20px,
+        20px 20px;
 }
-
-.sidebar-title{
-  margin-bottom:9px;
 
-  color:var(--text-faint);
-
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:.06em;
+#canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
 }
-
-.sidebar-main-button{
-  width:100%;
-  height:42px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-
-  border:1px solid #c9d9fb;
-  border-radius:8px;
-
-  background:var(--accent-soft);
-  color:var(--accent);
 
-  font-size:12px;
-  font-weight:600;
+/* =========================
+   右プロパティ
+========================= */
 
-  cursor:pointer;
-
-  transition:.12s;
+.right-panel {
+    width: 280px;
+    background: #f6f6f6;
+    border-left: 1px solid #bdbdbd;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow: hidden;
 }
 
-.sidebar-main-button:hover{
-  background:#e4eeff;
+.panel-title {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    border-bottom: 1px solid #c5c5c5;
+    font-size: 13px;
+    font-weight: 600;
+    background: #ededed;
 }
-
-.add-symbol{
-  width:21px;
-  height:21px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border-radius:5px;
 
-  background:var(--accent);
-  color:#fff;
-
-  font-size:16px;
-  line-height:1;
+.property-content {
+    padding: 10px;
+    overflow-y: auto;
 }
-
-.sidebar-row{
-  display:flex;
-  align-items:center;
-  gap:6px;
 
-  margin-bottom:7px;
+.property-section {
+    border-bottom: 1px solid #d2d2d2;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
 }
 
-.sidebar-row:last-child{
-  margin-bottom:0;
+.property-section:last-child {
+    border-bottom: 0;
 }
 
-.sidebar-row .btn{
-  flex:1;
+.section-title {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #444;
 }
 
-.sidebar-info{
-  color:var(--text-soft);
-  font-size:11px;
-  line-height:1.7;
+.property-row {
+    display: flex;
+    align-items: center;
+    min-height: 30px;
+    margin-bottom: 5px;
 }
 
-.sidebar-info strong{
-  color:var(--text);
+.property-label {
+    width: 70px;
+    font-size: 12px;
+    color: #444;
 }
-
-.sidebar-bottom{
-  margin-top:auto;
-
-  padding:13px 14px;
-
-  border-top:1px solid var(--line);
 
-  color:var(--text-faint);
-  font-size:10.5px;
-  line-height:1.7;
+.property-input {
+    flex: 1;
+    height: 27px;
+    border: 1px solid #aaa;
+    background: #fff;
+    padding: 3px 6px;
+    font-size: 12px;
+    border-radius: 1px;
 }
 
-/* =========================================================
-   CANVAS AREA
-========================================================= */
-
-#stage{
-  position:relative;
-
-  flex:1 1 auto;
-  min-width:0;
-  min-height:0;
-
-  overflow:auto;
-
-  padding:40px;
-
-  background:
-    linear-gradient(
-      45deg,
-      rgba(255,255,255,.34) 25%,
-      transparent 25%,
-      transparent 75%,
-      rgba(255,255,255,.34) 75%
-    ),
-    linear-gradient(
-      45deg,
-      rgba(255,255,255,.34) 25%,
-      transparent 25%,
-      transparent 75%,
-      rgba(255,255,255,.34) 75%
-    );
-
-  background-position:0 0,8px 8px;
-  background-size:16px 16px;
-
-  scrollbar-width:thin;
+.property-input:focus {
+    outline: none;
+    border-color: #777;
 }
 
-#zoomWrap{
-  position:relative;
+.property-select {
+    flex: 1;
+    height: 27px;
+    border: 1px solid #aaa;
+    background: #fff;
+    font-size: 12px;
 }
-
-/* =========================================================
-   SHEET
-========================================================= */
-
-#sheet{
-  position:absolute;
-  top:0;
-  left:0;
-
-  width:2000px;
-  height:1400px;
 
-  background:#fff;
-
-  transform-origin:0 0;
-
-  box-shadow:
-    0 10px 30px rgba(20,30,50,.10),
-    0 1px 2px rgba(20,30,50,.10),
-    0 0 0 1px rgba(20,30,50,.06);
-
-  --z:1;
-  --hs:11px;
+.color-input {
+    width: 48px;
+    height: 27px;
+    padding: 1px;
+    border: 1px solid #aaa;
+    background: white;
 }
-
-#layerBoxes,
-#layerUI{
-  position:absolute;
 
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
 }
 
-#layerUI{
-  pointer-events:none;
+.checkbox-row input {
+    margin: 0;
 }
-
-#hint{
-  position:absolute;
-
-  left:50%;
-  top:45%;
-
-  transform:translate(-50%,-50%);
-
-  text-align:center;
-
-  color:#c2c8d1;
 
-  font-size:15px;
-  line-height:1.9;
-
-  white-space:nowrap;
-
-  user-select:none;
+.no-selection {
+    color: #777;
+    font-size: 12px;
+    line-height: 1.7;
+    padding: 8px 0;
 }
 
-#hint-title{
-  margin-bottom:4px;
+/* =========================
+   レイヤー
+========================= */
 
-  color:#9ca5b2;
-
-  font-size:17px;
-  font-weight:600;
+.layers {
+    border-top: 1px solid #c5c5c5;
+    flex: 1;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
 }
 
-#hint b{
-  color:#8f99a7;
+.layer-list {
+    overflow-y: auto;
+    flex: 1;
 }
-
-/* =========================================================
-   TEXT BOX
-========================================================= */
-
-.box{
-  position:absolute;
 
-  display:block;
-
-  overflow:visible;
-
-  cursor:move;
-
-  user-select:none;
-  -webkit-user-select:none;
-
-  touch-action:none;
+.layer-item {
+    height: 34px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    gap: 7px;
+    font-size: 12px;
+    cursor: pointer;
 }
-
-.box .txt{
-  position:absolute;
 
-  overflow:hidden;
-
-  white-space:pre;
-
-  word-break:normal;
-
-  pointer-events:none;
+.layer-item:hover {
+    background: #e8e8e8;
 }
 
-.box.sel{
-  box-shadow:
-    0 0 0 calc(1.5px / var(--z)) var(--accent);
+.layer-item.selected {
+    background: #d9d9d9;
 }
 
-.box.sel.primary{
-  box-shadow:
-    0 0 0 calc(1.5px / var(--z)) var(--accent),
-    0 0 0 calc(4px / var(--z)) rgba(52,120,246,.12);
+.layer-number {
+    width: 20px;
+    color: #777;
+    text-align: center;
 }
-
-.box:hover::after{
-  content:"";
 
-  position:absolute;
-  inset:0;
-
-  pointer-events:none;
-
-  box-shadow:
-    inset 0 0 0 calc(1px / var(--z))
-    rgba(52,120,246,.28);
+.layer-name {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
-
-/* =========================================================
-   TEXTAREA
-========================================================= */
-
-#ta{
-  position:absolute;
-
-  display:none;
 
-  margin:0;
-
-  border:none;
-  outline:none;
-
-  resize:none;
-  overflow:hidden;
-
-  background:transparent;
-
-  white-space:pre-wrap;
-  word-break:break-word;
-  overflow-wrap:anywhere;
-
-  cursor:text;
-
-  border-radius:2px;
-
-  z-index:1000000;
-
-  box-shadow:
-    0 0 0 calc(1.5px / var(--z)) var(--accent),
-    0 0 0 calc(4px / var(--z)) rgba(52,120,246,.12);
+.layer-actions {
+    height: 35px;
+    display: flex;
+    border-top: 1px solid #ccc;
 }
-
-/* =========================================================
-   RESIZE HANDLES
-========================================================= */
-
-.handle{
-  position:absolute;
 
-  width:var(--hs);
-  height:var(--hs);
-
-  background:#fff;
-
-  border:solid var(--accent);
-  border-width:calc(1.4px / var(--z));
-
-  border-radius:50%;
-
-  transform:translate(-50%,-50%);
-
-  pointer-events:auto;
-
-  box-shadow:
-    0 1px 3px rgba(20,30,50,.15);
+.layer-actions button {
+    flex: 1;
+    border: 0;
+    border-right: 1px solid #ccc;
+    background: #f2f2f2;
+    font-size: 11px;
 }
 
-.handle::after{
-  content:"";
-
-  position:absolute;
-
-  inset:calc(-5px / var(--z));
+.layer-actions button:hover {
+    background: #e3e3e3;
 }
 
-.handle[data-dir="nw"]{
-  cursor:nwse-resize;
-}
+/* =========================
+   下部ステータス
+========================= */
 
-.handle[data-dir="n"]{
-  cursor:ns-resize;
+.statusbar {
+    height: 25px;
+    background: #ededed;
+    border-top: 1px solid #bdbdbd;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 11px;
+    color: #555;
+    flex-shrink: 0;
 }
 
-.handle[data-dir="ne"]{
-  cursor:nesw-resize;
+.status-left {
+    display: flex;
+    gap: 18px;
 }
 
-.handle[data-dir="e"]{
-  cursor:ew-resize;
+.status-right {
+    margin-left: auto;
 }
 
-.handle[data-dir="se"]{
-  cursor:nwse-resize;
-}
+/* =========================
+   テキスト編集
+========================= */
 
-.handle[data-dir="s"]{
-  cursor:ns-resize;
+.text-toolbar {
+    position: absolute;
+    display: none;
+    height: 36px;
+    background: #f7f7f7;
+    border: 1px solid #aaa;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    z-index: 20;
+    padding: 3px;
+    gap: 3px;
 }
 
-.handle[data-dir="sw"]{
-  cursor:nesw-resize;
+.text-toolbar button {
+    min-width: 30px;
+    border: 1px solid transparent;
+    background: transparent;
 }
 
-.handle[data-dir="w"]{
-  cursor:ew-resize;
+.text-toolbar button:hover {
+    background: #e4e4e4;
+    border-color: #ccc;
 }
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-#footer{
-  height:38px;
-  flex:0 0 38px;
-
-  display:flex;
-  align-items:center;
-
-  padding:0 14px;
 
-  background:#fff;
-  border-top:1px solid var(--line);
+/* =========================
+   右クリックメニュー
+========================= */
 
-  color:var(--text-soft);
-
-  font-size:10.5px;
+.context-menu {
+    display: none;
+    position: fixed;
+    width: 180px;
+    background: #fff;
+    border: 1px solid #999;
+    box-shadow: 2px 3px 8px rgba(0,0,0,0.2);
+    z-index: 9999;
+    padding: 3px 0;
+}
 
-  z-index:20;
+.context-menu-item {
+    height: 29px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
 }
 
-.footer-left{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.context-menu-item:hover {
+    background: #e6e6e6;
 }
 
-.footer-right{
-  margin-left:auto;
+/* =========================
+   モーダル
+========================= */
 
-  display:flex;
-  align-items:center;
-  gap:12px;
+.modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.28);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
 }
 
-#selInfo{
-  color:var(--accent);
-  font-weight:600;
+.modal {
+    width: 390px;
+    background: #f7f7f7;
+    border: 1px solid #999;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
-
-kbd{
-  padding:2px 5px;
-
-  border:1px solid var(--line);
-  border-bottom-width:2px;
-
-  border-radius:4px;
 
-  background:#f5f7fa;
-
-  color:#687282;
-
-  font-family:inherit;
-  font-size:9.5px;
+.modal-header {
+    height: 40px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 13px;
+    font-weight: 600;
 }
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-#toast{
-  position:fixed;
 
-  right:18px;
-  bottom:52px;
-
-  z-index:500;
-
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:6px;
-
-  pointer-events:none;
+.modal-body {
+    padding: 15px;
 }
-
-#toast div{
-  padding:8px 12px;
-
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:7px;
 
-  background:rgba(30,37,48,.94);
-  color:#fff;
-
-  font-size:11.5px;
-
-  box-shadow:
-    0 5px 18px rgba(10,15,25,.18);
-
-  animation:toastIn .18s ease-out;
+.modal-footer {
+    height: 50px;
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
 }
 
-@keyframes toastIn{
-  from{
-    opacity:0;
-    transform:translateY(5px);
-  }
-
-  to{
-    opacity:1;
-    transform:none;
-  }
+.modal-button {
+    min-width: 75px;
+    height: 29px;
+    border: 1px solid #aaa;
+    background: #fff;
+    font-size: 12px;
 }
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
 
-@media(max-width:900px){
-
-  #sidebar{
-    width:180px;
-    flex-basis:180px;
-  }
-
-  .brand-area{
-    min-width:180px;
-  }
-
-  .brand-sub{
-    display:none;
-  }
-
-  #stage{
-    padding:25px;
-  }
+.modal-button:hover {
+    background: #e8e8e8;
 }
 
-@media(max-width:700px){
+/* =========================
+   レスポンシブ
+========================= */
 
-  #sidebar{
-    display:none;
-  }
+@media (max-width: 900px) {
 
-  #topbar{
-    padding:0 10px;
-  }
+    .right-panel {
+        width: 240px;
+    }
 
-  .brand-area{
-    min-width:auto;
-  }
+    .file-title {
+        min-width: 100px;
+    }
+}
 
-  .top-actions .optional{
-    display:none;
-  }
+@media (max-width: 700px) {
 
-  #toolbar{
-    padding:7px 10px;
-  }
+    .right-panel {
+        display: none;
+    }
 
-  #stage{
-    padding:18px;
-  }
+    .left-panel {
+        width: 52px;
+    }
 
-  .footer-left span:not(#selInfo){
-    display:none;
-  }
+    .left-tool {
+        width: 44px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- =======================================================
-     HEADER
-======================================================= -->
+<div class="app">
 
-<header id="topbar">
+    <!-- =========================
+         上部
+    ========================== -->
 
-  <div class="brand-area">
+    <div class="topbar">
 
-    <div class="logo-mark">白</div>
-
-    <div>
-      <div class="brand-title">白紙シート2</div>
-      <div class="brand-sub">自由配置テキストレイアウト</div>
-    </div>
-
-  </div>
-
-  <div class="top-actions">
-
-    <button class="btn icon optional"
-            id="undoBtn"
-            title="元に戻す Ctrl+Z">
-      ↶
-    </button>
-
-    <button class="btn icon optional"
-            id="redoBtn"
-            title="やり直し Ctrl+Shift+Z">
-      ↷
-    </button>
-
-    <button class="btn optional"
-            id="sampleBtn">
-      見本
-    </button>
-
-    <button class="btn optional"
-            id="saveJsonBtn">
-      JSON保存
-    </button>
-
-    <button class="btn optional"
-            id="loadJsonBtn">
-      JSON読込
-    </button>
-
-    <input
-      type="file"
-      id="loadJsonInput"
-      accept=".json,application/json"
-      style="display:none"
-    >
-
-    <select id="resSel"
-            title="PNG解像度"
-            style="width:72px">
-      <option value="1">PNG 1×</option>
-      <option value="2" selected>PNG 2×</option>
-      <option value="3">PNG 3×</option>
-      <option value="4">PNG 4×</option>
-    </select>
-
-    <button class="btn primary"
-            id="pngBtn">
-      PNG保存
-    </button>
-
-  </div>
-
-</header>
-
-
-<!-- =======================================================
-     TOOLBAR
-======================================================= -->
-
-<div id="toolbar">
-
-  <!-- 追加 -->
-
-  <div class="tool-section">
-
-    <button class="btn primary"
-            id="addBtn">
-      ＋ テキスト
-    </button>
-
-  </div>
-
-
-  <!-- フォント -->
-
-  <div class="tool-section">
-
-    <span class="tool-label">文字</span>
-
-    <select id="fontSel"
-            style="width:170px">
-    </select>
-
-    <input
-      type="number"
-      id="sizeNum"
-      min="6"
-      max="300"
-      step="1"
-      value="20"
-      title="文字サイズ"
-    >
-
-    <button class="btn small"
-            id="sizeDown"
-            title="文字を小さく">
-      −
-    </button>
-
-    <button class="btn small"
-            id="sizeUp"
-            title="文字を大きく">
-      ＋
-    </button>
-
-    <button class="btn small"
-            id="boldBtn"
-            title="太字 Ctrl+B">
-      <b>B</b>
-    </button>
-
-    <button class="btn small"
-            id="italBtn"
-            title="斜体 Ctrl+I">
-      <i>I</i>
-    </button>
-
-    <button class="btn small"
-            id="underBtn"
-            title="下線 Ctrl+U">
-      <u>U</u>
-    </button>
-
-  </div>
-
-
-  <!-- 色 -->
-
-  <div class="tool-section">
-
-    <span class="tool-label">色</span>
-
-    <label class="color-control">
-      文字
-      <input
-        type="color"
-        id="colorInp"
-        value="#20252d"
-      >
-    </label>
-
-    <label class="color-control">
-      背景
-      <input
-        type="color"
-        id="bgInp"
-        value="#fff7cc"
-      >
-    </label>
-
-    <button class="btn small"
-            id="bgToggle">
-      背景なし
-    </button>
-
-  </div>
-
-
-  <!-- 配置 -->
-
-  <div class="tool-section">
-
-    <span class="tool-label">配置</span>
-
-    <button class="btn small"
-            data-halign="left">
-      左
-    </button>
-
-    <button class="btn small"
-            data-halign="center">
-      中
-    </button>
-
-    <button class="btn small"
-            data-halign="right">
-      右
-    </button>
-
-    <button class="btn small"
-            data-valign="top">
-      上
-    </button>
-
-    <button class="btn small"
-            data-valign="middle">
-      中
-    </button>
-
-    <button class="btn small"
-            data-valign="bottom">
-      下
-    </button>
-
-  </div>
-
-
-  <!-- 行間 -->
-
-  <div class="tool-section">
-
-    <span class="tool-label">行間</span>
-
-    <select id="lineSel"
-            style="width:65px">
-
-      <option value="1">1.0</option>
-      <option value="1.1">1.1</option>
-      <option value="1.25">1.25</option>
-      <option value="1.4" selected>1.4</option>
-      <option value="1.5">1.5</option>
-      <option value="1.75">1.75</option>
-      <option value="2">2.0</option>
-      <option value="2.5">2.5</option>
-
-    </select>
-
-  </div>
-
-
-  <!-- 枠 -->
-
-  <div class="tool-section">
-
-    <span class="tool-label">枠</span>
-
-    <select id="borderSel"
-            style="width:75px">
-
-      <option value="none">なし</option>
-      <option value="solid">実線</option>
-      <option value="dashed">破線</option>
-
-    </select>
-
-    <label class="color-control">
-      色
-      <input
-        type="color"
-        id="borderInp"
-        value="#8593a6"
-      >
-    </label>
-
-    <input
-      type="number"
-      id="borderW"
-      min="1"
-      max="8"
-      step="1"
-      value="1"
-      title="枠線の太さ"
-      style="width:48px"
-    >
-
-  </div>
-
-
-  <!-- 整列 -->
-
-  <div class="tool-section">
-
-    <span class="tool-label">整列</span>
-
-    <button class="btn small"
-            data-alignop="left">
-      左
-    </button>
-
-    <button class="btn small"
-            data-alignop="hcenter">
-      中央
-    </button>
-
-    <button class="btn small"
-            data-alignop="right">
-      右
-    </button>
-
-    <button class="btn small"
-            data-alignop="top">
-      上
-    </button>
-
-    <button class="btn small"
-            data-alignop="vmiddle">
-      中
-    </button>
-
-    <button class="btn small"
-            data-alignop="bottom">
-      下
-    </button>
-
-    <button class="btn small"
-            id="hfitBtn">
-      高さ自動
-    </button>
-
-  </div>
-
-
-  <!-- レイヤー -->
-
-  <div class="tool-section">
-
-    <span class="tool-label">重ね順</span>
-
-    <button class="btn small"
-            id="frontBtn"
-            title="最前面">
-      最前
-    </button>
-
-    <button class="btn small"
-            id="fwdBtn"
-            title="1つ前へ">
-      前
-    </button>
-
-    <button class="btn small"
-            id="bwdBtn"
-            title="1つ後ろへ">
-      後
-    </button>
-
-    <button class="btn small"
-            id="backBtn"
-            title="最背面">
-      最背
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- =======================================================
-     WORKSPACE
-======================================================= -->
-
-<div id="workspace">
-
-
-  <!-- =====================================================
-       SIDEBAR
-  ====================================================== -->
-
-  <aside id="sidebar">
-
-    <div class="sidebar-section">
-
-      <div class="sidebar-title">
-        OBJECT
-      </div>
-
-      <button
-        class="sidebar-main-button"
-        id="sidebarAddBtn"
-      >
-        <span class="add-symbol">＋</span>
-        テキストボックスを追加
-      </button>
-
-    </div>
-
-
-    <div class="sidebar-section">
-
-      <div class="sidebar-title">
-        EDIT
-      </div>
-
-      <div class="sidebar-row">
-
-        <button
-          class="btn"
-          id="dupBtn"
-        >
-          複製
-        </button>
-
-        <button
-          class="btn"
-          id="copyBtn"
-        >
-          コピー
-        </button>
-
-        <button
-          class="btn"
-          id="pasteBtn"
-        >
-          貼付
-        </button>
-
-      </div>
-
-      <button
-        class="btn danger"
-        id="delBtn"
-        style="width:100%"
-      >
-        削除
-      </button>
-
-    </div>
-
-
-    <div class="sidebar-section">
-
-      <div class="sidebar-title">
-        VIEW
-      </div>
-
-      <div class="sidebar-row">
-
-        <button
-          class="btn"
-          id="zoomOutBtn"
-        >
-          −
-        </button>
-
-        <button
-          class="btn"
-          id="zoomResetBtn"
-        >
-          100%
-        </button>
-
-        <button
-          class="btn"
-          id="zoomInBtn"
-        >
-          ＋
-        </button>
-
-      </div>
-
-      <select
-        id="zoomSel"
-        style="width:100%"
-      >
-
-        <option value="0.5">50%</option>
-        <option value="0.75">75%</option>
-        <option value="1" selected>100%</option>
-        <option value="1.25">125%</option>
-        <option value="1.5">150%</option>
-        <option value="2">200%</option>
-        <option value="fit">全体表示</option>
-
-      </select>
-
-    </div>
-
-
-    <div class="sidebar-section">
-
-      <div class="sidebar-title">
-        SHEET
-      </div>
-
-      <div class="sidebar-info">
-
-        <div>
-          サイズ
-          <strong>2000 × 1400 px</strong>
+        <div class="file-title">
+            ロゴ作成
         </div>
 
-        <div>
-          ボックス
-          <strong id="sideBoxCount">0</strong>
-        </div>
+        <div class="toolbar-separator"></div>
 
-      </div>
+        <button class="tool-button primary" id="undoButton">
+            元に戻す
+        </button>
 
-    </div>
+        <button class="tool-button primary" id="redoButton">
+            やり直す
+        </button>
 
+        <div class="toolbar-separator"></div>
 
-    <div class="sidebar-bottom">
+        <button class="tool-button" id="copyButton">
+            コピー
+        </button>
 
-      ダブルクリックで編集<br>
-      ドラッグで移動<br>
-      角をドラッグしてサイズ変更<br>
-      Shift + クリックで複数選択
+        <button class="tool-button" id="pasteButton">
+            貼り付け
+        </button>
 
-    </div>
+        <button class="tool-button" id="duplicateButton">
+            複製
+        </button>
 
-  </aside>
+        <button class="tool-button" id="deleteButton">
+            削除
+        </button>
 
+        <div class="toolbar-separator"></div>
 
-  <!-- =====================================================
-       CANVAS
-  ====================================================== -->
+        <button class="tool-button" id="frontButton">
+            前面へ
+        </button>
 
-  <main id="stage">
+        <button class="tool-button" id="backButton">
+            背面へ
+        </button>
 
-    <div id="zoomWrap">
+        <div class="spacer"></div>
 
-      <div id="sheet">
+        <div class="zoom-area">
 
-        <div id="layerBoxes"></div>
+            <button id="zoomOut">−</button>
 
-        <div id="layerUI">
-
-          <div id="hint">
-
-            <div id="hint-title">
-              白紙シート
+            <div class="zoom-value" id="zoomValue">
+                100%
             </div>
 
-            ダブルクリックして
-            <b>テキストボックス</b>
-            を追加
-
-          </div>
+            <button id="zoomIn">＋</button>
 
         </div>
 
-        <textarea id="ta"></textarea>
+        <div class="toolbar-separator"></div>
 
-      </div>
+        <button class="tool-button primary" id="exportButton">
+            PNG出力
+        </button>
 
     </div>
 
-  </main>
+
+    <!-- =========================
+         メイン
+    ========================== -->
+
+    <div class="main">
+
+        <!-- 左 -->
+
+        <div class="left-panel">
+
+            <button class="left-tool active" id="selectTool">
+                <div class="icon">↖</div>
+                <div>選択</div>
+            </button>
+
+            <button class="left-tool" id="textTool">
+                <div class="icon">T</div>
+                <div>文字</div>
+            </button>
+
+            <button class="left-tool" id="rectTool">
+                <div class="icon">□</div>
+                <div>四角形</div>
+            </button>
+
+            <button class="left-tool" id="circleTool">
+                <div class="icon">○</div>
+                <div>円</div>
+            </button>
+
+            <button class="left-tool" id="lineTool">
+                <div class="icon">／</div>
+                <div>線</div>
+            </button>
+
+            <button class="left-tool" id="imageTool">
+                <div class="icon">▧</div>
+                <div>画像</div>
+            </button>
+
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                style="display:none;"
+            >
+
+        </div>
+
+
+        <!-- 作業領域 -->
+
+        <div class="workspace">
+
+            <div class="canvas-wrapper">
+
+                <div class="canvas-area">
+
+                    <div class="grid"></div>
+
+                    <canvas
+                        id="canvas"
+                        width="1200"
+                        height="800">
+                    </canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- 右 -->
+
+        <div class="right-panel">
+
+            <div class="panel-title">
+                オブジェクト
+            </div>
+
+            <div
+                class="property-content"
+                id="propertyContent">
+
+                <div class="no-selection">
+                    オブジェクトを選択すると、<br>
+                    ここに設定項目が表示されます。
+                </div>
+
+            </div>
+
+
+            <div class="layers">
+
+                <div class="panel-title">
+                    レイヤー
+                </div>
+
+                <div
+                    class="layer-list"
+                    id="layerList">
+                </div>
+
+                <div class="layer-actions">
+
+                    <button id="layerUp">
+                        ↑ 前面
+                    </button>
+
+                    <button id="layerDown">
+                        ↓ 背面
+                    </button>
+
+                    <button id="layerTop">
+                        最前面
+                    </button>
+
+                    <button id="layerBottom">
+                        最背面
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         ステータス
+    ========================== -->
+
+    <div class="statusbar">
+
+        <div class="status-left">
+
+            <span id="objectStatus">
+                オブジェクト 0
+            </span>
+
+            <span id="positionStatus">
+                X: -　Y: -
+            </span>
+
+            <span id="sizeStatus">
+                W: -　H: -
+            </span>
+
+        </div>
+
+        <div class="status-right">
+            1200 × 800 px
+        </div>
+
+    </div>
 
 </div>
 
 
-<!-- =======================================================
-     FOOTER
-======================================================= -->
+<!-- =========================
+     コンテキストメニュー
+========================== -->
 
-<footer id="footer">
+<div
+    class="context-menu"
+    id="contextMenu">
 
-  <div class="footer-left">
+    <div
+        class="context-menu-item"
+        data-action="copy">
+        コピー
+    </div>
 
-    <span id="selInfo">
-      選択なし
-    </span>
+    <div
+        class="context-menu-item"
+        data-action="paste">
+        貼り付け
+    </div>
 
-    <span>
-      <kbd>ダブルクリック</kbd>
-      編集
-    </span>
+    <div
+        class="context-menu-item"
+        data-action="duplicate">
+        複製
+    </div>
 
-    <span>
-      <kbd>ドラッグ</kbd>
-      移動
-    </span>
+    <div
+        class="context-menu-item"
+        data-action="delete">
+        削除
+    </div>
 
-    <span>
-      <kbd>Enter</kbd>
-      編集
-    </span>
+    <div style="height:1px;background:#ddd;margin:3px 0;"></div>
 
-    <span>
-      <kbd>Delete</kbd>
-      削除
-    </span>
+    <div
+        class="context-menu-item"
+        data-action="front">
+        前面へ
+    </div>
 
-  </div>
+    <div
+        class="context-menu-item"
+        data-action="back">
+        背面へ
+    </div>
 
-  <div class="footer-right">
-
-    <span>
-      <kbd>Ctrl</kbd>+C/V
-      コピー・貼付
-    </span>
-
-    <span>
-      <kbd>Ctrl</kbd>+Z
-      元に戻す
-    </span>
-
-    <span id="boxCount">
-      ボックス 0
-    </span>
-
-  </div>
-
-</footer>
+</div>
 
 
-<div id="toast"></div>
+<!-- =========================
+     PNG設定
+========================== -->
+
+<div
+    class="modal-bg"
+    id="exportModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+            PNG画像を書き出す
+        </div>
+
+        <div class="modal-body">
+
+            <div class="property-row">
+
+                <div class="property-label">
+                    サイズ
+                </div>
+
+                <select
+                    class="property-select"
+                    id="exportSize">
+
+                    <option value="1">
+                        元のサイズ（1200 × 800）
+                    </option>
+
+                    <option value="2">
+                        2倍（2400 × 1600）
+                    </option>
+
+                    <option value="3">
+                        3倍（3600 × 2400）
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div
+                class="checkbox-row"
+                style="margin-top:12px;">
+
+                <input
+                    type="checkbox"
+                    id="transparentBackground"
+                    checked>
+
+                <label for="transparentBackground">
+                    背景を透過する
+                </label>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+                class="modal-button"
+                id="cancelExport">
+                キャンセル
+            </button>
+
+            <button
+                class="modal-button"
+                id="confirmExport">
+                書き出す
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <script>
-(function(){
-
-"use strict";
-
 /* =========================================================
-   CONSTANTS
+   基本設定
 ========================================================= */
 
-var PAD = 6;
+const canvas = new fabric.Canvas("canvas", {
+    preserveObjectStacking: true,
+    selection: true,
+    backgroundColor: "transparent"
+});
 
-var MIN_W = 24;
-var MIN_H = 24;
+const canvasWidth = 1200;
+const canvasHeight = 800;
 
-var DEF_W = 260;
-var DEF_H = 64;
+let currentTool = "select";
 
-var FONTS = [
+let copiedObject = null;
 
-  {
-    label:"ゴシック体（標準）",
-    stack:"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', Meiryo, sans-serif"
-  },
-
-  {
-    label:"Noto Sans JP",
-    stack:"'Noto Sans JP', 'Hiragino Sans', Meiryo, sans-serif"
-  },
-
-  {
-    label:"明朝体",
-    stack:"'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', 'MS PMincho', serif"
-  },
-
-  {
-    label:"Noto Serif JP",
-    stack:"'Noto Serif JP', 'Hiragino Mincho ProN', serif"
-  },
-
-  {
-    label:"丸ゴシック",
-    stack:"'Zen Maru Gothic', 'Hiragino Maru Gothic ProN', 'Yu Gothic', sans-serif"
-  },
-
-  {
-    label:"手書き風",
-    stack:"'Yomogi', 'Hiragino Kaku Gothic ProN', cursive"
-  },
-
-  {
-    label:"見出し（極太）",
-    stack:"'Dela Gothic One', 'Hiragino Sans', Impact, sans-serif"
-  },
-
-  {
-    label:"Arial",
-    stack:"Arial, Helvetica, sans-serif"
-  },
-
-  {
-    label:"Helvetica",
-    stack:"Helvetica, Arial, sans-serif"
-  },
-
-  {
-    label:"Georgia",
-    stack:"Georgia, 'Times New Roman', serif"
-  },
-
-  {
-    label:"Times New Roman",
-    stack:"'Times New Roman', Times, serif"
-  },
-
-  {
-    label:"等幅（コード）",
-    stack:"'SFMono-Regular', 'SF Mono', Consolas, 'Courier New', monospace"
-  },
-
-  {
-    label:"Courier New",
-    stack:"'Courier New', Courier, monospace"
-  },
-
-  {
-    label:"Impact",
-    stack:"Impact, 'Arial Black', sans-serif"
-  }
-
-];
+let history = [];
+let historyIndex = -1;
+let isRestoringHistory = false;
 
 
 /* =========================================================
-   STATE
+   履歴
 ========================================================= */
 
-var uid = 0;
-var zTop = 0;
+function saveHistory() {
 
-var state = {
-
-  boxes: [],
-
-  sel: [],
-
-  edit: null,
-
-  w:2000,
-
-  h:1400,
-
-  zoom:1,
-
-  res:2,
-
-  range:"all",
-
-  clip:null,
-
-  hist:[],
-
-  redo:[]
-
-};
-
-var defaults = {
-
-  font:FONTS[0].stack,
-
-  size:20,
-
-  bold:false,
-
-  italic:false,
-
-  underline:false,
-
-  color:"#20252d",
-
-  bgOn:false,
-
-  bg:"#fff7cc",
-
-  align:"left",
-
-  valign:"top",
-
-  line:1.4,
-
-  border:"none",
-
-  borderColor:"#8593a6",
-
-  borderW:1
-
-};
-
-
-/* =========================================================
-   DOM
-========================================================= */
-
-var $ = function(id){
-
-  return document.getElementById(id);
-
-};
-
-var stage = $("stage");
-var sheet = $("sheet");
-var wrap = $("zoomWrap");
-
-var layerBoxes = $("layerBoxes");
-var layerUI = $("layerUI");
-
-var ta = $("ta");
-var hint = $("hint");
-
-var boxEls = {};
-
-var mcv = document.createElement("canvas");
-var mctx = mcv.getContext("2d");
-
-
-/* =========================================================
-   UTIL
-========================================================= */
-
-function clamp(v,a,b){
-
-  return v < a ? a : (v > b ? b : v);
-
-}
-
-function byId(id){
-
-  for(var i=0;i<state.boxes.length;i++){
-
-    if(state.boxes[i].id === id){
-
-      return state.boxes[i];
-
+    if (isRestoringHistory) {
+        return;
     }
 
-  }
+    const json = JSON.stringify(canvas.toJSON());
 
-  return null;
+    history = history.slice(0, historyIndex + 1);
 
-}
+    history.push(json);
 
-function sorted(){
+    historyIndex++;
 
-  return state.boxes.slice().sort(function(a,b){
+    if (history.length > 50) {
 
-    return a.z-b.z;
-
-  });
-
-}
-
-function selBoxes(){
-
-  var result = [];
-
-  for(var i=0;i<state.sel.length;i++){
-
-    var b = byId(state.sel[i]);
-
-    if(b){
-
-      result.push(b);
+        history.shift();
+        historyIndex--;
 
     }
-
-  }
-
-  return result;
-
 }
 
-function primary(){
+function restoreHistory(index) {
 
-  return state.sel.length
-    ? byId(state.sel[state.sel.length-1])
-    : null;
-
-}
-
-function toast(msg){
-
-  var el = document.createElement("div");
-
-  el.textContent = msg;
-
-  $("toast").appendChild(el);
-
-  setTimeout(function(){
-
-    el.style.transition = "opacity .3s";
-
-    el.style.opacity = "0";
-
-    setTimeout(function(){
-
-      el.remove();
-
-    },320);
-
-  },1400);
-
-}
-
-function fontSpec(b){
-
-  return (
-
-    (b.italic ? "italic " : "") +
-
-    (b.bold ? "700 " : "400 ") +
-
-    b.size +
-
-    "px " +
-
-    b.font
-
-  );
-
-}
-
-function textArea(b){
-
-  var bw =
-    b.border === "none"
-      ? 0
-      : b.borderW;
-
-  return {
-
-    w:Math.max(
-      1,
-      b.w - 2*PAD - 2*bw
-    ),
-
-    h:Math.max(
-      0,
-      b.h - 2*PAD - 2*bw
-    ),
-
-    off:PAD+bw,
-
-    bw:bw
-
-  };
-
-}
-
-
-/* =========================================================
-   TEXT WRAP
-========================================================= */
-
-function mtext(ctx,s){
-
-  if(s === ""){
-
-    return 0;
-
-  }
-
-  return ctx.measureText(s).width;
-
-}
-
-function breakChars(ctx,str,maxW,out){
-
-  var chars = Array.from(str);
-
-  var cur = "";
-
-  for(var i=0;i<chars.length;i++){
-
-    var test = cur + chars[i];
-
-    if(
-      cur === "" ||
-      mtext(ctx,test) <= maxW
-    ){
-
-      cur = test;
-
-    }else{
-
-      out.push(cur);
-
-      cur = chars[i];
-
+    if (index < 0 || index >= history.length) {
+        return;
     }
 
-  }
+    isRestoringHistory = true;
 
-  return cur;
+    canvas.loadFromJSON(
+        history[index],
+        function() {
 
-}
+            canvas.renderAll();
 
-function wrapParagraph(ctx,para,maxW){
+            isRestoringHistory = false;
 
-  var out = [];
+            updateProperties();
+            updateLayers();
+            updateStatus();
 
-  if(para === ""){
-
-    out.push("");
-
-    return out;
-
-  }
-
-  var tokens =
-    para.match(/\S+|\s+/g) || [para];
-
-  var line = "";
-
-  for(var i=0;i<tokens.length;i++){
-
-    var tk = tokens[i];
-
-    if(
-      line === "" &&
-      /^\s+$/.test(tk)
-    ){
-
-      continue;
-
-    }
-
-    if(
-      mtext(ctx,line+tk) <= maxW
-    ){
-
-      line += tk;
-
-      continue;
-
-    }
-
-    if(line !== ""){
-
-      out.push(
-        line.replace(/\s+$/,"")
-      );
-
-      line = "";
-
-    }
-
-    if(mtext(ctx,tk) <= maxW){
-
-      line = tk;
-
-      continue;
-
-    }
-
-    line = breakChars(
-      ctx,
-      tk,
-      maxW,
-      out
+        }
     );
 
-  }
-
-  if(
-    line !== "" ||
-    out.length === 0
-  ){
-
-    out.push(
-      line.replace(/\s+$/,"")
-    );
-
-  }
-
-  return out;
-
+    historyIndex = index;
 }
 
-function layoutLines(b,ctx){
+function undo() {
 
-  ctx.font = fontSpec(b);
+    if (historyIndex <= 0) {
+        return;
+    }
 
-  var area = textArea(b);
+    restoreHistory(historyIndex - 1);
+}
 
-  var paragraphs =
-    String(b.text).split("\n");
+function redo() {
 
-  var lines = [];
+    if (historyIndex >= history.length - 1) {
+        return;
+    }
 
-  for(
-    var i=0;
-    i<paragraphs.length;
-    i++
-  ){
-
-    lines = lines.concat(
-      wrapParagraph(
-        ctx,
-        paragraphs[i],
-        area.w
-      )
-    );
-
-  }
-
-  return lines;
-
+    restoreHistory(historyIndex + 1);
 }
 
 
 /* =========================================================
-   BOX ELEMENT
+   ツール切り替え
 ========================================================= */
 
-function makeBoxEl(b){
-
-  var el = document.createElement("div");
-
-  el.className = "box";
-
-  el.dataset.id = String(b.id);
-
-  var inner =
-    document.createElement("div");
-
-  inner.className = "txt";
-
-  el.appendChild(inner);
-
-  var dirs = [
-    "nw",
-    "n",
-    "ne",
-    "e",
-    "se",
-    "s",
-    "sw",
-    "w"
-  ];
-
-  for(
-    var i=0;
-    i<dirs.length;
-    i++
-  ){
-
-    var h =
-      document.createElement("div");
-
-    h.className = "handle";
-
-    h.dataset.dir = dirs[i];
-
-    h.addEventListener(
-      "pointerdown",
-      onHandleDown
-    );
-
-    el.appendChild(h);
-
-  }
-
-  layerBoxes.appendChild(el);
-
-  boxEls[b.id] = el;
-
-  return el;
-
-}
-
-function renderBox(b){
-
-  var el =
-    boxEls[b.id] ||
-    makeBoxEl(b);
-
-  if(!el){
-
-    return;
-
-  }
-
-  var inner = el.firstChild;
-
-  var area = textArea(b);
-
-  el.style.left = b.x+"px";
-
-  el.style.top = b.y+"px";
-
-  el.style.width = b.w+"px";
-
-  el.style.height = b.h+"px";
-
-  el.style.zIndex = String(b.z);
-
-  el.style.background =
-    b.bgOn
-      ? b.bg
-      : "transparent";
-
-  if(b.border === "none"){
-
-    el.style.border = "none";
-
-    el.style.borderRadius = "0";
-
-  }else{
-
-    el.style.border =
-      b.borderW+
-      "px "+
-      b.border+
-      " "+
-      b.borderColor;
-
-    el.style.borderRadius = "2px";
-
-  }
-
-  var lines =
-    layoutLines(b,mctx);
-
-  var lineH =
-    b.size*b.line;
-
-  var blockH =
-    lineH*lines.length;
-
-  var off = area.off;
-
-  var top;
-
-  if(b.valign === "top"){
-
-    top = off;
-
-  }else if(b.valign === "middle"){
-
-    top =
-      off+
-      (area.h-blockH)/2;
-
-  }else{
-
-    top =
-      off+
-      (area.h-blockH);
-
-  }
-
-  inner.style.left = off+"px";
-
-  inner.style.top = top+"px";
-
-  inner.style.width =
-    area.w+"px";
-
-  inner.style.height =
-    Math.max(
-      0,
-      b.h-off*2
-    )+"px";
-
-  inner.style.font =
-    fontSpec(b);
-
-  inner.style.lineHeight =
-    lineH+"px";
-
-  inner.style.color =
-    b.color;
-
-  inner.style.textAlign =
-    b.align;
-
-  inner.style.textDecoration =
-    b.underline
-      ? "underline"
-      : "none";
-
-  inner.textContent =
-    lines.join("\n");
-
-  var bw = area.bw;
-
-  var handles =
-    el.querySelectorAll(".handle");
-
-  var points = {
-
-    nw:[0,0],
-
-    n:[b.w/2,0],
-
-    ne:[b.w,0],
-
-    e:[b.w,b.h/2],
-
-    se:[b.w,b.h],
-
-    s:[b.w/2,b.h],
-
-    sw:[0,b.h],
-
-    w:[0,b.h/2]
-
-  };
-
-  for(
-    var i=0;
-    i<handles.length;
-    i++
-  ){
-
-    var h = handles[i];
-
-    var d =
-      h.dataset.dir;
-
-    var p = points[d];
-
-    h.style.left =
-      (p[0]-bw)+"px";
-
-    h.style.top =
-      (p[1]-bw)+"px";
-
-    h.style.display =
-      (
-        state.sel.length === 1 &&
-        state.sel[0] === b.id
-      )
-        ? "block"
-        : "none";
-
-  }
-
+function setTool(tool) {
+
+    currentTool = tool;
+
+    document.querySelectorAll(".left-tool").forEach(function(button) {
+        button.classList.remove("active");
+    });
+
+    if (tool === "select") {
+        document.getElementById("selectTool").classList.add("active");
+        canvas.selection = true;
+        canvas.defaultCursor = "default";
+    }
+
+    if (tool === "text") {
+        document.getElementById("textTool").classList.add("active");
+        canvas.selection = false;
+        canvas.defaultCursor = "text";
+    }
+
+    if (tool === "rect") {
+        document.getElementById("rectTool").classList.add("active");
+        canvas.selection = false;
+        canvas.defaultCursor = "crosshair";
+    }
+
+    if (tool === "circle") {
+        document.getElementById("circleTool").classList.add("active");
+        canvas.selection = false;
+        canvas.defaultCursor = "crosshair";
+    }
+
+    if (tool === "line") {
+        document.getElementById("lineTool").classList.add("active");
+        canvas.selection = false;
+        canvas.defaultCursor = "crosshair";
+    }
+
+    if (tool === "image") {
+        document.getElementById("imageTool").classList.add("active");
+        canvas.selection = false;
+        canvas.defaultCursor = "default";
+    }
 }
 
 
 /* =========================================================
-   RENDER
+   テキスト追加
 ========================================================= */
 
-function renderAll(){
+function addText(x, y) {
 
-  for(
-    var i=0;
-    i<state.boxes.length;
-    i++
-  ){
+    const text = new fabric.IText("文字を入力", {
 
-    renderBox(
-      state.boxes[i]
-    );
+        left: x,
+        top: y,
 
-  }
+        fontFamily: "Yu Gothic",
+        fontSize: 60,
 
-  for(var id in boxEls){
+        fill: "#222222",
 
-    var found = false;
+        fontWeight: "normal",
+        fontStyle: "normal",
 
-    for(
-      var j=0;
-      j<state.boxes.length;
-      j++
-    ){
+        originX: "left",
+        originY: "top",
 
-      if(
-        String(
-          state.boxes[j].id
-        ) === id
-      ){
+        transparentCorners: false,
 
-        found = true;
+        cornerColor: "#ffffff",
+        cornerStrokeColor: "#555555",
+        borderColor: "#555555",
 
-        break;
+        padding: 5
 
-      }
+    });
 
-    }
+    canvas.add(text);
 
-    if(!found){
+    canvas.setActiveObject(text);
 
-      boxEls[id].remove();
+    text.enterEditing();
+    text.selectAll();
 
-      delete boxEls[id];
+    canvas.renderAll();
 
-    }
-
-  }
-
-  syncSelection();
-
-  updateCount();
-
-}
-
-function syncSelection(){
-
-  for(var id in boxEls){
-
-    var on =
-      state.sel.indexOf(
-        Number(id)
-      ) >= 0;
-
-    boxEls[id].classList.toggle(
-      "sel",
-      on
-    );
-
-    boxEls[id].classList.toggle(
-      "primary",
-      on &&
-      Number(id) ===
-      state.sel[state.sel.length-1]
-    );
-
-  }
-
-  var p = primary();
-
-  if(p){
-
-    renderBox(p);
-
-  }
-
-  hint.style.display =
-    state.boxes.length
-      ? "none"
-      : "block";
-
-  updateInfo();
-
-  syncToolbar();
-
-}
-
-function updateCount(){
-
-  $("boxCount").textContent =
-    "ボックス "+
-    state.boxes.length;
-
-  $("sideBoxCount").textContent =
-    state.boxes.length;
-
-}
-
-function updateInfo(){
-
-  var n =
-    state.sel.length;
-
-  var p = primary();
-
-  if(!n){
-
-    $("selInfo").textContent =
-      "選択なし";
-
-    return;
-
-  }
-
-  if(n>1){
-
-    $("selInfo").textContent =
-      n+
-      "個を選択中";
-
-    return;
-
-  }
-
-  $("selInfo").textContent =
-    "選択中　"+
-    Math.round(p.x)+
-    ", "+
-    Math.round(p.y)+
-    "　"+
-    Math.round(p.w)+
-    "×"+
-    Math.round(p.h)+
-    "　"+
-    p.size+
-    "px";
-
+    saveHistory();
+    updateProperties();
+    updateLayers();
+    updateStatus();
 }
 
 
 /* =========================================================
-   ADD / DELETE
+   四角形
 ========================================================= */
 
-function addBox(x,y,w,h){
+function addRect(x, y) {
 
-  uid++;
-  zTop++;
+    const rect = new fabric.Rect({
 
-  var b = {
+        left: x,
+        top: y,
 
-    id:uid,
+        width: 200,
+        height: 120,
 
-    x:Math.round(x),
+        fill: "#d9d9d9",
+        stroke: "#333333",
+        strokeWidth: 2,
 
-    y:Math.round(y),
+        originX: "left",
+        originY: "top",
 
-    w:w || DEF_W,
+        transparentCorners: false,
 
-    h:h || DEF_H,
+        cornerColor: "#ffffff",
+        cornerStrokeColor: "#555555",
+        borderColor: "#555555",
 
-    z:zTop,
+        padding: 0
 
-    text:""
+    });
 
-  };
+    canvas.add(rect);
 
-  for(var k in defaults){
+    canvas.setActiveObject(rect);
 
-    b[k] =
-      defaults[k];
+    canvas.renderAll();
 
-  }
-
-  state.boxes.push(b);
-
-  renderBox(b);
-
-  updateCount();
-
-  hint.style.display = "none";
-
-  return b;
-
-}
-
-function removeBoxes(ids,silent){
-
-  if(!silent){
-
-    snapshot();
-
-  }
-
-  state.boxes =
-    state.boxes.filter(
-      function(b){
-
-        return ids.indexOf(b.id)<0;
-
-      }
-    );
-
-  state.sel =
-    state.sel.filter(
-      function(id){
-
-        return ids.indexOf(id)<0;
-
-      }
-    );
-
-  if(
-    state.edit !== null &&
-    ids.indexOf(state.edit)>=0
-  ){
-
-    endEdit(true);
-
-  }
-
-  renderAll();
-
-}
-
-function select(ids,add){
-
-  if(add){
-
-    for(
-      var i=0;
-      i<ids.length;
-      i++
-    ){
-
-      var index =
-        state.sel.indexOf(ids[i]);
-
-      if(index>=0){
-
-        state.sel.splice(index,1);
-
-      }else{
-
-        state.sel.push(ids[i]);
-
-      }
-
-    }
-
-  }else{
-
-    state.sel =
-      ids.slice();
-
-  }
-
-  syncSelection();
-
+    saveHistory();
+    updateProperties();
+    updateLayers();
+    updateStatus();
 }
 
 
 /* =========================================================
-   HISTORY
+   円
 ========================================================= */
 
-function ser(){
+function addCircle(x, y) {
 
-  return JSON.stringify({
+    const circle = new fabric.Circle({
 
-    v:2,
+        left: x,
+        top: y,
 
-    w:state.w,
+        radius: 70,
 
-    h:state.h,
+        fill: "#d9d9d9",
+        stroke: "#333333",
+        strokeWidth: 2,
 
-    boxes:sorted()
+        originX: "left",
+        originY: "top",
 
-  });
+        transparentCorners: false,
 
-}
+        cornerColor: "#ffffff",
+        cornerStrokeColor: "#555555",
+        borderColor: "#555555"
 
-function snapshot(){
+    });
 
-  state.hist.push(
-    ser()
-  );
+    canvas.add(circle);
 
-  if(state.hist.length>100){
+    canvas.setActiveObject(circle);
 
-    state.hist.shift();
+    canvas.renderAll();
 
-  }
-
-  state.redo.length = 0;
-
-}
-
-function applyJson(js){
-
-  var d =
-    JSON.parse(js);
-
-  state.boxes =
-    d.boxes || [];
-
-  if(d.w){
-
-    state.w = d.w;
-
-  }
-
-  if(d.h){
-
-    state.h = d.h;
-
-  }
-
-  uid = 0;
-  zTop = 0;
-
-  for(
-    var i=0;
-    i<state.boxes.length;
-    i++
-  ){
-
-    var b =
-      state.boxes[i];
-
-    for(var k in defaults){
-
-      if(!(k in b)){
-
-        b[k] =
-          defaults[k];
-
-      }
-
-    }
-
-    if(b.id>uid){
-
-      uid=b.id;
-
-    }
-
-    if(b.z>zTop){
-
-      zTop=b.z;
-
-    }
-
-  }
-
-  state.sel = [];
-
-  endEdit(true);
-
-  sheet.style.width =
-    state.w+"px";
-
-  sheet.style.height =
-    state.h+"px";
-
-  renderAll();
-
-  applyZoom();
-
-}
-
-function undo(){
-
-  if(!state.hist.length){
-
-    return;
-
-  }
-
-  state.redo.push(
-    ser()
-  );
-
-  applyJson(
-    state.hist.pop()
-  );
-
-}
-
-function redo(){
-
-  if(!state.redo.length){
-
-    return;
-
-  }
-
-  state.hist.push(
-    ser()
-  );
-
-  applyJson(
-    state.redo.pop()
-  );
-
+    saveHistory();
+    updateProperties();
+    updateLayers();
+    updateStatus();
 }
 
 
 /* =========================================================
-   EDIT
+   線
 ========================================================= */
 
-function startEdit(id){
+function addLine(x, y) {
 
-  var b =
-    byId(id);
+    const line = new fabric.Line(
+        [0, 0, 200, 0],
+        {
 
-  if(!b){
+            left: x,
+            top: y,
 
-    return;
+            stroke: "#222222",
+            strokeWidth: 3,
 
-  }
+            originX: "left",
+            originY: "top",
 
-  endEdit(true);
+            transparentCorners: false,
 
-  state.edit = id;
+            cornerColor: "#ffffff",
+            cornerStrokeColor: "#555555",
+            borderColor: "#555555"
 
-  state.sel = [id];
-
-  syncSelection();
-
-  var area =
-    textArea(b);
-
-  ta.value =
-    b.text;
-
-  ta.style.left =
-    b.x+"px";
-
-  ta.style.top =
-    b.y+"px";
-
-  ta.style.width =
-    b.w+"px";
-
-  ta.style.height =
-    b.h+"px";
-
-  ta.style.padding =
-    PAD+"px";
-
-  ta.style.font =
-    fontSpec(b);
-
-  ta.style.lineHeight =
-    (b.size*b.line)+"px";
-
-  ta.style.color =
-    b.color;
-
-  ta.style.textAlign =
-    b.align;
-
-  ta.style.textDecoration =
-    b.underline
-      ? "underline"
-      : "none";
-
-  ta.style.display =
-    "block";
-
-  positionTa();
-
-  ta.focus();
-
-  ta.setSelectionRange(
-    ta.value.length,
-    ta.value.length
-  );
-
-}
-
-function positionTa(){
-
-  var b =
-    primary();
-
-  if(
-    !b ||
-    state.edit !== b.id
-  ){
-
-    return;
-
-  }
-
-  ta.style.left =
-    b.x+"px";
-
-  ta.style.top =
-    b.y+"px";
-
-  ta.style.width =
-    b.w+"px";
-
-  ta.style.height =
-    b.h+"px";
-
-}
-
-function endEdit(cancel){
-
-  if(state.edit === null){
-
-    return;
-
-  }
-
-  var id =
-    state.edit;
-
-  var b =
-    byId(id);
-
-  state.edit = null;
-
-  ta.style.display =
-    "none";
-
-  if(!b){
-
-    return;
-
-  }
-
-  if(!cancel){
-
-    var value =
-      ta.value;
-
-    if(value !== b.text){
-
-      snapshot();
-
-      b.text = value;
-
-    }
-
-    renderBox(b);
-
-    if(
-      b.text.trim()==="" &&
-      !b.bgOn &&
-      b.border==="none"
-    ){
-
-      removeBoxes(
-        [id],
-        true
-      );
-
-      return;
-
-    }
-
-  }else{
-
-    renderBox(b);
-
-  }
-
-  updateCount();
-
-}
-
-ta.addEventListener(
-  "input",
-  function(){
-
-    var b =
-      primary();
-
-    if(!b){
-
-      return;
-
-    }
-
-    b.text =
-      ta.value;
-
-  }
-);
-
-
-/* =========================================================
-   ZOOM
-========================================================= */
-
-function applyZoom(){
-
-  var z =
-    state.zoom;
-
-  sheet.style.transform =
-    "scale("+z+")";
-
-  sheet.style.setProperty(
-    "--z",
-    String(z)
-  );
-
-  sheet.style.setProperty(
-    "--hs",
-    (11/z)+"px"
-  );
-
-  wrap.style.width =
-    (state.w*z)+"px";
-
-  wrap.style.height =
-    (state.h*z)+"px";
-
-  var selectZoom =
-    $("zoomSel");
-
-  var hit = false;
-
-  for(
-    var i=0;
-    i<selectZoom.options.length;
-    i++
-  ){
-
-    if(
-      Number(
-        selectZoom.options[i].value
-      ) === z
-    ){
-
-      selectZoom.value =
-        selectZoom.options[i].value;
-
-      hit = true;
-
-    }
-
-  }
-
-  if(!hit){
-
-    selectZoom.value =
-      "fit";
-
-  }
-
-  if(state.edit!==null){
-
-    positionTa();
-
-  }
-
-}
-
-function setZoom(z){
-
-  z =
-    clamp(
-      z,
-      .2,
-      4
+        }
     );
 
-  var old =
-    state.zoom;
+    canvas.add(line);
 
-  state.zoom =
-    z;
+    canvas.setActiveObject(line);
 
-  applyZoom();
+    canvas.renderAll();
 
-  stage.scrollLeft *=
-    z/old;
-
-  stage.scrollTop *=
-    z/old;
-
-}
-
-function fitZoom(){
-
-  var pad = 70;
-
-  var z =
-    Math.min(
-      (stage.clientWidth-pad)/state.w,
-      (stage.clientHeight-pad)/state.h
-    );
-
-  setZoom(
-    clamp(z,.2,2)
-  );
-
+    saveHistory();
+    updateProperties();
+    updateLayers();
+    updateStatus();
 }
 
 
 /* =========================================================
-   DRAG / RESIZE
+   画像
 ========================================================= */
 
-var drag = null;
-var emptyDn = null;
+function addImage(file) {
 
-function sheetPoint(e){
+    if (!file) {
+        return;
+    }
 
-  var r =
-    sheet.getBoundingClientRect();
+    const reader = new FileReader();
 
-  return {
+    reader.onload = function(event) {
 
-    x:
-      (e.clientX-r.left)/
-      state.zoom,
+        fabric.Image.fromURL(
+            event.target.result,
+            function(img) {
 
-    y:
-      (e.clientY-r.top)/
-      state.zoom
+                const maxWidth = 400;
+                const maxHeight = 300;
 
-  };
+                const scaleX = maxWidth / img.width;
+                const scaleY = maxHeight / img.height;
 
-}
+                let scale = Math.min(scaleX, scaleY, 1);
 
-function onHandleDown(e){
+                img.set({
 
-  if(e.button===2){
+                    left: 100,
+                    top: 100,
 
-    return;
+                    scaleX: scale,
+                    scaleY: scale,
 
-  }
+                    transparentCorners: false,
 
-  if(state.sel.length!==1){
+                    cornerColor: "#ffffff",
+                    cornerStrokeColor: "#555555",
+                    borderColor: "#555555"
 
-    return;
+                });
 
-  }
+                canvas.add(img);
 
-  var b =
-    primary();
+                canvas.setActiveObject(img);
 
-  if(!b){
+                canvas.renderAll();
 
-    return;
+                saveHistory();
 
-  }
+                updateProperties();
+                updateLayers();
+                updateStatus();
 
-  e.preventDefault();
-  e.stopPropagation();
+                setTool("select");
 
-  if(state.edit!==null){
-
-    endEdit(false);
-
-  }
-
-  drag = {
-
-    mode:"resize",
-
-    dir:e.currentTarget.dataset.dir,
-
-    id:b.id,
-
-    sx:e.clientX,
-
-    sy:e.clientY,
-
-    ox:b.x,
-
-    oy:b.y,
-
-    ow:b.w,
-
-    oh:b.h,
-
-    moved:false
-
-  };
-
-  bindDrag();
-
-}
-
-function onDown(e){
-
-  if(e.button===2){
-
-    return;
-
-  }
-
-  var target =
-    e.target;
-
-  if(
-    target.closest &&
-    target.closest("#ta")
-  ){
-
-    return;
-
-  }
-
-  var handle =
-    target.closest
-      ? target.closest(".handle")
-      : null;
-
-  var boxEl =
-    target.closest
-      ? target.closest(".box")
-      : null;
-
-  if(
-    state.edit!==null &&
-    (
-      !boxEl ||
-      Number(
-        boxEl.dataset.id
-      ) !== state.edit
-    )
-  ){
-
-    endEdit(false);
-
-  }
-
-  if(
-    handle &&
-    state.sel.length===1
-  ){
-
-    e.preventDefault();
-
-    var b =
-      primary();
-
-    drag = {
-
-      mode:"resize",
-
-      dir:handle.dataset.dir,
-
-      id:b.id,
-
-      sx:e.clientX,
-
-      sy:e.clientY,
-
-      ox:b.x,
-
-      oy:b.y,
-
-      ow:b.w,
-
-      oh:b.h,
-
-      moved:false
+            }
+        );
 
     };
 
-    bindDrag();
-
-    return;
-
-  }
-
-  if(boxEl){
-
-    e.preventDefault();
-
-    var id =
-      Number(
-        boxEl.dataset.id
-      );
-
-    var add =
-      e.shiftKey ||
-      e.metaKey;
-
-    if(add){
-
-      select(
-        [id],
-        true
-      );
-
-    }else if(
-      state.sel.indexOf(id)<0
-    ){
-
-      select(
-        [id],
-        false
-      );
-
-    }
-
-    var list =
-      selBoxes().slice();
-
-    var starts =
-      list.map(
-        function(x){
-
-          return {
-
-            id:x.id,
-
-            x:x.x,
-
-            y:x.y
-
-          };
-
-        }
-      );
-
-    drag = {
-
-      mode:"move",
-
-      sx:e.clientX,
-
-      sy:e.clientY,
-
-      starts:starts,
-
-      moved:false,
-
-      sid:
-        state.sel.length===1
-          ? id
-          : null
-
-    };
-
-    bindDrag();
-
-    return;
-
-  }
-
-  emptyDn = {
-
-    x:e.clientX,
-
-    y:e.clientY
-
-  };
-
-  if(state.sel.length){
-
-    state.sel = [];
-
-    syncSelection();
-
-  }
-
+    reader.readAsDataURL(file);
 }
 
-function bindDrag(){
 
-  document.addEventListener(
-    "pointermove",
-    onMove
-  );
+/* =========================================================
+   キャンバスクリック
+========================================================= */
 
-  document.addEventListener(
-    "pointerup",
-    onUp
-  );
+canvas.on("mouse:down", function(event) {
 
-  document.addEventListener(
-    "pointercancel",
-    onUp
-  );
-
-}
-
-function unbindDrag(){
-
-  document.removeEventListener(
-    "pointermove",
-    onMove
-  );
-
-  document.removeEventListener(
-    "pointerup",
-    onUp
-  );
-
-  document.removeEventListener(
-    "pointercancel",
-    onUp
-  );
-
-}
-
-function onMove(e){
-
-  if(!drag){
-
-    return;
-
-  }
-
-  var dx =
-    e.clientX-drag.sx;
-
-  var dy =
-    e.clientY-drag.sy;
-
-  if(
-    !drag.moved &&
-    Math.abs(dx)+Math.abs(dy)<3
-  ){
-
-    return;
-
-  }
-
-  drag.moved = true;
-
-  var k =
-    1/state.zoom;
-
-  var sdx =
-    dx*k;
-
-  var sdy =
-    dy*k;
-
-  if(drag.mode==="move"){
-
-    for(
-      var i=0;
-      i<drag.starts.length;
-      i++
-    ){
-
-      var s =
-        drag.starts[i];
-
-      var b =
-        byId(s.id);
-
-      if(!b){
-
-        continue;
-
-      }
-
-      b.x =
-        Math.max(
-          0,
-          Math.round(
-            s.x+sdx
-          )
-        );
-
-      b.y =
-        Math.max(
-          0,
-          Math.round(
-            s.y+sdy
-          )
-        );
-
-      var el =
-        boxEls[b.id];
-
-      if(el){
-
-        el.style.left =
-          b.x+"px";
-
-        el.style.top =
-          b.y+"px";
-
-      }
-
+    if (currentTool === "select") {
+        return;
     }
 
-    updateInfo();
-
-    if(
-      state.edit ===
-      drag.sid
-    ){
-
-      positionTa();
-
+    if (currentTool === "image") {
+        document.getElementById("imageInput").click();
+        return;
     }
 
-  }else{
+    const pointer = canvas.getPointer(event.e);
 
-    var b2 =
-      byId(drag.id);
-
-    if(!b2){
-
-      return;
-
+    if (currentTool === "text") {
+        addText(pointer.x, pointer.y);
+        setTool("select");
+        return;
     }
 
-    var d =
-      drag.dir;
-
-    var ratio =
-      drag.ow/
-      drag.oh;
-
-    var nx =
-      drag.ox;
-
-    var ny =
-      drag.oy;
-
-    var nw =
-      drag.ow;
-
-    var nh =
-      drag.oh;
-
-    if(d.indexOf("e")>=0){
-
-      nw =
-        drag.ow+sdx;
-
+    if (currentTool === "rect") {
+        addRect(pointer.x, pointer.y);
+        setTool("select");
+        return;
     }
 
-    if(d.indexOf("s")>=0){
-
-      nh =
-        drag.oh+sdy;
-
+    if (currentTool === "circle") {
+        addCircle(pointer.x, pointer.y);
+        setTool("select");
+        return;
     }
 
-    if(d.indexOf("w")>=0){
-
-      nw =
-        drag.ow-sdx;
-
-      nx =
-        drag.ox+sdx;
-
+    if (currentTool === "line") {
+        addLine(pointer.x, pointer.y);
+        setTool("select");
+        return;
     }
 
-    if(d.indexOf("n")>=0){
+});
 
-      nh =
-        drag.oh-sdy;
 
-      ny =
-        drag.oy+sdy;
+/* =========================================================
+   選択イベント
+========================================================= */
 
-    }
+canvas.on("selection:created", function() {
 
-    if(
-      e.shiftKey &&
-      d.length===2
-    ){
+    updateProperties();
+    updateLayers();
+    updateStatus();
 
-      if(
-        Math.abs(
-          nw/drag.ow-1
-        ) >
-        Math.abs(
-          nh/drag.oh-1
-        )
-      ){
+});
 
-        nh =
-          nw/ratio;
+canvas.on("selection:updated", function() {
 
-      }else{
+    updateProperties();
+    updateLayers();
+    updateStatus();
 
-        nw =
-          nh*ratio;
+});
 
-      }
+canvas.on("selection:cleared", function() {
 
-      if(
-        d.indexOf("w")>=0
-      ){
+    updateProperties();
+    updateLayers();
+    updateStatus();
 
-        nx =
-          drag.ox+
-          (drag.ow-nw);
+});
 
-      }
 
-      if(
-        d.indexOf("n")>=0
-      ){
+/* =========================================================
+   オブジェクト移動・変更
+========================================================= */
 
-        ny =
-          drag.oy+
-          (drag.oh-nh);
+canvas.on("object:moving", function(event) {
 
-      }
+    snapObject(event.target);
 
-    }
+    updateProperties();
+    updateStatus();
 
-    if(nw<MIN_W){
+});
 
-      if(d.indexOf("w")>=0){
+canvas.on("object:scaling", function() {
 
-        nx =
-          drag.ox+
-          (drag.ow-MIN_W);
+    updateProperties();
+    updateStatus();
 
-      }
+});
 
-      nw =
-        MIN_W;
+canvas.on("object:rotating", function() {
 
-    }
+    updateProperties();
+    updateStatus();
 
-    if(nh<MIN_H){
+});
 
-      if(d.indexOf("n")>=0){
+canvas.on("object:modified", function() {
 
-        ny =
-          drag.oy+
-          (drag.oh-MIN_H);
+    saveHistory();
 
-      }
+    updateProperties();
+    updateLayers();
+    updateStatus();
 
-      nh =
-        MIN_H;
+});
 
-    }
 
-    b2.x =
-      Math.round(nx);
+/* =========================================================
+   グリッド吸着
+========================================================= */
 
-    b2.y =
-      Math.round(ny);
+function snapObject(object) {
 
-    b2.w =
-      Math.round(nw);
+    const gridSize = 20;
 
-    b2.h =
-      Math.round(nh);
+    object.set({
+        left: Math.round(object.left / gridSize) * gridSize,
+        top: Math.round(object.top / gridSize) * gridSize
+    });
 
-    renderBox(b2);
-
-    updateInfo();
-
-    if(state.edit===b2.id){
-
-      positionTa();
-
-    }
-
-  }
-
-}
-
-function onUp(e){
-
-  if(
-    drag &&
-    drag.moved
-  ){
-
-    snapshot();
-
-  }
-
-  if(emptyDn){
-
-    var d =
-      Math.abs(
-        e.clientX-emptyDn.x
-      )+
-      Math.abs(
-        e.clientY-emptyDn.y
-      );
-
-    emptyDn = null;
-
-    if(d>6){
-
-      drag = null;
-
-      unbindDrag();
-
-      return;
-
-    }
-
-  }
-
-  drag = null;
-
-  unbindDrag();
+    object.setCoords();
 
 }
 
 
 /* =========================================================
-   CANVAS EVENTS
+   プロパティ表示
 ========================================================= */
 
-sheet.addEventListener(
-  "pointerdown",
-  onDown
-);
+function updateProperties() {
 
-sheet.addEventListener(
-  "contextmenu",
-  function(e){
+    const content =
+        document.getElementById("propertyContent");
 
-    if(
-      e.target.closest(".box")
-    ){
+    const object = canvas.getActiveObject();
 
-      e.preventDefault();
+    if (!object) {
 
-    }
-
-  }
-);
-
-sheet.addEventListener(
-  "dblclick",
-  function(e){
-
-    var boxEl =
-      e.target.closest
-        ? e.target.closest(".box")
-        : null;
-
-    if(boxEl){
-
-      e.preventDefault();
-
-      e.stopPropagation();
-
-      startEdit(
-        Number(
-          boxEl.dataset.id
-        )
-      );
-
-      return;
-
-    }
-
-    if(
-      e.target.closest &&
-      e.target.closest("#ta")
-    ){
-
-      return;
-
-    }
-
-    var p =
-      sheetPoint(e);
-
-    var b =
-      addBox(
-        Math.max(
-          0,
-          p.x-DEF_W/2
-        ),
-        Math.max(
-          0,
-          p.y-DEF_H/2
-        )
-      );
-
-    select(
-      [b.id],
-      false
-    );
-
-    snapshot();
-
-    startEdit(b.id);
-
-  }
-);
-
-
-/* =========================================================
-   ALIGN
-========================================================= */
-
-function alignOp(op){
-
-  var list =
-    selBoxes();
-
-  if(list.length<2){
-
-    toast(
-      "2つ以上選択してください"
-    );
-
-    return;
-
-  }
-
-  snapshot();
-
-  var minX =
-    Math.min.apply(
-      null,
-      list.map(
-        function(b){
-          return b.x;
-        }
-      )
-    );
-
-  var maxX =
-    Math.max.apply(
-      null,
-      list.map(
-        function(b){
-          return b.x+b.w;
-        }
-      )
-    );
-
-  var minY =
-    Math.min.apply(
-      null,
-      list.map(
-        function(b){
-          return b.y;
-        }
-      )
-    );
-
-  var maxY =
-    Math.max.apply(
-      null,
-      list.map(
-        function(b){
-          return b.y+b.h;
-        }
-      )
-    );
-
-  for(
-    var i=0;
-    i<list.length;
-    i++
-  ){
-
-    var b =
-      list[i];
-
-    if(op==="left"){
-
-      b.x=minX;
-
-    }
-
-    if(op==="right"){
-
-      b.x=maxX-b.w;
-
-    }
-
-    if(op==="hcenter"){
-
-      b.x =
-        Math.round(
-          (minX+maxX)/2-
-          b.w/2
-        );
-
-    }
-
-    if(op==="top"){
-
-      b.y=minY;
-
-    }
-
-    if(op==="bottom"){
-
-      b.y=maxY-b.h;
-
-    }
-
-    if(op==="vmiddle"){
-
-      b.y =
-        Math.round(
-          (minY+maxY)/2-
-          b.h/2
-        );
-
-    }
-
-    renderBox(b);
-
-  }
-
-  updateInfo();
-
-}
-
-
-/* =========================================================
-   HEIGHT FIT
-========================================================= */
-
-function fitHeight(){
-
-  var list =
-    selBoxes();
-
-  if(!list.length){
-
-    return;
-
-  }
-
-  snapshot();
-
-  for(
-    var i=0;
-    i<list.length;
-    i++
-  ){
-
-    var b =
-      list[i];
-
-    var area =
-      textArea(b);
-
-    var lines =
-      layoutLines(
-        b,
-        mctx
-      );
-
-    b.h =
-      Math.round(
-        area.off*2+
-        b.size*
-        b.line*
-        lines.length
-      );
-
-    renderBox(b);
-
-  }
-
-  updateInfo();
-
-}
-
-
-/* =========================================================
-   Z-INDEX
-========================================================= */
-
-function zOp(op){
-
-  var list =
-    selBoxes();
-
-  if(!list.length){
-
-    return;
-
-  }
-
-  snapshot();
-
-  if(op==="front"){
-
-    for(
-      var i=0;
-      i<list.length;
-      i++
-    ){
-
-      list[i].z =
-        ++zTop;
-
-    }
-
-  }
-
-  if(op==="back"){
-
-    for(
-      var i=0;
-      i<list.length;
-      i++
-    ){
-
-      list[i].z =
-        --zTop;
-
-    }
-
-  }
-
-  if(op==="fwd"){
-
-    for(
-      var i=0;
-      i<list.length;
-      i++
-    ){
-
-      list[i].z += 1.5;
-
-    }
-
-    normalizeZ();
-
-  }
-
-  if(op==="bwd"){
-
-    for(
-      var i=0;
-      i<list.length;
-      i++
-    ){
-
-      list[i].z -= 1.5;
-
-    }
-
-    normalizeZ();
-
-  }
-
-  for(
-    var j=0;
-    j<list.length;
-    j++
-  ){
-
-    renderBox(
-      list[j]
-    );
-
-  }
-
-}
-
-function normalizeZ(){
-
-  var arr =
-    sorted();
-
-  for(
-    var i=0;
-    i<arr.length;
-    i++
-  ){
-
-    arr[i].z =
-      i+1;
-
-    renderBox(
-      arr[i]
-    );
-
-  }
-
-  zTop =
-    arr.length;
-
-}
-
-
-/* =========================================================
-   FORMAT
-========================================================= */
-
-function applyFmt(patch){
-
-  var list =
-    selBoxes();
-
-  for(var k in patch){
-
-    defaults[k] =
-      patch[k];
-
-  }
-
-  if(!list.length){
-
-    syncToolbar();
-
-    return;
-
-  }
-
-  snapshot();
-
-  for(
-    var i=0;
-    i<list.length;
-    i++
-  ){
-
-    var b =
-      list[i];
-
-    for(var k2 in patch){
-
-      b[k2] =
-        patch[k2];
-
-    }
-
-    renderBox(b);
-
-  }
-
-  syncToolbar();
-
-  if(state.edit!==null){
-
-    startEdit(
-      state.edit
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   COPY / PASTE
-========================================================= */
-
-function copySel(){
-
-  var list =
-    selBoxes();
-
-  if(!list.length){
-
-    return;
-
-  }
-
-  state.clip =
-    JSON.parse(
-      JSON.stringify(list)
-    );
-
-  toast(
-    list.length+
-    "個をコピーしました"
-  );
-
-}
-
-function pasteClip(){
-
-  if(
-    !state.clip ||
-    !state.clip.length
-  ){
-
-    toast(
-      "コピーされた内容がありません"
-    );
-
-    return;
-
-  }
-
-  snapshot();
-
-  var ids = [];
-
-  for(
-    var i=0;
-    i<state.clip.length;
-    i++
-  ){
-
-    var o =
-      state.clip[i];
-
-    var b =
-      addBox(
-        o.x+18,
-        o.y+18,
-        o.w,
-        o.h
-      );
-
-    for(var k in o){
-
-      if(
-        k!=="id" &&
-        k!=="x" &&
-        k!=="y" &&
-        k!=="z"
-      ){
-
-        b[k] =
-          o[k];
-
-      }
-
-    }
-
-    b.z =
-      ++zTop;
-
-    renderBox(b);
-
-    ids.push(
-      b.id
-    );
-
-  }
-
-  select(
-    ids,
-    false
-  );
-
-}
-
-function duplicateSel(){
-
-  copySel();
-
-  pasteClip();
-
-}
-
-
-/* =========================================================
-   TOOLBAR SYNC
-========================================================= */
-
-function syncToolbar(){
-
-  var b =
-    primary();
-
-  var f =
-    b || defaults;
-
-  $("fontSel").value =
-    f.font;
-
-  $("sizeNum").value =
-    f.size;
-
-  $("boldBtn").classList.toggle(
-    "active",
-    !!f.bold
-  );
-
-  $("italBtn").classList.toggle(
-    "active",
-    !!f.italic
-  );
-
-  $("underBtn").classList.toggle(
-    "active",
-    !!f.underline
-  );
-
-  $("colorInp").value =
-    f.color;
-
-  $("bgInp").value =
-    f.bg;
-
-  $("bgToggle").textContent =
-    f.bgOn
-      ? "背景あり"
-      : "背景なし";
-
-  $("bgToggle").classList.toggle(
-    "active",
-    !!f.bgOn
-  );
-
-  $("lineSel").value =
-    String(f.line);
-
-  $("borderSel").value =
-    f.border;
-
-  $("borderInp").value =
-    f.borderColor;
-
-  $("borderW").value =
-    f.borderW;
-
-  var halign =
-    document.querySelectorAll(
-      "[data-halign]"
-    );
-
-  for(
-    var i=0;
-    i<halign.length;
-    i++
-  ){
-
-    halign[i].classList.toggle(
-      "active",
-      halign[i].dataset.halign ===
-      f.align
-    );
-
-  }
-
-  var valign =
-    document.querySelectorAll(
-      "[data-valign]"
-    );
-
-  for(
-    var j=0;
-    j<valign.length;
-    j++
-  ){
-
-    valign[j].classList.toggle(
-      "active",
-      valign[j].dataset.valign ===
-      f.valign
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   SAMPLE
-========================================================= */
-
-var SAMPLE_BASE = {
-
-  font:FONTS[0].stack,
-
-  size:20,
-
-  bold:false,
-
-  italic:false,
-
-  underline:false,
-
-  color:"#20252d",
-
-  bgOn:false,
-
-  bg:"#fff7cc",
-
-  align:"left",
-
-  valign:"top",
-
-  line:1.4,
-
-  border:"none",
-
-  borderColor:"#8593a6",
-
-  borderW:1
-
-};
-
-function insertSample(){
-
-  snapshot();
-
-  var saved = {};
-
-  for(var k in defaults){
-
-    saved[k] =
-      defaults[k];
-
-  }
-
-  var base = {};
-
-  for(var k2 in SAMPLE_BASE){
-
-    base[k2] =
-      SAMPLE_BASE[k2];
-
-  }
-
-  defaults =
-    base;
-
-  var list = [
-
-    {
-      text:"白紙シート2",
-
-      font:FONTS[6].stack,
-
-      size:44,
-
-      color:"#20252d",
-
-      x:80,
-
-      y:70,
-
-      w:620,
-
-      h:70,
-
-      line:1.2
-
-    },
-
-    {
-      text:
-        "ダブルクリックで自由にテキストボックスを置けます。\n"+
-        "角や辺をつまんでサイズ変更、ドラッグで移動。\n"+
-        "フォント・サイズ・色・背景・枠線などを自由に変更できます。",
-
-      font:FONTS[0].stack,
-
-      size:18,
-
-      color:"#3f4855",
-
-      x:82,
-
-      y:165,
-
-      w:640,
-
-      h:120,
-
-      line:1.6
-
-    },
-
-    {
-      text:"POINT",
-
-      font:FONTS[7].stack,
-
-      size:22,
-
-      bold:true,
-
-      color:"#2465dc",
-
-      bgOn:true,
-
-      bg:"#edf4ff",
-
-      x:80,
-
-      y:320,
-
-      w:180,
-
-      h:52,
-
-      align:"center",
-
-      valign:"middle"
-
-    },
-
-    {
-      text:
-        "ボックスごとに文字サイズを変えられるので、見出しと本文を分けてレイアウトできます。",
-
-      font:FONTS[2].stack,
-
-      size:17,
-
-      color:"#20252d",
-
-      x:290,
-
-      y:326,
-
-      w:520,
-
-      h:60,
-
-      line:1.5
-
-    },
-
-    {
-      text:"明朝体のサンプル",
-
-      font:FONTS[2].stack,
-
-      size:26,
-
-      color:"#8a5a1f",
-
-      x:82,
-
-      y:420,
-
-      w:320,
-
-      h:44
-
-    },
-
-    {
-      text:"手書き風のメモ書き",
-
-      font:FONTS[5].stack,
-
-      size:24,
-
-      color:"#2b7a5b",
-
-      x:430,
-
-      y:420,
-
-      w:320,
-
-      h:44
-
-    },
-
-    {
-      text:"背景色つきのボックス",
-
-      font:FONTS[0].stack,
-
-      size:18,
-
-      color:"#7a2c2c",
-
-      bgOn:true,
-
-      bg:"#ffe9e3",
-
-      x:82,
-
-      y:500,
-
-      w:250,
-
-      h:56,
-
-      align:"center",
-
-      valign:"middle",
-
-      border:"dashed",
-
-      borderColor:"#d98b7a",
-
-      borderW:1
-
-    },
-
-    {
-      text:"枠線つき（実線）",
-
-      font:FONTS[0].stack,
-
-      size:18,
-
-      color:"#25406b",
-
-      x:360,
-
-      y:500,
-
-      w:220,
-
-      h:56,
-
-      align:"center",
-
-      valign:"middle",
-
-      border:"solid",
-
-      borderColor:"#7c9cc9",
-
-      borderW:2
-
-    }
-
-  ];
-
-  for(
-    var i=0;
-    i<list.length;
-    i++
-  ){
-
-    var o =
-      list[i];
-
-    var b =
-      addBox(
-        o.x,
-        o.y,
-        o.w,
-        o.h
-      );
-
-    for(var k3 in o){
-
-      if(
-        k3!=="x" &&
-        k3!=="y" &&
-        k3!=="w" &&
-        k3!=="h"
-      ){
-
-        b[k3] =
-          o[k3];
-
-      }
-
-    }
-
-    renderBox(b);
-
-  }
-
-  defaults =
-    saved;
-
-  renderAll();
-
-  syncToolbar();
-
-  toast(
-    "見本を挿入しました"
-  );
-
-}
-
-
-/* =========================================================
-   PNG
-========================================================= */
-
-function pad2(n){
-
-  return n<10
-    ? "0"+n
-    : String(n);
-
-}
-
-function stamp(){
-
-  var d =
-    new Date();
-
-  return (
-
-    d.getFullYear()+
-    "-"+
-    pad2(d.getMonth()+1)+
-    "-"+
-    pad2(d.getDate())+
-    "_"+
-    pad2(d.getHours())+
-    pad2(d.getMinutes())+
-    pad2(d.getSeconds())
-
-  );
-
-}
-
-function visibleBoxes(){
-
-  return sorted().filter(
-    function(b){
-
-      return (
-
-        (
-          b.text!="" ||
-          b.bgOn ||
-          b.border!=="none"
-        ) &&
-        b.w>0 &&
-        b.h>0
-
-      );
-
-    }
-  );
-
-}
-
-function buildCanvas(mult){
-
-  endEdit(false);
-
-  var list =
-    visibleBoxes();
-
-  var PADPX = 40;
-
-  var minX;
-  var minY;
-  var maxX;
-  var maxY;
-
-  if(list.length){
-
-    minX=Infinity;
-    minY=Infinity;
-    maxX=-Infinity;
-    maxY=-Infinity;
-
-    for(
-      var i=0;
-      i<list.length;
-      i++
-    ){
-
-      var b =
-        list[i];
-
-      minX =
-        Math.min(
-          minX,
-          b.x
-        );
-
-      minY =
-        Math.min(
-          minY,
-          b.y
-        );
-
-      maxX =
-        Math.max(
-          maxX,
-          b.x+b.w
-        );
-
-      maxY =
-        Math.max(
-          maxY,
-          b.y+b.h
-        );
-
-    }
-
-  }else{
-
-    minX=0;
-    minY=0;
-    maxX=1000;
-    maxY=600;
-
-  }
-
-  var W =
-    Math.max(
-      1,
-      Math.ceil(
-        maxX-minX+
-        PADPX*2
-      )
-    );
-
-  var H =
-    Math.max(
-      1,
-      Math.ceil(
-        maxY-minY+
-        PADPX*2
-      )
-    );
-
-  var cv =
-    document.createElement(
-      "canvas"
-    );
-
-  cv.width =
-    Math.round(
-      W*mult
-    );
-
-  cv.height =
-    Math.round(
-      H*mult
-    );
-
-  var ctx =
-    cv.getContext("2d");
-
-  if(!ctx){
-
-    return null;
-
-  }
-
-  ctx.setTransform(
-    mult,
-    0,
-    0,
-    mult,
-    0,
-    0
-  );
-
-  ctx.fillStyle =
-    "#ffffff";
-
-  ctx.fillRect(
-    0,
-    0,
-    W,
-    H
-  );
-
-  ctx.textBaseline =
-    "middle";
-
-  for(
-    var n=0;
-    n<list.length;
-    n++
-  ){
-
-    var b2 =
-      list[n];
-
-    var ox =
-      b2.x-minX+
-      PADPX;
-
-    var oy =
-      b2.y-minY+
-      PADPX;
-
-    var bw =
-      b2.border==="none"
-        ? 0
-        : b2.borderW;
-
-    var innerW =
-      Math.max(
-        1,
-        b2.w-
-        2*PAD-
-        2*bw
-      );
-
-    var innerH =
-      Math.max(
-        0,
-        b2.h-
-        2*PAD-
-        2*bw
-      );
-
-    var off =
-      PAD+bw;
-
-    if(b2.bgOn){
-
-      ctx.fillStyle =
-        b2.bg;
-
-      ctx.fillRect(
-        ox,
-        oy,
-        b2.w,
-        b2.h
-      );
-
-    }
-
-    if(bw>0){
-
-      ctx.save();
-
-      ctx.strokeStyle =
-        b2.borderColor;
-
-      ctx.lineWidth =
-        bw;
-
-      ctx.setLineDash(
-        b2.border==="dashed"
-          ? [
-              Math.max(4,bw*4),
-              Math.max(3,bw*3)
-            ]
-          : []
-      );
-
-      ctx.strokeRect(
-        ox+bw/2,
-        oy+bw/2,
-        b2.w-bw,
-        b2.h-bw
-      );
-
-      ctx.restore();
-
-    }
-
-    var tmp =
-      document
-      .createElement("canvas")
-      .getContext("2d");
-
-    tmp.font =
-      fontSpec(b2);
-
-    var lines = [];
-
-    var paras =
-      String(
-        b2.text
-      ).split("\n");
-
-    for(
-      var i2=0;
-      i2<paras.length;
-      i2++
-    ){
-
-      lines =
-        lines.concat(
-          wrapParagraph(
-            tmp,
-            paras[i2],
-            innerW
-          )
-        );
-
-    }
-
-    var lineH =
-      b2.size*b2.line;
-
-    var blockH =
-      lineH*lines.length;
-
-    var top;
-
-    if(
-      b2.valign==="top"
-    ){
-
-      top=off;
-
-    }else if(
-      b2.valign==="middle"
-    ){
-
-      top =
-        off+
-        (innerH-blockH)/2;
-
-    }else{
-
-      top =
-        off+
-        (innerH-blockH);
-
-    }
-
-    ctx.font =
-      fontSpec(b2);
-
-    ctx.fillStyle =
-      b2.color;
-
-    for(
-      var j=0;
-      j<lines.length;
-      j++
-    ){
-
-      var tw =
-        ctx.measureText(
-          lines[j]
-        ).width;
-
-      var tx;
-
-      if(
-        b2.align==="center"
-      ){
-
-        ctx.textAlign =
-          "center";
-
-        tx =
-          ox+
-          off+
-          innerW/2;
-
-      }else if(
-        b2.align==="right"
-      ){
-
-        ctx.textAlign =
-          "right";
-
-        tx =
-          ox+
-          off+
-          innerW;
-
-      }else{
-
-        ctx.textAlign =
-          "left";
-
-        tx =
-          ox+
-          off;
-
-      }
-
-      var cy =
-        oy+
-        top+
-        lineH*j+
-        lineH/2;
-
-      ctx.fillText(
-        lines[j],
-        tx,
-        cy
-      );
-
-      if(
-        b2.underline &&
-        lines[j]!==""
-      ){
-
-        var ux;
-
-        if(
-          b2.align==="center"
-        ){
-
-          ux =
-            tx-tw/2;
-
-        }else if(
-          b2.align==="right"
-        ){
-
-          ux =
-            tx-tw;
-
-        }else{
-
-          ux=tx;
-
-        }
-
-        var uy =
-          cy+
-          b2.size*.46;
-
-        ctx.fillRect(
-          ux,
-          uy,
-          tw,
-          Math.max(
-            1,
-            b2.size*.06
-          )
-        );
-
-      }
-
-    }
-
-  }
-
-  return cv;
-
-}
-
-function withFonts(cb){
-
-  var fired=false;
-
-  function go(){
-
-    if(fired){
-
-      return;
-
-    }
-
-    fired=true;
-
-    cb();
-
-  }
-
-  try{
-
-    if(
-      document.fonts &&
-      document.fonts.ready
-    ){
-
-      var timer =
-        setTimeout(
-          go,
-          1500
-        );
-
-      document.fonts.ready.then(
-        function(){
-
-          clearTimeout(timer);
-
-          go();
-
-        }
-      );
-
-      return;
-
-    }
-
-  }catch(err){}
-
-  go();
-
-}
-
-function exportPNG(){
-
-  var mult =
-    Number(
-      $("resSel").value
-    ) || 2;
-
-  withFonts(
-    function(){
-
-      var cv =
-        buildCanvas(mult);
-
-      if(!cv){
-
-        toast(
-          "PNGを生成できませんでした"
-        );
+        content.innerHTML = `
+            <div class="no-selection">
+                オブジェクトを選択すると、<br>
+                ここに設定項目が表示されます。
+            </div>
+        `;
 
         return;
+    }
 
-      }
+    let html = "";
 
-      var name =
-        "shiro-sheet2_"+
-        stamp()+
-        ".png";
+    html += `
+        <div class="property-section">
 
-      function done(blob){
+            <div class="section-title">
+                位置
+            </div>
 
-        if(!blob){
+            <div class="property-row">
 
-          toast(
-            "PNGの生成に失敗しました"
-          );
+                <div class="property-label">
+                    X
+                </div>
 
-          return;
+                <input
+                    class="property-input"
+                    id="propX"
+                    type="number"
+                    value="${Math.round(object.left)}">
 
-        }
+            </div>
 
-        var url =
-          URL.createObjectURL(
-            blob
-          );
+            <div class="property-row">
 
-        var a =
-          document.createElement(
-            "a"
-          );
+                <div class="property-label">
+                    Y
+                </div>
 
-        a.href=url;
+                <input
+                    class="property-input"
+                    id="propY"
+                    type="number"
+                    value="${Math.round(object.top)}">
 
-        a.download=name;
+            </div>
 
-        document.body.appendChild(a);
+        </div>
+    `;
 
-        a.click();
+    html += `
+        <div class="property-section">
 
-        a.remove();
+            <div class="section-title">
+                サイズ
+            </div>
 
-        setTimeout(
-          function(){
+            <div class="property-row">
 
-            URL.revokeObjectURL(
-              url
+                <div class="property-label">
+                    幅
+                </div>
+
+                <input
+                    class="property-input"
+                    id="propWidth"
+                    type="number"
+                    value="${Math.round(object.getScaledWidth())}">
+
+            </div>
+
+            <div class="property-row">
+
+                <div class="property-label">
+                    高さ
+                </div>
+
+                <input
+                    class="property-input"
+                    id="propHeight"
+                    type="number"
+                    value="${Math.round(object.getScaledHeight())}">
+
+            </div>
+
+        </div>
+    `;
+
+    html += `
+        <div class="property-section">
+
+            <div class="section-title">
+                表示
+            </div>
+
+            <div class="property-row">
+
+                <div class="property-label">
+                    透明度
+                </div>
+
+                <input
+                    class="property-input"
+                    id="propOpacity"
+                    type="number"
+                    min="0"
+                    max="100"
+                    value="${Math.round((object.opacity || 1) * 100)}">
+
+            </div>
+
+            <div class="property-row">
+
+                <div class="property-label">
+                    回転
+                </div>
+
+                <input
+                    class="property-input"
+                    id="propAngle"
+                    type="number"
+                    value="${Math.round(object.angle || 0)}">
+
+            </div>
+
+        </div>
+    `;
+
+
+    /* テキスト */
+
+    if (
+        object.type === "i-text" ||
+        object.type === "text"
+    ) {
+
+        html += `
+            <div class="property-section">
+
+                <div class="section-title">
+                    文字
+                </div>
+
+                <div class="property-row">
+
+                    <div class="property-label">
+                        フォント
+                    </div>
+
+                    <select
+                        class="property-select"
+                        id="propFont">
+
+                        <option
+                            value="Yu Gothic"
+                            ${object.fontFamily === "Yu Gothic" ? "selected" : ""}>
+                            游ゴシック
+                        </option>
+
+                        <option
+                            value="Meiryo"
+                            ${object.fontFamily === "Meiryo" ? "selected" : ""}>
+                            メイリオ
+                        </option>
+
+                        <option
+                            value="Arial"
+                            ${object.fontFamily === "Arial" ? "selected" : ""}>
+                            Arial
+                        </option>
+
+                        <option
+                            value="sans-serif"
+                            ${object.fontFamily === "sans-serif" ? "selected" : ""}>
+                            Sans Serif
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="property-row">
+
+                    <div class="property-label">
+                        サイズ
+                    </div>
+
+                    <input
+                        class="property-input"
+                        id="propFontSize"
+                        type="number"
+                        min="1"
+                        value="${Math.round(object.fontSize || 60)}">
+
+                </div>
+
+                <div class="property-row">
+
+                    <div class="property-label">
+                        文字色
+                    </div>
+
+                    <input
+                        class="color-input"
+                        id="propFill"
+                        type="color"
+                        value="${toHex(object.fill || "#222222")}">
+
+                </div>
+
+                <div class="checkbox-row">
+
+                    <input
+                        type="checkbox"
+                        id="propBold"
+                        ${object.fontWeight === "bold" ? "checked" : ""}>
+
+                    <label for="propBold">
+                        太字
+                    </label>
+
+                </div>
+
+                <div
+                    class="checkbox-row"
+                    style="margin-top:7px;">
+
+                    <input
+                        type="checkbox"
+                        id="propItalic"
+                        ${object.fontStyle === "italic" ? "checked" : ""}>
+
+                    <label for="propItalic">
+                        斜体
+                    </label>
+
+                </div>
+
+            </div>
+        `;
+
+    }
+
+
+    /* 図形 */
+
+    if (
+        object.type === "rect" ||
+        object.type === "circle"
+    ) {
+
+        html += `
+            <div class="property-section">
+
+                <div class="section-title">
+                    塗り
+                </div>
+
+                <div class="property-row">
+
+                    <div class="property-label">
+                        色
+                    </div>
+
+                    <input
+                        class="color-input"
+                        id="propFill"
+                        type="color"
+                        value="${toHex(object.fill || "#ffffff")}">
+
+                </div>
+
+            </div>
+
+            <div class="property-section">
+
+                <div class="section-title">
+                    線
+                </div>
+
+                <div class="property-row">
+
+                    <div class="property-label">
+                        色
+                    </div>
+
+                    <input
+                        class="color-input"
+                        id="propStroke"
+                        type="color"
+                        value="${toHex(object.stroke || "#000000")}">
+
+                </div>
+
+                <div class="property-row">
+
+                    <div class="property-label">
+                        太さ
+                    </div>
+
+                    <input
+                        class="property-input"
+                        id="propStrokeWidth"
+                        type="number"
+                        min="0"
+                        value="${Math.round(object.strokeWidth || 0)}">
+
+                </div>
+
+            </div>
+        `;
+
+    }
+
+
+    /* 線 */
+
+    if (object.type === "line") {
+
+        html += `
+            <div class="property-section">
+
+                <div class="section-title">
+                    線
+                </div>
+
+                <div class="property-row">
+
+                    <div class="property-label">
+                        色
+                    </div>
+
+                    <input
+                        class="color-input"
+                        id="propStroke"
+                        type="color"
+                        value="${toHex(object.stroke || "#000000")}">
+
+                </div>
+
+                <div class="property-row">
+
+                    <div class="property-label">
+                        太さ
+                    </div>
+
+                    <input
+                        class="property-input"
+                        id="propStrokeWidth"
+                        type="number"
+                        min="1"
+                        value="${Math.round(object.strokeWidth || 1)}">
+
+                </div>
+
+            </div>
+        `;
+
+    }
+
+
+    content.innerHTML = html;
+
+    attachPropertyEvents(object);
+
+}
+
+
+/* =========================================================
+   プロパティイベント
+========================================================= */
+
+function attachPropertyEvents(object) {
+
+    const x = document.getElementById("propX");
+
+    if (x) {
+
+        x.addEventListener("change", function() {
+
+            object.set("left", Number(this.value));
+
+            object.setCoords();
+
+            canvas.renderAll();
+
+            saveHistory();
+            updateLayers();
+            updateStatus();
+
+        });
+
+    }
+
+
+    const y = document.getElementById("propY");
+
+    if (y) {
+
+        y.addEventListener("change", function() {
+
+            object.set("top", Number(this.value));
+
+            object.setCoords();
+
+            canvas.renderAll();
+
+            saveHistory();
+            updateLayers();
+            updateStatus();
+
+        });
+
+    }
+
+
+    const width = document.getElementById("propWidth");
+
+    if (width) {
+
+        width.addEventListener("change", function() {
+
+            const newWidth = Number(this.value);
+
+            if (object.width) {
+
+                object.scaleX =
+                    newWidth / object.width;
+
+            }
+
+            object.setCoords();
+
+            canvas.renderAll();
+
+            saveHistory();
+            updateProperties();
+            updateStatus();
+
+        });
+
+    }
+
+
+    const height = document.getElementById("propHeight");
+
+    if (height) {
+
+        height.addEventListener("change", function() {
+
+            const newHeight = Number(this.value);
+
+            if (object.height) {
+
+                object.scaleY =
+                    newHeight / object.height;
+
+            }
+
+            object.setCoords();
+
+            canvas.renderAll();
+
+            saveHistory();
+            updateProperties();
+            updateStatus();
+
+        });
+
+    }
+
+
+    const opacity = document.getElementById("propOpacity");
+
+    if (opacity) {
+
+        opacity.addEventListener("change", function() {
+
+            let value = Number(this.value);
+
+            value = Math.max(
+                0,
+                Math.min(100, value)
             );
 
-          },
-          3000
-        );
+            object.set(
+                "opacity",
+                value / 100
+            );
 
-        toast(
-          "PNGを保存しました　"+
-          cv.width+
-          "×"+
-          cv.height+
-          "px"
-        );
+            canvas.renderAll();
 
-      }
+            saveHistory();
 
-      if(cv.toBlob){
-
-        cv.toBlob(
-          done,
-          "image/png"
-        );
-
-      }else{
-
-        var a2 =
-          document.createElement(
-            "a"
-          );
-
-        a2.href =
-          cv.toDataURL(
-            "image/png"
-          );
-
-        a2.download =
-          name;
-
-        document.body.appendChild(a2);
-
-        a2.click();
-
-        a2.remove();
-
-      }
+        });
 
     }
-  );
+
+
+    const angle = document.getElementById("propAngle");
+
+    if (angle) {
+
+        angle.addEventListener("change", function() {
+
+            object.set(
+                "angle",
+                Number(this.value)
+            );
+
+            object.setCoords();
+
+            canvas.renderAll();
+
+            saveHistory();
+            updateStatus();
+
+        });
+
+    }
+
+
+    const fill = document.getElementById("propFill");
+
+    if (fill) {
+
+        fill.addEventListener("input", function() {
+
+            object.set(
+                "fill",
+                this.value
+            );
+
+            canvas.renderAll();
+
+        });
+
+        fill.addEventListener("change", function() {
+
+            saveHistory();
+
+        });
+
+    }
+
+
+    const stroke = document.getElementById("propStroke");
+
+    if (stroke) {
+
+        stroke.addEventListener("input", function() {
+
+            object.set(
+                "stroke",
+                this.value
+            );
+
+            canvas.renderAll();
+
+        });
+
+        stroke.addEventListener("change", function() {
+
+            saveHistory();
+
+        });
+
+    }
+
+
+    const strokeWidth =
+        document.getElementById("propStrokeWidth");
+
+    if (strokeWidth) {
+
+        strokeWidth.addEventListener("change", function() {
+
+            object.set(
+                "strokeWidth",
+                Number(this.value)
+            );
+
+            object.setCoords();
+
+            canvas.renderAll();
+
+            saveHistory();
+            updateStatus();
+
+        });
+
+    }
+
+
+    const font =
+        document.getElementById("propFont");
+
+    if (font) {
+
+        font.addEventListener("change", function() {
+
+            object.set(
+                "fontFamily",
+                this.value
+            );
+
+            canvas.renderAll();
+
+            saveHistory();
+
+        });
+
+    }
+
+
+    const fontSize =
+        document.getElementById("propFontSize");
+
+    if (fontSize) {
+
+        fontSize.addEventListener("change", function() {
+
+            object.set(
+                "fontSize",
+                Number(this.value)
+            );
+
+            object.setCoords();
+
+            canvas.renderAll();
+
+            saveHistory();
+            updateProperties();
+            updateStatus();
+
+        });
+
+    }
+
+
+    const bold =
+        document.getElementById("propBold");
+
+    if (bold) {
+
+        bold.addEventListener("change", function() {
+
+            object.set(
+                "fontWeight",
+                this.checked
+                    ? "bold"
+                    : "normal"
+            );
+
+            canvas.renderAll();
+
+            saveHistory();
+
+        });
+
+    }
+
+
+    const italic =
+        document.getElementById("propItalic");
+
+    if (italic) {
+
+        italic.addEventListener("change", function() {
+
+            object.set(
+                "fontStyle",
+                this.checked
+                    ? "italic"
+                    : "normal"
+            );
+
+            canvas.renderAll();
+
+            saveHistory();
+
+        });
+
+    }
 
 }
 
 
 /* =========================================================
-   JSON
+   HEX変換
 ========================================================= */
 
-function saveJson(){
+function toHex(color) {
 
-  endEdit(false);
+    if (!color) {
+        return "#000000";
+    }
 
-  var data =
-    JSON.stringify(
-      {
-        v:2,
-        w:state.w,
-        h:state.h,
-        boxes:sorted()
-      },
-      null,
-      2
-    );
+    if (color.startsWith("#")) {
+        return color;
+    }
 
-  var blob =
-    new Blob(
-      [data],
-      {
-        type:"application/json"
-      }
-    );
+    if (color === "transparent") {
+        return "#ffffff";
+    }
 
-  var url =
-    URL.createObjectURL(
-      blob
-    );
+    const ctx =
+        document.createElement("canvas")
+            .getContext("2d");
 
-  var a =
-    document.createElement(
-      "a"
-    );
+    ctx.fillStyle = color;
 
-  a.href=url;
-
-  a.download =
-    "shiro-sheet2_"+
-    stamp()+
-    ".json";
-
-  document.body.appendChild(a);
-
-  a.click();
-
-  a.remove();
-
-  setTimeout(
-    function(){
-
-      URL.revokeObjectURL(
-        url
-      );
-
-    },
-    3000
-  );
-
-  toast(
-    "JSONを保存しました"
-  );
-
-}
-
-function loadJsonFile(file){
-
-  var reader =
-    new FileReader();
-
-  reader.onload =
-    function(){
-
-      try{
-
-        snapshot();
-
-        applyJson(
-          String(
-            reader.result
-          )
-        );
-
-        toast(
-          "JSONを読み込みました　"+
-          "ボックス "+
-          state.boxes.length+
-          "個"
-        );
-
-      }catch(err){
-
-        toast(
-          "JSONの読み込みに失敗しました"
-        );
-
-      }
-
-    };
-
-  reader.readAsText(file);
+    return ctx.fillStyle;
 
 }
 
 
 /* =========================================================
-   NUDGE
+   レイヤー更新
 ========================================================= */
 
-var lastNudge=0;
+function updateLayers() {
 
-function nudge(dx,dy){
+    const list =
+        document.getElementById("layerList");
 
-  var list =
-    selBoxes();
+    list.innerHTML = "";
 
-  if(!list.length){
+    const objects = canvas.getObjects();
 
-    return;
+    const selected =
+        canvas.getActiveObject();
 
-  }
+    objects
+        .slice()
+        .reverse()
+        .forEach(function(object, reverseIndex) {
 
-  var now =
-    Date.now();
+            const actualIndex =
+                objects.length - 1 - reverseIndex;
 
-  if(
-    now-lastNudge>700
-  ){
+            const item =
+                document.createElement("div");
 
-    snapshot();
+            item.className =
+                "layer-item";
 
-  }
+            if (object === selected) {
+                item.classList.add("selected");
+            }
 
-  lastNudge=now;
+            const number =
+                document.createElement("div");
 
-  for(
-    var i=0;
-    i<list.length;
-    i++
-  ){
+            number.className =
+                "layer-number";
 
-    var b =
-      list[i];
+            number.textContent =
+                actualIndex + 1;
 
-    b.x =
-      Math.max(
-        0,
-        b.x+dx
-      );
 
-    b.y =
-      Math.max(
-        0,
-        b.y+dy
-      );
+            const name =
+                document.createElement("div");
 
-    var el =
-      boxEls[b.id];
+            name.className =
+                "layer-name";
 
-    if(el){
+            name.textContent =
+                getObjectName(object);
 
-      el.style.left =
-        b.x+"px";
 
-      el.style.top =
-        b.y+"px";
+            item.appendChild(number);
+            item.appendChild(name);
+
+            item.addEventListener("click", function() {
+
+                canvas.setActiveObject(object);
+
+                canvas.renderAll();
+
+                updateProperties();
+                updateLayers();
+                updateStatus();
+
+            });
+
+            list.appendChild(item);
+
+        });
+
+}
+
+
+function getObjectName(object) {
+
+    if (
+        object.type === "i-text" ||
+        object.type === "text"
+    ) {
+
+        return object.text || "文字";
 
     }
 
-  }
+    if (object.type === "rect") {
+        return "四角形";
+    }
 
-  updateInfo();
+    if (object.type === "circle") {
+        return "円";
+    }
 
-  if(state.edit!==null){
+    if (object.type === "line") {
+        return "線";
+    }
 
-    positionTa();
+    if (object.type === "image") {
+        return "画像";
+    }
 
-  }
+    return "オブジェクト";
 
 }
 
 
 /* =========================================================
-   KEYBOARD
+   ステータス
 ========================================================= */
 
-document.addEventListener(
-  "keydown",
-  function(e){
+function updateStatus() {
 
-    var meta =
-      e.ctrlKey ||
-      e.metaKey;
+    const objects =
+        canvas.getObjects();
 
-    var inTa =
-      e.target === ta;
+    document.getElementById("objectStatus")
+        .textContent =
+        "オブジェクト " + objects.length;
 
-    if(e.key==="Escape"){
 
-      if(
-        state.edit!==null
-      ){
+    const object =
+        canvas.getActiveObject();
 
-        endEdit(false);
+    if (!object) {
 
-        e.preventDefault();
+        document.getElementById("positionStatus")
+            .textContent =
+            "X: -　Y: -";
 
-      }else if(
-        state.sel.length
-      ){
+        document.getElementById("sizeStatus")
+            .textContent =
+            "W: -　H: -";
 
-        state.sel=[];
-
-        syncSelection();
-
-      }
-
-      return;
-
+        return;
     }
 
-    if(inTa){
 
-      if(
-        meta &&
-        (
-          e.key==="Enter" ||
-          e.key==="Escape"
-        )
-      ){
+    document.getElementById("positionStatus")
+        .textContent =
+        "X: " +
+        Math.round(object.left) +
+        "　Y: " +
+        Math.round(object.top);
 
-        e.preventDefault();
 
-        endEdit(false);
+    document.getElementById("sizeStatus")
+        .textContent =
+        "W: " +
+        Math.round(object.getScaledWidth()) +
+        "　H: " +
+        Math.round(object.getScaledHeight());
 
-      }
+}
 
-      return;
 
+/* =========================================================
+   コピー
+========================================================= */
+
+function copyObject() {
+
+    const object =
+        canvas.getActiveObject();
+
+    if (!object) {
+        return;
     }
 
-    if(e.key==="Enter"){
+    object.clone(function(cloned) {
 
-      if(primary()){
+        copiedObject = cloned;
 
-        e.preventDefault();
+    });
 
-        startEdit(
-          primary().id
-        );
+}
 
-      }
 
-      return;
+/* =========================================================
+   貼り付け
+========================================================= */
 
+function pasteObject() {
+
+    if (!copiedObject) {
+        return;
     }
 
-    if(
-      e.key==="Delete" ||
-      e.key==="Backspace"
-    ){
+    copiedObject.clone(function(clonedObj) {
 
-      if(state.sel.length){
+        clonedObj.set({
 
-        e.preventDefault();
+            left:
+                (clonedObj.left || 0) + 20,
 
-        removeBoxes(
-          state.sel.slice(),
-          false
-        );
+            top:
+                (clonedObj.top || 0) + 20
 
-      }
+        });
 
-      return;
+        canvas.add(clonedObj);
 
+        canvas.setActiveObject(clonedObj);
+
+        canvas.renderAll();
+
+        saveHistory();
+
+        updateProperties();
+        updateLayers();
+        updateStatus();
+
+    });
+
+}
+
+
+/* =========================================================
+   複製
+========================================================= */
+
+function duplicateObject() {
+
+    copyObject();
+
+    setTimeout(function() {
+
+        pasteObject();
+
+    }, 10);
+
+}
+
+
+/* =========================================================
+   削除
+========================================================= */
+
+function deleteObject() {
+
+    const active =
+        canvas.getActiveObjects();
+
+    if (!active.length) {
+        return;
     }
 
-    if(
-      e.key==="ArrowLeft" ||
-      e.key==="ArrowRight" ||
-      e.key==="ArrowUp" ||
-      e.key==="ArrowDown"
-    ){
+    active.forEach(function(object) {
 
-      if(state.sel.length){
+        canvas.remove(object);
 
-        e.preventDefault();
+    });
 
-        var step =
-          e.shiftKey
-            ? 10
-            : 1;
+    canvas.discardActiveObject();
 
-        nudge(
+    canvas.renderAll();
 
-          e.key==="ArrowLeft"
-            ? -step
-            : e.key==="ArrowRight"
-              ? step
-              : 0,
+    saveHistory();
 
-          e.key==="ArrowUp"
-            ? -step
-            : e.key==="ArrowDown"
-              ? step
-              : 0
+    updateProperties();
+    updateLayers();
+    updateStatus();
 
-        );
+}
 
-      }
 
-      return;
+/* =========================================================
+   レイヤー操作
+========================================================= */
 
+function bringForward() {
+
+    const object =
+        canvas.getActiveObject();
+
+    if (!object) {
+        return;
     }
 
-    if(
-      meta &&
-      (e.key==="c" ||
-       e.key==="C")
-    ){
+    canvas.bringForward(object);
 
-      e.preventDefault();
+    canvas.renderAll();
 
-      copySel();
+    saveHistory();
 
-      return;
+    updateLayers();
 
+}
+
+
+function sendBackward() {
+
+    const object =
+        canvas.getActiveObject();
+
+    if (!object) {
+        return;
     }
 
-    if(
-      meta &&
-      (e.key==="v" ||
-       e.key==="V")
-    ){
+    canvas.sendBackwards(object);
 
-      e.preventDefault();
+    canvas.renderAll();
 
-      pasteClip();
+    saveHistory();
 
-      return;
+    updateLayers();
 
+}
+
+
+function bringToFront() {
+
+    const object =
+        canvas.getActiveObject();
+
+    if (!object) {
+        return;
     }
 
-    if(
-      meta &&
-      (e.key==="d" ||
-       e.key==="D")
-    ){
+    canvas.bringToFront(object);
 
-      e.preventDefault();
+    canvas.renderAll();
 
-      duplicateSel();
+    saveHistory();
 
-      return;
+    updateLayers();
 
+}
+
+
+function sendToBack() {
+
+    const object =
+        canvas.getActiveObject();
+
+    if (!object) {
+        return;
     }
 
-    if(
-      meta &&
-      (e.key==="a" ||
-       e.key==="A")
-    ){
+    canvas.sendToBack(object);
 
-      e.preventDefault();
+    canvas.renderAll();
 
-      select(
-        state.boxes.map(
-          function(b){
-            return b.id;
-          }
-        ),
-        false
-      );
+    saveHistory();
 
-      return;
+    updateLayers();
 
-    }
+}
 
-    if(
-      meta &&
-      (e.key==="z" ||
-       e.key==="Z")
-    ){
 
-      e.preventDefault();
+/* =========================================================
+   ボタンイベント
+========================================================= */
 
-      if(e.shiftKey){
+document.getElementById("selectTool")
+    .addEventListener(
+        "click",
+        function() {
+            setTool("select");
+        }
+    );
 
-        redo();
 
-      }else{
+document.getElementById("textTool")
+    .addEventListener(
+        "click",
+        function() {
+            setTool("text");
+        }
+    );
+
+
+document.getElementById("rectTool")
+    .addEventListener(
+        "click",
+        function() {
+            setTool("rect");
+        }
+    );
+
+
+document.getElementById("circleTool")
+    .addEventListener(
+        "click",
+        function() {
+            setTool("circle");
+        }
+    );
+
+
+document.getElementById("lineTool")
+    .addEventListener(
+        "click",
+        function() {
+            setTool("line");
+        }
+    );
+
+
+document.getElementById("imageTool")
+    .addEventListener(
+        "click",
+        function() {
+
+            document
+                .getElementById("imageInput")
+                .click();
+
+        }
+    );
+
+
+document.getElementById("imageInput")
+    .addEventListener(
+        "change",
+        function() {
+
+            if (this.files.length > 0) {
+
+                addImage(this.files[0]);
+
+                this.value = "";
+
+            }
+
+        }
+    );
+
+
+document.getElementById("undoButton")
+    .addEventListener(
+        "click",
+        undo
+    );
+
+
+document.getElementById("redoButton")
+    .addEventListener(
+        "click",
+        redo
+    );
+
+
+document.getElementById("copyButton")
+    .addEventListener(
+        "click",
+        copyObject
+    );
+
+
+document.getElementById("pasteButton")
+    .addEventListener(
+        "click",
+        pasteObject
+    );
+
+
+document.getElementById("duplicateButton")
+    .addEventListener(
+        "click",
+        duplicateObject
+    );
+
+
+document.getElementById("deleteButton")
+    .addEventListener(
+        "click",
+        deleteObject
+    );
+
+
+document.getElementById("frontButton")
+    .addEventListener(
+        "click",
+        bringForward
+    );
+
+
+document.getElementById("backButton")
+    .addEventListener(
+        "click",
+        sendBackward
+    );
+
+
+document.getElementById("layerUp")
+    .addEventListener(
+        "click",
+        bringForward
+    );
+
+
+document.getElementById("layerDown")
+    .addEventListener(
+        "click",
+        sendBackward
+    );
+
+
+document.getElementById("layerTop")
+    .addEventListener(
+        "click",
+        bringToFront
+    );
+
+
+document.getElementById("layerBottom")
+    .addEventListener(
+        "click",
+        sendToBack
+    );
+
+
+/* =========================================================
+   キーボード操作
+========================================================= */
+
+document.addEventListener("keydown", function(event) {
+
+    const active =
+        canvas.getActiveObject();
+
+    /* Ctrl + Z */
+
+    if (
+        event.ctrlKey &&
+        !event.shiftKey &&
+        event.key.toLowerCase() === "z"
+    ) {
+
+        event.preventDefault();
 
         undo();
 
-      }
-
-      return;
+        return;
 
     }
 
-    if(
-      meta &&
-      (e.key==="y" ||
-       e.key==="Y")
-    ){
 
-      e.preventDefault();
+    /* Ctrl + Y */
 
-      redo();
+    if (
+        event.ctrlKey &&
+        event.key.toLowerCase() === "y"
+    ) {
 
-      return;
+        event.preventDefault();
 
-    }
-
-    if(
-      meta &&
-      (e.key==="s" ||
-       e.key==="S")
-    ){
-
-      e.preventDefault();
-
-      exportPNG();
-
-      return;
-
-    }
-
-    if(
-      meta &&
-      (e.key==="b" ||
-       e.key==="B")
-    ){
-
-      e.preventDefault();
-
-      applyFmt({
-        bold:
-          !(primary()||defaults).bold
-      });
-
-      return;
-
-    }
-
-    if(
-      meta &&
-      (e.key==="i" ||
-       e.key==="I")
-    ){
-
-      e.preventDefault();
-
-      applyFmt({
-        italic:
-          !(primary()||defaults).italic
-      });
-
-      return;
-
-    }
-
-    if(
-      meta &&
-      (e.key==="u" ||
-       e.key==="U")
-    ){
-
-      e.preventDefault();
-
-      applyFmt({
-        underline:
-          !(primary()||defaults).underline
-      });
-
-      return;
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   WIRE
-========================================================= */
-
-function wire(){
-
-  var fontSelect =
-    $("fontSel");
-
-  for(
-    var i=0;
-    i<FONTS.length;
-    i++
-  ){
-
-    var option =
-      document.createElement(
-        "option"
-      );
-
-    option.value =
-      FONTS[i].stack;
-
-    option.textContent =
-      FONTS[i].label;
-
-    option.style.fontFamily =
-      FONTS[i].stack;
-
-    fontSelect.appendChild(
-      option
-    );
-
-  }
-
-
-  function addNewBox(){
-
-    var p={
-
-      x:
-        stage.scrollLeft/
-        state.zoom+
-        80,
-
-      y:
-        stage.scrollTop/
-        state.zoom+
-        80
-
-    };
-
-    var b =
-      addBox(
-        p.x,
-        p.y
-      );
-
-    select(
-      [b.id],
-      false
-    );
-
-    snapshot();
-
-    startEdit(
-      b.id
-    );
-
-  }
-
-
-  $("addBtn")
-    .addEventListener(
-      "click",
-      addNewBox
-    );
-
-  $("sidebarAddBtn")
-    .addEventListener(
-      "click",
-      addNewBox
-    );
-
-
-  $("sampleBtn")
-    .addEventListener(
-      "click",
-      insertSample
-    );
-
-
-  fontSelect
-    .addEventListener(
-      "change",
-      function(){
-
-        applyFmt({
-          font:
-            fontSelect.value
-        });
-
-      }
-    );
-
-
-  $("sizeNum")
-    .addEventListener(
-      "change",
-      function(){
-
-        applyFmt({
-
-          size:
-            clamp(
-              Number(
-                $("sizeNum").value
-              )||20,
-              6,
-              300
-            )
-
-        });
-
-      }
-    );
-
-
-  $("sizeUp")
-    .addEventListener(
-      "click",
-      function(){
-
-        applyFmt({
-
-          size:
-            clamp(
-              (
-                primary()||
-                defaults
-              ).size+2,
-              6,
-              300
-            )
-
-        });
-
-      }
-    );
-
-
-  $("sizeDown")
-    .addEventListener(
-      "click",
-      function(){
-
-        applyFmt({
-
-          size:
-            clamp(
-              (
-                primary()||
-                defaults
-              ).size-2,
-              6,
-              300
-            )
-
-        });
-
-      }
-    );
-
-
-  $("boldBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        applyFmt({
-
-          bold:
-            !(primary()||
-              defaults).bold
-
-        });
-
-      }
-    );
-
-
-  $("italBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        applyFmt({
-
-          italic:
-            !(primary()||
-              defaults).italic
-
-        });
-
-      }
-    );
-
-
-  $("underBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        applyFmt({
-
-          underline:
-            !(primary()||
-              defaults).underline
-
-        });
-
-      }
-    );
-
-
-  $("colorInp")
-    .addEventListener(
-      "input",
-      function(){
-
-        applyFmt({
-
-          color:
-            $("colorInp").value
-
-        });
-
-      }
-    );
-
-
-  $("bgInp")
-    .addEventListener(
-      "input",
-      function(){
-
-        applyFmt({
-
-          bg:
-            $("bgInp").value,
-
-          bgOn:true
-
-        });
-
-      }
-    );
-
-
-  $("bgToggle")
-    .addEventListener(
-      "click",
-      function(){
-
-        applyFmt({
-
-          bgOn:
-            !(primary()||
-              defaults).bgOn
-
-        });
-
-      }
-    );
-
-
-  var halign =
-    document.querySelectorAll(
-      "[data-halign]"
-    );
-
-  for(
-    var h=0;
-    h<halign.length;
-    h++
-  ){
-
-    halign[h]
-      .addEventListener(
-        "click",
-        function(){
-
-          applyFmt({
-
-            align:
-              this.dataset.halign
-
-          });
-
-        }
-      );
-
-  }
-
-
-  var valign =
-    document.querySelectorAll(
-      "[data-valign]"
-    );
-
-  for(
-    var v=0;
-    v<valign.length;
-    v++
-  ){
-
-    valign[v]
-      .addEventListener(
-        "click",
-        function(){
-
-          applyFmt({
-
-            valign:
-              this.dataset.valign
-
-          });
-
-        }
-      );
-
-  }
-
-
-  $("lineSel")
-    .addEventListener(
-      "change",
-      function(){
-
-        applyFmt({
-
-          line:
-            Number(
-              $("lineSel").value
-            )
-
-        });
-
-      }
-    );
-
-
-  $("borderSel")
-    .addEventListener(
-      "change",
-      function(){
-
-        applyFmt({
-
-          border:
-            $("borderSel").value
-
-        });
-
-      }
-    );
-
-
-  $("borderInp")
-    .addEventListener(
-      "input",
-      function(){
-
-        applyFmt({
-
-          borderColor:
-            $("borderInp").value
-
-        });
-
-      }
-    );
-
-
-  $("borderW")
-    .addEventListener(
-      "change",
-      function(){
-
-        applyFmt({
-
-          borderW:
-            clamp(
-              Number(
-                $("borderW").value
-              )||1,
-              1,
-              8
-            )
-
-        });
-
-      }
-    );
-
-
-  $("frontBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        zOp("front");
-
-      }
-    );
-
-
-  $("backBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        zOp("back");
-
-      }
-    );
-
-
-  $("fwdBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        zOp("fwd");
-
-      }
-    );
-
-
-  $("bwdBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        zOp("bwd");
-
-      }
-    );
-
-
-  var alignButtons =
-    document.querySelectorAll(
-      "[data-alignop]"
-    );
-
-  for(
-    var a=0;
-    a<alignButtons.length;
-    a++
-  ){
-
-    alignButtons[a]
-      .addEventListener(
-        "click",
-        function(){
-
-          alignOp(
-            this.dataset.alignop
-          );
-
-        }
-      );
-
-  }
-
-
-  $("hfitBtn")
-    .addEventListener(
-      "click",
-      fitHeight
-    );
-
-
-  $("dupBtn")
-    .addEventListener(
-      "click",
-      duplicateSel
-    );
-
-
-  $("copyBtn")
-    .addEventListener(
-      "click",
-      copySel
-    );
-
-
-  $("pasteBtn")
-    .addEventListener(
-      "click",
-      pasteClip
-    );
-
-
-  $("delBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        if(state.sel.length){
-
-          removeBoxes(
-            state.sel.slice(),
-            false
-          );
-
-        }
-
-      }
-    );
-
-
-  $("undoBtn")
-    .addEventListener(
-      "click",
-      undo
-    );
-
-
-  $("redoBtn")
-    .addEventListener(
-      "click",
-      redo
-    );
-
-
-  $("saveJsonBtn")
-    .addEventListener(
-      "click",
-      saveJson
-    );
-
-
-  $("loadJsonBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        $("loadJsonInput").click();
-
-      }
-    );
-
-
-  $("loadJsonInput")
-    .addEventListener(
-      "change",
-      function(){
-
-        if(
-          this.files &&
-          this.files[0]
-        ){
-
-          loadJsonFile(
-            this.files[0]
-          );
-
-        }
-
-        this.value="";
-
-      }
-    );
-
-
-  $("pngBtn")
-    .addEventListener(
-      "click",
-      exportPNG
-    );
-
-
-  $("resSel")
-    .addEventListener(
-      "change",
-      function(){
-
-        state.res =
-          Number(
-            $("resSel").value
-          );
-
-      }
-    );
-
-
-  $("zoomInBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        setZoom(
-          state.zoom*1.25
-        );
-
-      }
-    );
-
-
-  $("zoomOutBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        setZoom(
-          state.zoom/1.25
-        );
-
-      }
-    );
-
-
-  $("zoomResetBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        setZoom(1);
-
-      }
-    );
-
-
-  $("zoomSel")
-    .addEventListener(
-      "change",
-      function(){
-
-        if(
-          this.value==="fit"
-        ){
-
-          fitZoom();
-
-        }else{
-
-          setZoom(
-            Number(
-              this.value
-            )
-          );
-
-        }
-
-      }
-    );
-
-
-  $("clearBtn") &&
-  $("clearBtn").addEventListener(
-    "click",
-    function(){
-
-      if(!state.boxes.length){
+        redo();
 
         return;
 
-      }
+    }
 
-      if(
-        !window.confirm(
-          "すべてのテキストボックスを消去します。よろしいですか？"
-        )
-      ){
+
+    /* Ctrl + C */
+
+    if (
+        event.ctrlKey &&
+        event.key.toLowerCase() === "c"
+    ) {
+
+        if (
+            active &&
+            !isTextEditing()
+        ) {
+
+            event.preventDefault();
+
+            copyObject();
+
+        }
 
         return;
 
-      }
+    }
 
-      snapshot();
 
-      endEdit(true);
+    /* Ctrl + V */
 
-      state.boxes=[];
+    if (
+        event.ctrlKey &&
+        event.key.toLowerCase() === "v"
+    ) {
 
-      state.sel=[];
+        if (!isTextEditing()) {
 
-      renderAll();
+            event.preventDefault();
 
-      toast(
-        "全消去しました"
-      );
+            pasteObject();
+
+        }
+
+        return;
 
     }
-  );
 
 
-  window.addEventListener(
-    "resize",
-    function(){
+    /* Ctrl + D */
 
-      if(
-        $("zoomSel").value==="fit"
-      ){
+    if (
+        event.ctrlKey &&
+        event.key.toLowerCase() === "d"
+    ) {
 
-        fitZoom();
+        if (
+            active &&
+            !isTextEditing()
+        ) {
 
-      }
+            event.preventDefault();
+
+            duplicateObject();
+
+        }
+
+        return;
 
     }
-  );
+
+
+    /* Delete */
+
+    if (
+        event.key === "Delete" &&
+        !isTextEditing()
+    ) {
+
+        deleteObject();
+
+        return;
+
+    }
+
+
+    /* 矢印 */
+
+    if (
+        active &&
+        !isTextEditing() &&
+        [
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight"
+        ].includes(event.key)
+    ) {
+
+        event.preventDefault();
+
+        const step =
+            event.shiftKey ? 10 : 1;
+
+        if (event.key === "ArrowUp") {
+            active.top -= step;
+        }
+
+        if (event.key === "ArrowDown") {
+            active.top += step;
+        }
+
+        if (event.key === "ArrowLeft") {
+            active.left -= step;
+        }
+
+        if (event.key === "ArrowRight") {
+            active.left += step;
+        }
+
+        active.setCoords();
+
+        canvas.renderAll();
+
+        updateProperties();
+        updateStatus();
+
+        return;
+
+    }
+
+});
+
+
+function isTextEditing() {
+
+    const active =
+        canvas.getActiveObject();
+
+    return (
+        active &&
+        (
+            active.type === "i-text" ||
+            active.type === "text"
+        ) &&
+        active.isEditing
+    );
 
 }
 
 
 /* =========================================================
-   INIT
+   ズーム
 ========================================================= */
 
-function init(){
+let zoom = 1;
 
-  wire();
+function setZoom(value) {
 
-  sheet.style.width =
-    state.w+"px";
-
-  sheet.style.height =
-    state.h+"px";
-
-  applyZoom();
-
-  renderAll();
-
-  syncToolbar();
-
-  updateCount();
-
-  if(
-    document.fonts &&
-    document.fonts.ready
-  ){
-
-    document.fonts.ready.then(
-      function(){
-
-        renderAll();
-
-      }
+    zoom = Math.max(
+        0.5,
+        Math.min(2, value)
     );
 
-  }
+    canvas.setZoom(zoom);
+
+    document.getElementById("zoomValue")
+        .textContent =
+        Math.round(zoom * 100) + "%";
 
 }
 
-init();
+
+document.getElementById("zoomIn")
+    .addEventListener(
+        "click",
+        function() {
+
+            setZoom(zoom + 0.1);
+
+        }
+    );
+
+
+document.getElementById("zoomOut")
+    .addEventListener(
+        "click",
+        function() {
+
+            setZoom(zoom - 0.1);
+
+        }
+    );
 
 
 /* =========================================================
-   DEBUG HOOK
+   右クリック
 ========================================================= */
 
-window.__sheet = {
+document.addEventListener("contextmenu", function(event) {
 
-  state:state,
+    const menu =
+        document.getElementById("contextMenu");
 
-  addBox:addBox,
+    if (
+        event.target.closest(".canvas-container")
+    ) {
 
-  renderAll:renderAll,
+        event.preventDefault();
 
-  renderBox:renderBox,
+        menu.style.display = "block";
 
-  select:select,
+        menu.style.left =
+            event.clientX + "px";
 
-  startEdit:startEdit,
+        menu.style.top =
+            event.clientY + "px";
 
-  endEdit:endEdit,
+    } else {
 
-  exportPNG:exportPNG,
+        menu.style.display = "none";
 
-  buildCanvas:buildCanvas,
+    }
 
-  applyFmt:applyFmt,
+});
 
-  insertSample:insertSample,
 
-  undo:undo,
+document.addEventListener("click", function() {
 
-  snapshot:snapshot,
+    document.getElementById("contextMenu")
+        .style.display = "none";
 
-  applyJson:applyJson,
+});
 
-  defaults:defaults,
 
-  boxEls:boxEls,
+document.querySelectorAll(".context-menu-item")
+    .forEach(function(item) {
 
-  layoutLines:layoutLines
+        item.addEventListener(
+            "click",
+            function(event) {
 
-};
+                event.stopPropagation();
 
-})();
+                const action =
+                    this.dataset.action;
+
+                if (action === "copy") {
+                    copyObject();
+                }
+
+                if (action === "paste") {
+                    pasteObject();
+                }
+
+                if (action === "duplicate") {
+                    duplicateObject();
+                }
+
+                if (action === "delete") {
+                    deleteObject();
+                }
+
+                if (action === "front") {
+                    bringForward();
+                }
+
+                if (action === "back") {
+                    sendBackward();
+                }
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   PNG出力
+========================================================= */
+
+document.getElementById("exportButton")
+    .addEventListener(
+        "click",
+        function() {
+
+            document.getElementById("exportModal")
+                .style.display = "flex";
+
+        }
+    );
+
+
+document.getElementById("cancelExport")
+    .addEventListener(
+        "click",
+        function() {
+
+            document.getElementById("exportModal")
+                .style.display = "none";
+
+        }
+    );
+
+
+document.getElementById("confirmExport")
+    .addEventListener(
+        "click",
+        function() {
+
+            const multiplier =
+                Number(
+                    document.getElementById(
+                        "exportSize"
+                    ).value
+                );
+
+            const transparent =
+                document.getElementById(
+                    "transparentBackground"
+                ).checked;
+
+
+            const oldBackground =
+                canvas.backgroundColor;
+
+
+            if (transparent) {
+
+                canvas.backgroundColor =
+                    "transparent";
+
+            } else {
+
+                canvas.backgroundColor =
+                    "#ffffff";
+
+            }
+
+
+            canvas.discardActiveObject();
+
+            canvas.renderAll();
+
+
+            const dataURL =
+                canvas.toDataURL({
+
+                    format: "png",
+
+                    multiplier:
+                        multiplier,
+
+                    enableRetinaScaling: false
+
+                });
+
+
+            canvas.backgroundColor =
+                oldBackground;
+
+            canvas.renderAll();
+
+
+            const link =
+                document.createElement("a");
+
+            link.href = dataURL;
+
+            link.download =
+                "logo.png";
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);
+
+
+            document.getElementById("exportModal")
+                .style.display = "none";
+
+        }
+    );
+
+
+/* =========================================================
+   初期状態
+========================================================= */
+
+saveHistory();
+
+updateLayers();
+
+updateStatus();
+
+setTool("select");
+
+
+/* =========================================================
+   キャンバス外クリック
+========================================================= */
+
+canvas.on("mouse:down", function(event) {
+
+    updateProperties();
+    updateLayers();
+    updateStatus();
+
+});
+
+
+/* =========================================================
+   初期サンプルは置かない
+========================================================= */
+
+canvas.renderAll();
+
 </script>
 
 </body>
