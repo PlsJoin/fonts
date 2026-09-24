@@ -3,3014 +3,1197 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>ロゴメーカー</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=BIZ+UDPMincho:wght@400;700&family=Dela+Gothic+One&family=DotGothic16&family=Hachi+Maru+Pop&family=Kaisei+Decol:wght@400;700&family=Kaisei+HarunoUmi:wght@400;700&family=Kaisei+Tokumin:wght@400;700;800&family=Klee+One:wght@400;600&family=Kosugi&family=Kosugi+Maru&family=M+PLUS+1p:wght@400;500;700;800;900&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Mochiy+Pop+One&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;500;700;900&family=New+Tegomin&family=Nikukyu&family=Potta+One&family=Rampart+One&family=Reggae+One&family=RocknRoll+One&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Shippori+Mincho:wght@400;500;700;800&family=Stick&family=Train+One&family=Yusei+Magic&family=Yuji+Boku&family=Yuji+Mai&family=Zen+Antique&family=Zen+Antique+Soft&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
 
 <style>
-
-*{
-    box-sizing:border-box;
+*{box-sizing:border-box;}
+html,body{
+    width:100%;height:100%;margin:0;overflow:hidden;
+    font-family:"Noto Sans JP",sans-serif;
+    background:#f1f2f4;color:#222;
 }
+button,input,select{font-family:inherit;}
+button{cursor:pointer;}
 
-html,
-body{
-    width:100%;
-    height:100%;
-    margin:0;
-    overflow:hidden;
-
-    font-family:
-        "Noto Sans JP",
-        sans-serif;
-
-    background:#f1f2f4;
-    color:#222;
-}
-
-button,
-input,
-select{
-    font-family:inherit;
-}
-
-button{
-    cursor:pointer;
-}
-
-/* =================================
-   アプリ
-================================= */
-
-.app{
-    width:100%;
-    height:100%;
-    display:flex;
-    flex-direction:column;
-}
-
-/* =================================
-   上部
-================================= */
+.app{width:100%;height:100%;display:flex;flex-direction:column;}
 
 .topbar{
-    height:54px;
-
-    background:#fff;
-
-    border-bottom:1px solid #d7d9dc;
-
-    display:flex;
-    align-items:center;
-
-    padding:0 12px;
-
-    gap:7px;
-
-    flex-shrink:0;
+    height:54px;background:#fff;border-bottom:1px solid #d7d9dc;
+    display:flex;align-items:center;padding:0 12px;gap:7px;flex-shrink:0;
 }
-
-.logo{
-    font-size:16px;
-    font-weight:800;
-
-    margin-right:10px;
-
-    white-space:nowrap;
-}
-
-.logo span{
-    font-size:11px;
-    color:#888;
-    font-weight:400;
-
-    margin-left:5px;
-}
-
+.logo{font-size:16px;font-weight:800;margin-right:10px;white-space:nowrap;}
+.logo span{font-size:11px;color:#888;font-weight:400;margin-left:5px;}
 .toolbar-group{
-    display:flex;
-    align-items:center;
-
-    gap:3px;
-
-    padding-right:8px;
-    margin-right:3px;
-
-    border-right:1px solid #ddd;
+    display:flex;align-items:center;gap:3px;
+    padding-right:8px;margin-right:3px;border-right:1px solid #ddd;
 }
-
 .tool-btn{
-    height:34px;
-
-    min-width:34px;
-
-    padding:0 9px;
-
-    border:1px solid transparent;
-
-    background:#fff;
-
-    border-radius:5px;
-
-    color:#333;
-
-    font-size:12px;
+    height:34px;min-width:34px;padding:0 9px;
+    border:1px solid transparent;background:#fff;border-radius:5px;
+    color:#333;font-size:12px;
 }
-
-.tool-btn:hover{
-    background:#f0f2f4;
-    border-color:#d4d7da;
-}
-
-.tool-btn.active{
-    background:#e7eaed;
-    border-color:#c8ccd0;
-}
-
-.tool-btn.danger:hover{
-    color:#c33;
-}
-
-.zoom-box{
-    display:flex;
-    align-items:center;
-
-    gap:5px;
-
-    margin-left:auto;
-}
-
+.tool-btn:hover{background:#f0f2f4;border-color:#d4d7da;}
+.tool-btn.active{background:#e7eaed;border-color:#c8ccd0;}
+.tool-btn.danger:hover{color:#c33;}
+.zoom-box{display:flex;align-items:center;gap:5px;margin-left:auto;}
 .zoom-box button{
-    width:30px;
-    height:30px;
-
-    border:1px solid #d3d6d9;
-
-    background:#fff;
-
-    border-radius:4px;
+    width:30px;height:30px;border:1px solid #d3d6d9;
+    background:#fff;border-radius:4px;
 }
+.zoom-value{min-width:48px;text-align:center;font-size:11px;}
 
-.zoom-value{
-    min-width:48px;
-
-    text-align:center;
-
-    font-size:11px;
-}
-
-/* =================================
-   メイン
-================================= */
-
-.main{
-    flex:1;
-
-    min-height:0;
-
-    display:flex;
-}
-
-/* =================================
-   左ツール
-================================= */
+.main{flex:1;min-height:0;display:flex;}
 
 .leftbar{
-    width:70px;
-
-    background:#fff;
-
-    border-right:1px solid #d7d9dc;
-
-    padding:7px 5px;
-
-    flex-shrink:0;
-
-    display:flex;
-    flex-direction:column;
-
-    gap:4px;
+    width:70px;background:#fff;border-right:1px solid #d7d9dc;
+    padding:7px 5px;flex-shrink:0;display:flex;flex-direction:column;gap:4px;
 }
-
 .left-tool{
-    width:60px;
-    min-height:48px;
-
-    border:1px solid transparent;
-
-    background:#fff;
-
-    border-radius:5px;
-
-    display:flex;
-    flex-direction:column;
-
-    justify-content:center;
-    align-items:center;
-
-    gap:3px;
-
-    font-size:10px;
-
-    color:#333;
+    width:60px;min-height:48px;border:1px solid transparent;
+    background:#fff;border-radius:5px;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;gap:3px;font-size:10px;color:#333;
 }
-
-.left-tool:hover{
-    background:#f0f2f4;
-}
-
-.left-tool.active{
-    background:#e6e9ec;
-    border-color:#c7cbd0;
-}
-
-.left-tool .icon{
-    font-size:18px;
-    line-height:1;
-}
-
-.tool-separator{
-    height:1px;
-
-    background:#ddd;
-
-    margin:5px 7px;
-}
-
-/* =================================
-   キャンバス
-================================= */
+.left-tool:hover{background:#f0f2f4;}
+.left-tool.active{background:#e6e9ec;border-color:#c7cbd0;}
+.left-tool .icon{font-size:18px;line-height:1;}
+.tool-separator{height:1px;background:#ddd;margin:5px 7px;}
 
 .canvas-area{
-    flex:1;
-
-    min-width:0;
-    min-height:0;
-
-    overflow:auto;
-
-    background:#e6e8eb;
-
-    position:relative;
+    flex:1;min-width:0;min-height:0;overflow:auto;
+    background:#e6e8eb;position:relative;
 }
-
 .canvas-wrap{
-    position:relative;
-
-    width:1200px;
-    height:800px;
-
-    margin:35px auto;
-
-    background:#fff;
-
-    box-shadow:
-        0 2px 14px rgba(0,0,0,.15);
+    position:relative;width:1200px;height:800px;
+    margin:35px auto;background:#fff;
+    box-shadow:0 2px 14px rgba(0,0,0,.15);
 }
-
 .grid{
-    position:absolute;
-
-    inset:0;
-
-    pointer-events:none;
-
-    z-index:0;
-
+    position:absolute;inset:0;pointer-events:none;z-index:0;
     background-image:
         linear-gradient(#eeeeee 1px,transparent 1px),
         linear-gradient(90deg,#eeeeee 1px,transparent 1px);
-
     background-size:20px 20px;
 }
-
 .canvas-container{
-    position:absolute !important;
-
-    left:0 !important;
-    top:0 !important;
-
-    width:1200px !important;
-    height:800px !important;
-
-    z-index:2;
+    position:absolute !important;left:0 !important;top:0 !important;
+    width:1200px !important;height:800px !important;z-index:2;
 }
-
-/* =================================
-   右
-================================= */
 
 .rightbar{
-    width:340px;
-
-    background:#fff;
-
-    border-left:1px solid #d7d9dc;
-
-    flex-shrink:0;
-
-    display:flex;
-    flex-direction:column;
-
-    overflow:hidden;
+    width:340px;background:#fff;border-left:1px solid #d7d9dc;
+    flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;
 }
-
 .panel-title{
-    height:40px;
-
-    display:flex;
-    align-items:center;
-
-    padding:0 13px;
-
-    border-bottom:1px solid #ddd;
-
-    font-size:13px;
-    font-weight:700;
+    height:40px;display:flex;align-items:center;padding:0 13px;
+    border-bottom:1px solid #ddd;font-size:13px;font-weight:700;
 }
-
-.properties{
-    flex:1;
-
-    overflow:auto;
+.properties{flex:1;overflow:auto;}
+.section{padding:11px 13px;border-bottom:1px solid #e1e2e4;}
+.section-title{font-size:11px;font-weight:700;color:#666;margin-bottom:9px;}
+.row{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.row:last-child{margin-bottom:0;}
+.label{width:74px;flex-shrink:0;font-size:11px;color:#555;}
+input[type="text"],input[type="number"],select{
+    width:100%;height:30px;border:1px solid #cdd1d5;
+    background:#fff;border-radius:4px;padding:0 7px;font-size:11px;outline:none;
 }
-
-.section{
-    padding:11px 13px;
-
-    border-bottom:1px solid #e1e2e4;
-}
-
-.section-title{
-    font-size:11px;
-    font-weight:700;
-
-    color:#666;
-
-    margin-bottom:9px;
-}
-
-.row{
-    display:flex;
-    align-items:center;
-
-    gap:7px;
-
-    margin-bottom:7px;
-}
-
-.row:last-child{
-    margin-bottom:0;
-}
-
-.label{
-    width:74px;
-
-    flex-shrink:0;
-
-    font-size:11px;
-
-    color:#555;
-}
-
-input[type="text"],
-input[type="number"],
-select{
-    width:100%;
-
-    height:30px;
-
-    border:1px solid #cdd1d5;
-
-    background:#fff;
-
-    border-radius:4px;
-
-    padding:0 7px;
-
-    font-size:11px;
-
-    outline:none;
-}
-
-select{
-    cursor:pointer;
-}
-
-input[type="number"]:focus,
-input[type="text"]:focus,
-select:focus{
-    border-color:#777;
-}
-
+select{cursor:pointer;}
+input[type="number"]:focus,input[type="text"]:focus,select:focus{border-color:#777;}
 input[type="color"]{
-    width:42px;
-    height:30px;
-
-    border:1px solid #ccc;
-
-    padding:2px;
-
-    background:#fff;
-
-    border-radius:4px;
-
-    cursor:pointer;
+    width:42px;height:30px;border:1px solid #ccc;padding:2px;
+    background:#fff;border-radius:4px;cursor:pointer;
 }
-
-input[type="range"]{
-    flex:1;
-}
-
-.range-value{
-    width:40px;
-
-    text-align:right;
-
-    color:#666;
-
-    font-size:10px;
-}
-
-.check{
-    display:flex;
-    align-items:center;
-
-    gap:7px;
-
-    margin-bottom:8px;
-
-    font-size:11px;
-}
-
-.check input{
-    margin:0;
-}
-
-.color-row{
-    display:flex;
-
-    align-items:center;
-
-    gap:7px;
-
-    margin-bottom:7px;
-}
-
-.color-row span{
-    width:42px;
-
-    font-size:11px;
-
-    color:#555;
-}
-
+input[type="range"]{flex:1;}
+.range-value{width:40px;text-align:right;color:#666;font-size:10px;}
+.check{display:flex;align-items:center;gap:7px;margin-bottom:8px;font-size:11px;}
+.check input{margin:0;}
+.color-row{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.color-row span{width:42px;font-size:11px;color:#555;}
 .gradient-preview{
-    width:100%;
-    height:28px;
-
-    border:1px solid #ccc;
-
-    border-radius:4px;
-
-    margin-top:7px;
+    width:100%;height:28px;border:1px solid #ccc;border-radius:4px;margin-top:7px;
 }
-
 .small-btn{
-    height:30px;
-
-    border:1px solid #ccd0d4;
-
-    background:#fff;
-
-    border-radius:4px;
-
-    padding:0 9px;
-
-    font-size:11px;
+    height:30px;border:1px solid #ccd0d4;background:#fff;
+    border-radius:4px;padding:0 9px;font-size:11px;
 }
-
-.small-btn:hover{
-    background:#f0f2f4;
-}
-
-.btn-grid{
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:5px;
-}
-
-.no-selection{
-    padding:25px 14px;
-
-    color:#888;
-
-    font-size:11px;
-
-    line-height:1.8;
-}
-
-/* =================================
-   フォント説明
-================================= */
-
-.font-select{
-    min-width:0;
-}
-
-.font-select option{
-    font-size:12px;
-}
-
-/* =================================
-   レイヤー
-================================= */
+.small-btn:hover{background:#f0f2f4;}
+.btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.no-selection{padding:25px 14px;color:#888;font-size:11px;line-height:1.8;}
 
 .layers{
-    height:210px;
-
-    border-top:1px solid #d7d9dc;
-
-    flex-shrink:0;
-
-    display:flex;
-    flex-direction:column;
+    height:210px;border-top:1px solid #d7d9dc;flex-shrink:0;
+    display:flex;flex-direction:column;
 }
-
-.layer-list{
-    flex:1;
-
-    overflow:auto;
-}
-
+.layer-list{flex:1;overflow:auto;}
 .layer-item{
-    height:32px;
-
-    display:flex;
-    align-items:center;
-
-    gap:7px;
-
-    padding:0 9px;
-
-    border-bottom:1px solid #eee;
-
-    font-size:11px;
-
-    cursor:pointer;
+    height:32px;display:flex;align-items:center;gap:7px;
+    padding:0 9px;border-bottom:1px solid #eee;font-size:11px;cursor:pointer;
 }
-
-.layer-item:hover{
-    background:#f3f4f5;
-}
-
-.layer-item.selected{
-    background:#e7ebef;
-}
-
-.layer-icon{
-    width:20px;
-
-    text-align:center;
-}
-
-.layer-name{
-    flex:1;
-
-    overflow:hidden;
-
-    white-space:nowrap;
-
-    text-overflow:ellipsis;
-}
-
-/* =================================
-   ステータス
-================================= */
+.layer-item:hover{background:#f3f4f5;}
+.layer-item.selected{background:#e7ebef;}
+.layer-icon{width:20px;text-align:center;}
+.layer-name{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 
 .statusbar{
-    height:27px;
-
-    background:#fff;
-
-    border-top:1px solid #d7d9dc;
-
-    display:flex;
-    align-items:center;
-
-    gap:18px;
-
-    padding:0 10px;
-
-    font-size:10px;
-
-    color:#666;
-
-    flex-shrink:0;
+    height:27px;background:#fff;border-top:1px solid #d7d9dc;
+    display:flex;align-items:center;gap:18px;padding:0 10px;
+    font-size:10px;color:#666;flex-shrink:0;
 }
-
-/* =================================
-   モーダル
-================================= */
 
 .modal-bg{
-    position:fixed;
-
-    inset:0;
-
-    display:none;
-
-    align-items:center;
-    justify-content:center;
-
-    background:rgba(0,0,0,.35);
-
-    z-index:1000;
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+    background:rgba(0,0,0,.35);z-index:1000;
 }
-
 .modal{
-    width:390px;
-
-    background:#fff;
-
-    border-radius:7px;
-
-    box-shadow:
-        0 10px 35px rgba(0,0,0,.25);
-
-    overflow:hidden;
+    width:390px;background:#fff;border-radius:7px;
+    box-shadow:0 10px 35px rgba(0,0,0,.25);overflow:hidden;
 }
-
-.modal-head{
-    padding:13px 15px;
-
-    border-bottom:1px solid #ddd;
-
-    font-size:14px;
-    font-weight:700;
-}
-
-.modal-body{
-    padding:15px;
-}
-
+.modal-head{padding:13px 15px;border-bottom:1px solid #ddd;font-size:14px;font-weight:700;}
+.modal-body{padding:15px;}
 .modal-foot{
-    padding:10px 15px;
-
-    border-top:1px solid #ddd;
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:7px;
+    padding:10px 15px;border-top:1px solid #ddd;
+    display:flex;justify-content:flex-end;gap:7px;
 }
-
-.primary{
-    background:#222;
-
-    color:#fff;
-
-    border-color:#222;
-}
-
-/* =================================
-   コンテキストメニュー
-================================= */
+.primary{background:#222;color:#fff;border-color:#222;}
 
 .context-menu{
-    position:fixed;
-
-    display:none;
-
-    width:180px;
-
-    background:#fff;
-
-    border:1px solid #ccc;
-
-    box-shadow:
-        0 4px 16px rgba(0,0,0,.18);
-
-    border-radius:5px;
-
-    z-index:2000;
-
-    padding:4px 0;
+    position:fixed;display:none;width:180px;background:#fff;
+    border:1px solid #ccc;box-shadow:0 4px 16px rgba(0,0,0,.18);
+    border-radius:5px;z-index:2000;padding:4px 0;
 }
-
 .context-menu button{
-    width:100%;
-
-    height:30px;
-
-    border:0;
-
-    background:#fff;
-
-    text-align:left;
-
-    padding:0 12px;
-
-    font-size:11px;
+    width:100%;height:30px;border:0;background:#fff;
+    text-align:left;padding:0 12px;font-size:11px;
 }
-
-.context-menu button:hover{
-    background:#eef0f2;
-}
-
+.context-menu button:hover{background:#eef0f2;}
 </style>
 </head>
-
-
 <body>
 
 <div class="app">
 
-<!-- ==================================================
-     上部
-================================================== -->
-
 <header class="topbar">
-
-    <div class="logo">
-        ロゴメーカー
-        <span>Logo Editor</span>
-    </div>
-
+    <div class="logo">ロゴメーカー <span>Logo Editor</span></div>
 
     <div class="toolbar-group">
-
-        <button class="tool-btn" onclick="undo()">
-            ↶
-        </button>
-
-        <button class="tool-btn" onclick="redo()">
-            ↷
-        </button>
-
+        <button class="tool-btn" onclick="undo()">↶</button>
+        <button class="tool-btn" onclick="redo()">↷</button>
     </div>
-
 
     <div class="toolbar-group">
-
-        <button class="tool-btn" onclick="copyObject()">
-            コピー
-        </button>
-
-        <button class="tool-btn" onclick="pasteObject()">
-            貼り付け
-        </button>
-
-        <button class="tool-btn" onclick="duplicateObject()">
-            複製
-        </button>
-
-        <button class="tool-btn danger" onclick="deleteObject()">
-            削除
-        </button>
-
+        <button class="tool-btn" onclick="copyObject()">コピー</button>
+        <button class="tool-btn" onclick="pasteObject()">貼り付け</button>
+        <button class="tool-btn" onclick="duplicateObject()">複製</button>
+        <button class="tool-btn danger" onclick="deleteObject()">削除</button>
     </div>
-
 
     <div class="toolbar-group">
-
-        <button class="tool-btn" onclick="bringFront()">
-            最前面
-        </button>
-
-        <button class="tool-btn" onclick="sendBack()">
-            最背面
-        </button>
-
+        <button class="tool-btn" onclick="bringFront()">最前面</button>
+        <button class="tool-btn" onclick="sendBack()">最背面</button>
     </div>
-
 
     <div class="toolbar-group">
-
-        <button class="tool-btn" onclick="alignLeft()">
-            左揃え
-        </button>
-
-        <button class="tool-btn" onclick="alignCenter()">
-            中央
-        </button>
-
-        <button class="tool-btn" onclick="alignRight()">
-            右揃え
-        </button>
-
+        <button class="tool-btn" onclick="alignLeft()">左揃え</button>
+        <button class="tool-btn" onclick="alignCenter()">中央</button>
+        <button class="tool-btn" onclick="alignRight()">右揃え</button>
     </div>
-
 
     <div class="zoom-box">
-
-        <button onclick="changeZoom(-0.1)">
-            −
-        </button>
-
-        <div
-            class="zoom-value"
-            id="zoomValue"
-        >
-            100%
-        </div>
-
-        <button onclick="changeZoom(0.1)">
-            ＋
-        </button>
-
+        <button onclick="changeZoom(-0.1)">−</button>
+        <div class="zoom-value" id="zoomValue">100%</div>
+        <button onclick="changeZoom(0.1)">＋</button>
     </div>
 
-
-    <button
-        class="tool-btn"
-        onclick="openExport()"
-    >
-        PNG出力
-    </button>
-
+    <button class="tool-btn" onclick="openExport()">PNG出力</button>
 </header>
-
-
-<!-- ==================================================
-     メイン
-================================================== -->
 
 <main class="main">
 
-
-<!-- 左 -->
-
 <aside class="leftbar">
-
-    <button
-        class="left-tool active"
-        data-tool="select"
-        onclick="setTool('select')"
-    >
-        <span class="icon">↖</span>
-        選択
+    <button class="left-tool active" data-tool="select" onclick="setTool('select')">
+        <span class="icon">↖</span>選択
     </button>
-
-
-    <button
-        class="left-tool"
-        data-tool="text"
-        onclick="setTool('text')"
-    >
-        <span class="icon">T</span>
-        文字
+    <button class="left-tool" data-tool="text" onclick="setTool('text')">
+        <span class="icon">T</span>文字
     </button>
-
-
-    <button
-        class="left-tool"
-        data-tool="rect"
-        onclick="setTool('rect')"
-    >
-        <span class="icon">□</span>
-        四角
+    <button class="left-tool" data-tool="rect" onclick="setTool('rect')">
+        <span class="icon">□</span>四角
     </button>
-
-
-    <button
-        class="left-tool"
-        data-tool="circle"
-        onclick="setTool('circle')"
-    >
-        <span class="icon">○</span>
-        円
+    <button class="left-tool" data-tool="circle" onclick="setTool('circle')">
+        <span class="icon">○</span>円
     </button>
-
-
-    <button
-        class="left-tool"
-        data-tool="triangle"
-        onclick="setTool('triangle')"
-    >
-        <span class="icon">△</span>
-        三角
+    <button class="left-tool" data-tool="triangle" onclick="setTool('triangle')">
+        <span class="icon">△</span>三角
     </button>
-
-
-    <button
-        class="left-tool"
-        data-tool="star"
-        onclick="setTool('star')"
-    >
-        <span class="icon">☆</span>
-        星
+    <button class="left-tool" data-tool="star" onclick="setTool('star')">
+        <span class="icon">☆</span>星
     </button>
-
-
-    <button
-        class="left-tool"
-        data-tool="line"
-        onclick="setTool('line')"
-    >
-        <span class="icon">／</span>
-        線
+    <button class="left-tool" data-tool="line" onclick="setTool('line')">
+        <span class="icon">／</span>線
     </button>
-
-
     <div class="tool-separator"></div>
-
-
-    <button
-        class="left-tool"
-        data-tool="pen"
-        onclick="setTool('pen')"
-    >
-        <span class="icon">✎</span>
-        ペン
+    <button class="left-tool" data-tool="pen" onclick="setTool('pen')">
+        <span class="icon">✎</span>ペン
     </button>
-
-
-    <button
-        class="left-tool"
-        data-tool="image"
-        onclick="setTool('image')"
-    >
-        <span class="icon">▧</span>
-        画像
+    <button class="left-tool" data-tool="image" onclick="setTool('image')">
+        <span class="icon">▧</span>画像
     </button>
-
-
-    <input
-        type="file"
-        id="imageInput"
-        accept="image/*"
-        style="display:none"
-    >
-
+    <input type="file" id="imageInput" accept="image/*" style="display:none">
 </aside>
 
-
-<!-- キャンバス -->
-
-<section
-    class="canvas-area"
-    id="canvasArea"
->
-
+<section class="canvas-area" id="canvasArea">
     <div class="canvas-wrap">
-
         <div class="grid"></div>
-
-        <canvas
-            id="logoCanvas"
-            width="1200"
-            height="800"
-        ></canvas>
-
+        <canvas id="logoCanvas" width="1200" height="800"></canvas>
     </div>
-
 </section>
 
-
-<!-- 右 -->
-
 <aside class="rightbar">
-
-    <div class="panel-title">
-        プロパティ
-    </div>
-
-
-    <div
-        class="properties"
-        id="properties"
-    >
-
+    <div class="panel-title">プロパティ</div>
+    <div class="properties" id="properties">
         <div class="no-selection">
-
             オブジェクトを選択してください。<br>
-
-            文字や図形を選ぶと、
-            ここから細かく編集できます。
-
+            文字や図形を選ぶと、ここから細かく編集できます。
         </div>
-
     </div>
-
-
     <div class="layers">
-
-        <div class="panel-title">
-            レイヤー
-        </div>
-
-        <div
-            class="layer-list"
-            id="layerList"
-        ></div>
-
+        <div class="panel-title">レイヤー</div>
+        <div class="layer-list" id="layerList"></div>
     </div>
-
 </aside>
 
 </main>
 
-
 <footer class="statusbar">
-
-    <span id="objectStatus">
-        オブジェクトなし
-    </span>
-
-    <span id="positionStatus">
-        X: -　Y: -
-    </span>
-
-    <span id="sizeStatus">
-        W: -　H: -
-    </span>
-
-    <span id="toolStatus">
-        選択ツール
-    </span>
-
+    <span id="objectStatus">オブジェクトなし</span>
+    <span id="positionStatus">X: -　Y: -</span>
+    <span id="sizeStatus">W: -　H: -</span>
+    <span id="toolStatus">選択ツール</span>
 </footer>
 
 </div>
 
-
-<!-- ==================================================
-     PNGモーダル
-================================================== -->
-
-<div
-    class="modal-bg"
-    id="exportModal"
->
-
+<!-- PNGモーダル -->
+<div class="modal-bg" id="exportModal">
     <div class="modal">
-
-        <div class="modal-head">
-            PNGとして書き出す
-        </div>
-
-
+        <div class="modal-head">PNGとして書き出す</div>
         <div class="modal-body">
-
             <div class="row">
-
-                <div class="label">
-                    倍率
-                </div>
-
+                <div class="label">倍率</div>
                 <select id="exportScale">
-
-                    <option value="1">
-                        1倍
-                    </option>
-
-                    <option value="2" selected>
-                        2倍
-                    </option>
-
-                    <option value="3">
-                        3倍
-                    </option>
-
-                    <option value="4">
-                        4倍
-                    </option>
-
+                    <option value="1">1倍</option>
+                    <option value="2" selected>2倍</option>
+                    <option value="3">3倍</option>
+                    <option value="4">4倍</option>
                 </select>
-
             </div>
-
-
             <label class="check">
-
-                <input
-                    type="checkbox"
-                    id="transparentExport"
-                    checked
-                >
-
+                <input type="checkbox" id="transparentExport" checked>
                 背景を透明にする
-
             </label>
-
         </div>
-
-
         <div class="modal-foot">
-
-            <button
-                class="small-btn"
-                onclick="closeExport()"
-            >
-                キャンセル
-            </button>
-
-            <button
-                class="small-btn primary"
-                onclick="exportPNG()"
-            >
-                PNGを書き出す
-            </button>
-
+            <button class="small-btn" onclick="closeExport()">キャンセル</button>
+            <button class="small-btn primary" onclick="exportPNG()">PNGを書き出す</button>
         </div>
-
     </div>
-
 </div>
 
-
-<!-- ==================================================
-     コンテキストメニュー
-================================================== -->
-
-<div
-    class="context-menu"
-    id="contextMenu"
->
-
-    <button onclick="contextCopy()">
-        コピー
-    </button>
-
-    <button onclick="contextPaste()">
-        貼り付け
-    </button>
-
-    <button onclick="duplicateObject();hideContext()">
-        複製
-    </button>
-
-    <button onclick="deleteObject();hideContext()">
-        削除
-    </button>
-
-    <button onclick="bringFront();hideContext()">
-        最前面へ
-    </button>
-
-    <button onclick="sendBack();hideContext()">
-        最背面へ
-    </button>
-
+<!-- コンテキストメニュー -->
+<div class="context-menu" id="contextMenu">
+    <button onclick="contextCopy()">コピー</button>
+    <button onclick="contextPaste()">貼り付け</button>
+    <button onclick="duplicateObject();hideContext()">複製</button>
+    <button onclick="deleteObject();hideContext()">削除</button>
+    <button onclick="bringFront();hideContext()">最前面へ</button>
+    <button onclick="sendBack();hideContext()">最背面へ</button>
 </div>
-
 
 <script>
-
 /* =========================================================
    Canvas
 ========================================================= */
-
-const canvas =
-    new fabric.Canvas(
-        "logoCanvas",
-        {
-
-            width:1200,
-
-            height:800,
-
-            selection:true,
-
-            preserveObjectStacking:true,
-
-            selectionColor:
-                "rgba(50,100,255,.12)",
-
-            selectionBorderColor:
-                "#4d72ff",
-
-            selectionLineWidth:1,
-
-            backgroundColor:"#fff"
-
-        }
-    );
-
+const canvas = new fabric.Canvas("logoCanvas", {
+    width: 1200,
+    height: 800,
+    selection: true,
+    preserveObjectStacking: true,
+    selectionColor: "rgba(50,100,255,.12)",
+    selectionBorderColor: "#4d72ff",
+    selectionLineWidth: 1,
+    backgroundColor: "#fff"
+});
 
 let currentTool = "select";
-
 let clipboard = null;
-
 let history = [];
-
 let historyIndex = -1;
-
 let restoringHistory = false;
-
 let zoom = 1;
 let penColor = "#222222";
 let penWidth = 8;
-
+let gradientMode = "vertical";
 
 /* =========================================================
    フォント一覧
 ========================================================= */
-
 const fonts = [
-
     ["Noto Sans JP","Noto Sans JP","標準・万能"],
-
     ["Noto Serif JP","Noto Serif JP","明朝・上品"],
-
     ["Zen Kaku Gothic New","Zen Kaku Gothic New","現代・すっきり"],
-
     ["Zen Maru Gothic","Zen Maru Gothic","丸文字・やわらか"],
-
     ["Zen Kurenaido","Zen Kurenaido","手書き風"],
-
     ["Zen Antique","Zen Antique","古風・個性的"],
-
     ["Zen Antique Soft","Zen Antique Soft","古風・やわらか"],
-
     ["M PLUS 1p","M PLUS 1p","標準・太字"],
-
     ["M PLUS Rounded 1c","M PLUS Rounded 1c","丸文字・ポップ"],
-
     ["BIZ UDPゴシック","BIZ UDGothic","ゴシック・読みやすい"],
-
     ["BIZ UDP明朝","BIZ UDPMincho","明朝・落ち着き"],
-
     ["Dela Gothic One","Dela Gothic One","極太・インパクト"],
-
     ["DotGothic16","DotGothic16","ドット・ゲーム風"],
-
     ["Hachi Maru Pop","Hachi Maru Pop","手書き・ゆるい"],
-
     ["Klee One","Klee One","手書き・自然"],
-
     ["Kosugi","Kosugi","細め・シンプル"],
-
     ["Kosugi Maru","Kosugi Maru","丸文字・親しみ"],
-
     ["Kaisei Decol","Kaisei Decol","明朝・装飾的"],
-
     ["Kaisei HarunoUmi","Kaisei HarunoUmi","明朝・和風"],
-
     ["Kaisei Tokumin","Kaisei Tokumin","明朝・力強い"],
-
     ["Mochiy Pop One","Mochiy Pop One","ポップ・太文字"],
-
     ["New Tegomin","New Tegomin","和風・筆文字"],
-
     ["Nikukyu","Nikukyu","手書き・クセ強め"],
-
     ["Potta One","Potta One","ポップ・太文字"],
-
     ["Rampart One","Rampart One","立体・装飾"],
-
     ["Reggae One","Reggae One","個性的・太文字"],
-
     ["RocknRoll One","RocknRoll One","ロック・太文字"],
-
     ["Sawarabi Gothic","Sawarabi Gothic","ゴシック・自然"],
-
     ["Sawarabi Mincho","Sawarabi Mincho","明朝・自然"],
-
     ["Shippori Mincho","Shippori Mincho","明朝・高級感"],
-
     ["Stick","Stick","細字・ポップ"],
-
     ["Train One","Train One","アウトライン・個性的"],
-
     ["Yusei Magic","Yusei Magic","手書き・個性的"],
-
     ["Yuji Boku","Yuji Boku","筆文字・和風"],
-
     ["Yuji Mai","Yuji Mai","筆文字・上品"],
-
-    ["Mochiy Pop One","Mochiy Pop One","丸文字・ポップ"],
-
     ["sans-serif","sans-serif","標準・シンプル"],
-
     ["serif","serif","標準・明朝"],
-
     ["monospace","monospace","等幅・機械的"]
-
 ];
-
 
 /* =========================================================
    ユーティリティ
 ========================================================= */
-
-function selectedObject(){
-
+function selectedObject() {
     return canvas.getActiveObject();
-
 }
 
-
-function selectedObjects(){
-
-    const obj =
-        canvas.getActiveObject();
-
-    if(!obj)
-        return [];
-
-    if(
-        obj.type === "activeSelection"
-    ){
-
-        return obj.getObjects();
-
-    }
-
+function selectedObjects() {
+    const obj = canvas.getActiveObject();
+    if (!obj) return [];
+    if (obj.type === "activeSelection") return obj.getObjects();
     return [obj];
-
 }
 
-
-function escapeHtml(text){
-
+function escapeHtml(text) {
     return String(text)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;");
-
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
 }
 
-
-function getColor(value){
-
-    if(
-        typeof value === "string" &&
-        value.startsWith("#")
-    ){
-
-        return value;
-
-    }
-
+function getColor(value) {
+    if (typeof value === "string" && value.startsWith("#")) return value;
     return "#222222";
-
 }
 
+function hexToRgba(hex, alpha) {
+    hex = hex.replace("#", "");
+    if (hex.length === 3) {
+        hex = hex.split("").map(x => x + x).join("");
+    }
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+}
 
 /* =========================================================
    ツール
 ========================================================= */
-
-function setTool(tool){
-
+function setTool(tool) {
     currentTool = tool;
 
-    document
-        .querySelectorAll(".left-tool")
-        .forEach(btn=>{
+    document.querySelectorAll(".left-tool").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tool === tool);
+    });
 
-            btn.classList.toggle(
-                "active",
-                btn.dataset.tool === tool
-            );
+    canvas.isDrawingMode = tool === "pen";
+    canvas.selection = tool === "select";
+    canvas.defaultCursor = tool === "select" ? "default" : "crosshair";
 
-        });
-
-
-    canvas.isDrawingMode =
-        tool === "pen";
-
-    canvas.selection =
-        tool === "select";
-
-
-    canvas.defaultCursor =
-        tool === "select"
-            ? "default"
-            : "crosshair";
-
-
-    if(tool === "pen"){
-
-        if(!canvas.freeDrawingBrush)
-            canvas.freeDrawingBrush =
-                new fabric.PencilBrush(canvas);
-
-        canvas.freeDrawingBrush.color =
-            penColor;
-
-        canvas.freeDrawingBrush.width =
-            penWidth;
-
+    if (tool === "pen") {
+        if (!canvas.freeDrawingBrush) {
+            canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+        }
+        canvas.freeDrawingBrush.color = penColor;
+        canvas.freeDrawingBrush.width = penWidth;
     }
 
-
-    if(tool === "image"){
-
+    if (tool === "image") {
         const input = document.getElementById("imageInput");
-        if(input){
+        if (input) {
             input.value = "";
             input.click();
         }
         currentTool = "select";
         canvas.selection = true;
         canvas.isDrawingMode = false;
+        document.querySelectorAll(".left-tool").forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.tool === "select");
+        });
     }
 
-
     const names = {
-
-        select:"選択ツール",
-
-        text:"文字ツール",
-
-        rect:"四角形ツール",
-
-        circle:"円ツール",
-
-        triangle:"三角形ツール",
-
-        star:"星ツール",
-
-        line:"線ツール",
-
-        pen:"ペンツール",
-
-        image:"画像ツール"
-
+        select: "選択ツール",
+        text: "文字ツール",
+        rect: "四角形ツール",
+        circle: "円ツール",
+        triangle: "三角形ツール",
+        star: "星ツール",
+        line: "線ツール",
+        pen: "ペンツール",
+        image: "画像ツール"
     };
-
-
-    document
-        .getElementById("toolStatus")
-        .textContent =
-        names[tool] || tool;
-
-
+    document.getElementById("toolStatus").textContent = names[tool] || tool;
     updateUI();
-
 }
-
 
 /* =========================================================
    文字
 ========================================================= */
-
-function addText(x,y){
-
-    const text =
-        new fabric.IText(
-            "ロゴ文字",
-            {
-
-                left:x,
-
-                top:y,
-
-                fontFamily:
-                    "Noto Sans JP",
-
-                fontSize:120,
-
-                fontWeight:"700",
-
-                fill:"#222222",
-
-                stroke:null,
-
-                strokeWidth:0,
-
-                paintFirst:"stroke",
-
-                strokeUniform:true,
-
-                originX:"left",
-
-                originY:"top",
-
-                editable:true,
-
-                padding:5,
-
-                shadow:null
-
-            }
-        );
-
+function addText(x, y) {
+    const text = new fabric.IText("ロゴ文字", {
+        left: x,
+        top: y,
+        fontFamily: "Noto Sans JP",
+        fontSize: 120,
+        fontWeight: "700",
+        fill: "#222222",
+        stroke: null,
+        strokeWidth: 0,
+        paintFirst: "stroke",
+        strokeUniform: true,
+        originX: "left",
+        originY: "top",
+        editable: true,
+        padding: 5,
+        shadow: null,
+        _baseFill: "#222222",
+        _gradientEnabled: false
+    });
 
     canvas.add(text);
-
     canvas.setActiveObject(text);
-
     text.enterEditing();
-
     text.selectAll();
-
     canvas.requestRenderAll();
-
     saveHistory();
-
 }
-
 
 /* =========================================================
    図形
 ========================================================= */
-
-function addRect(x,y){
-
-    const obj =
-        new fabric.Rect({
-
-            left:x,
-
-            top:y,
-
-            width:260,
-
-            height:160,
-
-            fill:"#222222",
-
-            stroke:null,
-
-            strokeWidth:0,
-
-            paintFirst:"stroke",
-
-            strokeUniform:true,
-
-            rx:0,
-
-            ry:0,
-
-            originX:"center",
-
-            originY:"center"
-
-        });
-
-
+function addRect(x, y) {
+    const obj = new fabric.Rect({
+        left: x, top: y,
+        width: 260, height: 160,
+        fill: "#222222",
+        stroke: null, strokeWidth: 0,
+        paintFirst: "stroke", strokeUniform: true,
+        rx: 0, ry: 0,
+        originX: "center", originY: "center",
+        _baseFill: "#222222", _gradientEnabled: false
+    });
     canvas.add(obj);
-
     canvas.setActiveObject(obj);
-
     saveHistory();
-
 }
 
-
-function addCircle(x,y){
-
-    const obj =
-        new fabric.Circle({
-
-            left:x,
-
-            top:y,
-
-            radius:100,
-
-            fill:"#222222",
-
-            stroke:null,
-
-            strokeWidth:0,
-
-            paintFirst:"stroke",
-
-            strokeUniform:true,
-
-            originX:"center",
-
-            originY:"center"
-
-        });
-
-
+function addCircle(x, y) {
+    const obj = new fabric.Circle({
+        left: x, top: y,
+        radius: 100,
+        fill: "#222222",
+        stroke: null, strokeWidth: 0,
+        paintFirst: "stroke", strokeUniform: true,
+        originX: "center", originY: "center",
+        _baseFill: "#222222", _gradientEnabled: false
+    });
     canvas.add(obj);
-
     canvas.setActiveObject(obj);
-
     saveHistory();
-
 }
 
-
-function addTriangle(x,y){
-
-    const obj =
-        new fabric.Triangle({
-
-            left:x,
-
-            top:y,
-
-            width:220,
-
-            height:190,
-
-            fill:"#222222",
-
-            stroke:null,
-
-            strokeWidth:0,
-
-            paintFirst:"stroke",
-
-            strokeUniform:true,
-
-            originX:"center",
-
-            originY:"center"
-
-        });
-
-
+function addTriangle(x, y) {
+    const obj = new fabric.Triangle({
+        left: x, top: y,
+        width: 220, height: 190,
+        fill: "#222222",
+        stroke: null, strokeWidth: 0,
+        paintFirst: "stroke", strokeUniform: true,
+        originX: "center", originY: "center",
+        _baseFill: "#222222", _gradientEnabled: false
+    });
     canvas.add(obj);
-
     canvas.setActiveObject(obj);
-
     saveHistory();
-
 }
 
-
-function createStarPoints(){
-
-    const points=[];
-
-    const outer=110;
-
-    const inner=48;
-
-
-    for(
-        let i=0;
-        i<10;
-        i++
-    ){
-
-        const angle =
-            (-90+i*36) *
-            Math.PI /
-            180;
-
-        const radius =
-            i%2===0
-                ? outer
-                : inner;
-
-
+function createStarPoints() {
+    const points = [];
+    const outer = 110, inner = 48;
+    for (let i = 0; i < 10; i++) {
+        const angle = (-90 + i * 36) * Math.PI / 180;
+        const radius = i % 2 === 0 ? outer : inner;
         points.push({
-
-            x:Math.cos(angle)*radius,
-
-            y:Math.sin(angle)*radius
-
+            x: Math.cos(angle) * radius,
+            y: Math.sin(angle) * radius
         });
-
     }
-
-
     return points;
-
 }
 
-
-function addStar(x,y){
-
-    const obj =
-        new fabric.Polygon(
-            createStarPoints(),
-            {
-
-                left:x,
-
-                top:y,
-
-                fill:"#222222",
-
-                stroke:null,
-
-                strokeWidth:0,
-
-                paintFirst:"stroke",
-
-                strokeUniform:true,
-
-                originX:"center",
-
-                originY:"center"
-
-            }
-        );
-
-
+function addStar(x, y) {
+    const obj = new fabric.Polygon(createStarPoints(), {
+        left: x, top: y,
+        fill: "#222222",
+        stroke: null, strokeWidth: 0,
+        paintFirst: "stroke", strokeUniform: true,
+        originX: "center", originY: "center",
+        _baseFill: "#222222", _gradientEnabled: false
+    });
     canvas.add(obj);
-
     canvas.setActiveObject(obj);
-
     saveHistory();
-
 }
 
-
-function addLine(x,y){
-
-    const obj =
-        new fabric.Line(
-            [
-                x-130,
-                y,
-                x+130,
-                y
-            ],
-            {
-
-                stroke:"#222222",
-
-                strokeWidth:8
-
-            }
-        );
-
-
+function addLine(x, y) {
+    const obj = new fabric.Line([x - 130, y, x + 130, y], {
+        stroke: "#222222",
+        strokeWidth: 8,
+        _baseFill: "#222222",
+        _gradientEnabled: false
+    });
     canvas.add(obj);
-
     canvas.setActiveObject(obj);
-
     saveHistory();
-
 }
-
 
 /* =========================================================
    マウス
 ========================================================= */
+canvas.on("mouse:down", function(opt) {
+    if (currentTool === "select" || currentTool === "pen") return;
 
-canvas.on(
-    "mouse:down",
-    function(opt){
+    const p = canvas.getPointer(opt.e);
 
-        if(currentTool === "select")
-            return;
-
-
-        const p =
-            canvas.getPointer(opt.e);
-
-
-        if(currentTool === "text"){
-
-            addText(p.x,p.y);
-
-            setTool("select");
-
-            return;
-
-        }
-
-
-        if(currentTool === "rect"){
-
-            addRect(p.x,p.y);
-
-            setTool("select");
-
-            return;
-
-        }
-
-
-        if(currentTool === "circle"){
-
-            addCircle(p.x,p.y);
-
-            setTool("select");
-
-            return;
-
-        }
-
-
-        if(currentTool === "triangle"){
-
-            addTriangle(p.x,p.y);
-
-            setTool("select");
-
-            return;
-
-        }
-
-
-        if(currentTool === "star"){
-
-            addStar(p.x,p.y);
-
-            setTool("select");
-
-            return;
-
-        }
-
-
-        if(currentTool === "line"){
-
-            addLine(p.x,p.y);
-
-            setTool("select");
-
-            return;
-
-        }
-
-
-
+    if (currentTool === "text") {
+        addText(p.x, p.y);
+        setTool("select");
+        return;
     }
-);
-
+    if (currentTool === "rect") {
+        addRect(p.x, p.y);
+        setTool("select");
+        return;
+    }
+    if (currentTool === "circle") {
+        addCircle(p.x, p.y);
+        setTool("select");
+        return;
+    }
+    if (currentTool === "triangle") {
+        addTriangle(p.x, p.y);
+        setTool("select");
+        return;
+    }
+    if (currentTool === "star") {
+        addStar(p.x, p.y);
+        setTool("select");
+        return;
+    }
+    if (currentTool === "line") {
+        addLine(p.x, p.y);
+        setTool("select");
+        return;
+    }
+});
 
 /* =========================================================
    ペン描画完了
 ========================================================= */
-
-canvas.on(
-    "path:created",
-    function(e){
-
-        const path =
-            e.path;
-
-        path.set({
-
-            stroke:
-                canvas.freeDrawingBrush.color,
-
-            strokeWidth:
-                canvas.freeDrawingBrush.width,
-
-            fill:null
-
-        });
-
-
-        saveHistory();
-
-        updateUI();
-
-    }
-);
-
+canvas.on("path:created", function(e) {
+    const path = e.path;
+    path.set({
+        stroke: canvas.freeDrawingBrush.color,
+        strokeWidth: canvas.freeDrawingBrush.width,
+        fill: null
+    });
+    saveHistory();
+    updateUI();
+});
 
 /* =========================================================
    画像
 ========================================================= */
-
-document
-.getElementById("imageInput")
-.addEventListener(
-    "change",
-    function(){
-
-        const file =
-            this.files[0];
-
-        if(!file)
-            return;
-
-
-        const reader =
-            new FileReader();
-
-
-        reader.onload =
-            function(e){
-
-                fabric.Image.fromURL(
-                    e.target.result,
-                    function(img){
-
-                        img.set({
-
-                            left:600,
-
-                            top:400,
-
-                            originX:"center",
-
-                            originY:"center",
-
-                            scaleX:
-                                Math.min(
-                                    1,
-                                    500/img.width
-                                ),
-
-                            scaleY:
-                                Math.min(
-                                    1,
-                                    500/img.height
-                                )
-
-                        });
-
-
-                        canvas.add(img);
-
-                        canvas.setActiveObject(img);
-
-                        canvas.requestRenderAll();
-
-                        saveHistory();
-
-                    }
-                );
-
-            };
-
-
-        reader.readAsDataURL(file);
-
-        this.value="";
-
-    }
-);
-
-
-/* =========================================================
-   選択
-========================================================= */
-
-canvas.on(
-    "selection:created",
-    updateUI
-);
-
-canvas.on(
-    "selection:updated",
-    updateUI
-);
-
-canvas.on(
-    "selection:cleared",
-    updateUI
-);
-
-
-canvas.on(
-    "object:modified",
-    function(){
-
-        saveHistory();
-
-        updateUI();
-
-    }
-);
-
-
-canvas.on(
-    "object:moving",
-    function(e){
-
-        snapObject(e.target);
-
-        updateStatus();
-
-    }
-);
-
-
-canvas.on(
-    "object:scaling",
-    updateStatus
-);
-
-canvas.on(
-    "object:rotating",
-    updateStatus
-);
-
-
-/* =========================================================
-   グリッド
-========================================================= */
-
-function snapObject(obj){
-
-    if(!obj)
-        return;
-
-    if(
-        obj.type === "activeSelection"
-    )
-        return;
-
-
-    const grid=10;
-
-
-    obj.set({
-
-        left:
-            Math.round(
-                obj.left/grid
-            )*grid,
-
-        top:
-            Math.round(
-                obj.top/grid
-            )*grid
-
-    });
-
-}
-
-
-/* =========================================================
-   UI
-========================================================= */
-
-function updateUI(){
-
-    updateProperties();
-
-    updateLayers();
-
-    updateStatus();
-
-}
-
-
-function updateStatus(){
-
-    const obj =
-        selectedObject();
-
-
-    if(!obj){
-
-        document
-            .getElementById("objectStatus")
-            .textContent =
-            "オブジェクトなし";
-
-        document
-            .getElementById("positionStatus")
-            .textContent =
-            "X: -　Y: -";
-
-        document
-            .getElementById("sizeStatus")
-            .textContent =
-            "W: -　H: -";
-
-        return;
-
-    }
-
-
-    document
-        .getElementById("objectStatus")
-        .textContent =
-        typeName(obj);
-
-
-    document
-        .getElementById("positionStatus")
-        .textContent =
-        "X: "+
-        Math.round(obj.left)+
-        "　Y: "+
-        Math.round(obj.top);
-
-
-    document
-        .getElementById("sizeStatus")
-        .textContent =
-        "W: "+
-        Math.round(
-            obj.getScaledWidth()
-        )+
-        "　H: "+
-        Math.round(
-            obj.getScaledHeight()
-        );
-
-}
-
-
-function typeName(obj){
-
-    const names={
-
-        "i-text":"文字",
-
-        "rect":"四角形",
-
-        "circle":"円",
-
-        "triangle":"三角形",
-
-        "polygon":"図形",
-
-        "line":"線",
-
-        "path":"ペン",
-
-        "image":"画像",
-
-        "activeSelection":"複数選択"
-
+document.getElementById("imageInput").addEventListener("change", function() {
+    const file = this.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        fabric.Image.fromURL(e.target.result, function(img) {
+            img.set({
+                left: 600,
+                top: 400,
+                originX: "center",
+                originY: "center",
+                scaleX: Math.min(1, 500 / img.width),
+                scaleY: Math.min(1, 500 / img.height)
+            });
+            canvas.add(img);
+            canvas.setActiveObject(img);
+            canvas.requestRenderAll();
+            saveHistory();
+        });
     };
-
-
-    return names[obj.type] || obj.type;
-
-}
-
+    reader.readAsDataURL(file);
+    this.value = "";
+});
 
 /* =========================================================
-   プロパティ
+   選択・変更イベント
 ========================================================= */
+canvas.on("selection:created", updateUI);
+canvas.on("selection:updated", updateUI);
+canvas.on("selection:cleared", updateUI);
 
-function updateProperties(){
+canvas.on("object:modified", function() {
+    saveHistory();
+    updateUI();
+});
 
-    const area =
-        document.getElementById(
-            "properties"
-        );
+canvas.on("object:moving", function(e) {
+    snapObject(e.target);
+    updateStatus();
+});
 
+canvas.on("object:scaling", updateStatus);
+canvas.on("object:rotating", updateStatus);
 
-    const obj =
-        selectedObject();
+/* =========================================================
+   グリッドスナップ
+========================================================= */
+function snapObject(obj) {
+    if (!obj || obj.type === "activeSelection") return;
+    const grid = 10;
+    obj.set({
+        left: Math.round(obj.left / grid) * grid,
+        top: Math.round(obj.top / grid) * grid
+    });
+}
 
+/* =========================================================
+   UI更新
+========================================================= */
+function updateUI() {
+    updateProperties();
+    updateLayers();
+    updateStatus();
+}
 
-    if(!obj){
+function updateStatus() {
+    const obj = selectedObject();
+    if (!obj) {
+        document.getElementById("objectStatus").textContent = "オブジェクトなし";
+        document.getElementById("positionStatus").textContent = "X: -　Y: -";
+        document.getElementById("sizeStatus").textContent = "W: -　H: -";
+        return;
+    }
+    document.getElementById("objectStatus").textContent = typeName(obj);
+    document.getElementById("positionStatus").textContent =
+        "X: " + Math.round(obj.left) + "　Y: " + Math.round(obj.top);
+    document.getElementById("sizeStatus").textContent =
+        "W: " + Math.round(obj.getScaledWidth()) + "　H: " + Math.round(obj.getScaledHeight());
+}
 
-        if(currentTool === "pen"){
+function typeName(obj) {
+    const names = {
+        "i-text": "文字",
+        "rect": "四角形",
+        "circle": "円",
+        "triangle": "三角形",
+        "polygon": "図形",
+        "line": "線",
+        "path": "ペン",
+        "image": "画像",
+        "activeSelection": "複数選択"
+    };
+    return names[obj.type] || obj.type;
+}
+
+/* =========================================================
+   プロパティパネル
+========================================================= */
+function updateProperties() {
+    const area = document.getElementById("properties");
+    const obj = selectedObject();
+
+    if (!obj) {
+        if (currentTool === "pen") {
             area.innerHTML = penToolPanel();
             return;
         }
-
-        area.innerHTML=`
-
+        area.innerHTML = `
             <div class="no-selection">
-
                 オブジェクトを選択してください。<br>
-
-                文字・図形・ペンなどを選択すると、
-                ここから細かく編集できます。
-
+                文字・図形・ペンなどを選択すると、ここから細かく編集できます。
             </div>
-
         `;
-
         return;
-
     }
 
-
-    if(obj.type === "activeSelection"){
-
-        area.innerHTML=`
-
+    if (obj.type === "activeSelection") {
+        area.innerHTML = `
             <div class="section">
-
-                <div class="section-title">
-                    複数選択
+                <div class="section-title">複数選択</div>
+                <div class="no-selection" style="padding:5px 0">
+                    ${obj.getObjects().length} 個のオブジェクトを選択中
                 </div>
-
-                <div class="no-selection"
-                     style="padding:5px 0">
-
-                    ${obj.getObjects().length}
-                    個のオブジェクトを選択中
-
-                </div>
-
             </div>
-
-
             <div class="section">
-
-                <div class="section-title">
-                    整列
-                </div>
-
+                <div class="section-title">整列</div>
                 <div class="btn-grid">
-
-                    <button
-                        class="small-btn"
-                        onclick="alignLeft()"
-                    >
-                        左
-                    </button>
-
-                    <button
-                        class="small-btn"
-                        onclick="alignCenter()"
-                    >
-                        中央
-                    </button>
-
-                    <button
-                        class="small-btn"
-                        onclick="alignRight()"
-                    >
-                        右
-                    </button>
-
+                    <button class="small-btn" onclick="alignLeft()">左</button>
+                    <button class="small-btn" onclick="alignCenter()">中央</button>
+                    <button class="small-btn" onclick="alignRight()">右</button>
                 </div>
-
             </div>
-
         `;
-
         return;
-
     }
 
-
-    let html=`
-
-
-        <!-- 基本 -->
-
+    let html = `
         <div class="section">
-
-            <div class="section-title">
-                基本
-            </div>
-
-
+            <div class="section-title">基本</div>
             <div class="row">
-
-                <div class="label">
-                    X
-                </div>
-
-                <input
-                    type="number"
-                    value="${Math.round(obj.left)}"
-                    onchange="setProp('left',this.value)"
-                >
-
+                <div class="label">X</div>
+                <input type="number" value="${Math.round(obj.left)}" onchange="setProp('left',this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    Y
-                </div>
-
-                <input
-                    type="number"
-                    value="${Math.round(obj.top)}"
-                    onchange="setProp('top',this.value)"
-                >
-
+                <div class="label">Y</div>
+                <input type="number" value="${Math.round(obj.top)}" onchange="setProp('top',this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    幅
-                </div>
-
-                <input
-                    type="number"
-                    value="${Math.round(obj.getScaledWidth())}"
-                    onchange="setWidth(this.value)"
-                >
-
+                <div class="label">幅</div>
+                <input type="number" value="${Math.round(obj.getScaledWidth())}" onchange="setWidth(this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    高さ
-                </div>
-
-                <input
-                    type="number"
-                    value="${Math.round(obj.getScaledHeight())}"
-                    onchange="setHeight(this.value)"
-                >
-
+                <div class="label">高さ</div>
+                <input type="number" value="${Math.round(obj.getScaledHeight())}" onchange="setHeight(this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    回転
-                </div>
-
-                <input
-                    type="number"
-                    value="${Math.round(obj.angle || 0)}"
-                    onchange="setProp('angle',this.value)"
-                >
-
+                <div class="label">回転</div>
+                <input type="number" value="${Math.round(obj.angle || 0)}" onchange="setProp('angle',this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    不透明度
-                </div>
-
-                <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value="${Math.round((obj.opacity ?? 1)*100)}"
-                    oninput="setOpacity(this.value)"
-                >
-
-                <div
-                    class="range-value"
-                    id="opacityValue"
-                >
-                    ${Math.round((obj.opacity ?? 1)*100)}%
-                </div>
-
+                <div class="label">不透明度</div>
+                <input type="range" min="0" max="100" value="${Math.round((obj.opacity ?? 1) * 100)}" oninput="setOpacity(this.value)">
+                <div class="range-value" id="opacityValue">${Math.round((obj.opacity ?? 1) * 100)}%</div>
             </div>
-
         </div>
-
     `;
 
+    if (obj.type === "i-text") html += textPanel(obj);
+    if (["rect", "circle", "triangle", "polygon", "line"].includes(obj.type)) html += shapePanel(obj);
+    if (obj.type === "path") html += penPanel(obj);
+    if (obj.type === "image") html += imagePanel(obj);
 
-    if(obj.type === "i-text")
-        html += textPanel(obj);
-
-
-    if(
-        [
-            "rect",
-            "circle",
-            "triangle",
-            "polygon",
-            "line"
-        ].includes(obj.type)
-    ){
-
-        html += shapePanel(obj);
-
-    }
-
-
-    if(obj.type === "path")
-        html += penPanel(obj);
-
-
-    if(obj.type === "image")
-        html += imagePanel(obj);
-
-
-    area.innerHTML=html;
-
+    area.innerHTML = html;
     updateGradientPreview(obj);
-
 }
-
 
 /* =========================================================
    文字パネル
 ========================================================= */
-
-function textPanel(obj){
-
+function textPanel(obj) {
     return `
-
         <div class="section">
-
-            <div class="section-title">
-                文字
-            </div>
-
-
+            <div class="section-title">文字</div>
             <div class="row">
-
-                <div class="label">
-                    フォント
-                </div>
-
-                <select
-                    class="font-select"
-                    onchange="changeFont(this.value)"
-                >
-
-                    ${fonts.map(
-                        f=>`
-
-                        <option
-                            value="${escapeHtml(f[1])}"
-                            ${obj.fontFamily===f[1]?"selected":""}
-                        >
-                            ${escapeHtml(f[0])}
-                            （${escapeHtml(f[2])}）
+                <div class="label">フォント</div>
+                <select class="font-select" onchange="changeFont(this.value)">
+                    ${fonts.map(f => `
+                        <option value="${escapeHtml(f[1])}" ${obj.fontFamily === f[1] ? "selected" : ""}>
+                            ${escapeHtml(f[0])}（${escapeHtml(f[2])}）
                         </option>
-
                     `).join("")}
-
                 </select>
-
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    サイズ
-                </div>
-
-                <input
-                    type="number"
-                    min="1"
-                    value="${Math.round(obj.fontSize || 100)}"
-                    onchange="changeFontSize(this.value)"
-                >
-
+                <div class="label">サイズ</div>
+                <input type="number" min="1" value="${Math.round(obj.fontSize || 100)}" onchange="changeFontSize(this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    文字間隔
-                </div>
-
-                <input
-                    type="number"
-                    value="${obj.charSpacing || 0}"
-                    onchange="setProp('charSpacing',this.value)"
-                >
-
+                <div class="label">文字間隔</div>
+                <input type="number" value="${obj.charSpacing || 0}" onchange="setProp('charSpacing',this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    行間
-                </div>
-
-                <input
-                    type="number"
-                    step=".1"
-                    value="${obj.lineHeight || 1.16}"
-                    onchange="setProp('lineHeight',this.value)"
-                >
-
+                <div class="label">行間</div>
+                <input type="number" step=".1" value="${obj.lineHeight || 1.16}" onchange="setProp('lineHeight',this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    文字色
-                </div>
-
-                <input
-                    type="color"
-                    value="${getColor(obj._baseFill || obj.fill)}"
-                    onchange="changeFill(this.value)"
-                >
-
+                <div class="label">文字色</div>
+                <input type="color" value="${getColor(obj._baseFill || obj.fill)}" onchange="changeFill(this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    太さ
-                </div>
-
-                <select
-                    onchange="setProp('fontWeight',this.value)"
-                >
-
-                    <option
-                        value="400"
-                        ${obj.fontWeight=="400"?"selected":""}
-                    >
-                        標準
-                    </option>
-
-                    <option
-                        value="500"
-                        ${obj.fontWeight=="500"?"selected":""}
-                    >
-                        中太
-                    </option>
-
-                    <option
-                        value="700"
-                        ${obj.fontWeight=="700"?"selected":""}
-                    >
-                        太字
-                    </option>
-
-                    <option
-                        value="900"
-                        ${obj.fontWeight=="900"?"selected":""}
-                    >
-                        極太
-                    </option>
-
+                <div class="label">太さ</div>
+                <select onchange="setProp('fontWeight',this.value)">
+                    <option value="400" ${obj.fontWeight == "400" ? "selected" : ""}>標準</option>
+                    <option value="500" ${obj.fontWeight == "500" ? "selected" : ""}>中太</option>
+                    <option value="700" ${obj.fontWeight == "700" ? "selected" : ""}>太字</option>
+                    <option value="900" ${obj.fontWeight == "900" ? "selected" : ""}>極太</option>
                 </select>
-
             </div>
-
-
             <label class="check">
-
-                <input
-                    type="checkbox"
-                    ${obj.fontStyle==="italic"?"checked":""}
-                    onchange="toggleItalic(this.checked)"
-                >
-
+                <input type="checkbox" ${obj.fontStyle === "italic" ? "checked" : ""} onchange="toggleItalic(this.checked)">
                 斜体
-
             </label>
-
         </div>
-
-
         ${gradientPanel(obj)}
-
         ${strokePanel(obj)}
-
         ${shadowPanel(obj)}
-
-
     `;
-
 }
 
-
 /* =========================================================
-   グラデーション
+   グラデーションパネル
 ========================================================= */
-
-function gradientPanel(obj){
-
+function gradientPanel(obj) {
     return `
-
         <div class="section">
-
-            <div class="section-title">
-                グラデーション
-            </div>
-
-
+            <div class="section-title">グラデーション</div>
             <label class="check">
-
-                <input
-                    type="checkbox"
-                    ${obj._gradientEnabled?"checked":""}
-                    onchange="toggleGradient(this.checked)"
-                >
-
+                <input type="checkbox" ${obj._gradientEnabled ? "checked" : ""} onchange="toggleGradient(this.checked)">
                 グラデーションを使用
-
             </label>
-
-
             <div class="color-row">
-
                 <span>色1</span>
-
-                <input
-                    type="color"
-                    value="${obj._gradientColor1 || '#ffffff'}"
-                    onchange="setGradientColor(1,this.value)"
-                >
-
+                <input type="color" value="${obj._gradientColor1 || '#ffffff'}" onchange="setGradientColor(1,this.value)">
             </div>
-
-
             <div class="color-row">
-
                 <span>色2</span>
-
-                <input
-                    type="color"
-                    value="${obj._gradientColor2 || '#555555'}"
-                    onchange="setGradientColor(2,this.value)"
-                >
-
+                <input type="color" value="${obj._gradientColor2 || '#555555'}" onchange="setGradientColor(2,this.value)">
             </div>
-
-
-            <select
-                onchange="setGradientDirection(this.value)"
-            >
-
-                <option value="vertical">
-                    上 → 下
-                </option>
-
-                <option value="horizontal">
-                    左 → 右
-                </option>
-
-                <option value="diagonal">
-                    斜め
-                </option>
-
+            <select onchange="setGradientDirection(this.value)">
+                <option value="vertical" ${gradientMode === "vertical" ? "selected" : ""}>上 → 下</option>
+                <option value="horizontal" ${gradientMode === "horizontal" ? "selected" : ""}>左 → 右</option>
+                <option value="diagonal" ${gradientMode === "diagonal" ? "selected" : ""}>斜め</option>
             </select>
-
-
-            <div
-                id="gradientPreview"
-                class="gradient-preview"
-            ></div>
-
+            <div id="gradientPreview" class="gradient-preview"></div>
         </div>
-
     `;
-
 }
 
-
 /* =========================================================
-   縁取り
+   縁取りパネル
 ========================================================= */
-
-function strokePanel(obj){
-
+function strokePanel(obj) {
     return `
-
         <div class="section">
-
-            <div class="section-title">
-                縁取り
-            </div>
-
-
+            <div class="section-title">縁取り</div>
             <div class="row">
-
-                <div class="label">
-                    色
-                </div>
-
-                <input
-                    type="color"
-                    value="${getColor(obj._manualStroke || obj.stroke || '#000000')}"
-                    onchange="setStrokeColor(this.value)"
-                >
-
+                <div class="label">色</div>
+                <input type="color" value="${getColor(obj._manualStroke || obj.stroke || '#000000')}" onchange="setStrokeColor(this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    太さ
-                </div>
-
-                <input
-                    type="range"
-                    min="0"
-                    max="50"
-                    value="${obj.strokeWidth || 0}"
-                    oninput="setStrokeWidth(this.value)"
-                >
-
-                <div
-                    class="range-value"
-                    id="strokeValue"
-                >
-                    ${obj.strokeWidth || 0}
-                </div>
-
+                <div class="label">太さ</div>
+                <input type="range" min="0" max="50" value="${obj.strokeWidth || 0}" oninput="setStrokeWidth(this.value)">
+                <div class="range-value" id="strokeValue">${obj.strokeWidth || 0}</div>
             </div>
-
         </div>
-
     `;
-
 }
 
-
 /* =========================================================
-   図形
+   図形パネル
 ========================================================= */
-
-function shapePanel(obj){
-
+function shapePanel(obj) {
     return `
-
         <div class="section">
-
-            <div class="section-title">
-                塗り
-            </div>
-
-
+            <div class="section-title">塗り</div>
             <div class="row">
-
-                <div class="label">
-                    色
-                </div>
-
-                <input
-                    type="color"
-                    value="${getColor(obj._baseFill || obj.fill)}"
-                    onchange="changeFill(this.value)"
-                >
-
+                <div class="label">色</div>
+                <input type="color" value="${getColor(obj._baseFill || obj.fill)}" onchange="changeFill(this.value)">
             </div>
-
-
             <label class="check">
-
-                <input
-                    type="checkbox"
-                    ${obj._gradientEnabled?"checked":""}
-                    onchange="toggleGradient(this.checked)"
-                >
-
+                <input type="checkbox" ${obj._gradientEnabled ? "checked" : ""} onchange="toggleGradient(this.checked)">
                 グラデーション
-
             </label>
-
-
             <div class="color-row">
-
                 <span>色1</span>
-
-                <input
-                    type="color"
-                    value="${obj._gradientColor1 || '#ffffff'}"
-                    onchange="setGradientColor(1,this.value)"
-                >
-
+                <input type="color" value="${obj._gradientColor1 || '#ffffff'}" onchange="setGradientColor(1,this.value)">
             </div>
-
-
             <div class="color-row">
-
                 <span>色2</span>
-
-                <input
-                    type="color"
-                    value="${obj._gradientColor2 || '#555555'}"
-                    onchange="setGradientColor(2,this.value)"
-                >
-
+                <input type="color" value="${obj._gradientColor2 || '#555555'}" onchange="setGradientColor(2,this.value)">
             </div>
-
-
-            <select
-                onchange="setGradientDirection(this.value)"
-            >
-
-                <option value="vertical">
-                    上 → 下
-                </option>
-
-                <option value="horizontal">
-                    左 → 右
-                </option>
-
-                <option value="diagonal">
-                    斜め
-                </option>
-
+            <select onchange="setGradientDirection(this.value)">
+                <option value="vertical" ${gradientMode === "vertical" ? "selected" : ""}>上 → 下</option>
+                <option value="horizontal" ${gradientMode === "horizontal" ? "selected" : ""}>左 → 右</option>
+                <option value="diagonal" ${gradientMode === "diagonal" ? "selected" : ""}>斜め</option>
             </select>
-
-
-            <div
-                id="gradientPreview"
-                class="gradient-preview"
-            ></div>
-
+            <div id="gradientPreview" class="gradient-preview"></div>
         </div>
-
-
         ${strokePanel(obj)}
-
-
-        ${
-            obj.type==="rect"
-            ? `
-
+        ${obj.type === "rect" ? `
             <div class="section">
-
-                <div class="section-title">
-                    角丸
-                </div>
-
+                <div class="section-title">角丸</div>
                 <div class="row">
-
-                    <div class="label">
-                        半径
-                    </div>
-
-                    <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value="${obj.rx || 0}"
-                        oninput="setRound(this.value)"
-                    >
-
+                    <div class="label">半径</div>
+                    <input type="range" min="0" max="100" value="${obj.rx || 0}" oninput="setRound(this.value)">
                 </div>
-
             </div>
-
-            `
-            :""
-        }
-
-
+        ` : ""}
         ${shadowPanel(obj)}
-
-
     `;
-
 }
 
-
 /* =========================================================
-   影
+   影パネル
 ========================================================= */
-
-function shadowPanel(obj){
-
-    const shadow =
-        obj.shadow;
-
-
+function shadowPanel(obj) {
+    const shadow = obj.shadow;
     return `
-
         <div class="section">
-
-            <div class="section-title">
-                影
-            </div>
-
-
+            <div class="section-title">影</div>
             <label class="check">
-
-                <input
-                    type="checkbox"
-                    ${shadow?"checked":""}
-                    onchange="toggleShadow(this.checked)"
-                >
-
+                <input type="checkbox" ${shadow ? "checked" : ""} onchange="toggleShadow(this.checked)">
                 影を使用
-
             </label>
-
-
             <div class="row">
-
-                <div class="label">
-                    色
-                </div>
-
-                <input
-                    type="color"
-                    value="${shadow?.color || '#000000'}"
-                    onchange="changeShadowColor(this.value)"
-                >
-
+                <div class="label">色</div>
+                <input type="color" value="${shadow?.color || '#000000'}" onchange="changeShadowColor(this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    X
-                </div>
-
-                <input
-                    type="range"
-                    min="-50"
-                    max="50"
-                    value="${shadow?.offsetX || 0}"
-                    oninput="changeShadowX(this.value)"
-                >
-
+                <div class="label">X</div>
+                <input type="range" min="-50" max="50" value="${shadow?.offsetX || 0}" oninput="changeShadowX(this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    Y
-                </div>
-
-                <input
-                    type="range"
-                    min="-50"
-                    max="50"
-                    value="${shadow?.offsetY || 0}"
-                    oninput="changeShadowY(this.value)"
-                >
-
+                <div class="label">Y</div>
+                <input type="range" min="-50" max="50" value="${shadow?.offsetY || 0}" oninput="changeShadowY(this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    ぼかし
-                </div>
-
-                <input
-                    type="range"
-                    min="0"
-                    max="50"
-                    value="${shadow?.blur || 0}"
-                    oninput="changeShadowBlur(this.value)"
-                >
-
+                <div class="label">ぼかし</div>
+                <input type="range" min="0" max="50" value="${shadow?.blur || 0}" oninput="changeShadowBlur(this.value)">
             </div>
-
-
             <div class="row">
-
-                <div class="label">
-                    透明度
-                </div>
-
-                <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value="${shadow ? Math.round((1-shadow.opacity)*100) : 50}"
-                    oninput="changeShadowOpacity(this.value)"
-                >
-
+                <div class="label">透明度</div>
+                <input type="range" min="0" max="100" value="${shadow ? Math.round((1 - (shadow.opacity ?? 0.5)) * 100) : 50}" oninput="changeShadowOpacity(this.value)">
             </div>
-
         </div>
-
     `;
-
 }
 
+/* =========================================================
+   ペン / 画像パネル
+========================================================= */
+function penToolPanel() {
+    return `
+        <div class="section">
+            <div class="section-title">ペンツール</div>
+            <div class="row">
+                <div class="label">色</div>
+                <input type="color" value="${penColor}" onchange="changePenToolColor(this.value)">
+            </div>
+            <div class="row">
+                <div class="label">太さ</div>
+                <input type="range" min="1" max="50" value="${penWidth}" oninput="changePenToolWidth(this.value)">
+                <div class="range-value" id="penToolWidthValue">${penWidth}</div>
+            </div>
+        </div>
+    `;
+}
+
+function penPanel(obj) {
+    return `
+        <div class="section">
+            <div class="section-title">ペン</div>
+            <div class="row">
+                <div class="label">色</div>
+                <input type="color" value="${getColor(obj.stroke)}" onchange="changePenColor(this.value)">
+            </div>
+            <div class="row">
+                <div class="label">太さ</div>
+                <input type="range" min="1" max="50" value="${obj.strokeWidth || 1}" oninput="changePenWidth(this.value)">
+            </div>
+        </div>
+        ${shadowPanel(obj)}
+    `;
+}
+
+function imagePanel(obj) {
+    return `
+        <div class="section">
+            <div class="section-title">画像</div>
+            <div class="no-selection" style="padding:8px 0">
+                画像は移動・拡大縮小・回転・不透明度・影のみ編集可能です。
+            </div>
+        </div>
+        ${shadowPanel(obj)}
+    `;
+}
 
 /* =========================================================
-   縁取り
+   塗り・グラデーション処理
 ========================================================= */
-
-function setStrokeColor(color){
-
+function changeFill(color) {
     const objects = selectedObjects();
-
-    if(!objects.length)
-        return;
+    if (!objects.length) return;
 
     objects.forEach(obj => {
-        if(obj.type === "image") return;
+        if (obj.type === "image") return;
+        obj._baseFill = color;
+        if (obj._gradientEnabled) {
+            applyGradient(obj);
+        } else {
+            obj.set("fill", color);
+        }
+        obj.dirty = true;
+    });
+    canvas.requestRenderAll();
+    saveHistory();
+    updateUI();
+}
 
+function toggleGradient(enabled) {
+    const obj = selectedObject();
+    if (!obj || obj.type === "image") return;
+
+    obj._gradientEnabled = enabled;
+    if (enabled) {
+        if (!obj._gradientColor1) obj._gradientColor1 = "#ffffff";
+        if (!obj._gradientColor2) obj._gradientColor2 = "#555555";
+        applyGradient(obj);
+    } else {
+        obj.set("fill", obj._baseFill || "#222222");
+    }
+    obj.dirty = true;
+    canvas.requestRenderAll();
+    saveHistory();
+    updateUI();
+}
+
+function setGradientColor(n, color) {
+    const obj = selectedObject();
+    if (!obj) return;
+    if (n === 1) obj._gradientColor1 = color;
+    else obj._gradientColor2 = color;
+    if (obj._gradientEnabled) applyGradient(obj);
+    updateGradientPreview(obj);
+    canvas.requestRenderAll();
+    saveHistory();
+}
+
+function setGradientDirection(dir) {
+    gradientMode = dir;
+    const obj = selectedObject();
+    if (obj && obj._gradientEnabled) applyGradient(obj);
+    updateGradientPreview(obj);
+    canvas.requestRenderAll();
+    saveHistory();
+}
+
+function applyGradient(obj) {
+    if (!obj) return;
+    const c1 = obj._gradientColor1 || "#ffffff";
+    const c2 = obj._gradientColor2 || "#555555";
+    const w = obj.width || 100;
+    const h = obj.height || 100;
+
+    let coords;
+    if (gradientMode === "horizontal") {
+        coords = { x1: 0, y1: 0, x2: w, y2: 0 };
+    } else if (gradientMode === "diagonal") {
+        coords = { x1: 0, y1: 0, x2: w, y2: h };
+    } else {
+        coords = { x1: 0, y1: 0, x2: 0, y2: h };
+    }
+
+    const gradient = new fabric.Gradient({
+        type: "linear",
+        coords: coords,
+        colorStops: [
+            { offset: 0, color: c1 },
+            { offset: 1, color: c2 }
+        ]
+    });
+    obj.set("fill", gradient);
+    obj.dirty = true;
+}
+
+function updateGradientPreview(obj) {
+    const preview = document.getElementById("gradientPreview");
+    if (!preview || !obj) return;
+    const c1 = obj._gradientColor1 || "#ffffff";
+    const c2 = obj._gradientColor2 || "#555555";
+    let direction = "to bottom";
+    if (gradientMode === "horizontal") direction = "to right";
+    if (gradientMode === "diagonal") direction = "to bottom right";
+    preview.style.background = `linear-gradient(${direction},${c1},${c2})`;
+}
+
+/* =========================================================
+   縁取り処理
+========================================================= */
+function setStrokeColor(color) {
+    const objects = selectedObjects();
+    if (!objects.length) return;
+
+    objects.forEach(obj => {
+        if (obj.type === "image") return;
         obj._manualStroke = color;
         obj.set({
             stroke: color,
-            // 塗りを最後に描くことで、縁が文字の内側へ食い込みにくい
             paintFirst: "stroke",
-            strokeWidth: Math.max(1, Number(obj.strokeWidth) || 0),
+            strokeWidth: Math.max(1, Number(obj.strokeWidth) || 1),
             strokeUniform: true,
             strokeLineJoin: "round",
             strokeLineCap: "round"
         });
         obj.dirty = true;
+        if (obj.type === "i-text" && typeof obj.initDimensions === "function") {
+            obj.initDimensions();
+        }
+        if (typeof obj.setCoords === "function") obj.setCoords();
     });
-
     canvas.requestRenderAll();
     saveHistory();
     updateUI();
 }
 
-
-function setStrokeWidth(value){
-
+function setStrokeWidth(value) {
     const width = Number(value);
     const objects = selectedObjects();
-
-    if(!objects.length)
-        return;
+    if (!objects.length) return;
 
     objects.forEach(obj => {
-        if(obj.type === "image") return;
-
+        if (obj.type === "image") return;
         obj.set({
             strokeWidth: width,
             paintFirst: "stroke",
@@ -3018,1646 +1201,586 @@ function setStrokeWidth(value){
             strokeLineJoin: "round",
             strokeLineCap: "round"
         });
-
-        // 太さを0にした場合だけ、縁取りを完全にOFFにする
-        if(width <= 0){
+        if (width <= 0) {
             obj.set("stroke", null);
-        }else{
+        } else {
             obj.set("stroke", obj._manualStroke || obj.stroke || "#000000");
         }
-
         obj.dirty = true;
+        if (obj.type === "i-text" && typeof obj.initDimensions === "function") {
+            obj.initDimensions();
+        }
+        if (typeof obj.setCoords === "function") obj.setCoords();
     });
-
     canvas.requestRenderAll();
-
     const v = document.getElementById("strokeValue");
-    if(v) v.textContent = width;
-
+    if (v) v.textContent = width;
     saveHistory();
     updateUI();
 }
-
 
 /* =========================================================
-   影
+   影処理
 ========================================================= */
-
-function toggleShadow(enabled){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    if(enabled){
-
-        obj._manualShadow =
-            new fabric.Shadow({
-
-                color:"rgba(0,0,0,.5)",
-
-                blur:10,
-
-                offsetX:8,
-
-                offsetY:8
-
-            });
-
-
-        obj.set(
-            "shadow",
-            obj._manualShadow
-        );
-
-    }
-    else{
-
-        obj._manualShadow =
-            null;
-
-
-        obj.set(
-            "shadow",
-            null
-        );
-
-    }
-
-
-    canvas.requestRenderAll();
-
-    saveHistory();
-
-    updateUI();
-
-}
-
-
-function changeShadowColor(color){
-
-    const obj =
-        selectedObject();
-
-    if(
-        !obj ||
-        !obj._manualShadow
-    )
-        return;
-
-
-    const s =
-        obj._manualShadow;
-
-
-    const alpha =
-        s.opacity ??
-        .5;
-
-
-    obj._manualShadow =
-        new fabric.Shadow({
-
-            color:
-                hexToRgba(
-                    color,
-                    alpha
-                ),
-
-            blur:s.blur,
-
-            offsetX:s.offsetX,
-
-            offsetY:s.offsetY
-
+function toggleShadow(enabled) {
+    const obj = selectedObject();
+    if (!obj) return;
+    if (enabled) {
+        obj._manualShadow = new fabric.Shadow({
+            color: "rgba(0,0,0,.5)",
+            blur: 10,
+            offsetX: 8,
+            offsetY: 8
         });
-
-
-    obj.set(
-        "shadow",
-        obj._manualShadow
-    );
-
-
-    canvas.requestRenderAll();
-
-}
-
-
-function changeShadowX(value){
-
-    const obj =
-        selectedObject();
-
-    if(
-        !obj ||
-        !obj._manualShadow
-    )
-        return;
-
-
-    obj._manualShadow.offsetX =
-        Number(value);
-
-
-    obj.set(
-        "shadow",
-        obj._manualShadow
-    );
-
-
-    canvas.requestRenderAll();
-
-}
-
-
-function changeShadowY(value){
-
-    const obj =
-        selectedObject();
-
-    if(
-        !obj ||
-        !obj._manualShadow
-    )
-        return;
-
-
-    obj._manualShadow.offsetY =
-        Number(value);
-
-
-    obj.set(
-        "shadow",
-        obj._manualShadow
-    );
-
-
-    canvas.requestRenderAll();
-
-}
-
-
-function changeShadowBlur(value){
-
-    const obj =
-        selectedObject();
-
-    if(
-        !obj ||
-        !obj._manualShadow
-    )
-        return;
-
-
-    obj._manualShadow.blur =
-        Number(value);
-
-
-    obj.set(
-        "shadow",
-        obj._manualShadow
-    );
-
-
-    canvas.requestRenderAll();
-
-}
-
-
-function changeShadowOpacity(value){
-
-    const obj =
-        selectedObject();
-
-    if(
-        !obj ||
-        !obj._manualShadow
-    )
-        return;
-
-
-    obj._manualShadow.opacity =
-        1 -
-        Number(value)/100;
-
-
-    obj.set(
-        "shadow",
-        obj._manualShadow
-    );
-
-
-    canvas.requestRenderAll();
-
-}
-
-
-/* =========================================================
-   ペンの色
-========================================================= */
-
-function changePenColor(color){
-
-    const obj =
-        selectedObject();
-
-
-    /*
-       選択中のペン
-    */
-
-    if(
-        obj &&
-        obj.type==="path"
-    ){
-
-        obj.set(
-            "stroke",
-            color
-        );
-
-        canvas.requestRenderAll();
-
-        saveHistory();
-
+        obj.set("shadow", obj._manualShadow);
+    } else {
+        obj._manualShadow = null;
+        obj.set("shadow", null);
     }
-
-
-    /*
-       次に描くペン
-    */
-
-    if(
-        canvas.freeDrawingBrush
-    ){
-
-        canvas.freeDrawingBrush.color =
-            color;
-
-    }
-
-
+    canvas.requestRenderAll();
+    saveHistory();
     updateUI();
-
 }
 
+function changeShadowColor(color) {
+    const obj = selectedObject();
+    if (!obj || !obj._manualShadow) return;
+    const s = obj._manualShadow;
+    const alpha = s.opacity ?? 0.5;
+    obj._manualShadow = new fabric.Shadow({
+        color: hexToRgba(color, alpha),
+        blur: s.blur,
+        offsetX: s.offsetX,
+        offsetY: s.offsetY
+    });
+    obj.set("shadow", obj._manualShadow);
+    canvas.requestRenderAll();
+}
+
+function changeShadowX(value) {
+    const obj = selectedObject();
+    if (!obj || !obj._manualShadow) return;
+    obj._manualShadow.offsetX = Number(value);
+    obj.set("shadow", obj._manualShadow);
+    canvas.requestRenderAll();
+}
+
+function changeShadowY(value) {
+    const obj = selectedObject();
+    if (!obj || !obj._manualShadow) return;
+    obj._manualShadow.offsetY = Number(value);
+    obj.set("shadow", obj._manualShadow);
+    canvas.requestRenderAll();
+}
+
+function changeShadowBlur(value) {
+    const obj = selectedObject();
+    if (!obj || !obj._manualShadow) return;
+    obj._manualShadow.blur = Number(value);
+    obj.set("shadow", obj._manualShadow);
+    canvas.requestRenderAll();
+}
+
+function changeShadowOpacity(value) {
+    const obj = selectedObject();
+    if (!obj || !obj._manualShadow) return;
+    obj._manualShadow.opacity = 1 - Number(value) / 100;
+    obj.set("shadow", obj._manualShadow);
+    canvas.requestRenderAll();
+}
 
 /* =========================================================
-   ペンツールの色
+   ペン色・太さ
 ========================================================= */
+function changePenColor(color) {
+    const obj = selectedObject();
+    if (obj && obj.type === "path") {
+        obj.set("stroke", color);
+        canvas.requestRenderAll();
+        saveHistory();
+    }
+    if (canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.color = color;
+    }
+    updateUI();
+}
 
-function changePenToolColor(value){
-
+function changePenToolColor(value) {
     penColor = value;
-
-    if(!canvas.freeDrawingBrush)
-        canvas.freeDrawingBrush =
-            new fabric.PencilBrush(canvas);
-
+    if (!canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+    }
     canvas.freeDrawingBrush.color = penColor;
-
     canvas.requestRenderAll();
-
 }
 
-
-/* =========================================================
-   ペンツールの太さ
-========================================================= */
-
-function changePenToolWidth(value){
-
+function changePenToolWidth(value) {
     penWidth = Number(value);
-
-    if(!canvas.freeDrawingBrush)
-        canvas.freeDrawingBrush =
-            new fabric.PencilBrush(canvas);
-
+    if (!canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+    }
     canvas.freeDrawingBrush.width = penWidth;
-
-    const v =
-        document.getElementById("penToolWidthValue");
-
-    if(v)
-        v.textContent = penWidth;
-
+    const v = document.getElementById("penToolWidthValue");
+    if (v) v.textContent = penWidth;
 }
 
-
-/* =========================================================
-   ペンの太さ
-========================================================= */
-
-function changePenWidth(value){
-
-    const obj =
-        selectedObject();
-
-
-    if(
-        obj &&
-        obj.type==="path"
-    ){
-
-        obj.set(
-            "strokeWidth",
-            Number(value)
-        );
-
+function changePenWidth(value) {
+    const obj = selectedObject();
+    if (obj && obj.type === "path") {
+        obj.set("strokeWidth", Number(value));
         canvas.requestRenderAll();
-
         saveHistory();
-
     }
-
-
-    if(
-        canvas.freeDrawingBrush
-    ){
-
-        canvas.freeDrawingBrush.width =
-            Number(value);
-
+    if (canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.width = Number(value);
     }
-
 }
-
 
 /* =========================================================
-   その他
+   基本プロパティ
 ========================================================= */
-
-function setProp(prop,value){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    obj.set(
-        prop,
-        Number(value)
-    );
-
-
+function setProp(prop, value) {
+    const obj = selectedObject();
+    if (!obj) return;
+    obj.set(prop, Number(value));
     canvas.requestRenderAll();
-
     saveHistory();
-
     updateUI();
-
 }
 
-
-function setWidth(value){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    if(obj.width<=0)
-        return;
-
-
-    obj.scaleX =
-        Number(value) /
-        obj.width;
-
-
+function setWidth(value) {
+    const obj = selectedObject();
+    if (!obj || obj.width <= 0) return;
+    obj.scaleX = Number(value) / obj.width;
     canvas.requestRenderAll();
-
     saveHistory();
-
     updateUI();
-
 }
 
-
-function setHeight(value){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    if(obj.height<=0)
-        return;
-
-
-    obj.scaleY =
-        Number(value) /
-        obj.height;
-
-
+function setHeight(value) {
+    const obj = selectedObject();
+    if (!obj || obj.height <= 0) return;
+    obj.scaleY = Number(value) / obj.height;
     canvas.requestRenderAll();
-
     saveHistory();
-
     updateUI();
-
 }
 
-
-function setOpacity(value){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    obj.opacity =
-        Number(value)/100;
-
-
+function setOpacity(value) {
+    const obj = selectedObject();
+    if (!obj) return;
+    obj.opacity = Number(value) / 100;
     canvas.requestRenderAll();
-
-
-    const v =
-        document.getElementById(
-            "opacityValue"
-        );
-
-
-    if(v)
-        v.textContent =
-            value+"%";
-
+    const v = document.getElementById("opacityValue");
+    if (v) v.textContent = value + "%";
 }
 
+async function changeFont(font) {
+    const active = selectedObject();
+    if (!active) return;
+    const targets = active.type === "activeSelection"
+        ? active.getObjects().filter(o => o.type === "i-text")
+        : active.type === "i-text" ? [active] : [];
+    if (!targets.length) return;
 
-async function changeFont(font){
-
-    const active =
-        selectedObject();
-
-    if(!active)
-        return;
-
-    const targets =
-        active.type === "activeSelection"
-            ? active.getObjects().filter(o => o.type === "i-text")
-            : active.type === "i-text"
-                ? [active]
-                : [];
-
-    if(!targets.length)
-        return;
-
-    /*
-       Google Fonts はブラウザ側で読み込みが完了するまで
-       Fabric が古いフォントの幅を使うことがある。
-       先に実フォントをロードしてから dimensions を再計算する。
-    */
-    try{
-        await document.fonts.load(
-            `120px "${font}"`
-        );
-    }catch(e){
-        /* フォント読み込み失敗時も指定自体は反映する */
-    }
+    try {
+        await document.fonts.load(`120px "${font}"`);
+    } catch (e) {}
 
     targets.forEach(obj => {
-
         obj.set("fontFamily", font);
-
-        if(typeof obj.initDimensions === "function")
-            obj.initDimensions();
-
-        if(typeof obj.setCoords === "function")
-            obj.setCoords();
-
+        if (typeof obj.initDimensions === "function") obj.initDimensions();
+        if (typeof obj.setCoords === "function") obj.setCoords();
     });
-
     canvas.requestRenderAll();
-
     saveHistory();
-
     updateUI();
-
 }
 
-
-function changeFontSize(size){
-
-    const obj =
-        selectedObject();
-
-    if(
-        !obj ||
-        obj.type!=="i-text"
-    )
-        return;
-
-
-    obj.fontSize =
-        Number(size);
-
-
+function changeFontSize(size) {
+    const obj = selectedObject();
+    if (!obj || obj.type !== "i-text") return;
+    obj.fontSize = Number(size);
     canvas.requestRenderAll();
-
     saveHistory();
-
     updateUI();
-
 }
 
-
-function toggleItalic(enabled){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    obj.fontStyle =
-        enabled
-            ? "italic"
-            : "normal";
-
-
+function toggleItalic(enabled) {
+    const obj = selectedObject();
+    if (!obj) return;
+    obj.fontStyle = enabled ? "italic" : "normal";
     canvas.requestRenderAll();
-
     saveHistory();
-
 }
 
-
-/* =========================================================
-   角丸
-========================================================= */
-
-function setRound(value){
-
-    const obj =
-        selectedObject();
-
-    if(
-        !obj ||
-        obj.type!=="rect"
-    )
-        return;
-
-
-    obj.rx =
-        Number(value);
-
-    obj.ry =
-        Number(value);
-
-
+function setRound(value) {
+    const obj = selectedObject();
+    if (!obj || obj.type !== "rect") return;
+    obj.rx = Number(value);
+    obj.ry = Number(value);
     canvas.requestRenderAll();
-
     saveHistory();
-
 }
-
-
-/* =========================================================
-   グラデーションプレビュー
-========================================================= */
-
-function updateGradientPreview(obj){
-
-    const preview =
-        document.getElementById(
-            "gradientPreview"
-        );
-
-
-    if(!preview)
-        return;
-
-
-    const c1 =
-        obj._gradientColor1 ||
-        "#ffffff";
-
-
-    const c2 =
-        obj._gradientColor2 ||
-        "#555555";
-
-
-    let direction =
-        "to bottom";
-
-
-    if(gradientMode==="horizontal")
-        direction="to right";
-
-
-    if(gradientMode==="diagonal")
-        direction="to bottom right";
-
-
-    preview.style.background =
-        `linear-gradient(${direction},${c1},${c2})`;
-
-}
-
 
 /* =========================================================
    整列
 ========================================================= */
-
-function alignLeft(){
-
-    const objects =
-        selectedObjects();
-
-    if(objects.length<2)
-        return;
-
-
-    const min =
-        Math.min(
-            ...objects.map(
-                o=>o.left
-            )
-        );
-
-
-    objects.forEach(o=>{
-
-        o.left=min;
-
+function alignLeft() {
+    const objects = selectedObjects();
+    if (objects.length < 2) return;
+    const min = Math.min(...objects.map(o => o.left));
+    objects.forEach(o => {
+        o.left = min;
         o.setCoords();
-
     });
-
-
     canvas.requestRenderAll();
-
     saveHistory();
-
 }
 
-
-function alignCenter(){
-
-    const objects =
-        selectedObjects();
-
-    if(objects.length<2)
-        return;
-
-
-    const avg =
-        objects.reduce(
-            (sum,o)=>
-                sum+o.left,
-            0
-        ) / objects.length;
-
-
-    objects.forEach(o=>{
-
-        o.left=avg;
-
+function alignCenter() {
+    const objects = selectedObjects();
+    if (objects.length < 2) return;
+    const avg = objects.reduce((sum, o) => sum + o.left, 0) / objects.length;
+    objects.forEach(o => {
+        o.left = avg;
         o.setCoords();
-
     });
-
-
     canvas.requestRenderAll();
-
     saveHistory();
-
 }
 
-
-function alignRight(){
-
-    const objects =
-        selectedObjects();
-
-    if(objects.length<2)
-        return;
-
-
-    const max =
-        Math.max(
-            ...objects.map(
-                o=>
-                    o.left+
-                    o.getScaledWidth()
-            )
-        );
-
-
-    objects.forEach(o=>{
-
-        o.left =
-            max -
-            o.getScaledWidth();
-
+function alignRight() {
+    const objects = selectedObjects();
+    if (objects.length < 2) return;
+    const max = Math.max(...objects.map(o => o.left + o.getScaledWidth()));
+    objects.forEach(o => {
+        o.left = max - o.getScaledWidth();
         o.setCoords();
-
     });
-
-
     canvas.requestRenderAll();
-
     saveHistory();
-
 }
-
 
 /* =========================================================
    レイヤー
 ========================================================= */
+function updateLayers() {
+    const list = document.getElementById("layerList");
+    list.innerHTML = "";
+    const objects = canvas.getObjects();
+    const active = selectedObject();
 
-function updateLayers(){
-
-    const list =
-        document.getElementById(
-            "layerList"
-        );
-
-
-    list.innerHTML="";
-
-
-    const objects =
-        canvas.getObjects();
-
-
-    const active =
-        selectedObject();
-
-
-    [...objects]
-        .reverse()
-        .forEach(obj=>{
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "layer-item";
-
-
-            if(
-                active &&
-                (
-                    active===obj ||
-                    (
-                        active.type==="activeSelection" &&
-                        active
-                            .getObjects()
-                            .includes(obj)
-                    )
-                )
-            ){
-
-                item.classList.add(
-                    "selected"
-                );
-
-            }
-
-
-            let icon="□";
-
-
-            if(obj.type==="i-text")
-                icon="T";
-
-
-            if(obj.type==="circle")
-                icon="○";
-
-
-            if(obj.type==="triangle")
-                icon="△";
-
-
-            if(obj.type==="path")
-                icon="✎";
-
-
-            if(obj.type==="image")
-                icon="▧";
-
-
-            item.innerHTML=`
-
-                <span class="layer-icon">
-                    ${icon}
-                </span>
-
-                <span class="layer-name">
-                    ${getLayerName(obj)}
-                </span>
-
-            `;
-
-
-            item.onclick=function(){
-
-                canvas.setActiveObject(
-                    obj
-                );
-
-                canvas.requestRenderAll();
-
-                updateUI();
-
-            };
-
-
-            list.appendChild(item);
-
-        });
-
-}
-
-
-function getLayerName(obj){
-
-    if(obj.type==="i-text")
-        return obj.text || "文字";
-
-
-    return typeName(obj);
-
-}
-
-
-/* =========================================================
-   コピー
-========================================================= */
-
-function copyObject(){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
-    obj.clone(
-        function(cloned){
-
-            clipboard =
-                cloned;
-
+    [...objects].reverse().forEach(obj => {
+        const item = document.createElement("div");
+        item.className = "layer-item";
+        if (active && (active === obj || (active.type === "activeSelection" && active.getObjects().includes(obj)))) {
+            item.classList.add("selected");
         }
-    );
 
-}
+        let icon = "□";
+        if (obj.type === "i-text") icon = "T";
+        if (obj.type === "circle") icon = "○";
+        if (obj.type === "triangle") icon = "△";
+        if (obj.type === "path") icon = "✎";
+        if (obj.type === "image") icon = "▧";
+        if (obj.type === "line") icon = "／";
+        if (obj.type === "polygon") icon = "☆";
 
-
-function pasteObject(){
-
-    if(!clipboard)
-        return;
-
-
-    clipboard.clone(
-        function(cloned){
-
-            canvas.discardActiveObject();
-
-
-            cloned.set({
-
-                left:
-                    (cloned.left || 0)+25,
-
-                top:
-                    (cloned.top || 0)+25,
-
-                evented:true
-
-            });
-
-
-            if(
-                cloned.type==="activeSelection"
-            ){
-
-                cloned.canvas =
-                    canvas;
-
-
-                cloned.forEachObject(
-                    function(obj){
-
-                        canvas.add(obj);
-
-                    }
-                );
-
-
-                cloned.setCoords();
-
-            }
-            else{
-
-                canvas.add(cloned);
-
-            }
-
-
-            canvas.setActiveObject(
-                cloned
-            );
-
-
+        item.innerHTML = `
+            <span class="layer-icon">${icon}</span>
+            <span class="layer-name">${getLayerName(obj)}</span>
+        `;
+        item.onclick = function() {
+            canvas.setActiveObject(obj);
             canvas.requestRenderAll();
-
-            saveHistory();
-
-        }
-    );
-
+            updateUI();
+        };
+        list.appendChild(item);
+    });
 }
 
+function getLayerName(obj) {
+    if (obj.type === "i-text") return obj.text || "文字";
+    return typeName(obj);
+}
 
-function duplicateObject(){
+/* =========================================================
+   コピー・貼り付け・削除
+========================================================= */
+function copyObject() {
+    const obj = selectedObject();
+    if (!obj) return;
+    obj.clone(function(cloned) {
+        clipboard = cloned;
+    });
+}
 
+function pasteObject() {
+    if (!clipboard) return;
+    clipboard.clone(function(cloned) {
+        canvas.discardActiveObject();
+        cloned.set({
+            left: (cloned.left || 0) + 25,
+            top: (cloned.top || 0) + 25,
+            evented: true
+        });
+        if (cloned.type === "activeSelection") {
+            cloned.canvas = canvas;
+            cloned.forEachObject(function(obj) {
+                canvas.add(obj);
+            });
+            cloned.setCoords();
+        } else {
+            canvas.add(cloned);
+        }
+        canvas.setActiveObject(cloned);
+        canvas.requestRenderAll();
+        saveHistory();
+    });
+}
+
+function duplicateObject() {
     copyObject();
-
     pasteObject();
-
 }
 
-
-/* =========================================================
-   削除
-========================================================= */
-
-function deleteObject(){
-
-    const objects =
-        selectedObjects();
-
-
-    if(!objects.length)
-        return;
-
-
-    objects.forEach(
-        obj=>{
-            canvas.remove(obj);
-        }
-    );
-
-
+function deleteObject() {
+    const objects = selectedObjects();
+    if (!objects.length) return;
+    objects.forEach(obj => canvas.remove(obj));
     canvas.discardActiveObject();
-
     canvas.requestRenderAll();
-
     saveHistory();
-
     updateUI();
-
 }
-
 
 /* =========================================================
-   前後
+   前後移動
 ========================================================= */
-
-function bringFront(){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
+function bringFront() {
+    const obj = selectedObject();
+    if (!obj) return;
     canvas.bringToFront(obj);
-
     canvas.requestRenderAll();
-
     saveHistory();
-
     updateUI();
-
 }
 
-
-function sendBack(){
-
-    const obj =
-        selectedObject();
-
-    if(!obj)
-        return;
-
-
+function sendBack() {
+    const obj = selectedObject();
+    if (!obj) return;
     canvas.sendToBack(obj);
-
     canvas.requestRenderAll();
-
     saveHistory();
-
     updateUI();
-
 }
-
 
 /* =========================================================
    Undo / Redo
 ========================================================= */
-
-function saveHistory(){
-
-    if(restoringHistory)
-        return;
-
-
-    const json =
-        JSON.stringify(
-            canvas.toJSON([
-
-                "_gradientEnabled",
-
-                "_gradientColor1",
-
-                "_gradientColor2",
-
-
-                "_baseFill",
-
-                "_manualStroke",
-
-                "_manualShadow"
-
-            ])
-        );
-
-
-    if(
-        historyIndex>=0 &&
-        history[historyIndex]===json
-    )
-        return;
-
-
-    history =
-        history.slice(
-            0,
-            historyIndex+1
-        );
-
-
+function saveHistory() {
+    if (restoringHistory) return;
+    const json = JSON.stringify(canvas.toJSON([
+        "_gradientEnabled",
+        "_gradientColor1",
+        "_gradientColor2",
+        "_baseFill",
+        "_manualStroke",
+        "_manualShadow"
+    ]));
+    if (historyIndex >= 0 && history[historyIndex] === json) return;
+    history = history.slice(0, historyIndex + 1);
     history.push(json);
-
-
-    historyIndex =
-        history.length-1;
-
+    historyIndex = history.length - 1;
 }
 
-
-function undo(){
-
-    if(historyIndex<=0)
-        return;
-
-
+function undo() {
+    if (historyIndex <= 0) return;
     historyIndex--;
-
-
-    restoreHistory(
-        history[historyIndex]
-    );
-
+    restoreHistory(history[historyIndex]);
 }
 
-
-function redo(){
-
-    if(
-        historyIndex>=
-        history.length-1
-    )
-        return;
-
-
+function redo() {
+    if (historyIndex >= history.length - 1) return;
     historyIndex++;
-
-
-    restoreHistory(
-        history[historyIndex]
-    );
-
+    restoreHistory(history[historyIndex]);
 }
 
-
-function restoreHistory(json){
-
-    restoringHistory=true;
-
-
-    canvas.loadFromJSON(
-        json,
-        function(){
-
-            canvas.renderAll();
-
-            canvas.discardActiveObject();
-
-            restoringHistory=false;
-
-            updateUI();
-
-        }
-    );
-
+function restoreHistory(json) {
+    restoringHistory = true;
+    canvas.loadFromJSON(json, function() {
+        canvas.renderAll();
+        canvas.discardActiveObject();
+        restoringHistory = false;
+        updateUI();
+    });
 }
-
 
 /* =========================================================
    ズーム
 ========================================================= */
-
-function changeZoom(delta){
-
+function changeZoom(delta) {
     zoom += delta;
-
-
-    zoom =
-        Math.max(
-            .25,
-            Math.min(
-                2,
-                zoom
-            )
-        );
-
-
-    canvas.setZoom(
-        zoom
-    );
-
-
+    zoom = Math.max(0.25, Math.min(2, zoom));
+    canvas.setZoom(zoom);
     canvas.setDimensions({
+        width: 1200 * zoom,
+        height: 800 * zoom
+    });
+    document.getElementById("zoomValue").textContent = Math.round(zoom * 100) + "%";
+}
 
-        width:
-            1200*zoom,
+/* =========================================================
+   PNG出力
+========================================================= */
+function openExport() {
+    document.getElementById("exportModal").style.display = "flex";
+}
 
-        height:
-            800*zoom
+function closeExport() {
+    document.getElementById("exportModal").style.display = "none";
+}
 
+function exportPNG() {
+    const scale = Number(document.getElementById("exportScale").value);
+    const transparent = document.getElementById("transparentExport").checked;
+    const oldBackground = canvas.backgroundColor;
+
+    if (transparent) canvas.backgroundColor = null;
+    canvas.discardActiveObject();
+    canvas.renderAll();
+
+    const data = canvas.toDataURL({
+        format: "png",
+        multiplier: scale,
+        enableRetinaScaling: true
     });
 
-
-    document
-        .getElementById("zoomValue")
-        .textContent =
-        Math.round(zoom*100)+"%";
-
-}
-
-
-/* =========================================================
-   PNG
-========================================================= */
-
-function openExport(){
-
-    document
-        .getElementById(
-            "exportModal"
-        )
-        .style.display="flex";
-
-}
-
-
-function closeExport(){
-
-    document
-        .getElementById(
-            "exportModal"
-        )
-        .style.display="none";
-
-}
-
-
-function exportPNG(){
-
-    const scale =
-        Number(
-            document
-                .getElementById(
-                    "exportScale"
-                )
-                .value
-        );
-
-
-    const transparent =
-        document
-            .getElementById(
-                "transparentExport"
-            )
-            .checked;
-
-
-    const oldBackground =
-        canvas.backgroundColor;
-
-
-    if(transparent)
-        canvas.backgroundColor=null;
-
-
-    canvas.discardActiveObject();
-
+    canvas.backgroundColor = oldBackground;
     canvas.renderAll();
 
-
-    const data =
-        canvas.toDataURL({
-
-            format:"png",
-
-            multiplier:scale,
-
-            enableRetinaScaling:true
-
-        });
-
-
-    canvas.backgroundColor =
-        oldBackground;
-
-
-    canvas.renderAll();
-
-
-    const link =
-        document.createElement("a");
-
-
-    link.href=data;
-
-
-    link.download =
-        "logo-"+
-        Date.now()+
-        ".png";
-
-
+    const link = document.createElement("a");
+    link.href = data;
+    link.download = "logo-" + Date.now() + ".png";
     link.click();
-
-
     closeExport();
-
 }
-
 
 /* =========================================================
-   右クリック
+   右クリックメニュー
 ========================================================= */
+const contextMenu = document.getElementById("contextMenu");
 
-const contextMenu =
-    document.getElementById(
-        "contextMenu"
-    );
+canvas.upperCanvasEl.addEventListener("contextmenu", function(e) {
+    e.preventDefault();
+    if (!selectedObject()) return;
+    contextMenu.style.display = "block";
+    contextMenu.style.left = e.clientX + "px";
+    contextMenu.style.top = e.clientY + "px";
+});
 
-
-canvas.upperCanvasEl.addEventListener(
-    "contextmenu",
-    function(e){
-
-        e.preventDefault();
-
-
-        if(!selectedObject())
-            return;
-
-
-        contextMenu.style.display =
-            "block";
-
-
-        contextMenu.style.left =
-            e.clientX+"px";
-
-
-        contextMenu.style.top =
-            e.clientY+"px";
-
-    }
-);
-
-
-function hideContext(){
-
-    contextMenu.style.display =
-        "none";
-
+function hideContext() {
+    contextMenu.style.display = "none";
 }
 
+document.addEventListener("click", function(e) {
+    if (!contextMenu.contains(e.target)) hideContext();
+});
 
-document.addEventListener(
-    "click",
-    function(e){
-
-        if(
-            !contextMenu.contains(
-                e.target
-            )
-        ){
-
-            hideContext();
-
-        }
-
-    }
-);
-
-
-function contextCopy(){
-
+function contextCopy() {
     copyObject();
-
     hideContext();
-
 }
 
-
-function contextPaste(){
-
+function contextPaste() {
     pasteObject();
-
     hideContext();
-
 }
-
 
 /* =========================================================
    キーボード
 ========================================================= */
-
-document.addEventListener(
-    "keydown",
-    function(e){
-
-        const active =
-            document.activeElement;
-
-
-        const editing =
-            active &&
-            (
-                active.tagName==="INPUT" ||
-                active.tagName==="TEXTAREA" ||
-                active.tagName==="SELECT"
-            );
-
-
-        if(editing)
-            return;
-
-
-        if(
-            e.ctrlKey &&
-            e.key.toLowerCase()==="z"
-        ){
-
-            e.preventDefault();
-
-            undo();
-
-            return;
-
-        }
-
-
-        if(
-            e.ctrlKey &&
-            e.key.toLowerCase()==="y"
-        ){
-
-            e.preventDefault();
-
-            redo();
-
-            return;
-
-        }
-
-
-        if(
-            e.ctrlKey &&
-            e.key.toLowerCase()==="c"
-        ){
-
-            e.preventDefault();
-
-            copyObject();
-
-            return;
-
-        }
-
-
-        if(
-            e.ctrlKey &&
-            e.key.toLowerCase()==="v"
-        ){
-
-            e.preventDefault();
-
-            pasteObject();
-
-            return;
-
-        }
-
-
-        if(
-            e.ctrlKey &&
-            e.key.toLowerCase()==="d"
-        ){
-
-            e.preventDefault();
-
-            duplicateObject();
-
-            return;
-
-        }
-
-
-        if(
-            e.key==="Delete" ||
-            e.key==="Backspace"
-        ){
-
-            if(selectedObject()){
-
-                e.preventDefault();
-
-                deleteObject();
-
-            }
-
-            return;
-
-        }
-
-
-        const obj =
-            selectedObject();
-
-
-        if(!obj)
-            return;
-
-
-        const step =
-            e.shiftKey
-                ? 10
-                : 1;
-
-
-        if(e.key==="ArrowLeft"){
-
-            e.preventDefault();
-
-            obj.left-=step;
-
-        }
-
-
-        if(e.key==="ArrowRight"){
-
-            e.preventDefault();
-
-            obj.left+=step;
-
-        }
-
-
-        if(e.key==="ArrowUp"){
-
-            e.preventDefault();
-
-            obj.top-=step;
-
-        }
-
-
-        if(e.key==="ArrowDown"){
-
-            e.preventDefault();
-
-            obj.top+=step;
-
-        }
-
-
-        obj.setCoords();
-
-        canvas.requestRenderAll();
-
-        updateStatus();
-
+document.addEventListener("keydown", function(e) {
+    const active = document.activeElement;
+    const editing = active && (
+        active.tagName === "INPUT" ||
+        active.tagName === "TEXTAREA" ||
+        active.tagName === "SELECT"
+    );
+    if (editing) return;
+
+    if (e.ctrlKey && e.key.toLowerCase() === "z") {
+        e.preventDefault();
+        undo();
+        return;
     }
-);
-
-
-/* =========================================================
-   RGBA
-========================================================= */
-
-function hexToRgba(hex,alpha){
-
-    hex =
-        hex.replace("#","");
-
-
-    if(hex.length===3){
-
-        hex =
-            hex
-                .split("")
-                .map(x=>x+x)
-                .join("");
-
+    if (e.ctrlKey && e.key.toLowerCase() === "y") {
+        e.preventDefault();
+        redo();
+        return;
+    }
+    if (e.ctrlKey && e.key.toLowerCase() === "c") {
+        e.preventDefault();
+        copyObject();
+        return;
+    }
+    if (e.ctrlKey && e.key.toLowerCase() === "v") {
+        e.preventDefault();
+        pasteObject();
+        return;
+    }
+    if (e.ctrlKey && e.key.toLowerCase() === "d") {
+        e.preventDefault();
+        duplicateObject();
+        return;
     }
 
+    if (e.key === "Delete" || e.key === "Backspace") {
+        const obj = selectedObject();
+        // 編集中はオブジェクトごと消さない
+        if (obj && !obj.isEditing) {
+            e.preventDefault();
+            deleteObject();
+        }
+        return;
+    }
 
-    const r =
-        parseInt(
-            hex.substring(0,2),
-            16
-        );
+    const obj = selectedObject();
+    if (!obj) return;
 
-
-    const g =
-        parseInt(
-            hex.substring(2,4),
-            16
-        );
-
-
-    const b =
-        parseInt(
-            hex.substring(4,6),
-            16
-        );
-
-
-    return `rgba(${r},${g},${b},${alpha})`;
-
-}
-
+    const step = e.shiftKey ? 10 : 1;
+    if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        obj.left -= step;
+    }
+    if (e.key === "ArrowRight") {
+        e.preventDefault();
+        obj.left += step;
+    }
+    if (e.key === "ArrowUp") {
+        e.preventDefault();
+        obj.top -= step;
+    }
+    if (e.key === "ArrowDown") {
+        e.preventDefault();
+        obj.top += step;
+    }
+    obj.setCoords();
+    canvas.requestRenderAll();
+    updateStatus();
+});
 
 /* =========================================================
    初期化
 ========================================================= */
-
-canvas.freeDrawingBrush =
-    new fabric.PencilBrush(
-        canvas
-    );
-
-
-canvas.freeDrawingBrush.color =
-    "#222222";
-
-
-canvas.freeDrawingBrush.width =
-    8;
-
+canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+canvas.freeDrawingBrush.color = "#222222";
+canvas.freeDrawingBrush.width = 8;
 
 setTool("select");
-
 saveHistory();
-
 updateUI();
-
 </script>
-
 </body>
 </html>
