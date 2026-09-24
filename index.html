@@ -2649,7 +2649,7 @@ function strokePanel(obj){
 
                 <input
                     type="color"
-                    value="${getColor(obj.stroke || '#000000')}"
+                    value="${getColor(obj._manualStroke || obj.stroke || '#000000')}"
                     onchange="setStrokeColor(this.value)"
                 >
 
@@ -3589,69 +3589,62 @@ function applyGloss(obj){
 
 function setStrokeColor(color){
 
-    const obj =
-        selectedObject();
+    const objects = selectedObjects();
 
-    if(!obj)
+    if(!objects.length)
         return;
 
+    objects.forEach(obj => {
+        if(obj.type === "image") return;
 
-    obj._manualStroke =
-        color;
-
-
-    obj.set(
-        "stroke",
-        color
-    );
-
-
-    if(!obj.strokeWidth)
-        obj.set(
-            "strokeWidth",
-            2
-        );
-
+        obj._manualStroke = color;
+        obj.set({
+            stroke: color,
+            strokeWidth: Math.max(1, Number(obj.strokeWidth) || 0),
+            strokeUniform: true
+        });
+        obj.dirty = true;
+    });
 
     canvas.requestRenderAll();
-
     saveHistory();
-
     updateUI();
-
 }
 
 
 function setStrokeWidth(value){
 
-    const obj =
-        selectedObject();
+    const width = Number(value);
+    const objects = selectedObjects();
 
-    if(!obj)
+    if(!objects.length)
         return;
 
+    objects.forEach(obj => {
+        if(obj.type === "image") return;
 
-    obj.set(
-        "strokeWidth",
-        Number(value)
-    );
+        obj.set({
+            strokeWidth: width,
+            strokeUniform: true
+        });
 
+        // 太さを0にした場合だけ、縁取りを完全にOFFにする
+        if(width <= 0){
+            obj.set("stroke", null);
+        }else{
+            obj.set("stroke", obj._manualStroke || obj.stroke || "#000000");
+        }
+
+        obj.dirty = true;
+    });
 
     canvas.requestRenderAll();
 
-
-    const v =
-        document.getElementById(
-            "strokeValue"
-        );
-
-
-    if(v)
-        v.textContent=value;
-
+    const v = document.getElementById("strokeValue");
+    if(v) v.textContent = width;
 
     saveHistory();
-
+    updateUI();
 }
 
 
