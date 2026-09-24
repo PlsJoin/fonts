@@ -1209,6 +1209,8 @@ let historyIndex = -1;
 let restoringHistory = false;
 
 let zoom = 1;
+let penColor = "#222222";
+let penWidth = 8;
 
 
 /* =========================================================
@@ -1392,14 +1394,15 @@ function setTool(tool){
 
     if(tool === "pen"){
 
-        canvas.freeDrawingBrush =
-            new fabric.PencilBrush(canvas);
+        if(!canvas.freeDrawingBrush)
+            canvas.freeDrawingBrush =
+                new fabric.PencilBrush(canvas);
 
         canvas.freeDrawingBrush.color =
-            "#222222";
+            penColor;
 
         canvas.freeDrawingBrush.width =
-            8;
+            penWidth;
 
     }
 
@@ -2124,6 +2127,11 @@ function updateProperties(){
 
 
     if(!obj){
+
+        if(currentTool === "pen"){
+            area.innerHTML = penToolPanel();
+            return;
+        }
 
         area.innerHTML=`
 
@@ -2995,6 +3003,71 @@ function glossPanel(obj){
             >
                 元の色やグラデーションを壊さず、
                 上側に白いハイライトを加えます。
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   ペンツール設定
+========================================================= */
+
+function penToolPanel(){
+
+    return `
+
+        <div class="section">
+
+            <div class="section-title">
+                ペン設定
+            </div>
+
+            <div class="row">
+
+                <div class="label">
+                    色
+                </div>
+
+                <input
+                    type="color"
+                    value="${penColor}"
+                    oninput="changePenToolColor(this.value)"
+                >
+
+            </div>
+
+            <div class="row">
+
+                <div class="label">
+                    太さ
+                </div>
+
+                <input
+                    type="range"
+                    min="1"
+                    max="80"
+                    value="${penWidth}"
+                    oninput="changePenToolWidth(this.value)"
+                >
+
+                <div class="range-value" id="penToolWidthValue">
+                    ${penWidth}
+                </div>
+
+            </div>
+
+            <div style="
+                font-size:10px;
+                color:#888;
+                line-height:1.6;
+                margin-top:8px
+            ">
+                ペンを選んでいる間は、ここで設定した色と太さが
+                次に描く線へすぐ反映されます。
             </div>
 
         </div>
@@ -3878,6 +3951,48 @@ function changePenColor(color){
 
 
 /* =========================================================
+   ペンツールの色
+========================================================= */
+
+function changePenToolColor(value){
+
+    penColor = value;
+
+    if(!canvas.freeDrawingBrush)
+        canvas.freeDrawingBrush =
+            new fabric.PencilBrush(canvas);
+
+    canvas.freeDrawingBrush.color = penColor;
+
+    canvas.requestRenderAll();
+
+}
+
+
+/* =========================================================
+   ペンツールの太さ
+========================================================= */
+
+function changePenToolWidth(value){
+
+    penWidth = Number(value);
+
+    if(!canvas.freeDrawingBrush)
+        canvas.freeDrawingBrush =
+            new fabric.PencilBrush(canvas);
+
+    canvas.freeDrawingBrush.width = penWidth;
+
+    const v =
+        document.getElementById("penToolWidthValue");
+
+    if(v)
+        v.textContent = penWidth;
+
+}
+
+
+/* =========================================================
    ペンの太さ
 ========================================================= */
 
@@ -4027,21 +4142,48 @@ function setOpacity(value){
 }
 
 
-function changeFont(font){
+async function changeFont(font){
 
-    const obj =
+    const active =
         selectedObject();
 
-    if(
-        !obj ||
-        obj.type!=="i-text"
-    )
+    if(!active)
         return;
 
+    const targets =
+        active.type === "activeSelection"
+            ? active.getObjects().filter(o => o.type === "i-text")
+            : active.type === "i-text"
+                ? [active]
+                : [];
 
-    obj.fontFamily =
-        font;
+    if(!targets.length)
+        return;
 
+    /*
+       Google Fonts はブラウザ側で読み込みが完了するまで
+       Fabric が古いフォントの幅を使うことがある。
+       先に実フォントをロードしてから dimensions を再計算する。
+    */
+    try{
+        await document.fonts.load(
+            `120px "${font}"`
+        );
+    }catch(e){
+        /* フォント読み込み失敗時も指定自体は反映する */
+    }
+
+    targets.forEach(obj => {
+
+        obj.set("fontFamily", font);
+
+        if(typeof obj.initDimensions === "function")
+            obj.initDimensions();
+
+        if(typeof obj.setCoords === "function")
+            obj.setCoords();
+
+    });
 
     canvas.requestRenderAll();
 
