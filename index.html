@@ -19,12 +19,14 @@ body {
     width: 100%;
     height: 100%;
     overflow: hidden;
+
     font-family:
         "Yu Gothic UI",
         "Meiryo",
         "Noto Sans JP",
         Arial,
         sans-serif;
+
     color: #222;
     background: #e9e9e9;
 }
@@ -39,60 +41,82 @@ button {
     cursor: pointer;
 }
 
-/* =========================
+/* =========================================================
    全体
-========================= */
+========================================================= */
 
 .app {
     width: 100vw;
     height: 100vh;
+
     display: flex;
     flex-direction: column;
 }
 
-/* =========================
+
+/* =========================================================
    上部ツールバー
-========================= */
+========================================================= */
 
 .topbar {
     height: 46px;
+
     background: #f7f7f7;
+
     border-bottom: 1px solid #bdbdbd;
+
     display: flex;
     align-items: center;
+
     padding: 0 8px;
+
     gap: 4px;
+
     flex-shrink: 0;
 }
 
 .file-title {
     min-width: 150px;
+
     padding: 0 12px;
+
     font-size: 14px;
+
     font-weight: 600;
+
     color: #333;
 }
 
 .toolbar-separator {
     width: 1px;
     height: 25px;
+
     background: #c9c9c9;
+
     margin: 0 4px;
 }
 
 .tool-button {
     height: 30px;
+
     min-width: 34px;
+
     padding: 0 9px;
+
     border: 1px solid transparent;
+
     background: transparent;
+
     color: #222;
+
     font-size: 13px;
+
     border-radius: 2px;
 }
 
 .tool-button:hover {
     background: #e5e5e5;
+
     border-color: #c8c8c8;
 }
 
@@ -102,6 +126,7 @@ button {
 
 .tool-button.primary {
     background: #ffffff;
+
     border: 1px solid #aaa;
 }
 
@@ -115,102 +140,138 @@ button {
 
 .zoom-area {
     display: flex;
+
     align-items: center;
+
     gap: 5px;
 }
 
 .zoom-area button {
     width: 28px;
     height: 28px;
+
     border: 1px solid #bbb;
+
     background: #fff;
+
     border-radius: 2px;
 }
 
 .zoom-value {
     width: 55px;
+
     text-align: center;
+
     font-size: 12px;
 }
 
-/* =========================
+
+/* =========================================================
    メイン
-========================= */
+========================================================= */
 
 .main {
     flex: 1;
+
     min-height: 0;
+
     display: flex;
 }
 
-/* =========================
+
+/* =========================================================
    左ツール
-========================= */
+========================================================= */
 
 .left-panel {
     width: 58px;
+
     background: #f4f4f4;
+
     border-right: 1px solid #bdbdbd;
+
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
+
     padding-top: 5px;
+
     flex-shrink: 0;
 }
 
 .left-tool {
     width: 48px;
     height: 46px;
+
     margin-bottom: 2px;
+
     border: 1px solid transparent;
+
     background: transparent;
+
     color: #222;
+
     border-radius: 2px;
+
     display: flex;
+
     flex-direction: column;
+
     justify-content: center;
+
     align-items: center;
+
     gap: 2px;
+
     font-size: 11px;
 }
 
 .left-tool .icon {
     font-size: 18px;
+
     line-height: 18px;
 }
 
 .left-tool:hover {
     background: #e5e5e5;
+
     border-color: #ccc;
 }
 
 .left-tool.active {
     background: #dcdcdc;
+
     border-color: #aaa;
 }
 
-/* =========================
+
+/* =========================================================
    中央作業領域
-========================= */
+========================================================= */
 
 .workspace {
     flex: 1;
+
     min-width: 0;
+
     min-height: 0;
+
     position: relative;
+
     overflow: hidden;
+
     background: #dcdcdc;
 }
 
-/* Fabric Canvas を置く場所 */
-
 .canvas-wrapper {
     position: absolute;
+
     inset: 0;
+
     overflow: auto;
 }
-
-/* スクロールバー */
 
 .canvas-wrapper::-webkit-scrollbar {
     width: 14px;
@@ -223,38 +284,77 @@ button {
 
 .canvas-wrapper::-webkit-scrollbar-thumb {
     background: #b5b5b5;
+
     border: 3px solid #eeeeee;
 }
 
 .canvas-area {
     position: relative;
+
     margin: 60px auto;
+
     width: 1200px;
     height: 800px;
+
     background: #fff;
+
     box-shadow:
         0 1px 4px rgba(0,0,0,0.25);
 }
 
-/* グリッド */
+
+/* =========================================================
+   グリッド
+========================================================= */
 
 .grid {
     position: absolute;
+
     inset: 0;
+
     pointer-events: none;
+
     background-image:
-        linear-gradient(to right, #e8e8e8 1px, transparent 1px),
-        linear-gradient(to bottom, #e8e8e8 1px, transparent 1px);
-    background-size: 20px 20px;
+        linear-gradient(
+            to right,
+            #e8e8e8 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            to bottom,
+            #e8e8e8 1px,
+            transparent 1px
+        );
+
+    background-size:
+        20px 20px;
+
     z-index: 0;
 }
 
 .grid.large {
     background-image:
-        linear-gradient(to right, #d5d5d5 1px, transparent 1px),
-        linear-gradient(to bottom, #d5d5d5 1px, transparent 1px),
-        linear-gradient(to right, #e8e8e8 1px, transparent 1px),
-        linear-gradient(to bottom, #e8e8e8 1px, transparent 1px);
+        linear-gradient(
+            to right,
+            #d5d5d5 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            to bottom,
+            #d5d5d5 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            to right,
+            #e8e8e8 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            to bottom,
+            #e8e8e8 1px,
+            transparent 1px
+        );
+
     background-size:
         100px 100px,
         100px 100px,
@@ -262,45 +362,79 @@ button {
         20px 20px;
 }
 
-#canvas {
-    position: absolute;
-    inset: 0;
+
+/*
+    重要
+    Fabric.jsのcanvasそのものには
+    position:absoluteを指定しない。
+*/
+
+.canvas-area .canvas-container {
+    position: relative !important;
+
+    left: 0 !important;
+    top: 0 !important;
+
+    width: 1200px !important;
+    height: 800px !important;
+
     z-index: 2;
 }
 
-/* =========================
+.canvas-area .canvas-container canvas {
+    display: block;
+}
+
+
+/* =========================================================
    右プロパティ
-========================= */
+========================================================= */
 
 .right-panel {
     width: 280px;
+
     background: #f6f6f6;
+
     border-left: 1px solid #bdbdbd;
+
     display: flex;
+
     flex-direction: column;
+
     flex-shrink: 0;
+
     overflow: hidden;
 }
 
 .panel-title {
     height: 38px;
+
     display: flex;
+
     align-items: center;
+
     padding: 0 12px;
+
     border-bottom: 1px solid #c5c5c5;
+
     font-size: 13px;
+
     font-weight: 600;
+
     background: #ededed;
 }
 
 .property-content {
     padding: 10px;
+
     overflow-y: auto;
 }
 
 .property-section {
     border-bottom: 1px solid #d2d2d2;
+
     padding-bottom: 12px;
+
     margin-bottom: 12px;
 }
 
@@ -310,59 +444,84 @@ button {
 
 .section-title {
     font-size: 12px;
+
     font-weight: 600;
+
     margin-bottom: 8px;
+
     color: #444;
 }
 
 .property-row {
     display: flex;
+
     align-items: center;
+
     min-height: 30px;
+
     margin-bottom: 5px;
 }
 
 .property-label {
     width: 70px;
+
     font-size: 12px;
+
     color: #444;
 }
 
 .property-input {
     flex: 1;
+
     height: 27px;
+
     border: 1px solid #aaa;
+
     background: #fff;
+
     padding: 3px 6px;
+
     font-size: 12px;
+
     border-radius: 1px;
 }
 
 .property-input:focus {
     outline: none;
+
     border-color: #777;
 }
 
 .property-select {
     flex: 1;
+
     height: 27px;
+
     border: 1px solid #aaa;
+
     background: #fff;
+
     font-size: 12px;
 }
 
 .color-input {
     width: 48px;
     height: 27px;
+
     padding: 1px;
+
     border: 1px solid #aaa;
+
     background: white;
 }
 
 .checkbox-row {
     display: flex;
+
     align-items: center;
+
     gap: 7px;
+
     font-size: 12px;
 }
 
@@ -372,36 +531,52 @@ button {
 
 .no-selection {
     color: #777;
+
     font-size: 12px;
+
     line-height: 1.7;
+
     padding: 8px 0;
 }
 
-/* =========================
+
+/* =========================================================
    レイヤー
-========================= */
+========================================================= */
 
 .layers {
     border-top: 1px solid #c5c5c5;
+
     flex: 1;
+
     min-height: 150px;
+
     display: flex;
+
     flex-direction: column;
 }
 
 .layer-list {
     overflow-y: auto;
+
     flex: 1;
 }
 
 .layer-item {
     height: 34px;
+
     border-bottom: 1px solid #ddd;
+
     display: flex;
+
     align-items: center;
+
     padding: 0 8px;
+
     gap: 7px;
+
     font-size: 12px;
+
     cursor: pointer;
 }
 
@@ -415,28 +590,39 @@ button {
 
 .layer-number {
     width: 20px;
+
     color: #777;
+
     text-align: center;
 }
 
 .layer-name {
     flex: 1;
+
     overflow: hidden;
+
     white-space: nowrap;
+
     text-overflow: ellipsis;
 }
 
 .layer-actions {
     height: 35px;
+
     display: flex;
+
     border-top: 1px solid #ccc;
 }
 
 .layer-actions button {
     flex: 1;
+
     border: 0;
+
     border-right: 1px solid #ccc;
+
     background: #f2f2f2;
+
     font-size: 11px;
 }
 
@@ -444,24 +630,34 @@ button {
     background: #e3e3e3;
 }
 
-/* =========================
-   下部ステータス
-========================= */
+
+/* =========================================================
+   ステータス
+========================================================= */
 
 .statusbar {
     height: 25px;
+
     background: #ededed;
+
     border-top: 1px solid #bdbdbd;
+
     display: flex;
+
     align-items: center;
+
     padding: 0 10px;
+
     font-size: 11px;
+
     color: #555;
+
     flex-shrink: 0;
 }
 
 .status-left {
     display: flex;
+
     gap: 18px;
 }
 
@@ -469,53 +665,39 @@ button {
     margin-left: auto;
 }
 
-/* =========================
-   テキスト編集
-========================= */
 
-.text-toolbar {
-    position: absolute;
-    display: none;
-    height: 36px;
-    background: #f7f7f7;
-    border: 1px solid #aaa;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-    z-index: 20;
-    padding: 3px;
-    gap: 3px;
-}
-
-.text-toolbar button {
-    min-width: 30px;
-    border: 1px solid transparent;
-    background: transparent;
-}
-
-.text-toolbar button:hover {
-    background: #e4e4e4;
-    border-color: #ccc;
-}
-
-/* =========================
-   右クリックメニュー
-========================= */
+/* =========================================================
+   コンテキストメニュー
+========================================================= */
 
 .context-menu {
     display: none;
+
     position: fixed;
+
     width: 180px;
+
     background: #fff;
+
     border: 1px solid #999;
-    box-shadow: 2px 3px 8px rgba(0,0,0,0.2);
+
+    box-shadow:
+        2px 3px 8px rgba(0,0,0,0.2);
+
     z-index: 9999;
+
     padding: 3px 0;
 }
 
 .context-menu-item {
     height: 29px;
+
     padding: 0 12px;
+
     display: flex;
+
     align-items: center;
+
     font-size: 12px;
 }
 
@@ -523,34 +705,51 @@ button {
     background: #e6e6e6;
 }
 
-/* =========================
+
+/* =========================================================
    モーダル
-========================= */
+========================================================= */
 
 .modal-bg {
     display: none;
+
     position: fixed;
+
     inset: 0;
+
     background: rgba(0,0,0,0.28);
+
     z-index: 10000;
+
     align-items: center;
+
     justify-content: center;
 }
 
 .modal {
     width: 390px;
+
     background: #f7f7f7;
+
     border: 1px solid #999;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.3);
 }
 
 .modal-header {
     height: 40px;
+
     border-bottom: 1px solid #ccc;
+
     display: flex;
+
     align-items: center;
+
     padding: 0 12px;
+
     font-size: 13px;
+
     font-weight: 600;
 }
 
@@ -560,19 +759,29 @@ button {
 
 .modal-footer {
     height: 50px;
+
     border-top: 1px solid #ccc;
+
     display: flex;
+
     justify-content: flex-end;
+
     align-items: center;
+
     gap: 6px;
+
     padding: 0 10px;
 }
 
 .modal-button {
     min-width: 75px;
+
     height: 29px;
+
     border: 1px solid #aaa;
+
     background: #fff;
+
     font-size: 12px;
 }
 
@@ -580,9 +789,10 @@ button {
     background: #e8e8e8;
 }
 
-/* =========================
+
+/* =========================================================
    レスポンシブ
-========================= */
+========================================================= */
 
 @media (max-width: 900px) {
 
@@ -616,9 +826,9 @@ button {
 
 <div class="app">
 
-    <!-- =========================
-         上部
-    ========================== -->
+    <!-- =====================================================
+         上部ツールバー
+    ====================================================== -->
 
     <div class="topbar">
 
@@ -628,39 +838,55 @@ button {
 
         <div class="toolbar-separator"></div>
 
-        <button class="tool-button primary" id="undoButton">
+        <button
+            class="tool-button primary"
+            id="undoButton">
             元に戻す
         </button>
 
-        <button class="tool-button primary" id="redoButton">
+        <button
+            class="tool-button primary"
+            id="redoButton">
             やり直す
         </button>
 
         <div class="toolbar-separator"></div>
 
-        <button class="tool-button" id="copyButton">
+        <button
+            class="tool-button"
+            id="copyButton">
             コピー
         </button>
 
-        <button class="tool-button" id="pasteButton">
+        <button
+            class="tool-button"
+            id="pasteButton">
             貼り付け
         </button>
 
-        <button class="tool-button" id="duplicateButton">
+        <button
+            class="tool-button"
+            id="duplicateButton">
             複製
         </button>
 
-        <button class="tool-button" id="deleteButton">
+        <button
+            class="tool-button"
+            id="deleteButton">
             削除
         </button>
 
         <div class="toolbar-separator"></div>
 
-        <button class="tool-button" id="frontButton">
+        <button
+            class="tool-button"
+            id="frontButton">
             前面へ
         </button>
 
-        <button class="tool-button" id="backButton">
+        <button
+            class="tool-button"
+            id="backButton">
             背面へ
         </button>
 
@@ -668,76 +894,148 @@ button {
 
         <div class="zoom-area">
 
-            <button id="zoomOut">−</button>
+            <button id="zoomOut">
+                −
+            </button>
 
-            <div class="zoom-value" id="zoomValue">
+            <div
+                class="zoom-value"
+                id="zoomValue">
                 100%
             </div>
 
-            <button id="zoomIn">＋</button>
+            <button id="zoomIn">
+                ＋
+            </button>
 
         </div>
 
         <div class="toolbar-separator"></div>
 
-        <button class="tool-button primary" id="exportButton">
+        <button
+            class="tool-button primary"
+            id="exportButton">
             PNG出力
         </button>
 
     </div>
 
 
-    <!-- =========================
+    <!-- =====================================================
          メイン
-    ========================== -->
+    ====================================================== -->
 
     <div class="main">
 
-        <!-- 左 -->
+
+        <!-- =================================================
+             左ツール
+        ================================================== -->
 
         <div class="left-panel">
 
-            <button class="left-tool active" id="selectTool">
-                <div class="icon">↖</div>
-                <div>選択</div>
+            <button
+                class="left-tool active"
+                id="selectTool">
+
+                <div class="icon">
+                    ↖
+                </div>
+
+                <div>
+                    選択
+                </div>
+
             </button>
 
-            <button class="left-tool" id="textTool">
-                <div class="icon">T</div>
-                <div>文字</div>
+
+            <button
+                class="left-tool"
+                id="textTool">
+
+                <div class="icon">
+                    T
+                </div>
+
+                <div>
+                    文字
+                </div>
+
             </button>
 
-            <button class="left-tool" id="rectTool">
-                <div class="icon">□</div>
-                <div>四角形</div>
+
+            <button
+                class="left-tool"
+                id="rectTool">
+
+                <div class="icon">
+                    □
+                </div>
+
+                <div>
+                    四角形
+                </div>
+
             </button>
 
-            <button class="left-tool" id="circleTool">
-                <div class="icon">○</div>
-                <div>円</div>
+
+            <button
+                class="left-tool"
+                id="circleTool">
+
+                <div class="icon">
+                    ○
+                </div>
+
+                <div>
+                    円
+                </div>
+
             </button>
 
-            <button class="left-tool" id="lineTool">
-                <div class="icon">／</div>
-                <div>線</div>
+
+            <button
+                class="left-tool"
+                id="lineTool">
+
+                <div class="icon">
+                    ／
+                </div>
+
+                <div>
+                    線
+                </div>
+
             </button>
 
-            <button class="left-tool" id="imageTool">
-                <div class="icon">▧</div>
-                <div>画像</div>
+
+            <button
+                class="left-tool"
+                id="imageTool">
+
+                <div class="icon">
+                    ▧
+                </div>
+
+                <div>
+                    画像
+                </div>
+
             </button>
+
 
             <input
                 type="file"
                 id="imageInput"
                 accept="image/*"
-                style="display:none;"
-            >
+                style="display:none;">
 
         </div>
 
 
-        <!-- 作業領域 -->
+        <!-- =================================================
+             作業領域
+        ================================================== -->
 
         <div class="workspace">
 
@@ -760,7 +1058,9 @@ button {
         </div>
 
 
-        <!-- 右 -->
+        <!-- =================================================
+             右
+        ================================================== -->
 
         <div class="right-panel">
 
@@ -818,9 +1118,9 @@ button {
     </div>
 
 
-    <!-- =========================
+    <!-- =====================================================
          ステータス
-    ========================== -->
+    ====================================================== -->
 
     <div class="statusbar">
 
@@ -849,9 +1149,9 @@ button {
 </div>
 
 
-<!-- =========================
-     コンテキストメニュー
-========================== -->
+<!-- =========================================================
+     右クリックメニュー
+========================================================= -->
 
 <div
     class="context-menu"
@@ -881,7 +1181,13 @@ button {
         削除
     </div>
 
-    <div style="height:1px;background:#ddd;margin:3px 0;"></div>
+    <div
+        style="
+            height:1px;
+            background:#ddd;
+            margin:3px 0;
+        ">
+    </div>
 
     <div
         class="context-menu-item"
@@ -898,9 +1204,9 @@ button {
 </div>
 
 
-<!-- =========================
+<!-- =========================================================
      PNG設定
-========================== -->
+========================================================= -->
 
 <div
     class="modal-bg"
@@ -979,26 +1285,69 @@ button {
 
 
 <script>
+
 /* =========================================================
    基本設定
 ========================================================= */
 
 const canvas = new fabric.Canvas("canvas", {
+
     preserveObjectStacking: true,
+
     selection: true,
-    backgroundColor: "transparent"
+
+    selectionColor: "rgba(70, 130, 220, 0.12)",
+
+    selectionBorderColor: "#4d90fe",
+
+    selectionLineWidth: 1,
+
+    perPixelTargetFind: false,
+
+    targetFindTolerance: 5,
+
+    uniformScaling: false
+
 });
+
+
+canvas.setWidth(1200);
+canvas.setHeight(800);
+
 
 const canvasWidth = 1200;
 const canvasHeight = 800;
+
 
 let currentTool = "select";
 
 let copiedObject = null;
 
 let history = [];
+
 let historyIndex = -1;
+
 let isRestoringHistory = false;
+
+
+/* =========================================================
+   Fabricのキャンバス位置を正しく設定
+========================================================= */
+
+function fixCanvasSize() {
+
+    canvas.setDimensions({
+
+        width: canvasWidth,
+        height: canvasHeight
+
+    });
+
+    canvas.calcOffset();
+
+    canvas.renderAll();
+
+}
 
 
 /* =========================================================
@@ -1011,29 +1360,46 @@ function saveHistory() {
         return;
     }
 
-    const json = JSON.stringify(canvas.toJSON());
 
-    history = history.slice(0, historyIndex + 1);
+    const json =
+        JSON.stringify(canvas.toJSON());
+
+
+    history =
+        history.slice(
+            0,
+            historyIndex + 1
+        );
+
 
     history.push(json);
 
     historyIndex++;
 
+
     if (history.length > 50) {
 
         history.shift();
+
         historyIndex--;
 
     }
+
 }
+
 
 function restoreHistory(index) {
 
-    if (index < 0 || index >= history.length) {
+    if (
+        index < 0 ||
+        index >= history.length
+    ) {
         return;
     }
 
+
     isRestoringHistory = true;
+
 
     canvas.loadFromJSON(
         history[index],
@@ -1041,17 +1407,24 @@ function restoreHistory(index) {
 
             canvas.renderAll();
 
+
             isRestoringHistory = false;
 
+
             updateProperties();
+
             updateLayers();
+
             updateStatus();
 
         }
     );
 
+
     historyIndex = index;
+
 }
+
 
 function undo() {
 
@@ -1059,16 +1432,26 @@ function undo() {
         return;
     }
 
-    restoreHistory(historyIndex - 1);
+    restoreHistory(
+        historyIndex - 1
+    );
+
 }
+
 
 function redo() {
 
-    if (historyIndex >= history.length - 1) {
+    if (
+        historyIndex >=
+        history.length - 1
+    ) {
         return;
     }
 
-    restoreHistory(historyIndex + 1);
+    restoreHistory(
+        historyIndex + 1
+    );
+
 }
 
 
@@ -1080,45 +1463,119 @@ function setTool(tool) {
 
     currentTool = tool;
 
-    document.querySelectorAll(".left-tool").forEach(function(button) {
-        button.classList.remove("active");
-    });
+
+    document
+        .querySelectorAll(".left-tool")
+        .forEach(function(button) {
+
+            button.classList.remove(
+                "active"
+            );
+
+        });
+
 
     if (tool === "select") {
-        document.getElementById("selectTool").classList.add("active");
+
+        document
+            .getElementById("selectTool")
+            .classList.add("active");
+
+
         canvas.selection = true;
-        canvas.defaultCursor = "default";
+
+        canvas.defaultCursor =
+            "default";
+
+        canvas.hoverCursor =
+            "move";
+
+        canvas.moveCursor =
+            "move";
+
     }
+
 
     if (tool === "text") {
-        document.getElementById("textTool").classList.add("active");
+
+        document
+            .getElementById("textTool")
+            .classList.add("active");
+
+
         canvas.selection = false;
-        canvas.defaultCursor = "text";
+
+        canvas.defaultCursor =
+            "text";
+
+        canvas.hoverCursor =
+            "text";
+
     }
+
 
     if (tool === "rect") {
-        document.getElementById("rectTool").classList.add("active");
+
+        document
+            .getElementById("rectTool")
+            .classList.add("active");
+
+
         canvas.selection = false;
-        canvas.defaultCursor = "crosshair";
+
+        canvas.defaultCursor =
+            "crosshair";
+
     }
+
 
     if (tool === "circle") {
-        document.getElementById("circleTool").classList.add("active");
+
+        document
+            .getElementById("circleTool")
+            .classList.add("active");
+
+
         canvas.selection = false;
-        canvas.defaultCursor = "crosshair";
+
+        canvas.defaultCursor =
+            "crosshair";
+
     }
+
 
     if (tool === "line") {
-        document.getElementById("lineTool").classList.add("active");
+
+        document
+            .getElementById("lineTool")
+            .classList.add("active");
+
+
         canvas.selection = false;
-        canvas.defaultCursor = "crosshair";
+
+        canvas.defaultCursor =
+            "crosshair";
+
     }
 
+
     if (tool === "image") {
-        document.getElementById("imageTool").classList.add("active");
+
+        document
+            .getElementById("imageTool")
+            .classList.add("active");
+
+
         canvas.selection = false;
-        canvas.defaultCursor = "default";
+
+        canvas.defaultCursor =
+            "default";
+
     }
+
+
+    canvas.calcOffset();
+
 }
 
 
@@ -1128,45 +1585,72 @@ function setTool(tool) {
 
 function addText(x, y) {
 
-    const text = new fabric.IText("文字を入力", {
+    const text =
+        new fabric.IText(
+            "文字を入力",
+            {
 
-        left: x,
-        top: y,
+                left: x,
 
-        fontFamily: "Yu Gothic",
-        fontSize: 60,
+                top: y,
 
-        fill: "#222222",
+                fontFamily:
+                    "Yu Gothic",
 
-        fontWeight: "normal",
-        fontStyle: "normal",
+                fontSize: 60,
 
-        originX: "left",
-        originY: "top",
+                fill: "#222222",
 
-        transparentCorners: false,
+                fontWeight:
+                    "normal",
 
-        cornerColor: "#ffffff",
-        cornerStrokeColor: "#555555",
-        borderColor: "#555555",
+                fontStyle:
+                    "normal",
 
-        padding: 5
+                originX: "left",
 
-    });
+                originY: "top",
+
+                transparentCorners:
+                    false,
+
+                cornerColor:
+                    "#ffffff",
+
+                cornerStrokeColor:
+                    "#555555",
+
+                borderColor:
+                    "#555555",
+
+                padding: 5
+
+            }
+        );
+
 
     canvas.add(text);
 
     canvas.setActiveObject(text);
 
+
     text.enterEditing();
+
     text.selectAll();
+
 
     canvas.renderAll();
 
+
     saveHistory();
+
+
     updateProperties();
+
     updateLayers();
+
     updateStatus();
+
 }
 
 
@@ -1176,41 +1660,61 @@ function addText(x, y) {
 
 function addRect(x, y) {
 
-    const rect = new fabric.Rect({
+    const rect =
+        new fabric.Rect({
 
-        left: x,
-        top: y,
+            left: x,
 
-        width: 200,
-        height: 120,
+            top: y,
 
-        fill: "#d9d9d9",
-        stroke: "#333333",
-        strokeWidth: 2,
+            width: 200,
 
-        originX: "left",
-        originY: "top",
+            height: 120,
 
-        transparentCorners: false,
+            fill: "#d9d9d9",
 
-        cornerColor: "#ffffff",
-        cornerStrokeColor: "#555555",
-        borderColor: "#555555",
+            stroke: "#333333",
 
-        padding: 0
+            strokeWidth: 2,
 
-    });
+            originX: "left",
+
+            originY: "top",
+
+            transparentCorners:
+                false,
+
+            cornerColor:
+                "#ffffff",
+
+            cornerStrokeColor:
+                "#555555",
+
+            borderColor:
+                "#555555",
+
+            padding: 0
+
+        });
+
 
     canvas.add(rect);
 
     canvas.setActiveObject(rect);
 
+
     canvas.renderAll();
 
+
     saveHistory();
+
+
     updateProperties();
+
     updateLayers();
+
     updateStatus();
+
 }
 
 
@@ -1220,38 +1724,57 @@ function addRect(x, y) {
 
 function addCircle(x, y) {
 
-    const circle = new fabric.Circle({
+    const circle =
+        new fabric.Circle({
 
-        left: x,
-        top: y,
+            left: x,
 
-        radius: 70,
+            top: y,
 
-        fill: "#d9d9d9",
-        stroke: "#333333",
-        strokeWidth: 2,
+            radius: 70,
 
-        originX: "left",
-        originY: "top",
+            fill: "#d9d9d9",
 
-        transparentCorners: false,
+            stroke: "#333333",
 
-        cornerColor: "#ffffff",
-        cornerStrokeColor: "#555555",
-        borderColor: "#555555"
+            strokeWidth: 2,
 
-    });
+            originX: "left",
+
+            originY: "top",
+
+            transparentCorners:
+                false,
+
+            cornerColor:
+                "#ffffff",
+
+            cornerStrokeColor:
+                "#555555",
+
+            borderColor:
+                "#555555"
+
+        });
+
 
     canvas.add(circle);
 
     canvas.setActiveObject(circle);
 
+
     canvas.renderAll();
 
+
     saveHistory();
+
+
     updateProperties();
+
     updateLayers();
+
     updateStatus();
+
 }
 
 
@@ -1261,38 +1784,56 @@ function addCircle(x, y) {
 
 function addLine(x, y) {
 
-    const line = new fabric.Line(
-        [0, 0, 200, 0],
-        {
+    const line =
+        new fabric.Line(
+            [0, 0, 200, 0],
+            {
 
-            left: x,
-            top: y,
+                left: x,
 
-            stroke: "#222222",
-            strokeWidth: 3,
+                top: y,
 
-            originX: "left",
-            originY: "top",
+                stroke: "#222222",
 
-            transparentCorners: false,
+                strokeWidth: 3,
 
-            cornerColor: "#ffffff",
-            cornerStrokeColor: "#555555",
-            borderColor: "#555555"
+                originX: "left",
 
-        }
-    );
+                originY: "top",
+
+                transparentCorners:
+                    false,
+
+                cornerColor:
+                    "#ffffff",
+
+                cornerStrokeColor:
+                    "#555555",
+
+                borderColor:
+                    "#555555"
+
+            }
+        );
+
 
     canvas.add(line);
 
     canvas.setActiveObject(line);
 
+
     canvas.renderAll();
 
+
     saveHistory();
+
+
     updateProperties();
+
     updateLayers();
+
     updateStatus();
+
 }
 
 
@@ -1306,58 +1847,98 @@ function addImage(file) {
         return;
     }
 
-    const reader = new FileReader();
 
-    reader.onload = function(event) {
+    const reader =
+        new FileReader();
 
-        fabric.Image.fromURL(
-            event.target.result,
-            function(img) {
 
-                const maxWidth = 400;
-                const maxHeight = 300;
+    reader.onload =
+        function(event) {
 
-                const scaleX = maxWidth / img.width;
-                const scaleY = maxHeight / img.height;
+            fabric.Image.fromURL(
+                event.target.result,
+                function(img) {
 
-                let scale = Math.min(scaleX, scaleY, 1);
+                    const maxWidth =
+                        400;
 
-                img.set({
+                    const maxHeight =
+                        300;
 
-                    left: 100,
-                    top: 100,
 
-                    scaleX: scale,
-                    scaleY: scale,
+                    const scaleX =
+                        maxWidth /
+                        img.width;
 
-                    transparentCorners: false,
+                    const scaleY =
+                        maxHeight /
+                        img.height;
 
-                    cornerColor: "#ffffff",
-                    cornerStrokeColor: "#555555",
-                    borderColor: "#555555"
 
-                });
+                    const scale =
+                        Math.min(
+                            scaleX,
+                            scaleY,
+                            1
+                        );
 
-                canvas.add(img);
 
-                canvas.setActiveObject(img);
+                    img.set({
 
-                canvas.renderAll();
+                        left: 100,
 
-                saveHistory();
+                        top: 100,
 
-                updateProperties();
-                updateLayers();
-                updateStatus();
+                        scaleX: scale,
 
-                setTool("select");
+                        scaleY: scale,
 
-            }
-        );
+                        transparentCorners:
+                            false,
 
-    };
+                        cornerColor:
+                            "#ffffff",
+
+                        cornerStrokeColor:
+                            "#555555",
+
+                        borderColor:
+                            "#555555"
+
+                    });
+
+
+                    canvas.add(img);
+
+
+                    canvas.setActiveObject(
+                        img
+                    );
+
+
+                    canvas.renderAll();
+
+
+                    saveHistory();
+
+
+                    updateProperties();
+
+                    updateLayers();
+
+                    updateStatus();
+
+
+                    setTool("select");
+
+                }
+            );
+
+        };
+
 
     reader.readAsDataURL(file);
+
 }
 
 
@@ -1365,111 +1946,254 @@ function addImage(file) {
    キャンバスクリック
 ========================================================= */
 
-canvas.on("mouse:down", function(event) {
+canvas.on(
+    "mouse:down",
+    function(event) {
 
-    if (currentTool === "select") {
-        return;
+        /*
+            選択ツールの場合は
+            Fabric.js自身に任せる。
+
+            これで空白部分をドラッグすると
+            範囲選択が動作する。
+        */
+
+        if (
+            currentTool ===
+            "select"
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            currentTool ===
+            "image"
+        ) {
+
+            document
+                .getElementById(
+                    "imageInput"
+                )
+                .click();
+
+            return;
+
+        }
+
+
+        const pointer =
+            canvas.getPointer(
+                event.e
+            );
+
+
+        if (
+            currentTool ===
+            "text"
+        ) {
+
+            addText(
+                pointer.x,
+                pointer.y
+            );
+
+            setTool("select");
+
+            return;
+
+        }
+
+
+        if (
+            currentTool ===
+            "rect"
+        ) {
+
+            addRect(
+                pointer.x,
+                pointer.y
+            );
+
+            setTool("select");
+
+            return;
+
+        }
+
+
+        if (
+            currentTool ===
+            "circle"
+        ) {
+
+            addCircle(
+                pointer.x,
+                pointer.y
+            );
+
+            setTool("select");
+
+            return;
+
+        }
+
+
+        if (
+            currentTool ===
+            "line"
+        ) {
+
+            addLine(
+                pointer.x,
+                pointer.y
+            );
+
+            setTool("select");
+
+            return;
+
+        }
+
     }
-
-    if (currentTool === "image") {
-        document.getElementById("imageInput").click();
-        return;
-    }
-
-    const pointer = canvas.getPointer(event.e);
-
-    if (currentTool === "text") {
-        addText(pointer.x, pointer.y);
-        setTool("select");
-        return;
-    }
-
-    if (currentTool === "rect") {
-        addRect(pointer.x, pointer.y);
-        setTool("select");
-        return;
-    }
-
-    if (currentTool === "circle") {
-        addCircle(pointer.x, pointer.y);
-        setTool("select");
-        return;
-    }
-
-    if (currentTool === "line") {
-        addLine(pointer.x, pointer.y);
-        setTool("select");
-        return;
-    }
-
-});
+);
 
 
 /* =========================================================
-   選択イベント
+   選択開始
 ========================================================= */
 
-canvas.on("selection:created", function() {
+canvas.on(
+    "selection:created",
+    function(event) {
 
-    updateProperties();
-    updateLayers();
-    updateStatus();
+        updateProperties();
 
-});
+        updateLayers();
 
-canvas.on("selection:updated", function() {
+        updateStatus();
 
-    updateProperties();
-    updateLayers();
-    updateStatus();
+    }
+);
 
-});
 
-canvas.on("selection:cleared", function() {
+canvas.on(
+    "selection:updated",
+    function(event) {
 
-    updateProperties();
-    updateLayers();
-    updateStatus();
+        updateProperties();
 
-});
+        updateLayers();
+
+        updateStatus();
+
+    }
+);
+
+
+canvas.on(
+    "selection:cleared",
+    function(event) {
+
+        updateProperties();
+
+        updateLayers();
+
+        updateStatus();
+
+    }
+);
 
 
 /* =========================================================
-   オブジェクト移動・変更
+   オブジェクト移動
 ========================================================= */
 
-canvas.on("object:moving", function(event) {
+canvas.on(
+    "object:moving",
+    function(event) {
 
-    snapObject(event.target);
+        /*
+            複数選択時は
+            FabricのActiveSelection自体を動かす。
 
-    updateProperties();
-    updateStatus();
+            そのため個別オブジェクトだけを
+            スナップしない。
+        */
 
-});
+        if (
+            event.target &&
+            event.target.type !==
+                "activeSelection"
+        ) {
 
-canvas.on("object:scaling", function() {
+            snapObject(
+                event.target
+            );
 
-    updateProperties();
-    updateStatus();
+        }
 
-});
 
-canvas.on("object:rotating", function() {
+        updateProperties();
 
-    updateProperties();
-    updateStatus();
+        updateStatus();
 
-});
+    }
+);
 
-canvas.on("object:modified", function() {
 
-    saveHistory();
+/* =========================================================
+   サイズ変更
+========================================================= */
 
-    updateProperties();
-    updateLayers();
-    updateStatus();
+canvas.on(
+    "object:scaling",
+    function() {
 
-});
+        updateProperties();
+
+        updateStatus();
+
+    }
+);
+
+
+/* =========================================================
+   回転
+========================================================= */
+
+canvas.on(
+    "object:rotating",
+    function() {
+
+        updateProperties();
+
+        updateStatus();
+
+    }
+);
+
+
+/* =========================================================
+   オブジェクト変更完了
+========================================================= */
+
+canvas.on(
+    "object:modified",
+    function() {
+
+        saveHistory();
+
+        updateProperties();
+
+        updateLayers();
+
+        updateStatus();
+
+    }
+);
 
 
 /* =========================================================
@@ -1478,12 +2202,39 @@ canvas.on("object:modified", function() {
 
 function snapObject(object) {
 
+    /*
+        複数選択はここでは処理しない
+    */
+
+    if (
+        object.type ===
+        "activeSelection"
+    ) {
+
+        return;
+
+    }
+
+
     const gridSize = 20;
 
+
     object.set({
-        left: Math.round(object.left / gridSize) * gridSize,
-        top: Math.round(object.top / gridSize) * gridSize
+
+        left:
+            Math.round(
+                object.left /
+                gridSize
+            ) * gridSize,
+
+        top:
+            Math.round(
+                object.top /
+                gridSize
+            ) * gridSize
+
     });
+
 
     object.setCoords();
 
@@ -1497,25 +2248,75 @@ function snapObject(object) {
 function updateProperties() {
 
     const content =
-        document.getElementById("propertyContent");
+        document.getElementById(
+            "propertyContent"
+        );
 
-    const object = canvas.getActiveObject();
+
+    const object =
+        canvas.getActiveObject();
+
 
     if (!object) {
 
         content.innerHTML = `
+
             <div class="no-selection">
+
                 オブジェクトを選択すると、<br>
+
                 ここに設定項目が表示されます。
+
             </div>
+
         `;
 
         return;
+
     }
+
+
+    /*
+        複数選択
+    */
+
+    if (
+        object.type ===
+        "activeSelection"
+    ) {
+
+        const selectedCount =
+            object.getObjects().length;
+
+
+        content.innerHTML = `
+
+            <div class="no-selection">
+
+                ${selectedCount}個のオブジェクトを選択中です。
+
+                <br><br>
+
+                ドラッグでまとめて移動できます。
+
+                <br>
+
+                Deleteキーでまとめて削除できます。
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
 
     let html = "";
 
+
     html += `
+
         <div class="property-section">
 
             <div class="section-title">
@@ -1536,6 +2337,7 @@ function updateProperties() {
 
             </div>
 
+
             <div class="property-row">
 
                 <div class="property-label">
@@ -1551,9 +2353,12 @@ function updateProperties() {
             </div>
 
         </div>
+
     `;
 
+
     html += `
+
         <div class="property-section">
 
             <div class="section-title">
@@ -1570,9 +2375,12 @@ function updateProperties() {
                     class="property-input"
                     id="propWidth"
                     type="number"
-                    value="${Math.round(object.getScaledWidth())}">
+                    value="${Math.round(
+                        object.getScaledWidth()
+                    )}">
 
             </div>
+
 
             <div class="property-row">
 
@@ -1584,19 +2392,25 @@ function updateProperties() {
                     class="property-input"
                     id="propHeight"
                     type="number"
-                    value="${Math.round(object.getScaledHeight())}">
+                    value="${Math.round(
+                        object.getScaledHeight()
+                    )}">
 
             </div>
 
         </div>
+
     `;
 
+
     html += `
+
         <div class="property-section">
 
             <div class="section-title">
                 表示
             </div>
+
 
             <div class="property-row">
 
@@ -1610,9 +2424,13 @@ function updateProperties() {
                     type="number"
                     min="0"
                     max="100"
-                    value="${Math.round((object.opacity || 1) * 100)}">
+                    value="${Math.round(
+                        (object.opacity || 1) *
+                        100
+                    )}">
 
             </div>
+
 
             <div class="property-row">
 
@@ -1624,15 +2442,20 @@ function updateProperties() {
                     class="property-input"
                     id="propAngle"
                     type="number"
-                    value="${Math.round(object.angle || 0)}">
+                    value="${Math.round(
+                        object.angle || 0
+                    )}">
 
             </div>
 
         </div>
+
     `;
 
 
-    /* テキスト */
+    /*
+        テキスト
+    */
 
     if (
         object.type === "i-text" ||
@@ -1640,11 +2463,13 @@ function updateProperties() {
     ) {
 
         html += `
+
             <div class="property-section">
 
                 <div class="section-title">
                     文字
                 </div>
+
 
                 <div class="property-row">
 
@@ -1652,31 +2477,55 @@ function updateProperties() {
                         フォント
                     </div>
 
+
                     <select
                         class="property-select"
                         id="propFont">
 
                         <option
                             value="Yu Gothic"
-                            ${object.fontFamily === "Yu Gothic" ? "selected" : ""}>
+                            ${
+                                object.fontFamily ===
+                                "Yu Gothic"
+                                ? "selected"
+                                : ""
+                            }>
                             游ゴシック
                         </option>
 
+
                         <option
                             value="Meiryo"
-                            ${object.fontFamily === "Meiryo" ? "selected" : ""}>
+                            ${
+                                object.fontFamily ===
+                                "Meiryo"
+                                ? "selected"
+                                : ""
+                            }>
                             メイリオ
                         </option>
 
+
                         <option
                             value="Arial"
-                            ${object.fontFamily === "Arial" ? "selected" : ""}>
+                            ${
+                                object.fontFamily ===
+                                "Arial"
+                                ? "selected"
+                                : ""
+                            }>
                             Arial
                         </option>
 
+
                         <option
                             value="sans-serif"
-                            ${object.fontFamily === "sans-serif" ? "selected" : ""}>
+                            ${
+                                object.fontFamily ===
+                                "sans-serif"
+                                ? "selected"
+                                : ""
+                            }>
                             Sans Serif
                         </option>
 
@@ -1684,20 +2533,25 @@ function updateProperties() {
 
                 </div>
 
+
                 <div class="property-row">
 
                     <div class="property-label">
                         サイズ
                     </div>
 
+
                     <input
                         class="property-input"
                         id="propFontSize"
                         type="number"
                         min="1"
-                        value="${Math.round(object.fontSize || 60)}">
+                        value="${Math.round(
+                            object.fontSize || 60
+                        )}">
 
                 </div>
+
 
                 <div class="property-row">
 
@@ -1705,26 +2559,37 @@ function updateProperties() {
                         文字色
                     </div>
 
+
                     <input
                         class="color-input"
                         id="propFill"
                         type="color"
-                        value="${toHex(object.fill || "#222222")}">
+                        value="${toHex(
+                            object.fill ||
+                            "#222222"
+                        )}">
 
                 </div>
+
 
                 <div class="checkbox-row">
 
                     <input
                         type="checkbox"
                         id="propBold"
-                        ${object.fontWeight === "bold" ? "checked" : ""}>
+                        ${
+                            object.fontWeight ===
+                            "bold"
+                            ? "checked"
+                            : ""
+                        }>
 
                     <label for="propBold">
                         太字
                     </label>
 
                 </div>
+
 
                 <div
                     class="checkbox-row"
@@ -1733,7 +2598,12 @@ function updateProperties() {
                     <input
                         type="checkbox"
                         id="propItalic"
-                        ${object.fontStyle === "italic" ? "checked" : ""}>
+                        ${
+                            object.fontStyle ===
+                            "italic"
+                            ? "checked"
+                            : ""
+                        }>
 
                     <label for="propItalic">
                         斜体
@@ -1742,12 +2612,15 @@ function updateProperties() {
                 </div>
 
             </div>
+
         `;
 
     }
 
 
-    /* 図形 */
+    /*
+        図形
+    */
 
     if (
         object.type === "rect" ||
@@ -1755,27 +2628,34 @@ function updateProperties() {
     ) {
 
         html += `
+
             <div class="property-section">
 
                 <div class="section-title">
                     塗り
                 </div>
 
+
                 <div class="property-row">
 
                     <div class="property-label">
                         色
                     </div>
 
+
                     <input
                         class="color-input"
                         id="propFill"
                         type="color"
-                        value="${toHex(object.fill || "#ffffff")}">
+                        value="${toHex(
+                            object.fill ||
+                            "#ffffff"
+                        )}">
 
                 </div>
 
             </div>
+
 
             <div class="property-section">
 
@@ -1783,51 +2663,68 @@ function updateProperties() {
                     線
                 </div>
 
+
                 <div class="property-row">
 
                     <div class="property-label">
                         色
                     </div>
 
+
                     <input
                         class="color-input"
                         id="propStroke"
                         type="color"
-                        value="${toHex(object.stroke || "#000000")}">
+                        value="${toHex(
+                            object.stroke ||
+                            "#000000"
+                        )}">
 
                 </div>
+
 
                 <div class="property-row">
 
                     <div class="property-label">
                         太さ
                     </div>
+
 
                     <input
                         class="property-input"
                         id="propStrokeWidth"
                         type="number"
                         min="0"
-                        value="${Math.round(object.strokeWidth || 0)}">
+                        value="${Math.round(
+                            object.strokeWidth ||
+                            0
+                        )}">
 
                 </div>
 
             </div>
+
         `;
 
     }
 
 
-    /* 線 */
+    /*
+        線
+    */
 
-    if (object.type === "line") {
+    if (
+        object.type === "line"
+    ) {
 
         html += `
+
             <div class="property-section">
 
                 <div class="section-title">
                     線
                 </div>
+
 
                 <div class="property-row">
 
@@ -1835,13 +2732,18 @@ function updateProperties() {
                         色
                     </div>
 
+
                     <input
                         class="color-input"
                         id="propStroke"
                         type="color"
-                        value="${toHex(object.stroke || "#000000")}">
+                        value="${toHex(
+                            object.stroke ||
+                            "#000000"
+                        )}">
 
                 </div>
+
 
                 <div class="property-row">
 
@@ -1849,16 +2751,21 @@ function updateProperties() {
                         太さ
                     </div>
 
+
                     <input
                         class="property-input"
                         id="propStrokeWidth"
                         type="number"
                         min="1"
-                        value="${Math.round(object.strokeWidth || 1)}">
+                        value="${Math.round(
+                            object.strokeWidth ||
+                            1
+                        )}">
 
                 </div>
 
             </div>
+
         `;
 
     }
@@ -1866,7 +2773,10 @@ function updateProperties() {
 
     content.innerHTML = html;
 
-    attachPropertyEvents(object);
+
+    attachPropertyEvents(
+        object
+    );
 
 }
 
@@ -1875,316 +2785,497 @@ function updateProperties() {
    プロパティイベント
 ========================================================= */
 
-function attachPropertyEvents(object) {
+function attachPropertyEvents(
+    object
+) {
 
-    const x = document.getElementById("propX");
+    const x =
+        document.getElementById(
+            "propX"
+        );
+
 
     if (x) {
 
-        x.addEventListener("change", function() {
+        x.addEventListener(
+            "change",
+            function() {
 
-            object.set("left", Number(this.value));
+                object.set(
+                    "left",
+                    Number(
+                        this.value
+                    )
+                );
 
-            object.setCoords();
 
-            canvas.renderAll();
+                object.setCoords();
 
-            saveHistory();
-            updateLayers();
-            updateStatus();
 
-        });
+                canvas.renderAll();
+
+
+                saveHistory();
+
+
+                updateLayers();
+
+                updateStatus();
+
+            }
+        );
 
     }
 
 
-    const y = document.getElementById("propY");
+    const y =
+        document.getElementById(
+            "propY"
+        );
+
 
     if (y) {
 
-        y.addEventListener("change", function() {
+        y.addEventListener(
+            "change",
+            function() {
 
-            object.set("top", Number(this.value));
+                object.set(
+                    "top",
+                    Number(
+                        this.value
+                    )
+                );
 
-            object.setCoords();
 
-            canvas.renderAll();
+                object.setCoords();
 
-            saveHistory();
-            updateLayers();
-            updateStatus();
 
-        });
+                canvas.renderAll();
+
+
+                saveHistory();
+
+
+                updateLayers();
+
+                updateStatus();
+
+            }
+        );
 
     }
 
 
-    const width = document.getElementById("propWidth");
+    const width =
+        document.getElementById(
+            "propWidth"
+        );
+
 
     if (width) {
 
-        width.addEventListener("change", function() {
+        width.addEventListener(
+            "change",
+            function() {
 
-            const newWidth = Number(this.value);
+                const newWidth =
+                    Number(
+                        this.value
+                    );
 
-            if (object.width) {
 
-                object.scaleX =
-                    newWidth / object.width;
+                if (object.width) {
+
+                    object.scaleX =
+                        newWidth /
+                        object.width;
+
+                }
+
+
+                object.setCoords();
+
+
+                canvas.renderAll();
+
+
+                saveHistory();
+
+
+                updateProperties();
+
+                updateStatus();
 
             }
-
-            object.setCoords();
-
-            canvas.renderAll();
-
-            saveHistory();
-            updateProperties();
-            updateStatus();
-
-        });
+        );
 
     }
 
 
-    const height = document.getElementById("propHeight");
+    const height =
+        document.getElementById(
+            "propHeight"
+        );
+
 
     if (height) {
 
-        height.addEventListener("change", function() {
+        height.addEventListener(
+            "change",
+            function() {
 
-            const newHeight = Number(this.value);
+                const newHeight =
+                    Number(
+                        this.value
+                    );
 
-            if (object.height) {
 
-                object.scaleY =
-                    newHeight / object.height;
+                if (object.height) {
+
+                    object.scaleY =
+                        newHeight /
+                        object.height;
+
+                }
+
+
+                object.setCoords();
+
+
+                canvas.renderAll();
+
+
+                saveHistory();
+
+
+                updateProperties();
+
+                updateStatus();
 
             }
-
-            object.setCoords();
-
-            canvas.renderAll();
-
-            saveHistory();
-            updateProperties();
-            updateStatus();
-
-        });
+        );
 
     }
 
 
-    const opacity = document.getElementById("propOpacity");
+    const opacity =
+        document.getElementById(
+            "propOpacity"
+        );
+
 
     if (opacity) {
 
-        opacity.addEventListener("change", function() {
+        opacity.addEventListener(
+            "change",
+            function() {
 
-            let value = Number(this.value);
+                let value =
+                    Number(
+                        this.value
+                    );
 
-            value = Math.max(
-                0,
-                Math.min(100, value)
-            );
 
-            object.set(
-                "opacity",
-                value / 100
-            );
+                value =
+                    Math.max(
+                        0,
+                        Math.min(
+                            100,
+                            value
+                        )
+                    );
 
-            canvas.renderAll();
 
-            saveHistory();
+                object.set(
+                    "opacity",
+                    value / 100
+                );
 
-        });
+
+                canvas.renderAll();
+
+
+                saveHistory();
+
+            }
+        );
 
     }
 
 
-    const angle = document.getElementById("propAngle");
+    const angle =
+        document.getElementById(
+            "propAngle"
+        );
+
 
     if (angle) {
 
-        angle.addEventListener("change", function() {
+        angle.addEventListener(
+            "change",
+            function() {
 
-            object.set(
-                "angle",
-                Number(this.value)
-            );
+                object.set(
+                    "angle",
+                    Number(
+                        this.value
+                    )
+                );
 
-            object.setCoords();
 
-            canvas.renderAll();
+                object.setCoords();
 
-            saveHistory();
-            updateStatus();
 
-        });
+                canvas.renderAll();
+
+
+                saveHistory();
+
+
+                updateStatus();
+
+            }
+        );
 
     }
 
 
-    const fill = document.getElementById("propFill");
+    const fill =
+        document.getElementById(
+            "propFill"
+        );
+
 
     if (fill) {
 
-        fill.addEventListener("input", function() {
+        fill.addEventListener(
+            "input",
+            function() {
 
-            object.set(
-                "fill",
-                this.value
-            );
+                object.set(
+                    "fill",
+                    this.value
+                );
 
-            canvas.renderAll();
 
-        });
+                canvas.renderAll();
 
-        fill.addEventListener("change", function() {
+            }
+        );
 
-            saveHistory();
 
-        });
+        fill.addEventListener(
+            "change",
+            function() {
+
+                saveHistory();
+
+            }
+        );
 
     }
 
 
-    const stroke = document.getElementById("propStroke");
+    const stroke =
+        document.getElementById(
+            "propStroke"
+        );
+
 
     if (stroke) {
 
-        stroke.addEventListener("input", function() {
+        stroke.addEventListener(
+            "input",
+            function() {
 
-            object.set(
-                "stroke",
-                this.value
-            );
+                object.set(
+                    "stroke",
+                    this.value
+                );
 
-            canvas.renderAll();
 
-        });
+                canvas.renderAll();
 
-        stroke.addEventListener("change", function() {
+            }
+        );
 
-            saveHistory();
 
-        });
+        stroke.addEventListener(
+            "change",
+            function() {
+
+                saveHistory();
+
+            }
+        );
 
     }
 
 
     const strokeWidth =
-        document.getElementById("propStrokeWidth");
+        document.getElementById(
+            "propStrokeWidth"
+        );
+
 
     if (strokeWidth) {
 
-        strokeWidth.addEventListener("change", function() {
+        strokeWidth.addEventListener(
+            "change",
+            function() {
 
-            object.set(
-                "strokeWidth",
-                Number(this.value)
-            );
+                object.set(
+                    "strokeWidth",
+                    Number(
+                        this.value
+                    )
+                );
 
-            object.setCoords();
 
-            canvas.renderAll();
+                object.setCoords();
 
-            saveHistory();
-            updateStatus();
 
-        });
+                canvas.renderAll();
+
+
+                saveHistory();
+
+
+                updateStatus();
+
+            }
+        );
 
     }
 
 
     const font =
-        document.getElementById("propFont");
+        document.getElementById(
+            "propFont"
+        );
+
 
     if (font) {
 
-        font.addEventListener("change", function() {
+        font.addEventListener(
+            "change",
+            function() {
 
-            object.set(
-                "fontFamily",
-                this.value
-            );
+                object.set(
+                    "fontFamily",
+                    this.value
+                );
 
-            canvas.renderAll();
 
-            saveHistory();
+                canvas.renderAll();
 
-        });
+
+                saveHistory();
+
+            }
+        );
 
     }
 
 
     const fontSize =
-        document.getElementById("propFontSize");
+        document.getElementById(
+            "propFontSize"
+        );
+
 
     if (fontSize) {
 
-        fontSize.addEventListener("change", function() {
+        fontSize.addEventListener(
+            "change",
+            function() {
 
-            object.set(
-                "fontSize",
-                Number(this.value)
-            );
+                object.set(
+                    "fontSize",
+                    Number(
+                        this.value
+                    )
+                );
 
-            object.setCoords();
 
-            canvas.renderAll();
+                object.setCoords();
 
-            saveHistory();
-            updateProperties();
-            updateStatus();
 
-        });
+                canvas.renderAll();
+
+
+                saveHistory();
+
+
+                updateProperties();
+
+                updateStatus();
+
+            }
+        );
 
     }
 
 
     const bold =
-        document.getElementById("propBold");
+        document.getElementById(
+            "propBold"
+        );
+
 
     if (bold) {
 
-        bold.addEventListener("change", function() {
+        bold.addEventListener(
+            "change",
+            function() {
 
-            object.set(
-                "fontWeight",
-                this.checked
-                    ? "bold"
-                    : "normal"
-            );
+                object.set(
+                    "fontWeight",
+                    this.checked
+                        ? "bold"
+                        : "normal"
+                );
 
-            canvas.renderAll();
 
-            saveHistory();
+                canvas.renderAll();
 
-        });
+
+                saveHistory();
+
+            }
+        );
 
     }
 
 
     const italic =
-        document.getElementById("propItalic");
+        document.getElementById(
+            "propItalic"
+        );
+
 
     if (italic) {
 
-        italic.addEventListener("change", function() {
+        italic.addEventListener(
+            "change",
+            function() {
 
-            object.set(
-                "fontStyle",
-                this.checked
-                    ? "italic"
-                    : "normal"
-            );
+                object.set(
+                    "fontStyle",
+                    this.checked
+                        ? "italic"
+                        : "normal"
+                );
 
-            canvas.renderAll();
 
-            saveHistory();
+                canvas.renderAll();
 
-        });
+
+                saveHistory();
+
+            }
+        );
 
     }
 
@@ -2192,7 +3283,7 @@ function attachPropertyEvents(object) {
 
 
 /* =========================================================
-   HEX変換
+   HEX
 ========================================================= */
 
 function toHex(color) {
@@ -2201,19 +3292,37 @@ function toHex(color) {
         return "#000000";
     }
 
-    if (color.startsWith("#")) {
+
+    if (
+        typeof color ===
+        "string" &&
+        color.startsWith("#")
+    ) {
+
         return color;
+
     }
 
-    if (color === "transparent") {
+
+    if (
+        color ===
+        "transparent"
+    ) {
+
         return "#ffffff";
+
     }
+
 
     const ctx =
-        document.createElement("canvas")
+        document
+            .createElement("canvas")
             .getContext("2d");
 
-    ctx.fillStyle = color;
+
+    ctx.fillStyle =
+        color;
+
 
     return ctx.fillStyle;
 
@@ -2221,107 +3330,193 @@ function toHex(color) {
 
 
 /* =========================================================
-   レイヤー更新
+   レイヤー
 ========================================================= */
 
 function updateLayers() {
 
     const list =
-        document.getElementById("layerList");
+        document.getElementById(
+            "layerList"
+        );
+
 
     list.innerHTML = "";
 
-    const objects = canvas.getObjects();
+
+    const objects =
+        canvas.getObjects();
+
 
     const selected =
         canvas.getActiveObject();
 
+
     objects
         .slice()
         .reverse()
-        .forEach(function(object, reverseIndex) {
+        .forEach(
+            function(
+                object,
+                reverseIndex
+            ) {
 
-            const actualIndex =
-                objects.length - 1 - reverseIndex;
+                const actualIndex =
+                    objects.length -
+                    1 -
+                    reverseIndex;
 
-            const item =
-                document.createElement("div");
 
-            item.className =
-                "layer-item";
+                const item =
+                    document.createElement(
+                        "div"
+                    );
 
-            if (object === selected) {
-                item.classList.add("selected");
+
+                item.className =
+                    "layer-item";
+
+
+                if (
+                    selected ===
+                    object
+                ) {
+
+                    item.classList.add(
+                        "selected"
+                    );
+
+                }
+
+
+                const number =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                number.className =
+                    "layer-number";
+
+
+                number.textContent =
+                    actualIndex + 1;
+
+
+                const name =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                name.className =
+                    "layer-name";
+
+
+                name.textContent =
+                    getObjectName(
+                        object
+                    );
+
+
+                item.appendChild(
+                    number
+                );
+
+
+                item.appendChild(
+                    name
+                );
+
+
+                item.addEventListener(
+                    "click",
+                    function() {
+
+                        canvas.setActiveObject(
+                            object
+                        );
+
+
+                        canvas.renderAll();
+
+
+                        updateProperties();
+
+                        updateLayers();
+
+                        updateStatus();
+
+                    }
+                );
+
+
+                list.appendChild(
+                    item
+                );
+
             }
-
-            const number =
-                document.createElement("div");
-
-            number.className =
-                "layer-number";
-
-            number.textContent =
-                actualIndex + 1;
-
-
-            const name =
-                document.createElement("div");
-
-            name.className =
-                "layer-name";
-
-            name.textContent =
-                getObjectName(object);
-
-
-            item.appendChild(number);
-            item.appendChild(name);
-
-            item.addEventListener("click", function() {
-
-                canvas.setActiveObject(object);
-
-                canvas.renderAll();
-
-                updateProperties();
-                updateLayers();
-                updateStatus();
-
-            });
-
-            list.appendChild(item);
-
-        });
+        );
 
 }
 
 
-function getObjectName(object) {
+function getObjectName(
+    object
+) {
 
     if (
-        object.type === "i-text" ||
-        object.type === "text"
+        object.type ===
+        "i-text" ||
+        object.type ===
+        "text"
     ) {
 
-        return object.text || "文字";
+        return object.text ||
+            "文字";
 
     }
 
-    if (object.type === "rect") {
+
+    if (
+        object.type ===
+        "rect"
+    ) {
+
         return "四角形";
+
     }
 
-    if (object.type === "circle") {
+
+    if (
+        object.type ===
+        "circle"
+    ) {
+
         return "円";
+
     }
 
-    if (object.type === "line") {
+
+    if (
+        object.type ===
+        "line"
+    ) {
+
         return "線";
+
     }
 
-    if (object.type === "image") {
+
+    if (
+        object.type ===
+        "image"
+    ) {
+
         return "画像";
+
     }
+
 
     return "オブジェクト";
 
@@ -2337,42 +3532,98 @@ function updateStatus() {
     const objects =
         canvas.getObjects();
 
-    document.getElementById("objectStatus")
+
+    document
+        .getElementById(
+            "objectStatus"
+        )
         .textContent =
-        "オブジェクト " + objects.length;
+        "オブジェクト " +
+        objects.length;
 
 
     const object =
         canvas.getActiveObject();
 
+
     if (!object) {
 
-        document.getElementById("positionStatus")
+        document
+            .getElementById(
+                "positionStatus"
+            )
             .textContent =
             "X: -　Y: -";
 
-        document.getElementById("sizeStatus")
+
+        document
+            .getElementById(
+                "sizeStatus"
+            )
             .textContent =
             "W: -　H: -";
 
+
         return;
+
     }
 
 
-    document.getElementById("positionStatus")
+    if (
+        object.type ===
+        "activeSelection"
+    ) {
+
+        document
+            .getElementById(
+                "positionStatus"
+            )
+            .textContent =
+            "複数選択";
+
+
+        document
+            .getElementById(
+                "sizeStatus"
+            )
+            .textContent =
+            object.getObjects().length +
+            "個";
+
+
+        return;
+
+    }
+
+
+    document
+        .getElementById(
+            "positionStatus"
+        )
         .textContent =
         "X: " +
-        Math.round(object.left) +
+        Math.round(
+            object.left
+        ) +
         "　Y: " +
-        Math.round(object.top);
+        Math.round(
+            object.top
+        );
 
 
-    document.getElementById("sizeStatus")
+    document
+        .getElementById(
+            "sizeStatus"
+        )
         .textContent =
         "W: " +
-        Math.round(object.getScaledWidth()) +
+        Math.round(
+            object.getScaledWidth()
+        ) +
         "　H: " +
-        Math.round(object.getScaledHeight());
+        Math.round(
+            object.getScaledHeight()
+        );
 
 }
 
@@ -2386,15 +3637,20 @@ function copyObject() {
     const object =
         canvas.getActiveObject();
 
+
     if (!object) {
         return;
     }
 
-    object.clone(function(cloned) {
 
-        copiedObject = cloned;
+    object.clone(
+        function(cloned) {
 
-    });
+            copiedObject =
+                cloned;
+
+        }
+    );
 
 }
 
@@ -2409,31 +3665,51 @@ function pasteObject() {
         return;
     }
 
-    copiedObject.clone(function(clonedObj) {
 
-        clonedObj.set({
+    copiedObject.clone(
+        function(clonedObj) {
 
-            left:
-                (clonedObj.left || 0) + 20,
+            clonedObj.set({
 
-            top:
-                (clonedObj.top || 0) + 20
+                left:
+                    (
+                        clonedObj.left ||
+                        0
+                    ) + 20,
 
-        });
+                top:
+                    (
+                        clonedObj.top ||
+                        0
+                    ) + 20
 
-        canvas.add(clonedObj);
+            });
 
-        canvas.setActiveObject(clonedObj);
 
-        canvas.renderAll();
+            canvas.add(
+                clonedObj
+            );
 
-        saveHistory();
 
-        updateProperties();
-        updateLayers();
-        updateStatus();
+            canvas.setActiveObject(
+                clonedObj
+            );
 
-    });
+
+            canvas.renderAll();
+
+
+            saveHistory();
+
+
+            updateProperties();
+
+            updateLayers();
+
+            updateStatus();
+
+        }
+    );
 
 }
 
@@ -2446,11 +3722,15 @@ function duplicateObject() {
 
     copyObject();
 
-    setTimeout(function() {
 
-        pasteObject();
+    setTimeout(
+        function() {
 
-    }, 10);
+            pasteObject();
+
+        },
+        10
+    );
 
 }
 
@@ -2464,31 +3744,47 @@ function deleteObject() {
     const active =
         canvas.getActiveObjects();
 
-    if (!active.length) {
+
+    if (
+        !active.length
+    ) {
+
         return;
+
     }
 
-    active.forEach(function(object) {
 
-        canvas.remove(object);
+    active.forEach(
+        function(object) {
 
-    });
+            canvas.remove(
+                object
+            );
+
+        }
+    );
+
 
     canvas.discardActiveObject();
 
+
     canvas.renderAll();
+
 
     saveHistory();
 
+
     updateProperties();
+
     updateLayers();
+
     updateStatus();
 
 }
 
 
 /* =========================================================
-   レイヤー操作
+   レイヤー
 ========================================================= */
 
 function bringForward() {
@@ -2496,15 +3792,22 @@ function bringForward() {
     const object =
         canvas.getActiveObject();
 
+
     if (!object) {
         return;
     }
 
-    canvas.bringForward(object);
+
+    canvas.bringForward(
+        object
+    );
+
 
     canvas.renderAll();
 
+
     saveHistory();
+
 
     updateLayers();
 
@@ -2516,15 +3819,22 @@ function sendBackward() {
     const object =
         canvas.getActiveObject();
 
+
     if (!object) {
         return;
     }
 
-    canvas.sendBackwards(object);
+
+    canvas.sendBackwards(
+        object
+    );
+
 
     canvas.renderAll();
 
+
     saveHistory();
+
 
     updateLayers();
 
@@ -2536,15 +3846,22 @@ function bringToFront() {
     const object =
         canvas.getActiveObject();
 
+
     if (!object) {
         return;
     }
 
-    canvas.bringToFront(object);
+
+    canvas.bringToFront(
+        object
+    );
+
 
     canvas.renderAll();
 
+
     saveHistory();
+
 
     updateLayers();
 
@@ -2556,15 +3873,22 @@ function sendToBack() {
     const object =
         canvas.getActiveObject();
 
+
     if (!object) {
         return;
     }
 
-    canvas.sendToBack(object);
+
+    canvas.sendToBack(
+        object
+    );
+
 
     canvas.renderAll();
 
+
     saveHistory();
+
 
     updateLayers();
 
@@ -2572,77 +3896,127 @@ function sendToBack() {
 
 
 /* =========================================================
-   ボタンイベント
+   ボタン
 ========================================================= */
 
-document.getElementById("selectTool")
+document
+    .getElementById(
+        "selectTool"
+    )
     .addEventListener(
         "click",
         function() {
-            setTool("select");
+
+            setTool(
+                "select"
+            );
+
         }
     );
 
 
-document.getElementById("textTool")
+document
+    .getElementById(
+        "textTool"
+    )
     .addEventListener(
         "click",
         function() {
-            setTool("text");
+
+            setTool(
+                "text"
+            );
+
         }
     );
 
 
-document.getElementById("rectTool")
+document
+    .getElementById(
+        "rectTool"
+    )
     .addEventListener(
         "click",
         function() {
-            setTool("rect");
+
+            setTool(
+                "rect"
+            );
+
         }
     );
 
 
-document.getElementById("circleTool")
+document
+    .getElementById(
+        "circleTool"
+    )
     .addEventListener(
         "click",
         function() {
-            setTool("circle");
+
+            setTool(
+                "circle"
+            );
+
         }
     );
 
 
-document.getElementById("lineTool")
+document
+    .getElementById(
+        "lineTool"
+    )
     .addEventListener(
         "click",
         function() {
-            setTool("line");
+
+            setTool(
+                "line"
+            );
+
         }
     );
 
 
-document.getElementById("imageTool")
+document
+    .getElementById(
+        "imageTool"
+    )
     .addEventListener(
         "click",
         function() {
 
             document
-                .getElementById("imageInput")
+                .getElementById(
+                    "imageInput"
+                )
                 .click();
 
         }
     );
 
 
-document.getElementById("imageInput")
+document
+    .getElementById(
+        "imageInput"
+    )
     .addEventListener(
         "change",
         function() {
 
-            if (this.files.length > 0) {
+            if (
+                this.files.length >
+                0
+            ) {
 
-                addImage(this.files[0]);
+                addImage(
+                    this.files[0]
+                );
 
-                this.value = "";
+
+                this.value =
+                    "";
 
             }
 
@@ -2650,84 +4024,120 @@ document.getElementById("imageInput")
     );
 
 
-document.getElementById("undoButton")
+document
+    .getElementById(
+        "undoButton"
+    )
     .addEventListener(
         "click",
         undo
     );
 
 
-document.getElementById("redoButton")
+document
+    .getElementById(
+        "redoButton"
+    )
     .addEventListener(
         "click",
         redo
     );
 
 
-document.getElementById("copyButton")
+document
+    .getElementById(
+        "copyButton"
+    )
     .addEventListener(
         "click",
         copyObject
     );
 
 
-document.getElementById("pasteButton")
+document
+    .getElementById(
+        "pasteButton"
+    )
     .addEventListener(
         "click",
         pasteObject
     );
 
 
-document.getElementById("duplicateButton")
+document
+    .getElementById(
+        "duplicateButton"
+    )
     .addEventListener(
         "click",
         duplicateObject
     );
 
 
-document.getElementById("deleteButton")
+document
+    .getElementById(
+        "deleteButton"
+    )
     .addEventListener(
         "click",
         deleteObject
     );
 
 
-document.getElementById("frontButton")
+document
+    .getElementById(
+        "frontButton"
+    )
     .addEventListener(
         "click",
         bringForward
     );
 
 
-document.getElementById("backButton")
+document
+    .getElementById(
+        "backButton"
+    )
     .addEventListener(
         "click",
         sendBackward
     );
 
 
-document.getElementById("layerUp")
+document
+    .getElementById(
+        "layerUp"
+    )
     .addEventListener(
         "click",
         bringForward
     );
 
 
-document.getElementById("layerDown")
+document
+    .getElementById(
+        "layerDown"
+    )
     .addEventListener(
         "click",
         sendBackward
     );
 
 
-document.getElementById("layerTop")
+document
+    .getElementById(
+        "layerTop"
+    )
     .addEventListener(
         "click",
         bringToFront
     );
 
 
-document.getElementById("layerBottom")
+document
+    .getElementById(
+        "layerBottom"
+    )
     .addEventListener(
         "click",
         sendToBack
@@ -2735,173 +4145,237 @@ document.getElementById("layerBottom")
 
 
 /* =========================================================
-   キーボード操作
+   キーボード
 ========================================================= */
 
-document.addEventListener("keydown", function(event) {
+document.addEventListener(
+    "keydown",
+    function(event) {
 
-    const active =
-        canvas.getActiveObject();
-
-    /* Ctrl + Z */
-
-    if (
-        event.ctrlKey &&
-        !event.shiftKey &&
-        event.key.toLowerCase() === "z"
-    ) {
-
-        event.preventDefault();
-
-        undo();
-
-        return;
-
-    }
+        const active =
+            canvas.getActiveObject();
 
 
-    /* Ctrl + Y */
-
-    if (
-        event.ctrlKey &&
-        event.key.toLowerCase() === "y"
-    ) {
-
-        event.preventDefault();
-
-        redo();
-
-        return;
-
-    }
-
-
-    /* Ctrl + C */
-
-    if (
-        event.ctrlKey &&
-        event.key.toLowerCase() === "c"
-    ) {
+        /*
+            Ctrl + Z
+        */
 
         if (
-            active &&
-            !isTextEditing()
+            event.ctrlKey &&
+            !event.shiftKey &&
+            event.key.toLowerCase() ===
+                "z"
         ) {
 
             event.preventDefault();
 
-            copyObject();
+            undo();
+
+            return;
 
         }
 
-        return;
 
-    }
-
-
-    /* Ctrl + V */
-
-    if (
-        event.ctrlKey &&
-        event.key.toLowerCase() === "v"
-    ) {
-
-        if (!isTextEditing()) {
-
-            event.preventDefault();
-
-            pasteObject();
-
-        }
-
-        return;
-
-    }
-
-
-    /* Ctrl + D */
-
-    if (
-        event.ctrlKey &&
-        event.key.toLowerCase() === "d"
-    ) {
+        /*
+            Ctrl + Y
+        */
 
         if (
-            active &&
-            !isTextEditing()
+            event.ctrlKey &&
+            event.key.toLowerCase() ===
+                "y"
         ) {
 
             event.preventDefault();
 
-            duplicateObject();
+            redo();
+
+            return;
 
         }
 
-        return;
+
+        /*
+            Ctrl + C
+        */
+
+        if (
+            event.ctrlKey &&
+            event.key.toLowerCase() ===
+                "c"
+        ) {
+
+            if (
+                active &&
+                !isTextEditing()
+            ) {
+
+                event.preventDefault();
+
+                copyObject();
+
+            }
+
+            return;
+
+        }
+
+
+        /*
+            Ctrl + V
+        */
+
+        if (
+            event.ctrlKey &&
+            event.key.toLowerCase() ===
+                "v"
+        ) {
+
+            if (
+                !isTextEditing()
+            ) {
+
+                event.preventDefault();
+
+                pasteObject();
+
+            }
+
+            return;
+
+        }
+
+
+        /*
+            Ctrl + D
+        */
+
+        if (
+            event.ctrlKey &&
+            event.key.toLowerCase() ===
+                "d"
+        ) {
+
+            if (
+                active &&
+                !isTextEditing()
+            ) {
+
+                event.preventDefault();
+
+                duplicateObject();
+
+            }
+
+            return;
+
+        }
+
+
+        /*
+            Delete
+        */
+
+        if (
+            event.key ===
+                "Delete" &&
+            !isTextEditing()
+        ) {
+
+            deleteObject();
+
+            return;
+
+        }
+
+
+        /*
+            矢印
+        */
+
+        if (
+            active &&
+            !isTextEditing() &&
+            [
+                "ArrowUp",
+                "ArrowDown",
+                "ArrowLeft",
+                "ArrowRight"
+            ].includes(
+                event.key
+            )
+        ) {
+
+            event.preventDefault();
+
+
+            const step =
+                event.shiftKey
+                    ? 10
+                    : 1;
+
+
+            if (
+                event.key ===
+                "ArrowUp"
+            ) {
+
+                active.top -=
+                    step;
+
+            }
+
+
+            if (
+                event.key ===
+                "ArrowDown"
+            ) {
+
+                active.top +=
+                    step;
+
+            }
+
+
+            if (
+                event.key ===
+                "ArrowLeft"
+            ) {
+
+                active.left -=
+                    step;
+
+            }
+
+
+            if (
+                event.key ===
+                "ArrowRight"
+            ) {
+
+                active.left +=
+                    step;
+
+            }
+
+
+            active.setCoords();
+
+
+            canvas.renderAll();
+
+
+            updateProperties();
+
+            updateStatus();
+
+
+            return;
+
+        }
 
     }
-
-
-    /* Delete */
-
-    if (
-        event.key === "Delete" &&
-        !isTextEditing()
-    ) {
-
-        deleteObject();
-
-        return;
-
-    }
-
-
-    /* 矢印 */
-
-    if (
-        active &&
-        !isTextEditing() &&
-        [
-            "ArrowUp",
-            "ArrowDown",
-            "ArrowLeft",
-            "ArrowRight"
-        ].includes(event.key)
-    ) {
-
-        event.preventDefault();
-
-        const step =
-            event.shiftKey ? 10 : 1;
-
-        if (event.key === "ArrowUp") {
-            active.top -= step;
-        }
-
-        if (event.key === "ArrowDown") {
-            active.top += step;
-        }
-
-        if (event.key === "ArrowLeft") {
-            active.left -= step;
-        }
-
-        if (event.key === "ArrowRight") {
-            active.left += step;
-        }
-
-        active.setCoords();
-
-        canvas.renderAll();
-
-        updateProperties();
-        updateStatus();
-
-        return;
-
-    }
-
-});
+);
 
 
 function isTextEditing() {
@@ -2909,13 +4383,21 @@ function isTextEditing() {
     const active =
         canvas.getActiveObject();
 
+
     return (
+
         active &&
+
         (
-            active.type === "i-text" ||
-            active.type === "text"
+            active.type ===
+                "i-text" ||
+
+            active.type ===
+                "text"
         ) &&
+
         active.isEditing
+
     );
 
 }
@@ -2927,39 +4409,67 @@ function isTextEditing() {
 
 let zoom = 1;
 
+
 function setZoom(value) {
 
-    zoom = Math.max(
-        0.5,
-        Math.min(2, value)
+    zoom =
+        Math.max(
+            0.5,
+            Math.min(
+                2,
+                value
+            )
+        );
+
+
+    canvas.setZoom(
+        zoom
     );
 
-    canvas.setZoom(zoom);
 
-    document.getElementById("zoomValue")
+    document
+        .getElementById(
+            "zoomValue"
+        )
         .textContent =
-        Math.round(zoom * 100) + "%";
+        Math.round(
+            zoom * 100
+        ) +
+        "%";
+
+
+    canvas.calcOffset();
 
 }
 
 
-document.getElementById("zoomIn")
+document
+    .getElementById(
+        "zoomIn"
+    )
     .addEventListener(
         "click",
         function() {
 
-            setZoom(zoom + 0.1);
+            setZoom(
+                zoom + 0.1
+            );
 
         }
     );
 
 
-document.getElementById("zoomOut")
+document
+    .getElementById(
+        "zoomOut"
+    )
     .addEventListener(
         "click",
         function() {
 
-            setZoom(zoom - 0.1);
+            setZoom(
+                zoom - 0.1
+            );
 
         }
     );
@@ -2969,135 +4479,223 @@ document.getElementById("zoomOut")
    右クリック
 ========================================================= */
 
-document.addEventListener("contextmenu", function(event) {
+document.addEventListener(
+    "contextmenu",
+    function(event) {
 
-    const menu =
-        document.getElementById("contextMenu");
+        const menu =
+            document.getElementById(
+                "contextMenu"
+            );
 
-    if (
-        event.target.closest(".canvas-container")
-    ) {
 
-        event.preventDefault();
+        if (
+            event.target.closest(
+                ".canvas-container"
+            )
+        ) {
 
-        menu.style.display = "block";
+            event.preventDefault();
 
-        menu.style.left =
-            event.clientX + "px";
 
-        menu.style.top =
-            event.clientY + "px";
+            menu.style.display =
+                "block";
 
-    } else {
 
-        menu.style.display = "none";
+            menu.style.left =
+                event.clientX +
+                "px";
+
+
+            menu.style.top =
+                event.clientY +
+                "px";
+
+        } else {
+
+            menu.style.display =
+                "none";
+
+        }
 
     }
-
-});
-
-
-document.addEventListener("click", function() {
-
-    document.getElementById("contextMenu")
-        .style.display = "none";
-
-});
+);
 
 
-document.querySelectorAll(".context-menu-item")
-    .forEach(function(item) {
+document.addEventListener(
+    "click",
+    function() {
 
-        item.addEventListener(
-            "click",
-            function(event) {
+        document
+            .getElementById(
+                "contextMenu"
+            )
+            .style.display =
+            "none";
 
-                event.stopPropagation();
+    }
+);
 
-                const action =
-                    this.dataset.action;
 
-                if (action === "copy") {
-                    copyObject();
+document
+    .querySelectorAll(
+        ".context-menu-item"
+    )
+    .forEach(
+        function(item) {
+
+            item.addEventListener(
+                "click",
+                function(event) {
+
+                    event.stopPropagation();
+
+
+                    const action =
+                        this.dataset.action;
+
+
+                    if (
+                        action ===
+                        "copy"
+                    ) {
+
+                        copyObject();
+
+                    }
+
+
+                    if (
+                        action ===
+                        "paste"
+                    ) {
+
+                        pasteObject();
+
+                    }
+
+
+                    if (
+                        action ===
+                        "duplicate"
+                    ) {
+
+                        duplicateObject();
+
+                    }
+
+
+                    if (
+                        action ===
+                        "delete"
+                    ) {
+
+                        deleteObject();
+
+                    }
+
+
+                    if (
+                        action ===
+                        "front"
+                    ) {
+
+                        bringForward();
+
+                    }
+
+
+                    if (
+                        action ===
+                        "back"
+                    ) {
+
+                        sendBackward();
+
+                    }
+
                 }
+            );
 
-                if (action === "paste") {
-                    pasteObject();
-                }
-
-                if (action === "duplicate") {
-                    duplicateObject();
-                }
-
-                if (action === "delete") {
-                    deleteObject();
-                }
-
-                if (action === "front") {
-                    bringForward();
-                }
-
-                if (action === "back") {
-                    sendBackward();
-                }
-
-            }
-        );
-
-    });
+        }
+    );
 
 
 /* =========================================================
    PNG出力
 ========================================================= */
 
-document.getElementById("exportButton")
+document
+    .getElementById(
+        "exportButton"
+    )
     .addEventListener(
         "click",
         function() {
 
-            document.getElementById("exportModal")
-                .style.display = "flex";
+            document
+                .getElementById(
+                    "exportModal"
+                )
+                .style.display =
+                "flex";
 
         }
     );
 
 
-document.getElementById("cancelExport")
+document
+    .getElementById(
+        "cancelExport"
+    )
     .addEventListener(
         "click",
         function() {
 
-            document.getElementById("exportModal")
-                .style.display = "none";
+            document
+                .getElementById(
+                    "exportModal"
+                )
+                .style.display =
+                "none";
 
         }
     );
 
 
-document.getElementById("confirmExport")
+document
+    .getElementById(
+        "confirmExport"
+    )
     .addEventListener(
         "click",
         function() {
 
             const multiplier =
                 Number(
-                    document.getElementById(
-                        "exportSize"
-                    ).value
+                    document
+                        .getElementById(
+                            "exportSize"
+                        )
+                        .value
                 );
 
+
             const transparent =
-                document.getElementById(
-                    "transparentBackground"
-                ).checked;
+                document
+                    .getElementById(
+                        "transparentBackground"
+                    )
+                    .checked;
 
 
             const oldBackground =
                 canvas.backgroundColor;
 
 
-            if (transparent) {
+            if (
+                transparent
+            ) {
 
                 canvas.backgroundColor =
                     "transparent";
@@ -3112,18 +4710,21 @@ document.getElementById("confirmExport")
 
             canvas.discardActiveObject();
 
+
             canvas.renderAll();
 
 
             const dataURL =
                 canvas.toDataURL({
 
-                    format: "png",
+                    format:
+                        "png",
 
                     multiplier:
                         multiplier,
 
-                    enableRetinaScaling: false
+                    enableRetinaScaling:
+                        false
 
                 });
 
@@ -3131,34 +4732,57 @@ document.getElementById("confirmExport")
             canvas.backgroundColor =
                 oldBackground;
 
+
             canvas.renderAll();
 
 
             const link =
-                document.createElement("a");
+                document.createElement(
+                    "a"
+                );
 
-            link.href = dataURL;
+
+            link.href =
+                dataURL;
+
 
             link.download =
                 "logo.png";
 
-            document.body.appendChild(link);
+
+            document
+                .body
+                .appendChild(
+                    link
+                );
+
 
             link.click();
 
-            document.body.removeChild(link);
+
+            document
+                .body
+                .removeChild(
+                    link
+                );
 
 
-            document.getElementById("exportModal")
-                .style.display = "none";
+            document
+                .getElementById(
+                    "exportModal"
+                )
+                .style.display =
+                "none";
 
         }
     );
 
 
 /* =========================================================
-   初期状態
+   初期化
 ========================================================= */
+
+fixCanvasSize();
 
 saveHistory();
 
@@ -3167,24 +4791,6 @@ updateLayers();
 updateStatus();
 
 setTool("select");
-
-
-/* =========================================================
-   キャンバス外クリック
-========================================================= */
-
-canvas.on("mouse:down", function(event) {
-
-    updateProperties();
-    updateLayers();
-    updateStatus();
-
-});
-
-
-/* =========================================================
-   初期サンプルは置かない
-========================================================= */
 
 canvas.renderAll();
 
