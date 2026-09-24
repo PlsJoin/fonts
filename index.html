@@ -1,1023 +1,766 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>VTuberネームロゴメーカー</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>白紙シート | Excel風メモ＆PNG書き出し</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { width: 100%; height: 100%; overflow: hidden; }
-body {
-  font-family: "Segoe UI", "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif;
-  background: #f3f3f3;
-  color: #222;
-  display: flex;
-  flex-direction: column;
-}
-.toolbar {
-  background: #fff;
-  border-bottom: 1px solid #d0d0d0;
-  box-shadow: 0 1px 3px rgba(0,0,0,.06);
-  flex-shrink: 0;
-  z-index: 10;
-}
-.toolbar-row {
-  display: flex;
-  align-items: stretch;
-  flex-wrap: wrap;
-  gap: 0;
-  border-bottom: 1px solid #eee;
-  padding: 0 4px;
-}
-.toolbar-row:last-child { border-bottom: none; }
-.group {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border-right: 1px solid #e8e8e8;
-  flex-shrink: 0;
-}
-.group:last-child { border-right: none; }
-.group-label {
-  font-size: 10px;
-  color: #888;
-  text-align: center;
-  width: 100%;
-  margin-top: 2px;
-  letter-spacing: .02em;
-}
-.group-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-.group-controls {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-input[type="text"] {
-  padding: 5px 8px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  font-family: inherit;
-  font-size: 13px;
-  width: 140px;
-  background: #fff;
-}
-input[type="text"]:focus { outline: none; border-color: #4a90e2; }
-select {
-  padding: 5px 6px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  font-family: inherit;
-  font-size: 12px;
-  background: #fff;
-  max-width: 200px;
-}
-select:focus { outline: none; border-color: #4a90e2; }
-input[type="color"] {
-  width: 28px;
-  height: 26px;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  padding: 1px;
-  background: #fff;
-  border-radius: 3px;
-  flex-shrink: 0;
-}
-input[type="range"] {
-  width: 80px;
-  accent-color: #4a90e2;
-  vertical-align: middle;
-}
-input[type="checkbox"] {
-  width: 14px;
-  height: 14px;
-  accent-color: #4a90e2;
-  flex-shrink: 0;
-}
-.val {
-  font-size: 11px;
-  color: #555;
-  min-width: 22px;
-  text-align: right;
-}
-button {
-  padding: 5px 10px;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  background: #f0f0f0;
-  color: #333;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background .1s;
-  -webkit-tap-highlight-color: transparent;
-}
-button:hover { background: #e4e4e4; }
-button:active { background: #d8d8d8; }
-button.primary {
-  background: #4a90e2;
-  color: #fff;
-  border-color: #3a7bc8;
-}
-button.primary:hover { background: #357abd; }
-button.danger {
-  background: #fff;
-  color: #c0392b;
-  border-color: #e0b0b0;
-}
-button.danger:hover { background: #fdecea; }
-button:disabled { opacity: .4; cursor: not-allowed; }
-button.active {
-  background: #4a90e2;
-  color: #fff;
-  border-color: #3a7bc8;
-}
-.chk {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  user-select: none;
-  white-space: nowrap;
-}
-.main {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  background: #c8ccd0;
-}
-.canvas-wrap {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: auto;
-  padding: 16px;
-  -webkit-overflow-scrolling: touch;
-}
-#canvas-container {
-  background: #fff;
-  border: 1px solid #aaa;
-  box-shadow: 0 2px 12px rgba(0,0,0,.15);
-  line-height: 0;
-  flex-shrink: 0;
-}
-#c { display: block; touch-action: none; }
-.status {
-  flex-shrink: 0;
-  font-size: 11px;
-  color: #555;
-  background: #f0f0f0;
-  border-top: 1px solid #d0d0d0;
-  padding: 4px 12px;
-}
-.preload { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
-@media (max-width: 900px) {
-  .toolbar-row { flex-wrap: wrap; }
-  .group { border-right: none; border-bottom: 1px solid #eee; }
-  input[type="text"] { width: 110px; }
-  select { max-width: 160px; }
-  input[type="range"] { width: 60px; }
-}
+  :root{
+    --font: 'Helvetica Neue', Helvetica, Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', Meiryo, 'Noto Sans JP', sans-serif;
+    --bg:#eceff4;
+    --paper:#ffffff;
+    --ink:#1f2430;
+    --line:#d8dee8;
+    --accent:#2f6fed;
+    --accent-soft:#e8f0ff;
+    --muted:#6b7686;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;}
+  body{
+    font-family:var(--font);
+    background:var(--bg);
+    color:var(--ink);
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+    overflow:hidden;
+  }
+
+  /* ---------- toolbar ---------- */
+  header{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    padding:10px 14px;
+    background:#fff;
+    border-bottom:1px solid var(--line);
+    box-shadow:0 1px 3px rgba(20,30,50,.05);
+    z-index:5;
+  }
+  .brand{
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:.02em;
+    margin-right:6px;
+    white-space:nowrap;
+  }
+  .brand span{color:var(--muted);font-weight:400;font-size:12px;margin-left:6px;}
+  .btn{
+    font-family:inherit;
+    font-size:13px;
+    padding:6px 12px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+    border-radius:8px;
+    cursor:pointer;
+    line-height:1.2;
+    transition:background .12s, border-color .12s, color .12s;
+  }
+  .btn:hover{background:#f5f7fb;border-color:#c6d0de;}
+  .btn:active{transform:translateY(1px);}
+  .btn.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+  .btn.primary{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+    font-weight:600;
+  }
+  .btn.primary:hover{background:#2560d8;}
+  .field{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    font-size:12px;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  select, input[type="color"]{
+    font-family:inherit;
+    font-size:13px;
+    color:var(--ink);
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:#fff;
+    padding:5px 6px;
+    cursor:pointer;
+  }
+  input[type="color"]{padding:2px;width:38px;height:30px;}
+  .spacer{flex:1 1 auto;}
+  .meta{font-size:12px;color:var(--muted);white-space:nowrap;}
+  .keys{font-size:12px;color:var(--muted);white-space:nowrap;}
+  .keys kbd{
+    font-family:inherit;
+    background:#f2f4f8;
+    border:1px solid var(--line);
+    border-bottom-width:2px;
+    border-radius:4px;
+    padding:1px 5px;
+    font-size:11px;
+    color:#44506a;
+  }
+
+  /* ---------- canvas ---------- */
+  #stage{
+    flex:1 1 auto;
+    overflow:auto;
+    padding:22px;
+  }
+  #sheet{
+    position:relative;
+    width:3200px;
+    height:2200px;
+    background:var(--paper);
+    border-radius:6px;
+    box-shadow:0 2px 12px rgba(20,30,50,.13), 0 0 0 1px rgba(20,30,50,.05);
+  }
+  #sheetHint{
+    position:absolute;
+    left:50%;
+    top:38%;
+    transform:translate(-50%,-50%);
+    color:#c3cbd8;
+    font-size:19px;
+    letter-spacing:.04em;
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-select:none;
+  }
+  .cell{
+    position:absolute;
+    padding:4px 8px;
+    white-space:pre;
+    cursor:move;
+    border-radius:4px;
+    outline:none;
+    min-width:14px;
+    user-select:none;
+    -webkit-user-select:none;
+    touch-action:none;
+    caret-color:var(--accent);
+  }
+  .cell:hover{background:rgba(47,111,237,.055);}
+  .cell.sel{
+    box-shadow:0 0 0 1.5px rgba(47,111,237,.6);
+    background:rgba(47,111,237,.045);
+  }
+  .cell.editing{
+    cursor:text;
+    user-select:text;
+    -webkit-user-select:text;
+    touch-action:auto;
+    background:#fff;
+    box-shadow:0 0 0 1.5px var(--accent), 0 0 0 5px rgba(47,111,237,.13);
+  }
+  footer{
+    padding:6px 14px;
+    font-size:11.5px;
+    color:var(--muted);
+    background:#fff;
+    border-top:1px solid var(--line);
+    white-space:nowrap;
+    overflow-x:auto;
+  }
 </style>
 </head>
 <body>
-<div class="preload" style="font-family:'Rampart One'">a</div>
-<div class="preload" style="font-family:'Dela Gothic One'">a</div>
-<div class="preload" style="font-family:'Hachi Maru Pop'">a</div>
-<div class="preload" style="font-family:'M PLUS Rounded 1c'">a</div>
 
-<div class="toolbar">
-  <div class="toolbar-row">
-    <div class="group">
-      <div class="group-inner">
-        <div class="group-controls">
-          <input type="text" id="textInput" value="ドル鯖" placeholder="テキスト">
-          <button class="primary" id="addTextBtn">追加</button>
-        </div>
-        <div class="group-label">テキスト</div>
-      </div>
-    </div>
-    <div class="group">
-      <div class="group-inner">
-        <div class="group-controls">
-          <select id="fontSelect">
-            <option value="Rampart One" selected>Rampart One（立体）</option>
-            <option value="Dela Gothic One">Dela Gothic One（太ゴ）</option>
-            <option value="Yomogi">Yomogi（手書き）</option>
-            <option value="Hachi Maru Pop">Hachi Maru Pop（ポップ）</option>
-            <option value="Zen Maru Gothic">Zen Maru Gothic（丸ゴ）</option>
-            <option value="M PLUS Rounded 1c">M PLUS Rounded</option>
-            <option value="Noto Sans JP">Noto Sans JP</option>
-            <option value="Noto Serif JP">Noto Serif JP（明朝）</option>
-            <option value="Shippori Mincho">Shippori Mincho</option>
-            <option value="Kaisei Decol">Kaisei Decol</option>
-            <option value="Reggae One">Reggae One</option>
-            <option value="Potta One">Potta One</option>
-            <option value="Stick">Stick</option>
-            <option value="RocknRoll One">RocknRoll One</option>
-            <option value="DotGothic16">DotGothic16（ドット）</option>
-            <option value="Sawarabi Gothic">Sawarabi Gothic</option>
-            <option value="Sawarabi Mincho">Sawarabi Mincho</option>
-            <option value="Kosugi Maru">Kosugi Maru</option>
-            <option value="Comic Sans MS">Comic Sans MS</option>
-            <option value="Impact">Impact</option>
-            <option value="Arial Black">Arial Black</option>
-          </select>
-        </div>
-        <div class="group-label">フォント</div>
-      </div>
-    </div>
-    <div class="group">
-      <div class="group-inner">
-        <div class="group-controls">
-          <input type="range" id="fontSize" min="20" max="180" value="72">
-          <span class="val" id="fontSizeVal">72</span>
-        </div>
-        <div class="group-label">サイズ</div>
-      </div>
-    </div>
-    <div class="group">
-      <div class="group-inner">
-        <div class="group-controls">
-          <input type="color" id="textColor" value="#0055ff" title="文字色">
-          <input type="color" id="midColor" value="#8ec8ff" title="塗り色">
-          <label class="chk"><input type="checkbox" id="gradient"> グラデ</label>
-        </div>
-        <div class="group-label">文字色 / 塗り色</div>
-      </div>
-    </div>
-    <div class="group">
-      <div class="group-inner">
-        <div class="group-controls">
-          <input type="color" id="strokeColor" value="#ff2200" title="縁色">
-          <input type="range" id="strokeWidth" min="0" max="40" value="12">
-          <span class="val" id="strokeWidthVal">12</span>
-          <label class="chk"><input type="checkbox" id="outer" checked> 外側のみ</label>
-        </div>
-        <div class="group-label">縁</div>
-      </div>
-    </div>
-  </div>
-  <div class="toolbar-row">
-    <div class="group">
-      <div class="group-inner">
-        <div class="group-controls">
-          <button id="selectBtn" class="active">選択</button>
-          <button id="penBtn">ペン</button>
-          <button id="eraserBtn">消</button>
-          <input type="color" id="penColor" value="#000000" title="ペン色">
-          <input type="range" id="penWidth" min="1" max="40" value="6">
-          <span class="val" id="penWidthVal">6</span>
-        </div>
-        <div class="group-label">モード</div>
-      </div>
-    </div>
-    <div class="group">
-      <div class="group-inner">
-        <div class="group-controls">
-          <button id="addRectBtn">□ 四角</button>
-          <button id="addCircleBtn">○ 丸</button>
-          <button id="addTriangleBtn">△ 三角</button>
-          <button id="importImageBtn">画像</button>
-        </div>
-        <div class="group-label">図形</div>
-      </div>
-    </div>
-    <input type="file" id="imageInput" accept="image/*" style="display:none">
-    <div class="group">
-      <div class="group-inner">
-        <div class="group-controls">
-          <span style="font-size:11px;color:#666">角丸</span>
-          <input type="range" id="cornerRadius" min="0" max="60" value="0" title="四角の角の丸み">
-          <span class="val" id="cornerRadiusVal">0</span>
-        </div>
-        <div class="group-label">四角の角</div>
-      </div>
-    </div>
-    <div class="group">
-      <div class="group-inner">
-        <div class="group-controls">
-          <button id="bringForwardBtn">前面へ</button>
-          <button id="sendBackwardBtn">背面へ</button>
-          <button id="bringToFrontBtn">最前面</button>
-          <button id="sendToBackBtn">最背面</button>
-        </div>
-        <div class="group-label">重ね順</div>
-      </div>
-    </div>
-    <div class="group">
-      <div class="group-inner">
-        <div class="group-controls">
-          <button id="deleteBtn" class="danger">削除</button>
-          <button id="clearBtn" class="danger">全消</button>
-          <button id="undoBtn">↩</button>
-          <button id="redoBtn">↪</button>
-        </div>
-        <div class="group-label">操作 / 履歴</div>
-      </div>
-    </div>
-    <div class="group">
-      <div class="group-inner">
-        <div class="group-controls">
-          <select id="exportScale">
-            <option value="1">1x</option>
-            <option value="2" selected>2x</option>
-            <option value="3">3x</option>
-            <option value="4">4x</option>
-          </select>
-          <button class="primary" id="downloadBtn">PNG保存</button>
-        </div>
-        <div class="group-label">保存</div>
-      </div>
-    </div>
+<header>
+  <div class="brand">白紙シート<span>Excel風・マスなし</span></div>
+
+  <button id="boldBtn" class="btn" title="太字 (Ctrl+B)"><b>B</b> 太字</button>
+
+  <label class="field">サイズ
+    <select id="sizeSel">
+      <option value="12">12</option>
+      <option value="14">14</option>
+      <option value="16">16</option>
+      <option value="18" selected>18</option>
+      <option value="20">20</option>
+      <option value="24">24</option>
+      <option value="28">28</option>
+      <option value="32">32</option>
+      <option value="40">40</option>
+      <option value="48">48</option>
+      <option value="56">56</option>
+      <option value="72">72</option>
+    </select>
+  </label>
+
+  <label class="field">色
+    <input type="color" id="colorInp" value="#1f2430" />
+  </label>
+
+  <button id="delBtn" class="btn">セル削除</button>
+  <button id="clearBtn" class="btn">全消去</button>
+  <button id="pngBtn" class="btn primary">PNGで保存</button>
+
+  <span class="spacer"></span>
+  <span class="meta" id="count">セル数 0</span>
+</header>
+
+<div id="stage">
+  <div id="sheet">
+    <div id="sheetHint">クリックした場所に入力できます</div>
   </div>
 </div>
 
-<div class="main">
-  <div class="canvas-wrap">
-    <div id="canvas-container">
-      <canvas id="c" width="900" height="520"></canvas>
-    </div>
-  </div>
-  <div class="status">
-    <span id="statusInfo">準備完了 — テキスト追加 → ドラッグで移動</span>
-  </div>
-</div>
+<footer>
+  クリック＝新規入力 ／ ダブルクリック＝編集 ／ ドラッグ＝移動 ／ <kbd>Enter</kbd><kbd>Tab</kbd>＝次のセル ／ 矢印キー＝移動 ／ <kbd>Delete</kbd>＝文字を消去 ／ <kbd>Esc</kbd>＝選択解除 ／ <kbd>Ctrl</kbd>+<kbd>Z</kbd>＝元に戻す ／ <kbd>Ctrl</kbd>+<kbd>S</kbd>＝PNG保存
+</footer>
 
 <script>
-(function () {
-  const fontLink = document.createElement('link');
-  fontLink.href = 'https://fonts.googleapis.com/css2?family=Yomogi&family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Rampart+One&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600&family=Shippori+Mincho:wght@400;600&family=Kaisei+Decol:wght@400;500;700&family=Reggae+One&family=Potta+One&family=Stick&family=RocknRoll+One&family=DotGothic16&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Kosugi+Maru&display=swap';
-  fontLink.rel = 'stylesheet';
-  document.head.appendChild(fontLink);
+(function(){
+  'use strict';
 
-  const canvas = new fabric.Canvas('c', {
-    backgroundColor: '#ffffff',
-    preserveObjectStacking: true,
-    selection: true,
-    allowTouchScrolling: false,
-    stopContextMenu: true
-  });
+  /* ===== 定数 ===== */
+  var FONT = "'Helvetica Neue', Helvetica, Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', Meiryo, 'Noto Sans JP', sans-serif";
+  var PAD_X = 8;        // CSS の padding-left/right と一致させる
+  var PAD_Y = 4;        // CSS の padding-top/bottom と一致させる
+  var LINE  = 1.35;     // 行送り倍率（CSS の line-height と一致させる）
+  var NEW_GAP_X = 14;   // Tab で作る新セルの横間隔
+  var NEW_GAP_Y = 6;    // Enter で作る新セルの縦間隔
 
-  fabric.Object.prototype.set({
-    transparentCorners: false,
-    borderColor: '#4a90e2',
-    cornerColor: '#4a90e2',
-    cornerStyle: 'circle',
-    cornerSize: 12,
-    padding: 6
-  });
+  /* ===== 要素 ===== */
+  var stage    = document.getElementById('stage');
+  var sheet    = document.getElementById('sheet');
+  var hint     = document.getElementById('sheetHint');
+  var boldBtn  = document.getElementById('boldBtn');
+  var sizeSel  = document.getElementById('sizeSel');
+  var colorInp = document.getElementById('colorInp');
+  var delBtn   = document.getElementById('delBtn');
+  var clearBtn = document.getElementById('clearBtn');
+  var pngBtn   = document.getElementById('pngBtn');
+  var countEl  = document.getElementById('count');
 
-  let isEraser = false;
-  let isInternal = false;
-  let isRestoring = false;
-  const history = [];
-  let historyIndex = -1;
-  const MAX_HISTORY = 40;
-  const OUTER_EXTRA_RATIO = 1.35;
-  const OUTER_EXTRA_MIN = 8;
+  /* ===== 状態 ===== */
+  var cells    = [];              // {id,x,y,text,size,bold,color}
+  var byId     = new Map();       // id -> cell
+  var els      = new Map();       // id -> DOM要素
+  var seq      = 0;
+  var selectedId = null;
+  var editingId  = null;
+  var textBefore = '';
+  var defaults = { size: 18, bold: false, color: '#1f2430' };
+  var history  = [];
+  var redoStack = [];
+  var drag     = null;
+  var emptyDown = null;
 
-  const $ = id => document.getElementById(id);
-  const textInput = $('textInput');
-  const addTextBtn = $('addTextBtn');
-  const fontSelect = $('fontSelect');
-  const fontSize = $('fontSize');
-  const fontSizeVal = $('fontSizeVal');
-  const textColor = $('textColor');
-  const midColor = $('midColor');
-  const gradient = $('gradient');
-  const strokeColor = $('strokeColor');
-  const strokeWidth = $('strokeWidth');
-  const strokeWidthVal = $('strokeWidthVal');
-  const outer = $('outer');
-  const cornerRadius = $('cornerRadius');
-  const cornerRadiusVal = $('cornerRadiusVal');
-  const penColor = $('penColor');
-  const penWidth = $('penWidth');
-  const penWidthVal = $('penWidthVal');
-  const penBtn = $('penBtn');
-  const eraserBtn = $('eraserBtn');
-  const selectBtn = $('selectBtn');
-  const bringForwardBtn = $('bringForwardBtn');
-  const sendBackwardBtn = $('sendBackwardBtn');
-  const bringToFrontBtn = $('bringToFrontBtn');
-  const sendToBackBtn = $('sendToBackBtn');
-  const deleteBtn = $('deleteBtn');
-  const addRectBtn = $('addRectBtn');
-  const addCircleBtn = $('addCircleBtn');
-  const addTriangleBtn = $('addTriangleBtn');
-  const importImageBtn = $('importImageBtn');
-  const imageInput = $('imageInput');
-  const downloadBtn = $('downloadBtn');
-  const clearBtn = $('clearBtn');
-  const undoBtn = $('undoBtn');
-  const redoBtn = $('redoBtn');
-  const exportScale = $('exportScale');
-  const statusInfo = $('statusInfo');
-
-  function setStatus(msg) { statusInfo.textContent = msg; }
-
-  function saveHistory() {
-    if (isRestoring || isInternal) return;
-    history.splice(historyIndex + 1);
-    history.push(canvas.toJSON([
-      'selectable', 'evented', 'isOutline', 'ownerId', 'textId',
-      'outlineW', 'outlineCol', 'outerOnly',
-      'gradOn', 'textColVal', 'fillColVal'
-    ]));
-    if (history.length > MAX_HISTORY) history.shift();
-    else historyIndex++;
-    updateHistoryButtons();
+  /* ===== 履歴（空セルは保存しない） ===== */
+  function snapshot(){
+    var list = cells.filter(function(c){ return c.text !== ''; });
+    return JSON.stringify(list);
   }
-
-  function updateHistoryButtons() {
-    undoBtn.disabled = historyIndex <= 0;
-    redoBtn.disabled = historyIndex >= history.length - 1;
+  function pushHistory(){
+    history.push(snapshot());
+    if (history.length > 80) history.shift();
+    redoStack.length = 0;
   }
-
-  function restoreHistory(idx) {
-    if (idx < 0 || idx >= history.length) return;
-    isRestoring = true;
-    canvas.loadFromJSON(history[idx], () => {
-      canvas.getObjects().forEach(o => {
-        if (o.isOutline) { o.selectable = false; o.evented = false; }
-      });
-      canvas.renderAll();
-      isRestoring = false;
-      historyIndex = idx;
-      updateHistoryButtons();
-      setStatus('履歴を復元');
+  function undo(){
+    if (!history.length) return;
+    redoStack.push(snapshot());
+    cells = JSON.parse(history.pop());
+    rebuild();
+  }
+  function redo(){
+    if (!redoStack.length) return;
+    history.push(snapshot());
+    cells = JSON.parse(redoStack.pop());
+    rebuild();
+  }
+  function rebuild(){
+    editingId = null;
+    els.forEach(function(el){ el.remove(); });
+    els.clear();
+    byId.clear();
+    seq = 0;
+    cells.forEach(function(c){
+      byId.set(c.id, c);
+      if (c.id > seq) seq = c.id;
+      makeEl(c);
     });
+    if (selectedId !== null && !byId.has(selectedId)) selectedId = null;
+    syncSelection();
+    updateCount();
   }
 
-  function getOutline(textObj) {
-    if (!textObj || textObj.isOutline || !textObj.textId) return null;
-    return canvas.getObjects().find(o => o.isOutline && o.ownerId === textObj.textId) || null;
+  /* ===== セル生成・描画 ===== */
+  function makeEl(c){
+    var el = document.createElement('div');
+    el.className = 'cell';
+    el.setAttribute('data-id', String(c.id));
+    el.setAttribute('contenteditable', 'false');
+    el.spellcheck = false;
+    el.textContent = c.text;
+    syncEl(c, el);
+    sheet.appendChild(el);
+    els.set(c.id, el);
+    return el;
   }
-
-  function calcOuterWidth(w) {
-    w = Math.max(0, parseInt(w) || 0);
-    if (!w) return 0;
-    return w + Math.max(OUTER_EXTRA_MIN, Math.round(w * OUTER_EXTRA_RATIO));
+  function syncEl(c, el){
+    el = el || els.get(c.id);
+    if (!el) return;
+    el.style.left = c.x + 'px';
+    el.style.top = c.y + 'px';
+    el.style.fontFamily = FONT;
+    el.style.fontSize = c.size + 'px';
+    el.style.lineHeight = (c.size * LINE) + 'px';
+    el.style.fontWeight = c.bold ? '700' : '400';
+    el.style.color = c.color;
   }
-
-  function makeGradient(obj) {
-    if (!obj.gradOn) return obj.fillColVal || midColor.value;
-    const h = Math.max(obj.height || obj.fontSize || 72, 1);
-    return new fabric.Gradient({
-      type: 'linear',
-      coords: { x1: 0, y1: -h / 2, x2: 0, y2: h / 2 },
-      colorStops: [
-        { offset: 0, color: obj.textColVal || textColor.value },
-        { offset: 1, color: obj.fillColVal || midColor.value }
-      ]
-    });
-  }
-
-  function createText(text) {
-    const id = 't_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
-    const w = parseInt(strokeWidth.value) || 0;
-    const obj = new fabric.IText(text, {
-      left: canvas.width / 2,
-      top: canvas.height / 2,
-      originX: 'center',
-      originY: 'center',
-      fontFamily: fontSelect.value,
-      fontSize: parseInt(fontSize.value),
-      fill: gradient.checked ? null : textColor.value,
-      stroke: null,
-      strokeWidth: 0,
-      paintFirst: 'fill',
-      strokeLineJoin: 'round',
-      strokeLineCap: 'round',
-      editable: true,
-      objectCaching: false,
-      selectable: true,
-      evented: true,
-      hasControls: true,
-      hasBorders: true,
-      lockMovementX: false,
-      lockMovementY: false,
-      textId: id,
-      outlineW: w,
-      outlineCol: strokeColor.value,
-      outerOnly: outer.checked,
-      gradOn: gradient.checked,
-      textColVal: textColor.value,
-      fillColVal: midColor.value
-    });
-    obj.fill = makeGradient(obj);
-    return obj;
-  }
-
-  function createOutline(textObj) {
-    const useOuter = textObj.outerOnly !== false;
-    const ow = useOuter
-      ? calcOuterWidth(textObj.outlineW)
-      : Math.max(0, parseInt(textObj.outlineW) || 0);
-    const col = textObj.outlineCol || strokeColor.value;
-    return new fabric.IText(textObj.text, {
-      left: textObj.left,
-      top: textObj.top,
-      originX: textObj.originX,
-      originY: textObj.originY,
-      scaleX: textObj.scaleX,
-      scaleY: textObj.scaleY,
-      angle: textObj.angle,
-      skewX: textObj.skewX,
-      skewY: textObj.skewY,
-      flipX: textObj.flipX,
-      flipY: textObj.flipY,
-      fontFamily: textObj.fontFamily,
-      fontSize: textObj.fontSize,
-      fontWeight: textObj.fontWeight,
-      fontStyle: textObj.fontStyle,
-      charSpacing: textObj.charSpacing,
-      lineHeight: textObj.lineHeight,
-      fill: col,
-      stroke: col,
-      strokeWidth: ow,
-      paintFirst: 'stroke',
-      strokeLineJoin: 'round',
-      strokeLineCap: 'round',
-      selectable: false,
-      evented: false,
-      editable: false,
-      objectCaching: false,
-      hasControls: false,
-      hasBorders: false,
-      isOutline: true,
-      ownerId: textObj.textId,
-      opacity: ow > 0 ? 1 : 0
-    });
-  }
-
-  function syncOutline(obj) {
-    if (!obj || obj.isOutline || !['i-text', 'text'].includes(obj.type)) return;
-    const o = getOutline(obj);
-    if (!o) return;
-    const useOuter = obj.outerOnly !== false;
-    const ow = useOuter
-      ? calcOuterWidth(obj.outlineW)
-      : Math.max(0, parseInt(obj.outlineW) || 0);
-    const col = obj.outlineCol || strokeColor.value;
-    o.set({
-      left: obj.left, top: obj.top,
-      scaleX: obj.scaleX, scaleY: obj.scaleY,
-      angle: obj.angle, skewX: obj.skewX, skewY: obj.skewY,
-      flipX: obj.flipX, flipY: obj.flipY,
-      text: obj.text,
-      fontFamily: obj.fontFamily, fontSize: obj.fontSize,
-      fontWeight: obj.fontWeight, fontStyle: obj.fontStyle,
-      charSpacing: obj.charSpacing, lineHeight: obj.lineHeight,
-      fill: col, stroke: col, strokeWidth: ow,
-      opacity: ow > 0 ? 1 : 0,
-      objectCaching: false
-    });
-    o.initDimensions();
-    o.setCoords();
-    o.dirty = true;
-    const idx = canvas.getObjects().indexOf(obj);
-    if (idx > 0) {
-      const oIdx = canvas.getObjects().indexOf(o);
-      if (oIdx !== idx - 1) canvas.moveTo(o, Math.max(0, idx - 1));
-    }
-    canvas.requestRenderAll();
-  }
-
-  function addTextWithOutline(obj) {
-    const outline = createOutline(obj);
-    isInternal = true;
-    canvas.add(outline);
-    canvas.add(obj);
-    isInternal = false;
-    canvas.setActiveObject(obj);
-    canvas.requestRenderAll();
-    saveHistory();
-  }
-
-  function removeTextWithOutline(obj) {
-    if (!obj) return;
-    const o = getOutline(obj);
-    isInternal = true;
-    if (o) canvas.remove(o);
-    canvas.remove(obj);
-    isInternal = false;
-    canvas.discardActiveObject();
-    canvas.requestRenderAll();
-    saveHistory();
-  }
-
-  function moveObjectLayer(obj, action) {
-    if (!obj || obj.isOutline) return;
-    const outline = getOutline(obj);
-    isInternal = true;
-    if (action === 'forward') {
-      canvas.bringForward(obj);
-      if (outline) {
-        const idx = canvas.getObjects().indexOf(obj);
-        canvas.moveTo(outline, Math.max(0, idx - 1));
-      }
-    } else if (action === 'backward') {
-      if (outline) canvas.sendBackwards(outline);
-      canvas.sendBackwards(obj);
-      if (outline) {
-        const idx = canvas.getObjects().indexOf(obj);
-        canvas.moveTo(outline, Math.max(0, idx - 1));
-      }
-    } else if (action === 'front') {
-      canvas.bringToFront(obj);
-      if (outline) {
-        const idx = canvas.getObjects().indexOf(obj);
-        canvas.moveTo(outline, Math.max(0, idx - 1));
-      }
-    } else if (action === 'back') {
-      if (outline) canvas.sendToBack(outline);
-      canvas.sendToBack(obj);
-      if (outline) {
-        const idx = canvas.getObjects().indexOf(obj);
-        if (idx > 0) canvas.moveTo(outline, idx - 1);
-        else canvas.sendToBack(outline);
-      }
-    }
-    isInternal = false;
-    canvas.requestRenderAll();
-    saveHistory();
-  }
-
-  canvas.on('object:modified', e => {
-    if (!isRestoring && e.target && !e.target.isOutline) syncOutline(e.target);
-    if (!isInternal) saveHistory();
-  });
-  canvas.on('object:added', () => { if (!isRestoring && !isInternal) saveHistory(); });
-  canvas.on('object:removed', () => { if (!isRestoring && !isInternal) saveHistory(); });
-  canvas.on('path:created', () => { if (!isInternal) saveHistory(); });
-  ['moving', 'scaling', 'rotating', 'skewing'].forEach(ev => {
-    canvas.on('object:' + ev, e => {
-      if (e.target && !e.target.isOutline) syncOutline(e.target);
-    });
-  });
-  canvas.on('text:changed', e => {
-    if (e.target && !e.target.isOutline) {
-      syncOutline(e.target);
-      if (!isInternal) saveHistory();
-    }
-  });
-  canvas.on('selection:created', e => {
-    const t = e.selected && e.selected[0];
-    if (t && t.isOutline) {
-      canvas.discardActiveObject();
-      const owner = canvas.getObjects().find(o => o.textId === t.ownerId);
-      if (owner) canvas.setActiveObject(owner);
-      canvas.requestRenderAll();
-    }
-    updateControlsFromObject();
-  });
-  canvas.on('selection:updated', updateControlsFromObject);
-
-  function setMode(mode) {
-    [penBtn, eraserBtn, selectBtn].forEach(b => b.classList.remove('active'));
-    canvas.isDrawingMode = false;
-    isEraser = false;
-    if (mode === 'pen') {
-      penBtn.classList.add('active');
-      canvas.isDrawingMode = true;
-      const brush = new fabric.PencilBrush(canvas);
-      brush.color = penColor.value;
-      brush.width = parseInt(penWidth.value);
-      brush.globalCompositeOperation = 'source-over';
-      canvas.freeDrawingBrush = brush;
-      setStatus('ペンモード');
-    } else if (mode === 'eraser') {
-      eraserBtn.classList.add('active');
-      canvas.isDrawingMode = true;
-      const brush = new fabric.PencilBrush(canvas);
-      brush.color = '#000';
-      brush.width = parseInt(penWidth.value) * 2;
-      brush.globalCompositeOperation = 'destination-out';
-      canvas.freeDrawingBrush = brush;
-      isEraser = true;
-      setStatus('消しゴム');
-    } else {
-      selectBtn.classList.add('active');
-      setStatus('選択・移動 — ドラッグで移動、ダブルクリックで編集');
-    }
-  }
-
-  addTextBtn.onclick = () => {
-    const text = textInput.value.trim() || 'テキスト';
-    const f = fontSelect.value;
-    document.fonts.load('16px "' + f + '"')
-      .then(() => { addTextWithOutline(createText(text)); setMode('select'); setStatus('テキスト追加 — ドラッグで移動'); })
-      .catch(() => { addTextWithOutline(createText(text)); setMode('select'); setStatus('テキスト追加 — ドラッグで移動'); });
-  };
-  textInput.onkeydown = e => { if (e.key === 'Enter') addTextBtn.click(); };
-
-  fontSelect.onchange = () => {
-    const a = canvas.getActiveObject();
-    if (!a || !['i-text', 'text'].includes(a.type)) return;
-    const f = fontSelect.value;
-    document.fonts.load('16px "' + f + '"').finally(() => {
-      a.set({ fontFamily: f, objectCaching: false });
-      a.initDimensions();
-      syncOutline(a);
-      canvas.requestRenderAll();
-      saveHistory();
-    });
-  };
-
-  fontSize.oninput = () => {
-    fontSizeVal.textContent = fontSize.value;
-    const a = canvas.getActiveObject();
-    if (a && ['i-text', 'text'].includes(a.type)) {
-      a.set('fontSize', parseInt(fontSize.value));
-      a.initDimensions();
-      syncOutline(a);
-      canvas.requestRenderAll();
-    }
-  };
-  fontSize.onchange = saveHistory;
-
-  function applyTextColors() {
-    const a = canvas.getActiveObject();
-    if (!a || !['i-text', 'text'].includes(a.type)) return;
-    a.textColVal = textColor.value;
-    a.fillColVal = midColor.value;
-    a.gradOn = gradient.checked;
-    if (a.isEditing && a.selectionStart !== a.selectionEnd) {
-      a.setSelectionStyles({ fill: textColor.value }, a.selectionStart, a.selectionEnd);
-    } else {
-      a.set('fill', makeGradient(a));
-    }
-    a.dirty = true;
-    syncOutline(a);
-    canvas.requestRenderAll();
-  }
-  textColor.oninput = applyTextColors;
-  textColor.onchange = saveHistory;
-  midColor.oninput = applyTextColors;
-  midColor.onchange = saveHistory;
-  gradient.onchange = () => { applyTextColors(); saveHistory(); };
-
-  function updateStroke() {
-    strokeWidthVal.textContent = strokeWidth.value;
-    const a = canvas.getActiveObject();
-    if (!a) return;
-    const w = parseInt(strokeWidth.value) || 0;
-    if (['i-text', 'text'].includes(a.type)) {
-      a.set({
-        stroke: null, strokeWidth: 0, paintFirst: 'fill', objectCaching: false,
-        outlineW: w, outlineCol: strokeColor.value, outerOnly: outer.checked
-      });
-      syncOutline(a);
-    } else if (['rect', 'circle', 'triangle'].includes(a.type)) {
-      a.set({ stroke: w > 0 ? strokeColor.value : null, strokeWidth: w });
-    }
-    canvas.requestRenderAll();
-  }
-  strokeColor.oninput = updateStroke;
-  strokeWidth.oninput = updateStroke;
-  outer.onchange = () => { updateStroke(); saveHistory(); };
-  strokeColor.onchange = saveHistory;
-  strokeWidth.onchange = saveHistory;
-
-  cornerRadius.oninput = () => {
-    cornerRadiusVal.textContent = cornerRadius.value;
-    const a = canvas.getActiveObject();
-    if (a && a.type === 'rect') {
-      const r = parseInt(cornerRadius.value) || 0;
-      a.set({ rx: r, ry: r });
-      canvas.requestRenderAll();
-    }
-  };
-  cornerRadius.onchange = saveHistory;
-
-  penWidth.oninput = () => {
-    penWidthVal.textContent = penWidth.value;
-    if (canvas.isDrawingMode && canvas.freeDrawingBrush) {
-      canvas.freeDrawingBrush.width = isEraser ? parseInt(penWidth.value) * 2 : parseInt(penWidth.value);
-    }
-  };
-  penColor.oninput = () => {
-    if (canvas.isDrawingMode && !isEraser && canvas.freeDrawingBrush) {
-      canvas.freeDrawingBrush.color = penColor.value;
-    }
-  };
-  penBtn.onclick = () => setMode('pen');
-  eraserBtn.onclick = () => setMode('eraser');
-  selectBtn.onclick = () => setMode('select');
-
-  bringForwardBtn.onclick = () => {
-    const a = canvas.getActiveObject();
-    if (!a) { setStatus('オブジェクトを選択してください'); return; }
-    if (['i-text', 'text'].includes(a.type)) moveObjectLayer(a, 'forward');
-    else { canvas.bringForward(a); canvas.requestRenderAll(); saveHistory(); }
-    setStatus('前面へ移動');
-  };
-  sendBackwardBtn.onclick = () => {
-    const a = canvas.getActiveObject();
-    if (!a) { setStatus('オブジェクトを選択してください'); return; }
-    if (['i-text', 'text'].includes(a.type)) moveObjectLayer(a, 'backward');
-    else { canvas.sendBackwards(a); canvas.requestRenderAll(); saveHistory(); }
-    setStatus('背面へ移動');
-  };
-  bringToFrontBtn.onclick = () => {
-    const a = canvas.getActiveObject();
-    if (!a) { setStatus('オブジェクトを選択してください'); return; }
-    if (['i-text', 'text'].includes(a.type)) moveObjectLayer(a, 'front');
-    else { canvas.bringToFront(a); canvas.requestRenderAll(); saveHistory(); }
-    setStatus('最前面へ');
-  };
-  sendToBackBtn.onclick = () => {
-    const a = canvas.getActiveObject();
-    if (!a) { setStatus('オブジェクトを選択してください'); return; }
-    if (['i-text', 'text'].includes(a.type)) moveObjectLayer(a, 'back');
-    else { canvas.sendToBack(a); canvas.requestRenderAll(); saveHistory(); }
-    setStatus('最背面へ');
-  };
-
-  deleteBtn.onclick = () => {
-    const a = canvas.getActiveObject();
-    if (!a) return;
-    if (['i-text', 'text'].includes(a.type)) removeTextWithOutline(a);
-    else {
-      canvas.remove(a);
-      canvas.discardActiveObject();
-      canvas.requestRenderAll();
-      saveHistory();
-    }
-  };
-
-  function addShape(type) {
-    const w = parseInt(strokeWidth.value) || 0;
-    const r = parseInt(cornerRadius.value) || 0;
-    const common = {
-      left: canvas.width / 2, top: canvas.height / 2,
-      originX: 'center', originY: 'center',
-      fill: midColor.value,
-      stroke: w > 0 ? strokeColor.value : null,
-      strokeWidth: w,
-      strokeLineJoin: 'miter',
-      strokeLineCap: 'butt',
-      objectCaching: false,
-      selectable: true,
-      evented: true
+  function addCell(opts){
+    opts = opts || {};
+    seq += 1;
+    var c = {
+      id: seq,
+      x: Math.max(0, opts.x || 0),
+      y: Math.max(0, opts.y || 0),
+      text: opts.text || '',
+      size: opts.size || defaults.size,
+      bold: ('bold' in opts) ? !!opts.bold : defaults.bold,
+      color: opts.color || defaults.color
     };
-    let s;
-    if (type === 'rect') {
-      s = new fabric.Rect({ ...common, width: 120, height: 120, rx: r, ry: r });
-    } else if (type === 'circle') {
-      s = new fabric.Circle({ ...common, radius: 60 });
-    } else if (type === 'triangle') {
-      s = new fabric.Triangle({ ...common, width: 120, height: 110 });
-    }
-    if (!s) return;
-    canvas.add(s);
-    canvas.setActiveObject(s);
-    canvas.requestRenderAll();
-    setMode('select');
-    setStatus(type === 'rect' ? '四角を追加' : type === 'circle' ? '丸を追加' : '三角を追加');
-    saveHistory();
+    cells.push(c);
+    byId.set(c.id, c);
+    makeEl(c);
+    updateCount();
+    return c;
   }
-  addRectBtn.onclick = () => addShape('rect');
-  addCircleBtn.onclick = () => addShape('circle');
-  addTriangleBtn.onclick = () => addShape('triangle');
+  function removeCell(id, silent){
+    var idx = -1;
+    for (var i = 0; i < cells.length; i++){ if (cells[i].id === id){ idx = i; break; } }
+    if (idx < 0) return;
+    if (!silent) pushHistory();
+    cells.splice(idx, 1);
+    byId.delete(id);
+    var el = els.get(id);
+    if (el){ el.remove(); els.delete(id); }
+    if (selectedId === id) selectedId = null;
+    if (editingId === id) editingId = null;
+    updateCount();
+  }
 
-  importImageBtn.onclick = () => imageInput.click();
-  imageInput.onchange = e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = ev => {
-      fabric.Image.fromURL(ev.target.result, img => {
-        const max = 400;
-        if (img.width > max || img.height > max) img.scale(Math.min(max / img.width, max / img.height));
-        img.set({ left: canvas.width / 2, top: canvas.height / 2, originX: 'center', originY: 'center' });
-        canvas.add(img);
-        canvas.setActiveObject(img);
-        canvas.requestRenderAll();
-        setMode('select');
-        saveHistory();
-      });
-    };
-    reader.readAsDataURL(file);
-    imageInput.value = '';
-  };
+  /* ===== 選択・ツールバー ===== */
+  function select(id){ selectedId = id; syncSelection(); }
+  function syncSelection(){
+    els.forEach(function(el, id){ el.classList.toggle('sel', id === selectedId); });
+    updateToolbar();
+  }
+  function updateToolbar(){
+    var c = (selectedId !== null) ? byId.get(selectedId) : null;
+    var size  = c ? c.size  : defaults.size;
+    var bold  = c ? c.bold  : defaults.bold;
+    var color = c ? c.color : defaults.color;
+    if (String(sizeSel.value) !== String(size)) sizeSel.value = String(size);
+    boldBtn.classList.toggle('active', !!bold);
+    colorInp.value = color;
+  }
+  function updateCount(){
+    var n = 0;
+    for (var i = 0; i < cells.length; i++){ if (cells[i].text !== '') n++; }
+    countEl.textContent = 'セル数 ' + n;
+    hint.style.display = (n === 0 && editingId === null) ? 'block' : 'none';
+  }
+  function applyFormat(patch){
+    if ('bold'  in patch) defaults.bold  = !!patch.bold;
+    if ('size'  in patch) defaults.size  = patch.size;
+    if ('color' in patch) defaults.color = patch.color;
+    var c = (selectedId !== null) ? byId.get(selectedId) : null;
+    if (!c){ updateToolbar(); return; }
+    pushHistory();
+    if ('bold'  in patch) c.bold  = !!patch.bold;
+    if ('size'  in patch) c.size  = patch.size;
+    if ('color' in patch) c.color = patch.color;
+    syncEl(c);
+    updateToolbar();
+  }
 
-  downloadBtn.onclick = () => {
-    canvas.discardActiveObject();
-    canvas.requestRenderAll();
-    const bg = canvas.backgroundColor;
-    canvas.backgroundColor = null;
-    canvas.requestRenderAll();
-    const scale = parseInt(exportScale.value) || 2;
-    const data = canvas.toDataURL({ format: 'png', quality: 1, multiplier: scale });
-    canvas.backgroundColor = bg;
-    canvas.requestRenderAll();
-    const a = document.createElement('a');
-    a.download = 'vtuber-logo.png';
-    a.href = data;
+  /* ===== 編集モード ===== */
+  function readText(el){
+    var t = (el.innerText != null) ? el.innerText : el.textContent;
+    t = String(t).replace(/\u00a0/g, ' ').replace(/\r/g, '');
+    return t.replace(/\n+$/, '');
+  }
+  function caretToEnd(el){
+    var r = document.createRange();
+    r.selectNodeContents(el);
+    r.collapse(false);
+    var s = window.getSelection();
+    s.removeAllRanges();
+    s.addRange(r);
+  }
+  function startEdit(id, ch){
+    if (editingId !== null && editingId !== id) commitEdit();
+    var c = byId.get(id);
+    var el = els.get(id);
+    if (!c || !el) return;
+    selectedId = id;
+    editingId = id;
+    textBefore = c.text;
+    el.classList.add('editing');
+    el.setAttribute('contenteditable', 'true');
+    if (ch != null){
+      c.text = ch;
+      el.textContent = ch;
+    } else {
+      el.textContent = c.text;
+    }
+    el.focus();
+    caretToEnd(el);
+    syncSelection();
+    updateCount();
+  }
+  function commitEdit(){
+    if (editingId === null) return;
+    var id = editingId;
+    var el = els.get(id);
+    var c  = byId.get(id);
+    editingId = null;
+    if (!el || !c) return;
+    el.classList.remove('editing');
+    el.setAttribute('contenteditable', 'false');
+    var t = readText(el);
+    if (t !== textBefore) pushHistory();
+    if (t.trim() === ''){
+      removeCell(id, true);
+      selectedId = null;
+    } else {
+      c.text = t;
+      el.textContent = t;
+    }
+    syncSelection();
+    updateCount();
+  }
+  function cancelEdit(){
+    if (editingId === null) return;
+    var id = editingId;
+    var el = els.get(id);
+    var c  = byId.get(id);
+    editingId = null;
+    if (!el || !c) return;
+    el.classList.remove('editing');
+    el.setAttribute('contenteditable', 'false');
+    if (textBefore === ''){
+      removeCell(id, true);
+      selectedId = null;
+    } else {
+      c.text = textBefore;
+      el.textContent = textBefore;
+    }
+    syncSelection();
+    updateCount();
+  }
+
+  /* ===== 移動 ===== */
+  function findNeighbor(cur, dx, dy){
+    var best = null, bestScore = Infinity;
+    for (var i = 0; i < cells.length; i++){
+      var c = cells[i];
+      if (c.id === cur.id) continue;
+      var ddx = c.x - cur.x, ddy = c.y - cur.y;
+      if (dx > 0 && ddx <= 0) continue;
+      if (dx < 0 && ddx >= 0) continue;
+      if (dy > 0 && ddy <= 0) continue;
+      if (dy < 0 && ddy >= 0) continue;
+      var primary, secondary;
+      if (dx !== 0){ primary = Math.abs(ddx); secondary = Math.abs(ddy); }
+      else         { primary = Math.abs(ddy); secondary = Math.abs(ddx); }
+      var score = primary + secondary * 2.5;
+      if (score < bestScore){ bestScore = score; best = c; }
+    }
+    return best;
+  }
+  function moveSelection(dx, dy, create){
+    if (selectedId === null) return;
+    var cur = byId.get(selectedId);
+    if (!cur){ selectedId = null; syncSelection(); return; }
+    var n = findNeighbor(cur, dx, dy);
+    if (n){ select(n.id); return; }
+    if (!create) return;
+    var el = els.get(cur.id);
+    var w = el ? el.offsetWidth : 40;
+    var h = el ? el.offsetHeight : (cur.size * LINE + PAD_Y * 2);
+    var nx = cur.x, ny = cur.y;
+    if (dx !== 0) nx = cur.x + w + NEW_GAP_X;
+    if (dy !== 0) ny = cur.y + h + NEW_GAP_Y;
+    var c2 = addCell({ x: nx, y: ny });
+    startEdit(c2.id, null);
+  }
+  function commitAndMove(dx, dy){
+    if (editingId === null) return;
+    var el = els.get(editingId);
+    var gx = el ? parseFloat(el.style.left || '0') : 60;
+    var gy = el ? parseFloat(el.style.top || '0') : 60;
+    var gw = el ? el.offsetWidth : 40;
+    var gh = el ? el.offsetHeight : 24;
+    commitEdit();
+    if (selectedId === null){
+      var nx = (dx !== 0) ? gx + gw + NEW_GAP_X : gx;
+      var ny = (dy !== 0) ? gy + gh + NEW_GAP_Y : gy;
+      var c = addCell({ x: nx, y: ny });
+      startEdit(c.id, null);
+      return;
+    }
+    moveSelection(dx, dy, true);
+  }
+  function clearCell(){
+    if (selectedId === null) return;
+    var c = byId.get(selectedId);
+    if (!c) return;
+    pushHistory();
+    if (c.text === ''){
+      removeCell(selectedId, true);
+      selectedId = null;
+    } else {
+      c.text = '';
+      var el = els.get(c.id);
+      if (el) el.textContent = '';
+    }
+    syncSelection();
+    updateCount();
+  }
+
+  /* ===== クリック・ドラッグ ===== */
+  function localPoint(e){
+    var r = sheet.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+  function onPointerDown(e){
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    var el = e.target && e.target.closest ? e.target.closest('.cell') : null;
+
+    if (editingId !== null && (!el || Number(el.getAttribute('data-id')) !== editingId)){
+      commitEdit();
+    }
+    if (!el){
+      emptyDown = { x: e.clientX, y: e.clientY, px: e.clientX, py: e.clientY };
+      return;
+    }
+    var id = Number(el.getAttribute('data-id'));
+    if (editingId === id) return;      // 編集中はテキスト選択を優先
+    e.preventDefault();
+    select(id);
+    drag = { id: id, sx: e.clientX, sy: e.clientY, ox: byId.get(id).x, oy: byId.get(id).y, moved: false };
+    document.addEventListener('pointermove', onPointerMove);
+    document.addEventListener('pointerup', onPointerUp);
+    document.addEventListener('pointercancel', onPointerUp);
+  }
+  function onPointerMove(e){
+    if (!drag) return;
+    var dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
+    if (!drag.moved && Math.abs(dx) + Math.abs(dy) < 4) return;
+    if (!drag.moved) drag.moved = true;
+    var c = byId.get(drag.id), el = els.get(drag.id);
+    if (!c || !el) return;
+    c.x = Math.max(0, drag.ox + dx);
+    c.y = Math.max(0, drag.oy + dy);
+    el.style.left = c.x + 'px';
+    el.style.top = c.y + 'px';
+  }
+  function onPointerUp(){
+    if (drag && drag.moved) pushHistory();
+    drag = null;
+    document.removeEventListener('pointermove', onPointerMove);
+    document.removeEventListener('pointerup', onPointerUp);
+    document.removeEventListener('pointercancel', onPointerUp);
+
+    if (emptyDown){
+      var d = Math.abs(emptyDown.px - emptyDown.x) + Math.abs(emptyDown.py - emptyDown.y);
+      var p = emptyDown;
+      emptyDown = null;
+      if (d > 6) return;
+      var pt = localPoint({ clientX: p.px, clientY: p.py });
+      var x = Math.max(0, Math.min(pt.x - PAD_X, sheet.clientWidth - 30));
+      var y = Math.max(0, Math.min(pt.y - PAD_Y, sheet.clientHeight - 30));
+      var c = addCell({ x: x, y: y });
+      startEdit(c.id, null);
+    }
+  }
+  sheet.addEventListener('pointerdown', onPointerDown);
+  sheet.addEventListener('dblclick', function(e){
+    var el = e.target && e.target.closest ? e.target.closest('.cell') : null;
+    if (el) startEdit(Number(el.getAttribute('data-id')), null);
+  });
+  sheet.addEventListener('paste', function(e){
+    var el = e.target && e.target.closest ? e.target.closest('.cell') : null;
+    if (!el || editingId === null) return;
+    e.preventDefault();
+    var txt = '';
+    try { txt = (e.clipboardData || window.clipboardData).getData('text/plain') || ''; } catch (err){ txt = ''; }
+    txt = txt.replace(/\r\n?/g, '\n');
+    document.execCommand('insertText', false, txt);
+  });
+
+  /* ===== キーボード ===== */
+  document.addEventListener('keydown', function(e){
+    var meta = e.ctrlKey || e.metaKey;
+
+    if (editingId !== null){
+      if (e.key === 'Escape'){ e.preventDefault(); cancelEdit(); return; }
+      if (e.key === 'Enter' && e.shiftKey){
+        e.preventDefault();
+        document.execCommand('insertText', false, '\n');
+        return;
+      }
+      if (e.key === 'Enter'){ e.preventDefault(); commitAndMove(0, 1); return; }
+      if (e.key === 'Tab'){ e.preventDefault(); commitAndMove(e.shiftKey ? -1 : 1, 0); return; }
+      return;
+    }
+
+    if (e.key === 'Enter'){ e.preventDefault(); if (selectedId === null) createAtViewport(); else moveSelection(0, 1, true); return; }
+    if (e.key === 'Tab'){ e.preventDefault(); if (selectedId === null) createAtViewport(); else moveSelection(e.shiftKey ? -1 : 1, 0, true); return; }
+    if (e.key === 'ArrowUp'){ e.preventDefault(); moveSelection(0, -1, false); return; }
+    if (e.key === 'ArrowDown'){ e.preventDefault(); moveSelection(0, 1, false); return; }
+    if (e.key === 'ArrowLeft'){ e.preventDefault(); moveSelection(-1, 0, false); return; }
+    if (e.key === 'ArrowRight'){ e.preventDefault(); moveSelection(1, 0, false); return; }
+    if (e.key === 'Escape'){ if (selectedId !== null){ selectedId = null; syncSelection(); } return; }
+    if (e.key === 'Delete' || e.key === 'Backspace'){ e.preventDefault(); clearCell(); return; }
+    if (meta && (e.key === 'b' || e.key === 'B')){
+      e.preventDefault();
+      var c = (selectedId !== null) ? byId.get(selectedId) : null;
+      applyFormat({ bold: c ? !c.bold : !defaults.bold });
+      return;
+    }
+    if (meta && (e.key === 'z' || e.key === 'Z')){ e.preventDefault(); if (e.shiftKey) redo(); else undo(); return; }
+    if (meta && (e.key === 'y' || e.key === 'Y')){ e.preventDefault(); redo(); return; }
+    if (meta && (e.key === 's' || e.key === 'S')){ e.preventDefault(); exportPNG(); return; }
+    if (meta || e.altKey) return;
+    if (e.key.length === 1){
+      if (e.key === ' ' && selectedId === null) return;
+      e.preventDefault();
+      var target = (selectedId !== null) ? byId.get(selectedId) : createAtViewport();
+      if (!target) return;
+      startEdit(target.id, e.key);
+    }
+  });
+  function createAtViewport(){
+    var x = stage.scrollLeft + 40;
+    var y = stage.scrollTop + 40;
+    var c = addCell({ x: x, y: y });
+    startEdit(c.id, null);
+    return c;
+  }
+
+  /* ===== ツールバー操作 ===== */
+  boldBtn.addEventListener('click', function(){
+    var c = (selectedId !== null) ? byId.get(selectedId) : null;
+    applyFormat({ bold: c ? !c.bold : !defaults.bold });
+    boldBtn.blur();
+  });
+  sizeSel.addEventListener('change', function(){
+    applyFormat({ size: Number(sizeSel.value) });
+    sizeSel.blur();
+  });
+  colorInp.addEventListener('input', function(){
+    applyFormat({ color: colorInp.value });
+  });
+  delBtn.addEventListener('click', function(){
+    if (editingId !== null) commitEdit();
+    if (selectedId !== null) removeCell(selectedId, false);
+    syncSelection();
+    delBtn.blur();
+  });
+  clearBtn.addEventListener('click', function(){
+    if (!cells.length) return;
+    if (!window.confirm('シート上のすべての文字を消去します。よろしいですか？')) return;
+    if (editingId !== null){ editingId = null; }
+    pushHistory();
+    cells = [];
+    rebuild();
+    clearBtn.blur();
+  });
+  pngBtn.addEventListener('click', function(){ exportPNG(); pngBtn.blur(); });
+
+  /* ===== PNG書き出し（DOMは使わず canvas に直接描画） ===== */
+  function pad2(n){ return (n < 10 ? '0' : '') + n; }
+  function stamp(){
+    var d = new Date();
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate())
+      + '_' + pad2(d.getHours()) + pad2(d.getMinutes()) + pad2(d.getSeconds());
+  }
+  function exportPNG(){
+    if (editingId !== null) commitEdit();
+
+    var list = cells.filter(function(c){ return c.text !== '' && els.has(c.id); });
+    var PAD = 48;
+    var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+
+    list.forEach(function(c){
+      var el = els.get(c.id);
+      var w = el.offsetWidth, h = el.offsetHeight;
+      if (c.x < minX) minX = c.x;
+      if (c.y < minY) minY = c.y;
+      if (c.x + w > maxX) maxX = c.x + w;
+      if (c.y + h > maxY) maxY = c.y + h;
+    });
+    if (!isFinite(minX)){ minX = 0; minY = 0; maxX = 1000; maxY = 600; }
+
+    var W = Math.max(1, Math.ceil(maxX - minX + PAD * 2));
+    var H = Math.max(1, Math.ceil(maxY - minY + PAD * 2));
+    var scale = Math.max(2, window.devicePixelRatio || 1);
+
+    var cv = document.createElement('canvas');
+    cv.width  = Math.round(W * scale);
+    cv.height = Math.round(H * scale);
+    var ctx = cv.getContext('2d');
+    if (!ctx){ window.alert('お使いのブラウザではPNG書き出しを利用できません。'); return; }
+
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, W, H);
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+
+    list.forEach(function(c){
+      var el = els.get(c.id);
+      var w = el.offsetWidth, h = el.offsetHeight;
+      var ox = c.x - minX + PAD;
+      var oy = c.y - minY + PAD;
+      var lh = c.size * LINE;
+      var lines = String(c.text).split('\n');
+      var blockH = lh * lines.length;
+      var firstCenter = oy + (h - blockH) / 2 + lh / 2;
+
+      ctx.font = (c.bold ? '700 ' : '400 ') + c.size + 'px ' + FONT;
+      ctx.fillStyle = c.color;
+      for (var i = 0; i < lines.length; i++){
+        ctx.fillText(lines[i], ox + PAD_X, firstCenter + lh * i);
+      }
+    });
+
+    var name = 'shiro-sheet_' + stamp() + '.png';
+    if (cv.toBlob){
+      cv.toBlob(function(blob){
+        if (!blob){ window.alert('PNGの生成に失敗しました。'); return; }
+        saveBlob(blob, name);
+      }, 'image/png');
+    } else {
+      var a = document.createElement('a');
+      a.href = cv.toDataURL('image/png');
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+  }
+  function saveBlob(blob, name){
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
     a.click();
-    setStatus('PNG保存完了（' + scale + 'x）');
-  };
-
-  clearBtn.onclick = () => {
-    if (confirm('すべて消去しますか？')) {
-      isInternal = true;
-      canvas.clear();
-      isInternal = false;
-      canvas.backgroundColor = '#ffffff';
-      canvas.requestRenderAll();
-      saveHistory();
-      setStatus('すべて消去');
-    }
-  };
-
-  undoBtn.onclick = () => { if (historyIndex > 0) restoreHistory(historyIndex - 1); };
-  redoBtn.onclick = () => { if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1); };
-
-  document.addEventListener('keydown', e => {
-    if (e.ctrlKey || e.metaKey) {
-      if (e.key.toLowerCase() === 'z') { e.preventDefault(); if (historyIndex > 0) restoreHistory(historyIndex - 1); return; }
-      if (e.key.toLowerCase() === 'y') { e.preventDefault(); if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1); return; }
-    }
-    if (e.key === 'Delete' || e.key === 'Backspace') {
-      if (canvas.getActiveObject() && canvas.getActiveObject().isEditing) return;
-      if (document.activeElement === textInput) return;
-      const a = canvas.getActiveObject();
-      if (!a) return;
-      if (['i-text', 'text'].includes(a.type)) removeTextWithOutline(a);
-      else {
-        canvas.remove(a);
-        canvas.discardActiveObject();
-        canvas.requestRenderAll();
-        saveHistory();
-      }
-    }
-  });
-
-  function updateControlsFromObject() {
-    const a = canvas.getActiveObject();
-    if (!a) return;
-    if (['i-text', 'text'].includes(a.type)) {
-      if (a.fontFamily && Array.from(fontSelect.options).some(o => o.value === a.fontFamily)) fontSelect.value = a.fontFamily;
-      if (a.textColVal) textColor.value = a.textColVal;
-      if (a.fillColVal) midColor.value = a.fillColVal;
-      if (typeof a.outlineW === 'number') { strokeWidth.value = a.outlineW; strokeWidthVal.textContent = a.outlineW; }
-      if (a.outlineCol) strokeColor.value = a.outlineCol;
-      if (typeof a.fontSize === 'number') { fontSize.value = a.fontSize; fontSizeVal.textContent = a.fontSize; }
-      gradient.checked = !!a.gradOn;
-      outer.checked = a.outerOnly !== false;
-    } else if (['rect', 'circle', 'triangle'].includes(a.type)) {
-      if (a.fill && typeof a.fill === 'string') midColor.value = a.fill;
-      if (a.stroke && typeof a.stroke === 'string') strokeColor.value = a.stroke;
-      if (typeof a.strokeWidth === 'number') { strokeWidth.value = a.strokeWidth; strokeWidthVal.textContent = a.strokeWidth; }
-      if (a.type === 'rect') {
-        const r = typeof a.rx === 'number' ? a.rx : 0;
-        cornerRadius.value = r;
-        cornerRadiusVal.textContent = r;
-      }
-    }
+    a.remove();
+    window.setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
   }
 
-  function fitCanvas() {
-    const wrap = document.querySelector('.canvas-wrap');
-    if (!wrap) return;
-    const padding = 24;
-    const aw = wrap.clientWidth - padding;
-    const ah = wrap.clientHeight - padding;
-    const baseW = 900, baseH = 520;
-    const ratio = baseW / baseH;
-    let nw, nh;
-    if (aw / ah > ratio) { nh = Math.min(baseH, ah); nw = nh * ratio; }
-    else { nw = Math.min(baseW, aw); nh = nw / ratio; }
-    nw = Math.max(100, Math.round(nw));
-    nh = Math.max(60, Math.round(nh));
-    if (Math.abs(canvas.getWidth() - nw) > 4 || Math.abs(canvas.getHeight() - nh) > 4) {
-      canvas.setDimensions({ width: nw, height: nh });
-      canvas.requestRenderAll();
-    }
-  }
-
-  window.addEventListener('resize', () => setTimeout(fitCanvas, 100));
-  window.addEventListener('orientationchange', () => setTimeout(fitCanvas, 200));
-
-  setMode('select');
-  setStatus('準備完了 — テキスト追加 → ドラッグで移動');
-  setTimeout(() => { fitCanvas(); saveHistory(); }, 400);
+  /* ===== 初期化 ===== */
+  updateCount();
+  updateToolbar();
+  syncSelection();
 })();
 </script>
 </body>
