@@ -210,6 +210,7 @@ input[type="range"]{flex:1;}
         <button onclick="changeZoom(0.1)">＋</button>
     </div>
 
+    <button class="tool-btn active" id="gridToggleBtn" onclick="toggleGrid()">グリッド ON</button>
     <button class="tool-btn" onclick="openExport()">PNG出力</button>
 </header>
 
@@ -336,9 +337,12 @@ let history = [];
 let historyIndex = -1;
 let restoringHistory = false;
 let zoom = 1;
+let showGrid = true;
 let penColor = "#222222";
 let penWidth = 8;
 let gradientMode = "vertical";
+// テキストの選択範囲を記憶（サイドバー操作でフォーカスが外れても部分スタイルできるように）
+let savedTextSelection = null; // { obj, start, end }
 
 /* =========================================================
    フォント一覧
@@ -681,7 +685,23 @@ document.getElementById("imageInput").addEventListener("change", function() {
 ========================================================= */
 canvas.on("selection:created", updateUI);
 canvas.on("selection:updated", updateUI);
-canvas.on("selection:cleared", updateUI);
+canvas.on("selection:cleared", function() {
+    savedTextSelection = null;
+    updateUI();
+});
+
+// テキスト内の選択範囲を常に記憶
+canvas.on("text:selection:changed", function(e) {
+    const obj = e.target || selectedObject();
+    rememberTextSelection(obj);
+});
+canvas.on("text:editing:entered", function(e) {
+    rememberTextSelection(e.target);
+});
+canvas.on("text:editing:exited", function(e) {
+    // 退出時も最後の選択を残す（サイドバーからの部分スタイル用）
+    rememberTextSelection(e.target);
+});
 
 canvas.on("object:modified", function() {
     saveHistory();
@@ -844,6 +864,9 @@ function textPanel(obj) {
                         </option>
                     `).join("")}
                 </select>
+            </div>
+            <div style="font-size:10px;color:#888;margin:-2px 0 8px;line-height:1.5">
+                ※編集中に文字を青く選択した状態でフォントを変えると、<b>選択部分だけ</b>変わります
             </div>
             <div class="row">
                 <div class="label">サイズ</div>
@@ -1066,8 +1089,25 @@ function changeFill(color) {
     const objects = selectedObjects();
     if (!objects.length) return;
 
+    let usedPartial = false;
+
     objects.forEach(obj => {
         if (obj.type === "image") return;
+
+        // テキスト編集中で選択範囲がある場合はそこだけ色変更
+        if (obj.type === "i-text" && hasTextSelection(obj)) {
+            const range = getTextSelectionRange(obj);
+            if (range) {
+                obj.setSelectionStyles({ fill: color }, range.start, range.end);
+            } else {
+                obj.setSelectionStyles({ fill: color });
+            }
+            if (typeof obj.initDimensions === "function") obj.initDimensions();
+            obj.dirty = true;
+            usedPartial = true;
+            return;
+        }
+
         obj._baseFill = color;
         if (obj._gradientEnabled) {
             applyGradient(obj);
@@ -1075,10 +1115,14 @@ function changeFill(color) {
             obj.set("fill", color);
         }
         obj.dirty = true;
+        if (obj.type === "i-text") {
+            if (typeof obj.initDimensions === "function") obj.initDimensions();
+            if (typeof obj.setCoords === "function") obj.setCoords();
+        }
     });
     canvas.requestRenderAll();
     saveHistory();
-    updateUI();
+    if (!usedPartial) updateUI();
 }
 
 function toggleGradient(enabled) {
@@ -1337,12 +1381,125 @@ function changePenWidth(value) {
 }
 
 /* =========================================================
+   テキスト選択範囲スタイル（部分フォント・色など）
+========================================================= */
+function hasTextSelection(obj) {
+    if (!obj || obj.type !== "i-text") return false;
+    // 編集中のリアルタイム選択
+    if (obj.isEditing &&
+        typeof obj.selectionStart === "number" &&
+        typeof obj.selectionEnd === "number" &&
+        obj.selectionStart !== obj.selectionEnd) {
+        return true;
+    }
+    // サイドバー操作でフォーカスが外れた後も、記憶した選択を使う
+    if (savedTextSelection &&
+        savedTextSelection.obj === obj &&
+        savedTextSelection.start !== savedTextSelection.end) {
+        return true;
+    }
+    return false;
+}
+
+function getTextSelectionRange(obj) {
+    if (!obj || obj.type !== "i-text") return null;
+    if (obj.isEditing &&
+        typeof obj.selectionStart === "number" &&
+        typeof obj.selectionEnd === "number" &&
+        obj.selectionStart !== obj.selectionEnd) {
+        return { start: obj.selectionStart, end: obj.selectionEnd };
+    }
+    if (savedTextSelection &&
+        savedTextSelection.obj === obj &&
+        savedTextSelection.start !== savedTextSelection.end) {
+        return { start: savedTextSelection.start, end: savedTextSelection.end };
+    }
+    return null;
+}
+
+function rememberTextSelection(obj) {
+    if (!obj || obj.type !== "i-text") return;
+    if (typeof obj.selectionStart === "number" &&
+        typeof obj.selectionEnd === "number" &&
+        obj.selectionStart !== obj.selectionEnd) {
+        savedTextSelection = {
+            obj: obj,
+            start: obj.selectionStart,
+            end: obj.selectionEnd
+        };
+    }
+}
+
+/**
+ * 選択範囲があればそこだけ、なければオブジェクト全体にスタイル適用
+ * styleObj例: { fontFamily, fontSize, fontWeight, fontStyle, fill }
+ */
+async function applyTextStyle(obj, styleObj) {
+    if (!obj || obj.type !== "i-text") return;
+
+    // フォント指定時は先に読み込む
+    if (styleObj.fontFamily) {
+        try {
+            const size = styleObj.fontSize || obj.fontSize || 120;
+            await document.fonts.load(`${styleObj.fontWeight || obj.fontWeight || 400} ${size}px "${styleObj.fontFamily}"`);
+            await document.fonts.ready;
+        } catch (e) {}
+    }
+
+    const partial = hasTextSelection(obj);
+
+    if (partial) {
+        // 青い選択範囲（または記憶した範囲）だけに適用
+        const range = getTextSelectionRange(obj);
+        if (range) {
+            obj.setSelectionStyles(styleObj, range.start, range.end);
+        } else {
+            obj.setSelectionStyles(styleObj);
+        }
+    } else {
+        // 全体に適用
+        obj.set(styleObj);
+        if (styleObj.fontFamily) obj.fontFamily = styleObj.fontFamily;
+        if (styleObj.fontSize != null) obj.fontSize = styleObj.fontSize;
+        if (styleObj.fontWeight != null) obj.fontWeight = styleObj.fontWeight;
+        if (styleObj.fontStyle != null) obj.fontStyle = styleObj.fontStyle;
+        if (styleObj.fill != null) {
+            obj.fill = styleObj.fill;
+            obj._baseFill = styleObj.fill;
+        }
+    }
+
+    if (typeof obj.initDimensions === "function") obj.initDimensions();
+    if (typeof obj.setCoords === "function") obj.setCoords();
+    obj.dirty = true;
+    canvas.requestRenderAll();
+    saveHistory();
+    // 部分選択中はプロパティ再描画すると編集・選択が壊れるのでスキップ
+    if (!partial) updateUI();
+}
+
+/* =========================================================
    基本プロパティ
 ========================================================= */
 function setProp(prop, value) {
     const obj = selectedObject();
     if (!obj) return;
-    obj.set(prop, Number(value));
+
+    // 文字の太さは選択範囲対応
+    if (prop === "fontWeight" && obj.type === "i-text") {
+        applyTextStyle(obj, { fontWeight: String(value) });
+        return;
+    }
+
+    const num = Number(value);
+    obj.set(prop, num);
+
+    if (obj.type === "i-text") {
+        if (typeof obj.initDimensions === "function") obj.initDimensions();
+        if (typeof obj.setCoords === "function") obj.setCoords();
+        obj.dirty = true;
+    }
+
     canvas.requestRenderAll();
     saveHistory();
     updateUI();
@@ -1383,15 +1540,18 @@ async function changeFont(font) {
         : active.type === "i-text" ? [active] : [];
     if (!targets.length) return;
 
+    // フォント読み込みをしっかり待つ
     try {
-        await document.fonts.load(`120px "${font}"`);
-    } catch (e) {}
+        await document.fonts.load(`700 120px "${font}"`);
+        await document.fonts.load(`400 120px "${font}"`);
+        await document.fonts.ready;
+    } catch (e) {
+        console.warn("font load failed", font, e);
+    }
 
-    targets.forEach(obj => {
-        obj.set("fontFamily", font);
-        if (typeof obj.initDimensions === "function") obj.initDimensions();
-        if (typeof obj.setCoords === "function") obj.setCoords();
-    });
+    for (const obj of targets) {
+        await applyTextStyle(obj, { fontFamily: font });
+    }
     canvas.requestRenderAll();
     saveHistory();
     updateUI();
@@ -1400,18 +1560,13 @@ async function changeFont(font) {
 function changeFontSize(size) {
     const obj = selectedObject();
     if (!obj || obj.type !== "i-text") return;
-    obj.fontSize = Number(size);
-    canvas.requestRenderAll();
-    saveHistory();
-    updateUI();
+    applyTextStyle(obj, { fontSize: Number(size) });
 }
 
 function toggleItalic(enabled) {
     const obj = selectedObject();
-    if (!obj) return;
-    obj.fontStyle = enabled ? "italic" : "normal";
-    canvas.requestRenderAll();
-    saveHistory();
+    if (!obj || obj.type !== "i-text") return;
+    applyTextStyle(obj, { fontStyle: enabled ? "italic" : "normal" });
 }
 
 function setRound(value) {
@@ -1629,6 +1784,23 @@ function changeZoom(delta) {
         height: 800 * zoom
     });
     document.getElementById("zoomValue").textContent = Math.round(zoom * 100) + "%";
+    // グリッドもズームに合わせて見た目を合わせる
+    const gridEl = document.querySelector(".grid");
+    if (gridEl) {
+        const size = 20 * zoom;
+        gridEl.style.backgroundSize = size + "px " + size + "px";
+    }
+}
+
+function toggleGrid() {
+    showGrid = !showGrid;
+    const grid = document.querySelector(".grid");
+    if (grid) grid.style.display = showGrid ? "block" : "none";
+    const btn = document.getElementById("gridToggleBtn");
+    if (btn) {
+        btn.textContent = showGrid ? "グリッド ON" : "グリッド OFF";
+        btn.classList.toggle("active", showGrid);
+    }
 }
 
 /* =========================================================
