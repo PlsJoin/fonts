@@ -144,31 +144,33 @@ input[type="range"]{flex:1;}
 }
 .layer-list{flex:1;overflow:auto;}
 .layer-item{
-    min-height:36px;display:flex;align-items:center;gap:5px;
-    padding:3px 6px;border-bottom:1px solid #eee;font-size:11px;cursor:pointer;
+    height:34px;display:flex;align-items:center;gap:6px;
+    padding:0 6px 0 9px;border-bottom:1px solid #eee;font-size:11px;cursor:pointer;
+    position:relative;
 }
 .layer-item:hover{background:#f3f4f5;}
 .layer-item.selected{background:#e7ebef;}
 .layer-icon{width:18px;text-align:center;flex-shrink:0;}
 .layer-name{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;min-width:0;}
-.layer-actions{display:flex;gap:2px;flex-shrink:0;opacity:0.55;}
-.layer-item:hover .layer-actions,.layer-item.selected .layer-actions{opacity:1;}
-.layer-actions button{
-    width:22px;height:22px;padding:0;border:1px solid #ccd0d4;
-    background:#fff;border-radius:3px;font-size:10px;line-height:1;
-    color:#333;cursor:pointer;
+.layer-menu-btn{
+    width:28px;height:28px;border:0;background:transparent;border-radius:4px;
+    font-size:16px;line-height:1;color:#666;cursor:pointer;flex-shrink:0;
+    letter-spacing:0;padding:0;
 }
-.layer-actions button:hover{background:#e8eaed;border-color:#aaa;}
-.layer-actions button.danger:hover{color:#c33;border-color:#c99;}
-.layers-toolbar{
-    display:flex;gap:4px;padding:6px 8px;border-bottom:1px solid #eee;
-    flex-shrink:0;flex-wrap:wrap;
+.layer-menu-btn:hover{background:#e4e6e9;color:#222;}
+.layer-menu{
+    position:fixed;display:none;min-width:140px;background:#fff;
+    border:1px solid #ccc;box-shadow:0 4px 16px rgba(0,0,0,.18);
+    border-radius:5px;z-index:3000;padding:4px 0;
 }
-.layers-toolbar button{
-    height:26px;padding:0 8px;border:1px solid #ccd0d4;background:#fff;
-    border-radius:4px;font-size:10px;cursor:pointer;
+.layer-menu button{
+    width:100%;height:30px;border:0;background:#fff;
+    text-align:left;padding:0 12px;font-size:11px;cursor:pointer;color:#222;
 }
-.layers-toolbar button:hover{background:#f0f2f4;}
+.layer-menu button:hover{background:#eef0f2;}
+.layer-menu button.danger{color:#c33;}
+.layer-menu button.danger:hover{background:#fceeee;}
+.layer-menu .sep{height:1px;background:#eee;margin:4px 0;}
 
 .statusbar{
     height:27px;background:#fff;border-top:1px solid #d7d9dc;
@@ -295,15 +297,16 @@ input[type="range"]{flex:1;}
     </div>
     <div class="layers">
         <div class="panel-title">レイヤー</div>
-        <div class="layers-toolbar">
-            <button type="button" onclick="layerBringFront()" title="最前面">⬆最前</button>
-            <button type="button" onclick="layerBringForward()" title="ひとつ上">↑上</button>
-            <button type="button" onclick="layerSendBackward()" title="ひとつ下">↓下</button>
-            <button type="button" onclick="layerSendBack()" title="最背面">⬇最後</button>
-            <button type="button" onclick="deleteObject()" title="削除">削除</button>
-        </div>
         <div class="layer-list" id="layerList"></div>
     </div>
+<div class="layer-menu" id="layerMenu">
+    <button type="button" data-act="front">最前面へ</button>
+    <button type="button" data-act="up">ひとつ上へ</button>
+    <button type="button" data-act="down">ひとつ下へ</button>
+    <button type="button" data-act="back">最背面へ</button>
+    <div class="sep"></div>
+    <button type="button" class="danger" data-act="del">削除</button>
+</div>
 </aside>
 
 </main>
@@ -902,9 +905,6 @@ function textPanel(obj) {
                     `).join("")}
                 </select>
             </div>
-            <div style="font-size:10px;color:#888;margin:-2px 0 8px;line-height:1.5">
-                ※編集中に文字を青く選択した状態でフォントを変えると、<b>選択部分だけ</b>変わります
-            </div>
             <div class="row">
                 <div class="label">サイズ</div>
                 <input type="number" min="1" value="${Math.round(obj.fontSize || 100)}" onchange="changeFontSize(this.value)">
@@ -914,16 +914,10 @@ function textPanel(obj) {
                 <input type="range" min="-200" max="800" step="10" value="${obj.charSpacing || 0}" oninput="changeCharSpacing(this.value)">
                 <div class="range-value" id="charSpacingValue">${obj.charSpacing || 0}</div>
             </div>
-            <div style="font-size:10px;color:#888;margin:-4px 0 8px;line-height:1.4">
-                ※単位は 1/1000em（200でかなり開く）。マイナスで詰まる
-            </div>
             <div class="row">
                 <div class="label">行間</div>
                 <input type="range" min="0.6" max="3" step="0.05" value="${obj.lineHeight || 1.16}" oninput="changeLineHeight(this.value)">
                 <div class="range-value" id="lineHeightValue">${Number(obj.lineHeight || 1.16).toFixed(2)}</div>
-            </div>
-            <div style="font-size:10px;color:#888;margin:-4px 0 8px;line-height:1.4">
-                ※改行がある文字で効果が出ます（1行だけだと変化なし）
             </div>
             <div class="row">
                 <div class="label">文字色</div>
@@ -1709,6 +1703,41 @@ function alignRight() {
 /* =========================================================
    レイヤー
 ========================================================= */
+let layerMenuTarget = null;
+
+function hideLayerMenu() {
+    const menu = document.getElementById("layerMenu");
+    if (menu) menu.style.display = "none";
+    layerMenuTarget = null;
+}
+
+function openLayerMenu(e, obj) {
+    e.preventDefault();
+    e.stopPropagation();
+    layerMenuTarget = obj;
+    canvas.setActiveObject(obj);
+    canvas.requestRenderAll();
+    updateUI();
+
+    const menu = document.getElementById("layerMenu");
+    if (!menu) return;
+    menu.style.display = "block";
+
+    const pad = 4;
+    let x = e.clientX;
+    let y = e.clientY;
+    // 画面外にはみ出さない
+    requestAnimationFrame(function() {
+        const rect = menu.getBoundingClientRect();
+        if (x + rect.width > window.innerWidth - pad) x = window.innerWidth - rect.width - pad;
+        if (y + rect.height > window.innerHeight - pad) y = window.innerHeight - rect.height - pad;
+        if (x < pad) x = pad;
+        if (y < pad) y = pad;
+        menu.style.left = x + "px";
+        menu.style.top = y + "px";
+    });
+}
+
 function updateLayers() {
     const list = document.getElementById("layerList");
     if (!list) return;
@@ -1717,7 +1746,7 @@ function updateLayers() {
     const active = selectedObject();
 
     // 上にあるものほどリストの上（最前面が一番上）
-    [...objects].reverse().forEach((obj, visualIndex) => {
+    [...objects].reverse().forEach((obj) => {
         const item = document.createElement("div");
         item.className = "layer-item";
         if (active && (active === obj || (active.type === "activeSelection" && active.getObjects().includes(obj)))) {
@@ -1737,32 +1766,22 @@ function updateLayers() {
         item.innerHTML = `
             <span class="layer-icon">${icon}</span>
             <span class="layer-name" title="${name}">${name}</span>
-            <span class="layer-actions">
-                <button type="button" title="ひとつ上" data-act="up">↑</button>
-                <button type="button" title="ひとつ下" data-act="down">↓</button>
-                <button type="button" title="最前面" data-act="front">⬆</button>
-                <button type="button" title="最背面" data-act="back">⬇</button>
-                <button type="button" class="danger" title="削除" data-act="del">×</button>
-            </span>
+            <button type="button" class="layer-menu-btn" title="メニュー" aria-label="メニュー">⋯</button>
         `;
 
-        item.onclick = function(e) {
-            const btn = e.target.closest("button[data-act]");
-            if (btn) {
-                e.stopPropagation();
-                canvas.setActiveObject(obj);
-                const act = btn.getAttribute("data-act");
-                if (act === "up") layerBringForward();
-                else if (act === "down") layerSendBackward();
-                else if (act === "front") layerBringFront();
-                else if (act === "back") layerSendBack();
-                else if (act === "del") deleteObject();
-                return;
-            }
+        const menuBtn = item.querySelector(".layer-menu-btn");
+        menuBtn.addEventListener("click", function(e) {
+            openLayerMenu(e, obj);
+        });
+
+        item.addEventListener("click", function(e) {
+            if (e.target.closest(".layer-menu-btn")) return;
+            hideLayerMenu();
             canvas.setActiveObject(obj);
             canvas.requestRenderAll();
             updateUI();
-        };
+        });
+
         list.appendChild(item);
     });
 }
@@ -2009,6 +2028,25 @@ function hideContext() {
 
 document.addEventListener("click", function(e) {
     if (!contextMenu.contains(e.target)) hideContext();
+    const layerMenu = document.getElementById("layerMenu");
+    if (layerMenu && !layerMenu.contains(e.target) && !e.target.closest(".layer-menu-btn")) {
+        hideLayerMenu();
+    }
+});
+
+// レイヤー ⋯ メニューの操作
+document.getElementById("layerMenu").addEventListener("click", function(e) {
+    const btn = e.target.closest("button[data-act]");
+    if (!btn || !layerMenuTarget) return;
+    e.stopPropagation();
+    canvas.setActiveObject(layerMenuTarget);
+    const act = btn.getAttribute("data-act");
+    hideLayerMenu();
+    if (act === "up") layerBringForward();
+    else if (act === "down") layerSendBackward();
+    else if (act === "front") layerBringFront();
+    else if (act === "back") layerSendBack();
+    else if (act === "del") deleteObject();
 });
 
 function contextCopy() {
