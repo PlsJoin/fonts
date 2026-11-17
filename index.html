@@ -2,94 +2,91 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ロゴメーカー</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=BIZ+UDPMincho:wght@400;700&family=Dela+Gothic+One&family=DotGothic16&family=Hachi+Maru+Pop&family=Kaisei+Decol:wght@400;700&family=Kaisei+HarunoUmi:wght@400;700&family=Kaisei+Tokumin:wght@400;700;800&family=Klee+One:wght@400;600&family=Kosugi&family=Kosugi+Maru&family=M+PLUS+1p:wght@400;500;700;800;900&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Mochiy+Pop+One&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;500;700;900&family=New+Tegomin&family=Nikukyu&family=Potta+One&family=Rampart+One&family=Reggae+One&family=RocknRoll+One&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Shippori+Mincho:wght@400;500;700;800&family=Stick&family=Train+One&family=Yusei+Magic&family=Yuji+Boku&family=Yuji+Mai&family=Zen+Antique&family=Zen+Antique+Soft&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
 <style>
-*{box-sizing:border-box;}
-html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:"Noto Sans JP",sans-serif;background:#f1f2f4;color:#222;}
-button,input,select{font-family:inherit;}
-button{cursor:pointer;}
-.app{width:100%;height:100%;display:flex;flex-direction:column;}
-.topbar{height:54px;background:#fff;border-bottom:1px solid #d7d9dc;display:flex;align-items:center;padding:0 12px;gap:7px;flex-shrink:0;}
-.logo{font-size:16px;font-weight:800;margin-right:10px;white-space:nowrap;}
-.logo span{font-size:11px;color:#888;font-weight:400;margin-left:5px;}
-.toolbar-group{display:flex;align-items:center;gap:3px;padding-right:8px;margin-right:3px;border-right:1px solid #ddd;}
-.tool-btn{height:34px;min-width:34px;padding:0 9px;border:1px solid transparent;background:#fff;border-radius:5px;color:#333;font-size:12px;}
-.tool-btn:hover{background:#f0f2f4;border-color:#d4d7da;}
-.tool-btn.active{background:#e7eaed;border-color:#c8ccd0;}
-.tool-btn.danger:hover{color:#c33;}
-.zoom-box{display:flex;align-items:center;gap:5px;margin-left:auto;}
-.zoom-box button{width:30px;height:30px;border:1px solid #d3d6d9;background:#fff;border-radius:4px;}
-.zoom-value{min-width:48px;text-align:center;font-size:11px;}
-.main{flex:1;min-height:0;display:flex;}
-.leftbar{width:70px;background:#fff;border-right:1px solid #d7d9dc;padding:7px 5px;flex-shrink:0;display:flex;flex-direction:column;gap:4px;}
-.left-tool{width:60px;min-height:48px;border:1px solid transparent;background:#fff;border-radius:5px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;font-size:10px;color:#333;}
-.left-tool:hover{background:#f0f2f4;}
-.left-tool.active{background:#e6e9ec;border-color:#c7cbd0;}
-.left-tool .icon{font-size:18px;line-height:1;}
-.tool-separator{height:1px;background:#ddd;margin:5px 7px;}
-.canvas-area{flex:1;min-width:0;min-height:0;overflow:auto;background:#e6e8eb;position:relative;}
-.canvas-wrap{position:relative;width:1200px;height:800px;margin:16px auto;background:#fff;box-shadow:0 2px 14px rgba(0,0,0,.15);}
-.grid{position:absolute;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(#eeeeee 1px,transparent 1px),linear-gradient(90deg,#eeeeee 1px,transparent 1px);background-size:20px 20px;}
-.canvas-container{position:absolute !important;left:0 !important;top:0 !important;width:1200px !important;height:800px !important;z-index:2;}
-.rightbar{width:340px;background:#fff;border-left:1px solid #d7d9dc;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;}
-.panel-title{height:40px;display:flex;align-items:center;padding:0 13px;border-bottom:1px solid #ddd;font-size:13px;font-weight:700;}
-.properties{flex:1;overflow:auto;}
-.section{padding:11px 13px;border-bottom:1px solid #e1e2e4;}
-.section-title{font-size:11px;font-weight:700;color:#666;margin-bottom:9px;}
-.row{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
-.row:last-child{margin-bottom:0;}
-.label{width:74px;flex-shrink:0;font-size:11px;color:#555;}
-input[type="text"],input[type="number"],select{width:100%;height:30px;border:1px solid #cdd1d5;background:#fff;border-radius:4px;padding:0 7px;font-size:11px;outline:none;}
-select{cursor:pointer;}
-input[type="number"]:focus,input[type="text"]:focus,select:focus{border-color:#777;}
-input[type="color"]{width:42px;height:30px;border:1px solid #ccc;padding:2px;background:#fff;border-radius:4px;cursor:pointer;}
-input[type="range"]{flex:1;}
-.range-value{width:40px;text-align:right;color:#666;font-size:10px;}
-.check{display:flex;align-items:center;gap:7px;margin-bottom:8px;font-size:11px;}
-.check input{margin:0;}
-.color-row{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
-.color-row span{width:42px;font-size:11px;color:#555;}
-.gradient-preview{width:100%;height:28px;border:1px solid #ccc;border-radius:4px;margin-top:7px;}
-.small-btn{height:30px;border:1px solid #ccd0d4;background:#fff;border-radius:4px;padding:0 9px;font-size:11px;}
-.small-btn:hover{background:#f0f2f4;}
-.btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
-.no-selection{padding:25px 14px;color:#888;font-size:11px;line-height:1.8;}
-.font-select{min-width:0;}
-.font-select option{font-size:12px;}
-.layers{height:210px;border-top:1px solid #d7d9dc;flex-shrink:0;display:flex;flex-direction:column;}
-.layer-list{flex:1;overflow:auto;}
-.layer-item{height:32px;display:flex;align-items:center;gap:7px;padding:0 9px;border-bottom:1px solid #eee;font-size:11px;cursor:pointer;}
-.layer-item:hover{background:#f3f4f5;}
-.layer-item.selected{background:#e7ebef;}
-.layer-icon{width:20px;text-align:center;}
-.layer-name{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
-.statusbar{height:27px;background:#fff;border-top:1px solid #d7d9dc;display:flex;align-items:center;gap:18px;padding:0 10px;font-size:10px;color:#666;flex-shrink:0;}
-.modal-bg{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.35);z-index:1000;}
-.modal{width:390px;background:#fff;border-radius:7px;box-shadow:0 10px 35px rgba(0,0,0,.25);overflow:hidden;}
-.modal-head{padding:13px 15px;border-bottom:1px solid #ddd;font-size:14px;font-weight:700;}
-.modal-body{padding:15px;}
-.modal-foot{padding:10px 15px;border-top:1px solid #ddd;display:flex;justify-content:flex-end;gap:7px;}
-.primary{background:#222;color:#fff;border-color:#222;}
-.context-menu{position:fixed;display:none;width:180px;background:#fff;border:1px solid #ccc;box-shadow:0 4px 16px rgba(0,0,0,.18);border-radius:5px;z-index:2000;padding:4px 0;}
-.context-menu button{width:100%;height:30px;border:0;background:#fff;text-align:left;padding:0 12px;font-size:11px;}
-.context-menu button:hover{background:#eef0f2;}
-.mobile-toggle-btn{display:none;position:fixed;top:12px;right:12px;z-index:3000;height:36px;padding:0 14px;background:#222;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;font-family:"Noto Sans JP",sans-serif;background:#f1f2f4;color:#222}
+button,input,select{font-family:inherit}
+button{cursor:pointer;border:none;background:none}
+.app{width:100%;height:100%;display:flex;flex-direction:column}
+.topbar{height:52px;background:#fff;border-bottom:1px solid #d7d9dc;display:flex;align-items:center;padding:0 10px;gap:6px;flex-shrink:0;overflow-x:auto}
+.logo{font-size:15px;font-weight:800;margin-right:8px;white-space:nowrap}
+.logo span{font-size:10px;color:#888;font-weight:400;margin-left:4px}
+.toolbar-group{display:flex;align-items:center;gap:2px;padding-right:6px;margin-right:2px;border-right:1px solid #ddd}
+.tool-btn{height:32px;min-width:32px;padding:0 8px;border:1px solid transparent;background:#fff;border-radius:5px;color:#333;font-size:12px}
+.tool-btn:hover{background:#f0f2f4}
+.tool-btn.danger:hover{color:#c33}
+.zoom-box{display:flex;align-items:center;gap:4px;margin-left:auto}
+.zoom-box button{width:28px;height:28px;border:1px solid #d3d6d9;background:#fff;border-radius:4px}
+.zoom-value{min-width:42px;text-align:center;font-size:11px}
+.main{flex:1;min-height:0;display:flex}
+.leftbar{width:64px;background:#fff;border-right:1px solid #d7d9dc;padding:6px 4px;flex-shrink:0;display:flex;flex-direction:column;gap:3px}
+.left-tool{width:56px;min-height:46px;border:1px solid transparent;background:#fff;border-radius:6px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;font-size:10px;color:#333}
+.left-tool:hover{background:#f0f2f4}
+.left-tool.active{background:#e6e9ec;border-color:#c7cbd0}
+.left-tool .icon{font-size:18px;line-height:1}
+.tool-separator{height:1px;background:#ddd;margin:4px 6px}
+.canvas-area{flex:1;min-width:0;min-height:0;overflow:auto;background:#e6e8eb;position:relative}
+.canvas-wrap{position:relative;width:1200px;height:800px;margin:16px auto;background:#fff;box-shadow:0 2px 14px rgba(0,0,0,.15)}
+.grid{position:absolute;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(#eee 1px,transparent 1px),linear-gradient(90deg,#eee 1px,transparent 1px);background-size:20px 20px}
+.canvas-container{position:absolute!important;left:0!important;top:0!important;z-index:2}
+.rightbar{width:320px;background:#fff;border-left:1px solid #d7d9dc;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
+.panel-title{height:38px;display:flex;align-items:center;padding:0 12px;border-bottom:1px solid #ddd;font-size:13px;font-weight:700}
+.properties{flex:1;overflow:auto}
+.section{padding:10px 12px;border-bottom:1px solid #e1e2e4}
+.section-title{font-size:11px;font-weight:700;color:#666;margin-bottom:8px}
+.row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.row:last-child{margin-bottom:0}
+.label{width:70px;flex-shrink:0;font-size:11px;color:#555}
+input[type="text"],input[type="number"],select{width:100%;height:30px;border:1px solid #cdd1d5;background:#fff;border-radius:4px;padding:0 7px;font-size:11px;outline:none}
+input[type="color"]{width:40px;height:30px;border:1px solid #ccc;padding:2px;background:#fff;border-radius:4px;cursor:pointer}
+input[type="range"]{flex:1}
+.range-value{width:36px;text-align:right;color:#666;font-size:10px}
+.check{display:flex;align-items:center;gap:6px;margin-bottom:7px;font-size:11px}
+.color-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.color-row span{width:40px;font-size:11px;color:#555}
+.gradient-preview{width:100%;height:26px;border:1px solid #ccc;border-radius:4px;margin-top:6px}
+.small-btn{height:30px;border:1px solid #ccd0d4;background:#fff;border-radius:4px;padding:0 8px;font-size:11px}
+.small-btn:hover{background:#f0f2f4}
+.btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.no-selection{padding:22px 12px;color:#888;font-size:11px;line-height:1.7}
+.layers{height:190px;border-top:1px solid #d7d9dc;flex-shrink:0;display:flex;flex-direction:column}
+.layer-list{flex:1;overflow:auto}
+.layer-item{height:30px;display:flex;align-items:center;gap:6px;padding:0 8px;border-bottom:1px solid #eee;font-size:11px;cursor:pointer}
+.layer-item:hover{background:#f3f4f5}
+.layer-item.selected{background:#e7ebef}
+.layer-icon{width:18px;text-align:center}
+.layer-name{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.statusbar{height:26px;background:#fff;border-top:1px solid #d7d9dc;display:flex;align-items:center;gap:14px;padding:0 10px;font-size:10px;color:#666;flex-shrink:0}
+.modal-bg{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.35);z-index:1000}
+.modal{width:360px;background:#fff;border-radius:8px;box-shadow:0 10px 35px rgba(0,0,0,.25);overflow:hidden}
+.modal-head{padding:12px 14px;border-bottom:1px solid #ddd;font-size:14px;font-weight:700}
+.modal-body{padding:14px}
+.modal-foot{padding:10px 14px;border-top:1px solid #ddd;display:flex;justify-content:flex-end;gap:6px}
+.primary{background:#222;color:#fff;border-color:#222}
+.context-menu{position:fixed;display:none;width:170px;background:#fff;border:1px solid #ccc;box-shadow:0 4px 16px rgba(0,0,0,.18);border-radius:5px;z-index:2000;padding:4px 0}
+.context-menu button{width:100%;height:30px;border:0;background:#fff;text-align:left;padding:0 12px;font-size:11px}
+.context-menu button:hover{background:#eef0f2}
+.mobile-toggle-btn{display:none;position:fixed;top:10px;right:10px;z-index:3000;height:34px;padding:0 12px;background:#222;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600}
+.shape-picker{display:none;position:fixed;background:#fff;border:1px solid #ccc;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.15);padding:8px;z-index:2600;grid-template-columns:repeat(3,1fr);gap:6px}
+.shape-picker.open{display:grid}
+.shape-picker button{width:56px;height:52px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px}
+.shape-picker button:hover{background:#f0f2f4;border-color:#bbb}
+.shape-picker .icon{font-size:20px}
 @media (max-width:900px){
-.leftbar{width:54px;}
-.left-tool{width:48px;min-height:42px;font-size:9px;}
-.left-tool .icon{font-size:16px;}
-.rightbar{position:fixed;top:0;right:0;bottom:0;width:300px;max-width:85vw;z-index:2500;transform:translateX(100%);transition:transform .25s ease;box-shadow:-4px 0 20px rgba(0,0,0,.18);}
-.rightbar.open{transform:translateX(0);}
-.mobile-toggle-btn{display:block;}
-.canvas-wrap{margin:12px auto;}
-.topbar{padding-right:110px;}
-.toolbar-group{gap:2px;}
-.tool-btn{padding:0 6px;font-size:11px;}
+.leftbar{width:52px}
+.left-tool{width:46px;min-height:42px;font-size:9px}
+.left-tool .icon{font-size:16px}
+.rightbar{position:fixed;top:0;right:0;bottom:0;width:290px;max-width:86vw;z-index:2500;transform:translateX(100%);transition:transform .22s ease;box-shadow:-4px 0 18px rgba(0,0,0,.18)}
+.rightbar.open{transform:translateX(0)}
+.mobile-toggle-btn{display:block}
+.canvas-wrap{margin:10px auto}
+.topbar{padding-right:100px}
 }
 </style>
 </head>
@@ -112,15 +109,16 @@ input[type="range"]{flex:1;}
 <button class="tool-btn" onclick="sendBack()">最背面</button>
 </div>
 <div class="toolbar-group">
-<button class="tool-btn" onclick="alignLeft()">左揃え</button>
+<button class="tool-btn" onclick="alignLeft()">左</button>
 <button class="tool-btn" onclick="alignCenter()">中央</button>
-<button class="tool-btn" onclick="alignRight()">右揃え</button>
+<button class="tool-btn" onclick="alignRight()">右</button>
+<button class="tool-btn" onclick="centerObject()">中心へ</button>
 </div>
-<div class="toolbar-group" style="margin-left:auto;border:none;gap:4px;">
-<span style="font-size:11px;color:#666;">W</span>
-<input type="number" id="canvasW" value="1200" min="200" max="3000" style="width:58px;height:28px;font-size:11px;" onchange="resizeCanvas(this.value, document.getElementById('canvasH').value)">
-<span style="font-size:11px;color:#666;">H</span>
-<input type="number" id="canvasH" value="800" min="200" max="2000" style="width:58px;height:28px;font-size:11px;" onchange="resizeCanvas(document.getElementById('canvasW').value, this.value)">
+<div class="toolbar-group" style="margin-left:auto;border:none;gap:3px">
+<span style="font-size:11px;color:#666">W</span>
+<input type="number" id="canvasW" value="1200" min="200" max="3000" style="width:54px;height:28px;font-size:11px" onchange="resizeCanvas(this.value,document.getElementById('canvasH').value)">
+<span style="font-size:11px;color:#666">H</span>
+<input type="number" id="canvasH" value="800" min="200" max="2000" style="width:54px;height:28px;font-size:11px" onchange="resizeCanvas(document.getElementById('canvasW').value,this.value)">
 </div>
 <div class="zoom-box">
 <button onclick="changeZoom(-0.1)">−</button>
@@ -134,11 +132,7 @@ input[type="range"]{flex:1;}
 <aside class="leftbar">
 <button class="left-tool active" data-tool="select" onclick="setTool('select')"><span class="icon">↖</span>選択</button>
 <button class="left-tool" data-tool="text" onclick="setTool('text')"><span class="icon">T</span>文字</button>
-<button class="left-tool" data-tool="rect" onclick="setTool('rect')"><span class="icon">□</span>四角</button>
-<button class="left-tool" data-tool="circle" onclick="setTool('circle')"><span class="icon">○</span>円</button>
-<button class="left-tool" data-tool="triangle" onclick="setTool('triangle')"><span class="icon">△</span>三角</button>
-<button class="left-tool" data-tool="star" onclick="setTool('star')"><span class="icon">☆</span>星</button>
-<button class="left-tool" data-tool="line" onclick="setTool('line')"><span class="icon">／</span>線</button>
+<button class="left-tool" data-tool="shape" onclick="toggleShapePicker(event)" id="shapeToolBtn"><span class="icon">◇</span>図形</button>
 <div class="tool-separator"></div>
 <button class="left-tool" data-tool="pen" onclick="setTool('pen')"><span class="icon">✎</span>ペン</button>
 <button class="left-tool" data-tool="image" onclick="setTool('image')"><span class="icon">▧</span>画像</button>
@@ -150,10 +144,10 @@ input[type="range"]{flex:1;}
 <canvas id="logoCanvas" width="1200" height="800"></canvas>
 </div>
 </section>
-<aside class="rightbar">
+<aside class="rightbar" id="rightbar">
 <div class="panel-title">プロパティ</div>
 <div class="properties" id="properties">
-<div class="no-selection">オブジェクトを選択してください。<br>文字や図形を選ぶと、ここから細かく編集できます。</div>
+<div class="no-selection">オブジェクトを選択してください。<br>文字や図形を選ぶとここから編集できます。</div>
 </div>
 <div class="layers">
 <div class="panel-title">レイヤー</div>
@@ -168,6 +162,15 @@ input[type="range"]{flex:1;}
 <span id="toolStatus">選択ツール</span>
 </footer>
 </div>
+
+<div class="shape-picker" id="shapePicker">
+<button onclick="pickShape('rect')"><span class="icon">□</span>四角</button>
+<button onclick="pickShape('circle')"><span class="icon">○</span>円</button>
+<button onclick="pickShape('triangle')"><span class="icon">△</span>三角</button>
+<button onclick="pickShape('star')"><span class="icon">☆</span>星</button>
+<button onclick="pickShape('line')"><span class="icon">／</span>線</button>
+</div>
+
 <div class="modal-bg" id="exportModal">
 <div class="modal">
 <div class="modal-head">PNGとして書き出す</div>
@@ -188,6 +191,7 @@ input[type="range"]{flex:1;}
 </div>
 </div>
 </div>
+
 <div class="context-menu" id="contextMenu">
 <button onclick="contextCopy()">コピー</button>
 <button onclick="contextPaste()">貼り付け</button>
@@ -195,10 +199,13 @@ input[type="range"]{flex:1;}
 <button onclick="deleteObject();hideContext()">削除</button>
 <button onclick="bringFront();hideContext()">最前面へ</button>
 <button onclick="sendBack();hideContext()">最背面へ</button>
+<button onclick="centerObject();hideContext()">中心へ</button>
 </div>
+
 <script>
 const canvas = new fabric.Canvas("logoCanvas",{width:1200,height:800,selection:true,preserveObjectStacking:true,selectionColor:"rgba(50,100,255,.12)",selectionBorderColor:"#4d72ff",selectionLineWidth:1,backgroundColor:"#fff"});
 let currentTool = "select";
+let currentShape = "rect";
 let clipboard = null;
 let history = [];
 let historyIndex = -1;
@@ -208,109 +215,203 @@ let penColor = "#222222";
 let penWidth = 8;
 let canvasWidth = 1200;
 let canvasHeight = 800;
-const fonts = [["Noto Sans JP","Noto Sans JP","標準・万能"],["Noto Serif JP","Noto Serif JP","明朝・上品"],["Zen Kaku Gothic New","Zen Kaku Gothic New","現代・すっきり"],["Zen Maru Gothic","Zen Maru Gothic","丸文字・やわらか"],["Zen Kurenaido","Zen Kurenaido","手書き風"],["Zen Antique","Zen Antique","古風・個性的"],["Zen Antique Soft","Zen Antique Soft","古風・やわらか"],["M PLUS 1p","M PLUS 1p","標準・太字"],["M PLUS Rounded 1c","M PLUS Rounded 1c","丸文字・ポップ"],["BIZ UDPゴシック","BIZ UDGothic","ゴシック・読みやすい"],["BIZ UDP明朝","BIZ UDPMincho","明朝・落ち着き"],["Dela Gothic One","Dela Gothic One","極太・インパクト"],["DotGothic16","DotGothic16","ドット・ゲーム風"],["Hachi Maru Pop","Hachi Maru Pop","手書き・ゆるい"],["Klee One","Klee One","手書き・自然"],["Kosugi","Kosugi","細め・シンプル"],["Kosugi Maru","Kosugi Maru","丸文字・親しみ"],["Kaisei Decol","Kaisei Decol","明朝・装飾的"],["Kaisei HarunoUmi","Kaisei HarunoUmi","明朝・和風"],["Kaisei Tokumin","Kaisei Tokumin","明朝・力強い"],["Mochiy Pop One","Mochiy Pop One","ポップ・太文字"],["New Tegomin","New Tegomin","和風・筆文字"],["Nikukyu","Nikukyu","手書き・クセ強め"],["Potta One","Potta One","ポップ・太文字"],["Rampart One","Rampart One","立体・装飾"],["Reggae One","Reggae One","個性的・太文字"],["RocknRoll One","RocknRoll One","ロック・太文字"],["Sawarabi Gothic","Sawarabi Gothic","ゴシック・自然"],["Sawarabi Mincho","Sawarabi Mincho","明朝・自然"],["Shippori Mincho","Shippori Mincho","明朝・高級感"],["Stick","Stick","細字・ポップ"],["Train One","Train One","アウトライン・個性的"],["Yusei Magic","Yusei Magic","手書き・個性的"],["Yuji Boku","Yuji Boku","筆文字・和風"],["Yuji Mai","Yuji Mai","筆文字・上品"],["sans-serif","sans-serif","標準・シンプル"],["serif","serif","標準・明朝"],["monospace","monospace","等幅・機械的"]];
-function selectedObject(){return canvas.getActiveObject();}
-function selectedObjects(){const obj=canvas.getActiveObject();if(!obj)return[];if(obj.type==="activeSelection")return obj.getObjects();return [obj];}
-function escapeHtml(text){return String(text).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");}
-function getColor(value){if(typeof value==="string"&&value.startsWith("#"))return value;return "#222222";}
-function setTool(tool){currentTool=tool;document.querySelectorAll(".left-tool").forEach(btn=>{btn.classList.toggle("active",btn.dataset.tool===tool);});canvas.isDrawingMode=tool==="pen";canvas.selection=tool==="select";canvas.defaultCursor=tool==="select"?"default":"crosshair";if(tool==="pen"){if(!canvas.freeDrawingBrush)canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);canvas.freeDrawingBrush.color=penColor;canvas.freeDrawingBrush.width=penWidth;}const names={select:"選択ツール",text:"文字ツール",rect:"四角形ツール",circle:"円ツール",triangle:"三角形ツール",star:"星ツール",line:"線ツール",pen:"ペンツール",image:"画像ツール"};document.getElementById("toolStatus").textContent=names[tool]||tool;updateUI();}
-function addText(x,y){const text=new fabric.IText("ロゴ文字",{left:x,top:y,fontFamily:"Noto Sans JP",fontSize:120,fontWeight:"700",fill:"#222222",stroke:null,strokeWidth:0,originX:"left",originY:"top",editable:true,padding:5,shadow:null});canvas.add(text);canvas.setActiveObject(text);text.enterEditing();text.selectAll();canvas.requestRenderAll();saveHistory();}
-function addRect(x,y){const obj=new fabric.Rect({left:x,top:y,width:260,height:160,fill:"#222222",stroke:null,strokeWidth:0,rx:0,ry:0,originX:"center",originY:"center"});canvas.add(obj);canvas.setActiveObject(obj);saveHistory();}
-function addCircle(x,y){const obj=new fabric.Circle({left:x,top:y,radius:100,fill:"#222222",stroke:null,strokeWidth:0,originX:"center",originY:"center"});canvas.add(obj);canvas.setActiveObject(obj);saveHistory();}
-function addTriangle(x,y){const obj=new fabric.Triangle({left:x,top:y,width:220,height:190,fill:"#222222",stroke:null,strokeWidth:0,originX:"center",originY:"center"});canvas.add(obj);canvas.setActiveObject(obj);saveHistory();}
-function createStarPoints(){const points=[];const outer=110;const inner=48;for(let i=0;i<10;i++){const angle=(-90+i*36)*Math.PI/180;const radius=i%2===0?outer:inner;points.push({x:Math.cos(angle)*radius,y:Math.sin(angle)*radius});}return points;}
-function addStar(x,y){const obj=new fabric.Polygon(createStarPoints(),{left:x,top:y,fill:"#222222",stroke:null,strokeWidth:0,originX:"center",originY:"center"});canvas.add(obj);canvas.setActiveObject(obj);saveHistory();}
-function addLine(x,y){const obj=new fabric.Line([x-130,y,x+130,y],{stroke:"#222222",strokeWidth:8});canvas.add(obj);canvas.setActiveObject(obj);saveHistory();}
-canvas.on("mouse:down",function(opt){if(currentTool==="select")return;const p=canvas.getPointer(opt.e);if(currentTool==="text"){addText(p.x,p.y);setTool("select");return;}if(currentTool==="rect"){addRect(p.x,p.y);setTool("select");return;}if(currentTool==="circle"){addCircle(p.x,p.y);setTool("select");return;}if(currentTool==="triangle"){addTriangle(p.x,p.y);setTool("select");return;}if(currentTool==="star"){addStar(p.x,p.y);setTool("select");return;}if(currentTool==="line"){addLine(p.x,p.y);setTool("select");return;}if(currentTool==="image"){document.getElementById("imageInput").click();setTool("select");}});
-canvas.on("path:created",function(e){const path=e.path;path.set({stroke:canvas.freeDrawingBrush.color,strokeWidth:canvas.freeDrawingBrush.width,fill:null});saveHistory();updateUI();});
-document.getElementById("imageInput").addEventListener("change",function(){const file=this.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(e){fabric.Image.fromURL(e.target.result,function(img){img.set({left:600,top:400,originX:"center",originY:"center",scaleX:Math.min(1,500/img.width),scaleY:Math.min(1,500/img.height)});canvas.add(img);canvas.setActiveObject(img);canvas.requestRenderAll();saveHistory();});};reader.readAsDataURL(file);this.value="";});
+let gradientMode = "vertical";
+
+const fonts = [["Noto Sans JP","Noto Sans JP","標準・万能"],["Noto Serif JP","Noto Serif JP","明朝・上品"],["Zen Kaku Gothic New","Zen Kaku Gothic New","現代・すっきり"],["Zen Maru Gothic","Zen Maru Gothic","丸文字・やわらか"],["Dela Gothic One","Dela Gothic One","極太・インパクト"],["M PLUS Rounded 1c","M PLUS Rounded 1c","丸文字・ポップ"],["Mochiy Pop One","Mochiy Pop One","ポップ・太文字"],["Shippori Mincho","Shippori Mincho","明朝・高級感"],["Yuji Boku","Yuji Boku","筆文字・和風"],["Train One","Train One","アウトライン"],["RocknRoll One","RocknRoll One","ロック・太文字"],["Rampart One","Rampart One","立体・装飾"],["DotGothic16","DotGothic16","ドット・ゲーム風"],["Hachi Maru Pop","Hachi Maru Pop","手書き・ゆるい"],["Klee One","Klee One","手書き・自然"],["sans-serif","sans-serif","標準"],["serif","serif","明朝"]];
+
+function selectedObject(){return canvas.getActiveObject()}
+function selectedObjects(){const o=canvas.getActiveObject();if(!o)return[];return o.type==="activeSelection"?o.getObjects():[o]}
+function escapeHtml(t){return String(t).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;")}
+function getColor(v){return (typeof v==="string"&&v.startsWith("#"))?v:"#222222"}
+
+function setTool(tool){
+  currentTool=tool;
+  document.querySelectorAll(".left-tool").forEach(b=>b.classList.toggle("active",b.dataset.tool===tool));
+  canvas.isDrawingMode=tool==="pen";
+  canvas.selection=tool==="select";
+  canvas.defaultCursor=tool==="select"?"default":"crosshair";
+  if(tool==="pen"){
+    if(!canvas.freeDrawingBrush)canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);
+    canvas.freeDrawingBrush.color=penColor;
+    canvas.freeDrawingBrush.width=penWidth;
+  }
+  if(tool!=="shape") hideShapePicker();
+  const names={select:"選択ツール",text:"文字ツール",shape:"図形ツール",pen:"ペンツール",image:"画像ツール"};
+  document.getElementById("toolStatus").textContent=names[tool]||tool;
+  updateUI();
+}
+
+function toggleShapePicker(e){
+  e.stopPropagation();
+  const picker=document.getElementById("shapePicker");
+  const btn=document.getElementById("shapeToolBtn");
+  if(picker.classList.contains("open")){hideShapePicker();return}
+  setTool("shape");
+  const r=btn.getBoundingClientRect();
+  picker.style.left=(r.right+6)+"px";
+  picker.style.top=r.top+"px";
+  picker.classList.add("open");
+}
+
+function hideShapePicker(){document.getElementById("shapePicker").classList.remove("open")}
+function pickShape(type){currentShape=type;hideShapePicker();setTool("shape")}
+
+function addText(x,y){
+  const t=new fabric.IText("ロゴ",{left:x,top:y,fontFamily:"Dela Gothic One",fontSize:140,fontWeight:"700",fill:"#222",originX:"center",originY:"center",editable:true,padding:4});
+  canvas.add(t);canvas.setActiveObject(t);t.enterEditing();t.selectAll();canvas.requestRenderAll();saveHistory();
+}
+function addRect(x,y){const o=new fabric.Rect({left:x,top:y,width:240,height:140,fill:"#222",rx:8,ry:8,originX:"center",originY:"center"});canvas.add(o);canvas.setActiveObject(o);saveHistory()}
+function addCircle(x,y){const o=new fabric.Circle({left:x,top:y,radius:90,fill:"#222",originX:"center",originY:"center"});canvas.add(o);canvas.setActiveObject(o);saveHistory()}
+function addTriangle(x,y){const o=new fabric.Triangle({left:x,top:y,width:200,height:180,fill:"#222",originX:"center",originY:"center"});canvas.add(o);canvas.setActiveObject(o);saveHistory()}
+function createStarPoints(){const p=[];const outer=100,inner=42;for(let i=0;i<10;i++){const a=(-90+i*36)*Math.PI/180;const r=i%2===0?outer:inner;p.push({x:Math.cos(a)*r,y:Math.sin(a)*r})}return p}
+function addStar(x,y){const o=new fabric.Polygon(createStarPoints(),{left:x,top:y,fill:"#222",originX:"center",originY:"center"});canvas.add(o);canvas.setActiveObject(o);saveHistory()}
+function addLine(x,y){const o=new fabric.Line([x-120,y,x+120,y],{stroke:"#222",strokeWidth:10});canvas.add(o);canvas.setActiveObject(o);saveHistory()}
+
+canvas.on("mouse:down",function(opt){
+  if(currentTool==="select"||currentTool==="pen")return;
+  const p=canvas.getPointer(opt.e);
+  if(currentTool==="text"){addText(p.x,p.y);setTool("select");return}
+  if(currentTool==="shape"){
+    if(currentShape==="rect")addRect(p.x,p.y);
+    else if(currentShape==="circle")addCircle(p.x,p.y);
+    else if(currentShape==="triangle")addTriangle(p.x,p.y);
+    else if(currentShape==="star")addStar(p.x,p.y);
+    else if(currentShape==="line")addLine(p.x,p.y);
+    setTool("select");return;
+  }
+  if(currentTool==="image"){document.getElementById("imageInput").click();setTool("select")}
+});
+
+canvas.on("path:created",function(e){e.path.set({stroke:canvas.freeDrawingBrush.color,strokeWidth:canvas.freeDrawingBrush.width,fill:null});saveHistory();updateUI()});
+document.getElementById("imageInput").addEventListener("change",function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=function(e){fabric.Image.fromURL(e.target.result,function(img){img.set({left:canvasWidth/2,top:canvasHeight/2,originX:"center",originY:"center",scaleX:Math.min(1,480/img.width),scaleY:Math.min(1,480/img.height)});canvas.add(img);canvas.setActiveObject(img);canvas.requestRenderAll();saveHistory()})};r.readAsDataURL(f);this.value=""});
 canvas.on("selection:created",updateUI);canvas.on("selection:updated",updateUI);canvas.on("selection:cleared",updateUI);
-canvas.on("object:modified",function(){saveHistory();updateUI();});
-canvas.on("object:moving",function(e){snapObject(e.target);updateStatus();});
+canvas.on("object:modified",function(){saveHistory();updateUI()});
+canvas.on("object:moving",function(e){snapObject(e.target);updateStatus()});
 canvas.on("object:scaling",updateStatus);canvas.on("object:rotating",updateStatus);
-function snapObject(obj){if(!obj)return;if(obj.type==="activeSelection")return;const grid=10;obj.set({left:Math.round(obj.left/grid)*grid,top:Math.round(obj.top/grid)*grid});}
-function updateUI(){updateProperties();updateLayers();updateStatus();}
-function updateStatus(){const obj=selectedObject();if(!obj){document.getElementById("objectStatus").textContent="オブジェクトなし";document.getElementById("positionStatus").textContent="X: -　Y: -";document.getElementById("sizeStatus").textContent="W: -　H: -";return;}document.getElementById("objectStatus").textContent=typeName(obj);document.getElementById("positionStatus").textContent="X: "+Math.round(obj.left)+"　Y: "+Math.round(obj.top);document.getElementById("sizeStatus").textContent="W: "+Math.round(obj.getScaledWidth())+"　H: "+Math.round(obj.getScaledHeight());}
-function typeName(obj){const names={"i-text":"文字","rect":"四角形","circle":"円","triangle":"三角形","polygon":"図形","line":"線","path":"ペン","image":"画像","activeSelection":"複数選択"};return names[obj.type]||obj.type;}
-function updateProperties(){const area=document.getElementById("properties");const obj=selectedObject();if(!obj){if(currentTool==="pen"){area.innerHTML=penToolPanel();return;}area.innerHTML=`<div class="no-selection">オブジェクトを選択してください。<br>文字・図形・ペンなどを選択すると、ここから細かく編集できます。</div>`;return;}if(obj.type==="activeSelection"){area.innerHTML=`<div class="section"><div class="section-title">複数選択</div><div class="no-selection" style="padding:5px 0">${obj.getObjects().length}個のオブジェクトを選択中</div></div><div class="section"><div class="section-title">整列</div><div class="btn-grid"><button class="small-btn" onclick="alignLeft()">左</button><button class="small-btn" onclick="alignCenter()">中央</button><button class="small-btn" onclick="alignRight()">右</button></div></div>`;return;}let html=`<div class="section"><div class="section-title">基本</div><div class="row"><div class="label">X</div><input type="number" value="${Math.round(obj.left)}" onchange="setProp('left',this.value)"></div><div class="row"><div class="label">Y</div><input type="number" value="${Math.round(obj.top)}" onchange="setProp('top',this.value)"></div><div class="row"><div class="label">幅</div><input type="number" value="${Math.round(obj.getScaledWidth())}" onchange="setWidth(this.value)"></div><div class="row"><div class="label">高さ</div><input type="number" value="${Math.round(obj.getScaledHeight())}" onchange="setHeight(this.value)"></div><div class="row"><div class="label">回転</div><input type="number" value="${Math.round(obj.angle||0)}" onchange="setProp('angle',this.value)"></div><div class="row"><div class="label">不透明度</div><input type="range" min="0" max="100" value="${Math.round((obj.opacity??1)*100)}" oninput="setOpacity(this.value)" onchange="saveHistory()"><div class="range-value" id="opacityValue">${Math.round((obj.opacity??1)*100)}%</div></div></div>`;if(obj.type==="i-text")html+=textPanel(obj);if(["rect","circle","triangle","polygon","line"].includes(obj.type))html+=shapePanel(obj);if(obj.type==="path")html+=penPanel(obj);if(obj.type==="image")html+=imagePanel(obj);area.innerHTML=html;updateGradientPreview(obj);}
-function textPanel(obj){return `<div class="section"><div class="section-title">文字</div><div class="row"><div class="label">フォント</div><select class="font-select" onchange="changeFont(this.value)">${fonts.map(f=>`<option value="${escapeHtml(f[1])}" ${obj.fontFamily===f[1]?"selected":""}>${escapeHtml(f[0])}（${escapeHtml(f[2])}）</option>`).join("")}</select></div><div class="row"><div class="label">サイズ</div><input type="number" min="1" value="${Math.round(obj.fontSize||100)}" onchange="changeFontSize(this.value)"></div><div class="row"><div class="label">文字間隔</div><input type="number" value="${obj.charSpacing||0}" onchange="setProp('charSpacing',this.value)"></div><div class="row"><div class="label">行間</div><input type="number" step=".1" value="${obj.lineHeight||1.16}" onchange="setProp('lineHeight',this.value)"></div><div class="row"><div class="label">文字色</div><input type="color" value="${getColor(obj._baseFill||obj.fill)}" onchange="changeFill(this.value)"></div><div class="row"><div class="label">太さ</div><select onchange="setProp('fontWeight',this.value)"><option value="400" ${obj.fontWeight=="400"?"selected":""}>標準</option><option value="500" ${obj.fontWeight=="500"?"selected":""}>中太</option><option value="700" ${obj.fontWeight=="700"?"selected":""}>太字</option><option value="900" ${obj.fontWeight=="900"?"selected":""}>極太</option></select></div><label class="check"><input type="checkbox" ${obj.fontStyle==="italic"?"checked":""} onchange="toggleItalic(this.checked)">斜体</label></div>${gradientPanel(obj)}${strokePanel(obj)}${shadowPanel(obj)}${glossPanel(obj)}`;}
-function gradientPanel(obj){return `<div class="section"><div class="section-title">グラデーション</div><label class="check"><input type="checkbox" ${obj._gradientEnabled?"checked":""} onchange="toggleGradient(this.checked)">グラデーションを使用</label><div class="color-row"><span>色1</span><input type="color" value="${obj._gradientColor1||'#ffffff'}" onchange="setGradientColor(1,this.value)"></div><div class="color-row"><span>色2</span><input type="color" value="${obj._gradientColor2||'#555555'}" onchange="setGradientColor(2,this.value)"></div><select onchange="setGradientDirection(this.value)"><option value="vertical">上 → 下</option><option value="horizontal">左 → 右</option><option value="diagonal">斜め</option></select><div id="gradientPreview" class="gradient-preview"></div></div>`;}
-function strokePanel(obj){return `<div class="section"><div class="section-title">縁取り</div><div class="row"><div class="label">色</div><input type="color" value="${getColor(obj.stroke||'#000000')}" onchange="setStrokeColor(this.value)"></div><div class="row"><div class="label">太さ</div><input type="range" min="0" max="50" value="${obj.strokeWidth||0}" oninput="setStrokeWidth(this.value)" onchange="commitStrokeWidth()"><div class="range-value" id="strokeValue">${obj.strokeWidth||0}</div></div></div>`;}
-function shapePanel(obj){return `<div class="section"><div class="section-title">塗り</div><div class="row"><div class="label">色</div><input type="color" value="${getColor(obj._baseFill||obj.fill)}" onchange="changeFill(this.value)"></div><label class="check"><input type="checkbox" ${obj._gradientEnabled?"checked":""} onchange="toggleGradient(this.checked)">グラデーション</label><div class="color-row"><span>色1</span><input type="color" value="${obj._gradientColor1||'#ffffff'}" onchange="setGradientColor(1,this.value)"></div><div class="color-row"><span>色2</span><input type="color" value="${obj._gradientColor2||'#555555'}" onchange="setGradientColor(2,this.value)"></div><select onchange="setGradientDirection(this.value)"><option value="vertical">上 → 下</option><option value="horizontal">左 → 右</option><option value="diagonal">斜め</option></select><div id="gradientPreview" class="gradient-preview"></div></div>${strokePanel(obj)}${obj.type==="rect"?`<div class="section"><div class="section-title">角丸</div><div class="row"><div class="label">半径</div><input type="range" min="0" max="100" value="${obj.rx||0}" oninput="setRound(this.value)" onchange="commitRound()"></div></div>`:""}${shadowPanel(obj)}${glossPanel(obj)}`;}
-function shadowPanel(obj){const shadow=obj.shadow;return `<div class="section"><div class="section-title">影</div><label class="check"><input type="checkbox" ${shadow?"checked":""} onchange="toggleShadow(this.checked)">影を使用</label><div class="row"><div class="label">色</div><input type="color" value="${shadow?.color||'#000000'}" onchange="changeShadowColor(this.value)"></div><div class="row"><div class="label">X</div><input type="range" min="-50" max="50" value="${shadow?.offsetX||0}" oninput="changeShadowX(this.value)" onchange="saveHistory()"></div><div class="row"><div class="label">Y</div><input type="range" min="-50" max="50" value="${shadow?.offsetY||0}" oninput="changeShadowY(this.value)" onchange="saveHistory()"></div><div class="row"><div class="label">ぼかし</div><input type="range" min="0" max="50" value="${shadow?.blur||0}" oninput="changeShadowBlur(this.value)" onchange="saveHistory()"></div><div class="row"><div class="label">透明度</div><input type="range" min="0" max="100" value="${shadow?Math.round((1-shadow.opacity)*100):50}" oninput="changeShadowOpacity(this.value)" onchange="saveHistory()"></div></div>`;}
-function glossPanel(obj){return `<div class="section"><div class="section-title">光沢</div><label class="check"><input type="checkbox" ${obj._glossEnabled?"checked":""} onchange="toggleGloss(this.checked)">光沢を使用</label><div class="row"><div class="label">強さ</div><input type="range" min="0" max="100" value="${obj._glossStrength??30}" oninput="setGlossStrength(this.value)" onchange="saveHistory()"><div class="range-value">${obj._glossStrength??30}</div></div><div style="font-size:10px;color:#888;line-height:1.6">元の色やグラデーションを壊さず、上側に白いハイライトを加えます。</div></div>`;}
-function penToolPanel(){return `<div class="section"><div class="section-title">ペン設定</div><div class="row"><div class="label">色</div><input type="color" value="${penColor}" oninput="changePenToolColor(this.value)"></div><div class="row"><div class="label">太さ</div><input type="range" min="1" max="80" value="${penWidth}" oninput="changePenToolWidth(this.value)"><div class="range-value" id="penToolWidthValue">${penWidth}</div></div><div style="font-size:10px;color:#888;line-height:1.6;margin-top:8px">ペンを選んでいる間は、ここで設定した色と太さが次に描く線へすぐ反映されます。</div></div>`;}
-function penPanel(obj){return `<div class="section"><div class="section-title">ペン</div><div class="row"><div class="label">色</div><input type="color" value="${getColor(obj.stroke||'#222222')}" onchange="changePenColor(this.value)"></div><div class="row"><div class="label">太さ</div><input type="range" min="1" max="80" value="${obj.strokeWidth||8}" oninput="changePenWidth(this.value)" onchange="commitPenWidth()"><div class="range-value">${obj.strokeWidth||8}</div></div>${shadowPanel(obj)}</div>`;}
-function imagePanel(){return `<div class="section"><div class="section-title">画像</div><div class="no-selection" style="padding:4px 0">位置・大きさ・透明度などを基本設定から変更できます。</div></div>`;}
-function changeFill(color){const obj=selectedObject();if(!obj)return;obj._baseFill=color;obj._gradientEnabled=false;obj.set("fill",color);if(obj._glossEnabled)applyGloss(obj);canvas.requestRenderAll();saveHistory();updateUI();}
-let gradientMode="vertical";
-function toggleGradient(enabled){const obj=selectedObject();if(!obj)return;obj._gradientEnabled=enabled;if(enabled){obj._gradientColor1=obj._gradientColor1||"#ffffff";obj._gradientColor2=obj._gradientColor2||"#555555";applyGradient(obj);}else{obj.set("fill",obj._baseFill||"#222222");}if(obj._glossEnabled)applyGloss(obj);canvas.requestRenderAll();saveHistory();updateUI();}
-function setGradientColor(number,color){const obj=selectedObject();if(!obj)return;if(number===1)obj._gradientColor1=color;if(number===2)obj._gradientColor2=color;if(obj._gradientEnabled)applyGradient(obj);if(obj._glossEnabled)applyGloss(obj);canvas.requestRenderAll();saveHistory();updateUI();}
-function setGradientDirection(direction){gradientMode=direction;const obj=selectedObject();if(!obj)return;if(obj._gradientEnabled)applyGradient(obj);if(obj._glossEnabled)applyGloss(obj);canvas.requestRenderAll();}
-function applyGradient(obj){const c1=obj._gradientColor1||"#ffffff";const c2=obj._gradientColor2||"#555555";let coords;if(gradientMode==="horizontal"){coords={x1:0,y1:0,x2:obj.width||1,y2:0};}else if(gradientMode==="diagonal"){coords={x1:0,y1:0,x2:obj.width||1,y2:obj.height||1};}else{coords={x1:0,y1:0,x2:0,y2:obj.height||1};}obj.set("fill",new fabric.Gradient({type:"linear",coords:coords,colorStops:[{offset:0,color:c1},{offset:1,color:c2}]}));}
-function toggleGloss(enabled){const obj=selectedObject();if(!obj)return;obj._glossEnabled=enabled;if(enabled){applyGloss(obj);}else{if(obj._gradientEnabled){applyGradient(obj);}else{obj.set("fill",obj._baseFill||"#222222");}}canvas.requestRenderAll();saveHistory();updateUI();}
-function setGlossStrength(value){const obj=selectedObject();if(!obj)return;obj._glossStrength=Number(value);if(obj._glossEnabled)applyGloss(obj);canvas.requestRenderAll();}
-function applyGloss(obj){const strength=(obj._glossStrength??30)/100;const alpha=Math.min(.75,strength*.75);obj.set("shadow",obj._manualShadow||null);obj._glossShadow=new fabric.Shadow({color:`rgba(255,255,255,${alpha})`,blur:Math.max(1,3+strength*8),offsetX:0,offsetY:-Math.max(2,3+strength*6)});const originalStroke=obj._manualStroke??obj.stroke;if(obj.type==="i-text"||obj.type==="rect"||obj.type==="circle"||obj.type==="triangle"||obj.type==="polygon"){obj.set("stroke",originalStroke);obj._glossStroke=Math.max(1,Math.round(strength*3));}}
-function setStrokeColor(color){const obj=selectedObject();if(!obj)return;obj._manualStroke=color;obj.set("stroke",color);if(!obj.strokeWidth)obj.set("strokeWidth",2);canvas.requestRenderAll();saveHistory();updateUI();}
-function setStrokeWidth(value){const obj=selectedObject();if(!obj)return;obj.set("strokeWidth",Number(value));canvas.requestRenderAll();const v=document.getElementById("strokeValue");if(v)v.textContent=value;}
-function commitStrokeWidth(){saveHistory();}
-function toggleShadow(enabled){const obj=selectedObject();if(!obj)return;if(enabled){obj._manualShadow=new fabric.Shadow({color:"rgba(0,0,0,.5)",blur:10,offsetX:8,offsetY:8});obj.set("shadow",obj._manualShadow);}else{obj._manualShadow=null;obj.set("shadow",null);}canvas.requestRenderAll();saveHistory();updateUI();}
-function changeShadowColor(color){const obj=selectedObject();if(!obj||!obj._manualShadow)return;const s=obj._manualShadow;const alpha=s.opacity??.5;obj._manualShadow=new fabric.Shadow({color:hexToRgba(color,alpha),blur:s.blur,offsetX:s.offsetX,offsetY:s.offsetY});obj.set("shadow",obj._manualShadow);canvas.requestRenderAll();}
-function changeShadowX(value){const obj=selectedObject();if(!obj||!obj._manualShadow)return;obj._manualShadow.offsetX=Number(value);obj.set("shadow",obj._manualShadow);canvas.requestRenderAll();}
-function changeShadowY(value){const obj=selectedObject();if(!obj||!obj._manualShadow)return;obj._manualShadow.offsetY=Number(value);obj.set("shadow",obj._manualShadow);canvas.requestRenderAll();}
-function changeShadowBlur(value){const obj=selectedObject();if(!obj||!obj._manualShadow)return;obj._manualShadow.blur=Number(value);obj.set("shadow",obj._manualShadow);canvas.requestRenderAll();}
-function changeShadowOpacity(value){const obj=selectedObject();if(!obj||!obj._manualShadow)return;obj._manualShadow.opacity=1-Number(value)/100;obj.set("shadow",obj._manualShadow);canvas.requestRenderAll();}
-function changePenColor(color){const obj=selectedObject();if(obj&&obj.type==="path"){obj.set("stroke",color);canvas.requestRenderAll();saveHistory();}if(canvas.freeDrawingBrush){canvas.freeDrawingBrush.color=color;}updateUI();}
-function changePenToolColor(value){penColor=value;if(!canvas.freeDrawingBrush)canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);canvas.freeDrawingBrush.color=penColor;canvas.requestRenderAll();}
-function changePenToolWidth(value){penWidth=Number(value);if(!canvas.freeDrawingBrush)canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);canvas.freeDrawingBrush.width=penWidth;const v=document.getElementById("penToolWidthValue");if(v)v.textContent=penWidth;}
-function changePenWidth(value){const obj=selectedObject();if(obj&&obj.type==="path"){obj.set("strokeWidth",Number(value));canvas.requestRenderAll();}if(canvas.freeDrawingBrush){canvas.freeDrawingBrush.width=Number(value);}}
-function commitPenWidth(){saveHistory();}
-function setProp(prop,value){const obj=selectedObject();if(!obj)return;obj.set(prop,Number(value));canvas.requestRenderAll();saveHistory();updateUI();}
-function setWidth(value){const obj=selectedObject();if(!obj)return;if(obj.width<=0)return;obj.scaleX=Number(value)/obj.width;canvas.requestRenderAll();saveHistory();updateUI();}
-function setHeight(value){const obj=selectedObject();if(!obj)return;if(obj.height<=0)return;obj.scaleY=Number(value)/obj.height;canvas.requestRenderAll();saveHistory();updateUI();}
-function setOpacity(value){const obj=selectedObject();if(!obj)return;obj.opacity=Number(value)/100;canvas.requestRenderAll();const v=document.getElementById("opacityValue");if(v)v.textContent=value+"%";}
-async function changeFont(font){const active=selectedObject();if(!active)return;const targets=active.type==="activeSelection"?active.getObjects().filter(o=>o.type==="i-text"):active.type==="i-text"?[active]:[];if(!targets.length)return;try{await document.fonts.load(`700 120px "${font}"`);await document.fonts.ready;}catch(e){}targets.forEach(obj=>{obj.set("fontFamily",font);if(typeof obj.initDimensions==="function")obj.initDimensions();if(typeof obj.setCoords==="function")obj.setCoords();obj.dirty=true;});canvas.requestRenderAll();saveHistory();updateUI();}
-function changeFontSize(size){const obj=selectedObject();if(!obj||obj.type!=="i-text")return;obj.fontSize=Number(size);canvas.requestRenderAll();saveHistory();updateUI();}
-function toggleItalic(enabled){const obj=selectedObject();if(!obj)return;obj.fontStyle=enabled?"italic":"normal";canvas.requestRenderAll();saveHistory();}
-function setRound(value){const obj=selectedObject();if(!obj||obj.type!=="rect")return;obj.rx=Number(value);obj.ry=Number(value);canvas.requestRenderAll();}
-function commitRound(){saveHistory();}
-function updateGradientPreview(obj){const preview=document.getElementById("gradientPreview");if(!preview)return;const c1=obj._gradientColor1||"#ffffff";const c2=obj._gradientColor2||"#555555";let direction="to bottom";if(gradientMode==="horizontal")direction="to right";if(gradientMode==="diagonal")direction="to bottom right";preview.style.background=`linear-gradient(${direction},${c1},${c2})`;}
-function alignLeft(){const objects=selectedObjects();if(objects.length<2)return;const min=Math.min(...objects.map(o=>o.left));objects.forEach(o=>{o.left=min;o.setCoords();});canvas.requestRenderAll();saveHistory();}
-function alignCenter(){const objects=selectedObjects();if(objects.length<2)return;const avg=objects.reduce((sum,o)=>sum+o.left,0)/objects.length;objects.forEach(o=>{o.left=avg;o.setCoords();});canvas.requestRenderAll();saveHistory();}
-function alignRight(){const objects=selectedObjects();if(objects.length<2)return;const max=Math.max(...objects.map(o=>o.left+o.getScaledWidth()));objects.forEach(o=>{o.left=max-o.getScaledWidth();o.setCoords();});canvas.requestRenderAll();saveHistory();}
-function updateLayers(){const list=document.getElementById("layerList");list.innerHTML="";const objects=canvas.getObjects();const active=selectedObject();[...objects].reverse().forEach(obj=>{const item=document.createElement("div");item.className="layer-item";if(active&&(active===obj||(active.type==="activeSelection"&&active.getObjects().includes(obj)))){item.classList.add("selected");}let icon="□";if(obj.type==="i-text")icon="T";if(obj.type==="circle")icon="○";if(obj.type==="triangle")icon="△";if(obj.type==="path")icon="✎";if(obj.type==="image")icon="▧";item.innerHTML=`<span class="layer-icon">${icon}</span><span class="layer-name">${getLayerName(obj)}</span>`;item.onclick=function(){canvas.setActiveObject(obj);canvas.requestRenderAll();updateUI();};list.appendChild(item);});}
-function getLayerName(obj){if(obj.type==="i-text")return obj.text||"文字";return typeName(obj);}
-function copyObject(){const obj=selectedObject();if(!obj)return;obj.clone(function(cloned){clipboard=cloned;});}
-function pasteObject(){if(!clipboard)return;clipboard.clone(function(cloned){canvas.discardActiveObject();cloned.set({left:(cloned.left||0)+25,top:(cloned.top||0)+25,evented:true});if(cloned.type==="activeSelection"){cloned.canvas=canvas;cloned.forEachObject(function(obj){canvas.add(obj);});cloned.setCoords();}else{canvas.add(cloned);}canvas.setActiveObject(cloned);canvas.requestRenderAll();saveHistory();});}
-function duplicateObject(){copyObject();pasteObject();}
-function deleteObject(){const objects=selectedObjects();if(!objects.length)return;objects.forEach(obj=>{canvas.remove(obj);});canvas.discardActiveObject();canvas.requestRenderAll();saveHistory();updateUI();}
-function bringFront(){const obj=selectedObject();if(!obj)return;canvas.bringToFront(obj);canvas.requestRenderAll();saveHistory();updateUI();}
-function sendBack(){const obj=selectedObject();if(!obj)return;canvas.sendToBack(obj);canvas.requestRenderAll();saveHistory();updateUI();}
-function saveHistory(){if(restoringHistory)return;const json=JSON.stringify(canvas.toJSON(["_gradientEnabled","_gradientColor1","_gradientColor2","_glossEnabled","_glossStrength","_baseFill","_manualStroke","_manualShadow"]));if(historyIndex>=0&&history[historyIndex]===json)return;history=history.slice(0,historyIndex+1);history.push(json);historyIndex=history.length-1;}
-function undo(){if(historyIndex<=0)return;historyIndex--;restoreHistory(history[historyIndex]);}
-function redo(){if(historyIndex>=history.length-1)return;historyIndex++;restoreHistory(history[historyIndex]);}
-function restoreHistory(json){restoringHistory=true;canvas.loadFromJSON(json,function(){canvas.renderAll();canvas.discardActiveObject();restoringHistory=false;updateUI();});}
-function changeZoom(delta){zoom+=delta;zoom=Math.max(0.25,Math.min(2,zoom));canvas.setZoom(zoom);canvas.setDimensions({width:canvasWidth*zoom,height:canvasHeight*zoom});document.getElementById("zoomValue").textContent=Math.round(zoom*100)+"%";}
-function resizeCanvas(w,h){w=Math.max(200,Math.min(3000,Number(w)||canvasWidth));h=Math.max(200,Math.min(2000,Number(h)||canvasHeight));canvasWidth=w;canvasHeight=h;canvas.setWidth(w);canvas.setHeight(h);canvas.setDimensions({width:w*zoom,height:h*zoom});const wrap=document.querySelector(".canvas-wrap");if(wrap){wrap.style.width=w+"px";wrap.style.height=h+"px";}const cont=document.querySelector(".canvas-container");if(cont){cont.style.width=w+"px";cont.style.height=h+"px";}canvas.calcOffset();canvas.requestRenderAll();saveHistory();}
-function openExport(){document.getElementById("exportModal").style.display="flex";}
-function closeExport(){document.getElementById("exportModal").style.display="none";}
-function exportPNG(){const scale=Number(document.getElementById("exportScale").value);const transparent=document.getElementById("transparentExport").checked;const oldBackground=canvas.backgroundColor;if(transparent)canvas.backgroundColor=null;canvas.discardActiveObject();canvas.renderAll();const data=canvas.toDataURL({format:"png",multiplier:scale,enableRetinaScaling:true});canvas.backgroundColor=oldBackground;canvas.renderAll();const link=document.createElement("a");link.href=data;link.download="logo-"+Date.now()+".png";link.click();closeExport();}
+
+function snapObject(obj){if(!obj||obj.type==="activeSelection")return;const g=10;obj.set({left:Math.round(obj.left/g)*g,top:Math.round(obj.top/g)*g})}
+function updateUI(){updateProperties();updateLayers();updateStatus()}
+function updateStatus(){const obj=selectedObject();if(!obj){document.getElementById("objectStatus").textContent="オブジェクトなし";document.getElementById("positionStatus").textContent="X: -　Y: -";document.getElementById("sizeStatus").textContent="W: -　H: -";return}document.getElementById("objectStatus").textContent=typeName(obj);document.getElementById("positionStatus").textContent="X: "+Math.round(obj.left)+"　Y: "+Math.round(obj.top);document.getElementById("sizeStatus").textContent="W: "+Math.round(obj.getScaledWidth())+"　H: "+Math.round(obj.getScaledHeight())}
+function typeName(obj){const n={"i-text":"文字","rect":"四角形","circle":"円","triangle":"三角形","polygon":"図形","line":"線","path":"ペン","image":"画像","activeSelection":"複数選択"};return n[obj.type]||obj.type}
+
+function updateProperties(){
+  const area=document.getElementById("properties");const obj=selectedObject();
+  if(!obj){if(currentTool==="pen"){area.innerHTML=penToolPanel();return}area.innerHTML=`<div class="no-selection">オブジェクトを選択してください。<br>文字や図形を選ぶとここから編集できます。</div>`;return}
+  if(obj.type==="activeSelection"){area.innerHTML=`<div class="section"><div class="section-title">複数選択</div><div class="no-selection" style="padding:4px 0">${obj.getObjects().length}個選択中</div></div><div class="section"><div class="section-title">整列</div><div class="btn-grid"><button class="small-btn" onclick="alignLeft()">左</button><button class="small-btn" onclick="alignCenter()">中央</button><button class="small-btn" onclick="alignRight()">右</button><button class="small-btn" onclick="centerObject()">中心へ</button></div></div>`;return}
+  let html=`<div class="section"><div class="section-title">基本</div>
+<div class="row"><div class="label">X</div><input type="number" value="${Math.round(obj.left)}" onchange="setProp('left',this.value)"></div>
+<div class="row"><div class="label">Y</div><input type="number" value="${Math.round(obj.top)}" onchange="setProp('top',this.value)"></div>
+<div class="row"><div class="label">幅</div><input type="number" value="${Math.round(obj.getScaledWidth())}" onchange="setWidth(this.value)"></div>
+<div class="row"><div class="label">高さ</div><input type="number" value="${Math.round(obj.getScaledHeight())}" onchange="setHeight(this.value)"></div>
+<div class="row"><div class="label">回転</div><input type="number" value="${Math.round(obj.angle||0)}" onchange="setProp('angle',this.value)"></div>
+<div class="row"><div class="label">不透明度</div><input type="range" min="0" max="100" value="${Math.round((obj.opacity??1)*100)}" oninput="setOpacity(this.value)" onchange="saveHistory()"><div class="range-value" id="opacityValue">${Math.round((obj.opacity??1)*100)}%</div></div>
+</div>`;
+  if(obj.type==="i-text")html+=textPanel(obj);
+  if(["rect","circle","triangle","polygon","line"].includes(obj.type))html+=shapePanel(obj);
+  if(obj.type==="path")html+=penPanel(obj);
+  if(obj.type==="image")html+=imagePanel();
+  area.innerHTML=html;updateGradientPreview(obj);
+}
+
+function textPanel(obj){return `<div class="section"><div class="section-title">文字</div>
+<div class="row"><div class="label">フォント</div><select class="font-select" onchange="changeFont(this.value)">${fonts.map(f=>`<option value="${escapeHtml(f[1])}" ${obj.fontFamily===f[1]?"selected":""}>${escapeHtml(f[0])}（${escapeHtml(f[2])}）</option>`).join("")}</select></div>
+<div class="row"><div class="label">サイズ</div><input type="number" min="1" value="${Math.round(obj.fontSize||100)}" onchange="changeFontSize(this.value)"></div>
+<div class="row"><div class="label">文字色</div><input type="color" value="${getColor(obj._baseFill||obj.fill)}" onchange="changeFill(this.value)"></div>
+<div class="row"><div class="label">太さ</div><select onchange="setProp('fontWeight',this.value)"><option value="400" ${obj.fontWeight=="400"?"selected":""}>標準</option><option value="700" ${obj.fontWeight=="700"?"selected":""}>太字</option><option value="900" ${obj.fontWeight=="900"?"selected":""}>極太</option></select></div>
+<label class="check"><input type="checkbox" ${obj.fontStyle==="italic"?"checked":""} onchange="toggleItalic(this.checked)">斜体</label>
+</div>${gradientPanel(obj)}${strokePanel(obj)}${shadowPanel(obj)}`}
+function gradientPanel(obj){return `<div class="section"><div class="section-title">グラデーション</div>
+<label class="check"><input type="checkbox" ${obj._gradientEnabled?"checked":""} onchange="toggleGradient(this.checked)">使用する</label>
+<div class="color-row"><span>色1</span><input type="color" value="${obj._gradientColor1||'#ffffff'}" onchange="setGradientColor(1,this.value)"></div>
+<div class="color-row"><span>色2</span><input type="color" value="${obj._gradientColor2||'#555555'}" onchange="setGradientColor(2,this.value)"></div>
+<select onchange="setGradientDirection(this.value)"><option value="vertical">上→下</option><option value="horizontal">左→右</option><option value="diagonal">斜め</option></select>
+<div id="gradientPreview" class="gradient-preview"></div></div>`}
+function strokePanel(obj){return `<div class="section"><div class="section-title">縁取り</div>
+<div class="row"><div class="label">色</div><input type="color" value="${getColor(obj.stroke||'#000000')}" onchange="setStrokeColor(this.value)"></div>
+<div class="row"><div class="label">太さ</div><input type="range" min="0" max="50" value="${obj.strokeWidth||0}" oninput="setStrokeWidth(this.value)" onchange="commitStrokeWidth()"><div class="range-value" id="strokeValue">${obj.strokeWidth||0}</div></div></div>`}
+function shapePanel(obj){return `<div class="section"><div class="section-title">塗り</div>
+<div class="row"><div class="label">色</div><input type="color" value="${getColor(obj._baseFill||obj.fill)}" onchange="changeFill(this.value)"></div>
+<label class="check"><input type="checkbox" ${obj._gradientEnabled?"checked":""} onchange="toggleGradient(this.checked)">グラデーション</label>
+<div class="color-row"><span>色1</span><input type="color" value="${obj._gradientColor1||'#ffffff'}" onchange="setGradientColor(1,this.value)"></div>
+<div class="color-row"><span>色2</span><input type="color" value="${obj._gradientColor2||'#555555'}" onchange="setGradientColor(2,this.value)"></div>
+<select onchange="setGradientDirection(this.value)"><option value="vertical">上→下</option><option value="horizontal">左→右</option><option value="diagonal">斜め</option></select>
+<div id="gradientPreview" class="gradient-preview"></div></div>
+${strokePanel(obj)}
+${obj.type==="rect"?`<div class="section"><div class="section-title">角丸</div><div class="row"><div class="label">半径</div><input type="range" min="0" max="100" value="${obj.rx||0}" oninput="setRound(this.value)" onchange="commitRound()"></div></div>`:""}
+${shadowPanel(obj)}`}
+function shadowPanel(obj){const s=obj.shadow;return `<div class="section"><div class="section-title">影</div>
+<label class="check"><input type="checkbox" ${s?"checked":""} onchange="toggleShadow(this.checked)">使用する</label>
+<div class="row"><div class="label">色</div><input type="color" value="${s?.color||'#000000'}" onchange="changeShadowColor(this.value)"></div>
+<div class="row"><div class="label">X</div><input type="range" min="-50" max="50" value="${s?.offsetX||0}" oninput="changeShadowX(this.value)" onchange="saveHistory()"></div>
+<div class="row"><div class="label">Y</div><input type="range" min="-50" max="50" value="${s?.offsetY||0}" oninput="changeShadowY(this.value)" onchange="saveHistory()"></div>
+<div class="row"><div class="label">ぼかし</div><input type="range" min="0" max="50" value="${s?.blur||0}" oninput="changeShadowBlur(this.value)" onchange="saveHistory()"></div></div>`}
+function penToolPanel(){return `<div class="section"><div class="section-title">ペン設定</div>
+<div class="row"><div class="label">色</div><input type="color" value="${penColor}" oninput="changePenToolColor(this.value)"></div>
+<div class="row"><div class="label">太さ</div><input type="range" min="1" max="80" value="${penWidth}" oninput="changePenToolWidth(this.value)"><div class="range-value" id="penToolWidthValue">${penWidth}</div></div></div>`}
+function penPanel(obj){return `<div class="section"><div class="section-title">ペン</div>
+<div class="row"><div class="label">色</div><input type="color" value="${getColor(obj.stroke||'#222')}" onchange="changePenColor(this.value)"></div>
+<div class="row"><div class="label">太さ</div><input type="range" min="1" max="80" value="${obj.strokeWidth||8}" oninput="changePenWidth(this.value)" onchange="commitPenWidth()"><div class="range-value">${obj.strokeWidth||8}</div></div>${shadowPanel(obj)}</div>`}
+function imagePanel(){return `<div class="section"><div class="section-title">画像</div><div class="no-selection" style="padding:4px 0">位置・大きさ・透明度を基本設定から変更できます。</div></div>`}
+
+function changeFill(c){const o=selectedObject();if(!o)return;o._baseFill=c;o._gradientEnabled=false;o.set("fill",c);canvas.requestRenderAll();saveHistory();updateUI()}
+function toggleGradient(en){const o=selectedObject();if(!o)return;o._gradientEnabled=en;if(en){o._gradientColor1=o._gradientColor1||"#fff";o._gradientColor2=o._gradientColor2||"#555";applyGradient(o)}else o.set("fill",o._baseFill||"#222");canvas.requestRenderAll();saveHistory();updateUI()}
+function setGradientColor(n,c){const o=selectedObject();if(!o)return;if(n===1)o._gradientColor1=c;if(n===2)o._gradientColor2=c;if(o._gradientEnabled)applyGradient(o);canvas.requestRenderAll();saveHistory();updateUI()}
+function setGradientDirection(d){gradientMode=d;const o=selectedObject();if(o&&o._gradientEnabled)applyGradient(o);canvas.requestRenderAll()}
+function applyGradient(o){const c1=o._gradientColor1||"#fff",c2=o._gradientColor2||"#555";let coords;if(gradientMode==="horizontal")coords={x1:0,y1:0,x2:o.width||1,y2:0};else if(gradientMode==="diagonal")coords={x1:0,y1:0,x2:o.width||1,y2:o.height||1};else coords={x1:0,y1:0,x2:0,y2:o.height||1};o.set("fill",new fabric.Gradient({type:"linear",coords,colorStops:[{offset:0,color:c1},{offset:1,color:c2}]}))}
+function setStrokeColor(c){const o=selectedObject();if(!o)return;o.set("stroke",c);if(!o.strokeWidth)o.set("strokeWidth",2);canvas.requestRenderAll();saveHistory();updateUI()}
+function setStrokeWidth(v){const o=selectedObject();if(!o)return;o.set("strokeWidth",Number(v));canvas.requestRenderAll();const el=document.getElementById("strokeValue");if(el)el.textContent=v}
+function commitStrokeWidth(){saveHistory()}
+function toggleShadow(en){const o=selectedObject();if(!o)return;if(en){o.shadow=new fabric.Shadow({color:"rgba(0,0,0,.45)",blur:12,offsetX:6,offsetY:6})}else o.shadow=null;canvas.requestRenderAll();saveHistory();updateUI()}
+function changeShadowColor(c){const o=selectedObject();if(!o||!o.shadow)return;o.shadow.color=c;canvas.requestRenderAll()}
+function changeShadowX(v){const o=selectedObject();if(!o||!o.shadow)return;o.shadow.offsetX=Number(v);canvas.requestRenderAll()}
+function changeShadowY(v){const o=selectedObject();if(!o||!o.shadow)return;o.shadow.offsetY=Number(v);canvas.requestRenderAll()}
+function changeShadowBlur(v){const o=selectedObject();if(!o||!o.shadow)return;o.shadow.blur=Number(v);canvas.requestRenderAll()}
+function changePenColor(c){const o=selectedObject();if(o&&o.type==="path"){o.set("stroke",c);canvas.requestRenderAll();saveHistory()}if(canvas.freeDrawingBrush)canvas.freeDrawingBrush.color=c;updateUI()}
+function changePenToolColor(v){penColor=v;if(!canvas.freeDrawingBrush)canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);canvas.freeDrawingBrush.color=penColor}
+function changePenToolWidth(v){penWidth=Number(v);if(!canvas.freeDrawingBrush)canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);canvas.freeDrawingBrush.width=penWidth;const el=document.getElementById("penToolWidthValue");if(el)el.textContent=penWidth}
+function changePenWidth(v){const o=selectedObject();if(o&&o.type==="path"){o.set("strokeWidth",Number(v));canvas.requestRenderAll()}if(canvas.freeDrawingBrush)canvas.freeDrawingBrush.width=Number(v)}
+function commitPenWidth(){saveHistory()}
+function setProp(p,v){const o=selectedObject();if(!o)return;o.set(p,Number(v));canvas.requestRenderAll();saveHistory();updateUI()}
+function setWidth(v){const o=selectedObject();if(!o||o.width<=0)return;o.scaleX=Number(v)/o.width;canvas.requestRenderAll();saveHistory();updateUI()}
+function setHeight(v){const o=selectedObject();if(!o||o.height<=0)return;o.scaleY=Number(v)/o.height;canvas.requestRenderAll();saveHistory();updateUI()}
+function setOpacity(v){const o=selectedObject();if(!o)return;o.opacity=Number(v)/100;canvas.requestRenderAll();const el=document.getElementById("opacityValue");if(el)el.textContent=v+"%"}
+async function changeFont(font){const active=selectedObject();if(!active)return;const targets=active.type==="activeSelection"?active.getObjects().filter(o=>o.type==="i-text"):active.type==="i-text"?[active]:[];if(!targets.length)return;try{await document.fonts.load(`700 120px "${font}"`);await document.fonts.ready}catch(e){}targets.forEach(o=>{o.set("fontFamily",font);if(o.initDimensions)o.initDimensions();if(o.setCoords)o.setCoords();o.dirty=true});canvas.requestRenderAll();saveHistory();updateUI()}
+function changeFontSize(s){const o=selectedObject();if(!o||o.type!=="i-text")return;o.fontSize=Number(s);canvas.requestRenderAll();saveHistory();updateUI()}
+function toggleItalic(en){const o=selectedObject();if(!o)return;o.fontStyle=en?"italic":"normal";canvas.requestRenderAll();saveHistory()}
+function setRound(v){const o=selectedObject();if(!o||o.type!=="rect")return;o.rx=o.ry=Number(v);canvas.requestRenderAll()}
+function commitRound(){saveHistory()}
+function updateGradientPreview(o){const p=document.getElementById("gradientPreview");if(!p)return;const c1=o._gradientColor1||"#fff",c2=o._gradientColor2||"#555";let d="to bottom";if(gradientMode==="horizontal")d="to right";if(gradientMode==="diagonal")d="to bottom right";p.style.background=`linear-gradient(${d},${c1},${c2})`}
+function alignLeft(){const os=selectedObjects();if(os.length<2)return;const m=Math.min(...os.map(o=>o.left));os.forEach(o=>{o.left=m;o.setCoords()});canvas.requestRenderAll();saveHistory()}
+function alignCenter(){const os=selectedObjects();if(os.length<2)return;const a=os.reduce((s,o)=>s+o.left,0)/os.length;os.forEach(o=>{o.left=a;o.setCoords()});canvas.requestRenderAll();saveHistory()}
+function alignRight(){const os=selectedObjects();if(os.length<2)return;const m=Math.max(...os.map(o=>o.left+o.getScaledWidth()));os.forEach(o=>{o.left=m-o.getScaledWidth();o.setCoords()});canvas.requestRenderAll();saveHistory()}
+function centerObject(){const o=selectedObject();if(!o)return;o.set({left:canvasWidth/2,top:canvasHeight/2,originX:"center",originY:"center"});o.setCoords();canvas.requestRenderAll();saveHistory();updateUI()}
+function updateLayers(){const list=document.getElementById("layerList");list.innerHTML="";const objs=canvas.getObjects();const active=selectedObject();[...objs].reverse().forEach(obj=>{const item=document.createElement("div");item.className="layer-item";if(active&&(active===obj||(active.type==="activeSelection"&&active.getObjects().includes(obj))))item.classList.add("selected");let icon="□";if(obj.type==="i-text")icon="T";if(obj.type==="circle")icon="○";if(obj.type==="triangle")icon="△";if(obj.type==="path")icon="✎";if(obj.type==="image")icon="▧";item.innerHTML=`<span class="layer-icon">${icon}</span><span class="layer-name">${obj.type==="i-text"?(obj.text||"文字"):typeName(obj)}</span>`;item.onclick=()=>{canvas.setActiveObject(obj);canvas.requestRenderAll();updateUI()};list.appendChild(item)})}
+function copyObject(){const o=selectedObject();if(!o)return;o.clone(c=>clipboard=c)}
+function pasteObject(){if(!clipboard)return;clipboard.clone(c=>{canvas.discardActiveObject();c.set({left:(c.left||0)+25,top:(c.top||0)+25,evented:true});if(c.type==="activeSelection"){c.canvas=canvas;c.forEachObject(o=>canvas.add(o));c.setCoords()}else canvas.add(c);canvas.setActiveObject(c);canvas.requestRenderAll();saveHistory()})}
+function duplicateObject(){copyObject();pasteObject()}
+function deleteObject(){const os=selectedObjects();if(!os.length)return;os.forEach(o=>canvas.remove(o));canvas.discardActiveObject();canvas.requestRenderAll();saveHistory();updateUI()}
+function bringFront(){const o=selectedObject();if(!o)return;canvas.bringToFront(o);canvas.requestRenderAll();saveHistory();updateUI()}
+function sendBack(){const o=selectedObject();if(!o)return;canvas.sendToBack(o);canvas.requestRenderAll();saveHistory();updateUI()}
+function saveHistory(){if(restoringHistory)return;const json=JSON.stringify(canvas.toJSON(["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"]));if(historyIndex>=0&&history[historyIndex]===json)return;history=history.slice(0,historyIndex+1);history.push(json);historyIndex=history.length-1}
+function undo(){if(historyIndex<=0)return;historyIndex--;restoreHistory(history[historyIndex])}
+function redo(){if(historyIndex>=history.length-1)return;historyIndex++;restoreHistory(history[historyIndex])}
+function restoreHistory(json){restoringHistory=true;canvas.loadFromJSON(json,()=>{canvas.renderAll();canvas.discardActiveObject();restoringHistory=false;updateUI()})}
+function changeZoom(d){zoom+=d;zoom=Math.max(0.25,Math.min(2,zoom));canvas.setZoom(zoom);canvas.setDimensions({width:canvasWidth*zoom,height:canvasHeight*zoom});document.getElementById("zoomValue").textContent=Math.round(zoom*100)+"%"}
+function resizeCanvas(w,h){w=Math.max(200,Math.min(3000,Number(w)||canvasWidth));h=Math.max(200,Math.min(2000,Number(h)||canvasHeight));canvasWidth=w;canvasHeight=h;canvas.setWidth(w);canvas.setHeight(h);canvas.setDimensions({width:w*zoom,height:h*zoom});const wrap=document.querySelector(".canvas-wrap");if(wrap){wrap.style.width=w+"px";wrap.style.height=h+"px"}canvas.calcOffset();canvas.requestRenderAll();saveHistory()}
+function openExport(){document.getElementById("exportModal").style.display="flex"}
+function closeExport(){document.getElementById("exportModal").style.display="none"}
+function exportPNG(){const scale=Number(document.getElementById("exportScale").value);const transparent=document.getElementById("transparentExport").checked;const old=canvas.backgroundColor;if(transparent)canvas.backgroundColor=null;canvas.discardActiveObject();canvas.renderAll();const data=canvas.toDataURL({format:"png",multiplier:scale,enableRetinaScaling:true});canvas.backgroundColor=old;canvas.renderAll();const a=document.createElement("a");a.href=data;a.download="logo-"+Date.now()+".png";a.click();closeExport()}
 const contextMenu=document.getElementById("contextMenu");
-canvas.upperCanvasEl.addEventListener("contextmenu",function(e){e.preventDefault();if(!selectedObject())return;contextMenu.style.display="block";contextMenu.style.left=e.clientX+"px";contextMenu.style.top=e.clientY+"px";});
-function hideContext(){contextMenu.style.display="none";}
-document.addEventListener("click",function(e){if(!contextMenu.contains(e.target)){hideContext();}});
-function contextCopy(){copyObject();hideContext();}
-function contextPaste(){pasteObject();hideContext();}
-document.addEventListener("keydown",function(e){const active=document.activeElement;const editing=active&&(active.tagName==="INPUT"||active.tagName==="TEXTAREA"||active.tagName==="SELECT");if(editing)return;if(e.ctrlKey&&e.key.toLowerCase()==="z"){e.preventDefault();undo();return;}if(e.ctrlKey&&e.key.toLowerCase()==="y"){e.preventDefault();redo();return;}if(e.ctrlKey&&e.key.toLowerCase()==="c"){e.preventDefault();copyObject();return;}if(e.ctrlKey&&e.key.toLowerCase()==="v"){e.preventDefault();pasteObject();return;}if(e.ctrlKey&&e.key.toLowerCase()==="d"){e.preventDefault();duplicateObject();return;}if(e.key==="Delete"||e.key==="Backspace"){if(selectedObject()){e.preventDefault();deleteObject();}return;}const obj=selectedObject();if(!obj)return;const step=e.shiftKey?10:1;if(e.key==="ArrowLeft"){e.preventDefault();obj.left-=step;}if(e.key==="ArrowRight"){e.preventDefault();obj.left+=step;}if(e.key==="ArrowUp"){e.preventDefault();obj.top-=step;}if(e.key==="ArrowDown"){e.preventDefault();obj.top+=step;}obj.setCoords();canvas.requestRenderAll();updateStatus();});
-function hexToRgba(hex,alpha){hex=hex.replace("#","");if(hex.length===3){hex=hex.split("").map(x=>x+x).join("");}const r=parseInt(hex.substring(0,2),16);const g=parseInt(hex.substring(2,4),16);const b=parseInt(hex.substring(4,6),16);return `rgba(${r},${g},${b},${alpha})`;}
-function toggleRightPanel(){const panel=document.querySelector(".rightbar");if(panel){panel.classList.toggle("open");}}
-document.addEventListener("click",function(e){const panel=document.querySelector(".rightbar");const btn=document.querySelector(".mobile-toggle-btn");if(!panel||!panel.classList.contains("open"))return;if(panel.contains(e.target)||(btn&&btn.contains(e.target)))return;if(window.innerWidth<=900){panel.classList.remove("open");}});
-canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);
-canvas.freeDrawingBrush.color="#222222";
-canvas.freeDrawingBrush.width=8;
-setTool("select");
-saveHistory();
-updateUI();
+canvas.upperCanvasEl.addEventListener("contextmenu",function(e){e.preventDefault();if(!selectedObject())return;contextMenu.style.display="block";contextMenu.style.left=e.clientX+"px";contextMenu.style.top=e.clientY+"px"});
+function hideContext(){contextMenu.style.display="none"}
+document.addEventListener("click",function(e){if(!contextMenu.contains(e.target))hideContext();if(!document.getElementById("shapePicker").contains(e.target)&&!document.getElementById("shapeToolBtn").contains(e.target))hideShapePicker()});
+function contextCopy(){copyObject();hideContext()}
+function contextPaste(){pasteObject();hideContext()}
+function toggleRightPanel(){document.getElementById("rightbar").classList.toggle("open")}
+document.addEventListener("click",function(e){const panel=document.getElementById("rightbar");const btn=document.querySelector(".mobile-toggle-btn");if(!panel||!panel.classList.contains("open"))return;if(panel.contains(e.target)||(btn&&btn.contains(e.target)))return;if(window.innerWidth<=900)panel.classList.remove("open")});
+document.addEventListener("keydown",function(e){const active=document.activeElement;if(active&&(active.tagName==="INPUT"||active.tagName==="TEXTAREA"||active.tagName==="SELECT"))return;if(e.ctrlKey&&e.key.toLowerCase()==="z"){e.preventDefault();undo();return}if(e.ctrlKey&&e.key.toLowerCase()==="y"){e.preventDefault();redo();return}if(e.ctrlKey&&e.key.toLowerCase()==="c"){e.preventDefault();copyObject();return}if(e.ctrlKey&&e.key.toLowerCase()==="v"){e.preventDefault();pasteObject();return}if(e.ctrlKey&&e.key.toLowerCase()==="d"){e.preventDefault();duplicateObject();return}if(e.key==="Delete"||e.key==="Backspace"){if(selectedObject()){e.preventDefault();deleteObject()}return}const o=selectedObject();if(!o)return;const step=e.shiftKey?10:1;if(e.key==="ArrowLeft"){e.preventDefault();o.left-=step}if(e.key==="ArrowRight"){e.preventDefault();o.left+=step}if(e.key==="ArrowUp"){e.preventDefault();o.top-=step}if(e.key==="ArrowDown"){e.preventDefault();o.top+=step}o.setCoords();canvas.requestRenderAll();updateStatus()});
+canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);canvas.freeDrawingBrush.color="#222";canvas.freeDrawingBrush.width=8;
+setTool("select");saveHistory();updateUI();
 </script>
 </body>
 </html>
