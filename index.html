@@ -4,89 +4,104 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ロゴメーカー</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#17181c">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=BIZ+UDPMincho:wght@400;700&family=Dela+Gothic+One&family=DotGothic16&family=Hachi+Maru+Pop&family=Kaisei+Decol:wght@400;700&family=Kaisei+HarunoUmi:wght@400;700&family=Kaisei+Tokumin:wght@400;700;800&family=Klee+One:wght@400;600&family=Kosugi&family=Kosugi+Maru&family=M+PLUS+1p:wght@400;500;700;800;900&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Mochiy+Pop+One&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;500;700;900&family=New+Tegomin&family=Nikukyu&family=Potta+One&family=Rampart+One&family=Reggae+One&family=RocknRoll+One&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Shippori+Mincho:wght@400;500;700;800&family=Stick&family=Train+One&family=Yusei+Magic&family=Yuji+Boku&family=Yuji+Mai&family=Zen+Antique&family=Zen+Antique+Soft&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+<script src="fabric.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;height:100%;overflow:hidden;font-family:"Noto Sans JP",sans-serif;background:#f1f2f4;color:#222}
+html,body{width:100%;height:100%;overflow:hidden;font-family:"Noto Sans JP",sans-serif;background:#17181c;color:#e8e9eb}
 button,input,select{font-family:inherit}
-button{cursor:pointer;border:none;background:none}
+button{cursor:pointer;border:none;background:none;color:inherit}
 .app{width:100%;height:100%;display:flex;flex-direction:column}
-.topbar{height:52px;background:#fff;border-bottom:1px solid #d7d9dc;display:flex;align-items:center;padding:0 10px;gap:6px;flex-shrink:0;overflow-x:auto}
-.logo{font-size:15px;font-weight:800;margin-right:8px;white-space:nowrap}
-.logo span{font-size:10px;color:#888;font-weight:400;margin-left:4px}
-.toolbar-group{display:flex;align-items:center;gap:2px;padding-right:6px;margin-right:2px;border-right:1px solid #ddd}
-.tool-btn{height:32px;min-width:32px;padding:0 8px;border:1px solid transparent;background:#fff;border-radius:5px;color:#333;font-size:12px}
-.tool-btn:hover{background:#f0f2f4}
-.tool-btn.danger:hover{color:#c33}
-.zoom-box{display:flex;align-items:center;gap:4px;margin-left:auto}
-.zoom-box button{width:28px;height:28px;border:1px solid #d3d6d9;background:#fff;border-radius:4px}
-.zoom-value{min-width:42px;text-align:center;font-size:11px}
+.topbar{height:54px;background:#1f2126;border-bottom:1px solid #33363f;display:flex;align-items:center;padding:0 12px;gap:8px;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+.topbar::-webkit-scrollbar{display:none}
+.logo{font-size:15px;font-weight:800;margin-right:10px;white-space:nowrap;letter-spacing:.02em}
+.logo span{font-size:10px;color:#9aa0aa;font-weight:400;margin-left:5px}
+.toolbar-group{display:flex;align-items:center;gap:3px;padding-right:8px;margin-right:2px;border-right:1px solid #33363f}
+.tool-btn{height:34px;min-width:34px;padding:0 10px;border:1px solid transparent;background:transparent;border-radius:7px;color:#d6d8dc;font-size:12px;transition:background .15s,color .15s}
+.tool-btn:hover{background:#2c2f37;color:#fff}
+.tool-btn.danger:hover{color:#ff8a80;background:rgba(255,90,80,.12)}
+.tool-btn.primary-btn{background:#5b7fff;border-color:#5b7fff;color:#fff;font-weight:700}
+.tool-btn.primary-btn:hover{background:#6d8bff}
+#installBtn{background:#5b7fff;border-color:#5b7fff;color:#fff;font-weight:700}
+#installBtn:hover{background:#6d8bff}
+.zoom-box{display:flex;align-items:center;gap:5px;margin-left:auto}
+.zoom-box button{width:29px;height:29px;border:1px solid #3a3d46;background:#26282f;color:#e8e9eb;border-radius:6px}
+.zoom-box button:hover{background:#2f323b}
+.zoom-value{min-width:44px;text-align:center;font-size:11px;color:#c6c9cf}
 .main{flex:1;min-height:0;display:flex}
-.leftbar{width:64px;background:#fff;border-right:1px solid #d7d9dc;padding:6px 4px;flex-shrink:0;display:flex;flex-direction:column;gap:3px}
-.left-tool{width:56px;min-height:46px;border:1px solid transparent;background:#fff;border-radius:6px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;font-size:10px;color:#333}
-.left-tool:hover{background:#f0f2f4}
-.left-tool.active{background:#e6e9ec;border-color:#c7cbd0}
+.leftbar{width:68px;background:#1f2126;border-right:1px solid #33363f;padding:8px 5px;flex-shrink:0;display:flex;flex-direction:column;gap:4px}
+.left-tool{width:58px;min-height:48px;border:1px solid transparent;background:transparent;border-radius:9px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;font-size:10px;color:#c6c9cf;transition:background .15s,color .15s}
+.left-tool:hover{background:#2c2f37;color:#fff}
+.left-tool.active{background:#5b7fff;border-color:#5b7fff;color:#fff}
 .left-tool .icon{font-size:18px;line-height:1}
-.tool-separator{height:1px;background:#ddd;margin:4px 6px}
-.canvas-area{flex:1;min-width:0;min-height:0;overflow:auto;background:#e6e8eb;position:relative}
-.canvas-wrap{position:relative;width:1200px;height:800px;margin:16px auto;background:#fff;box-shadow:0 2px 14px rgba(0,0,0,.15)}
+.tool-separator{height:1px;background:#33363f;margin:5px 8px}
+.canvas-area{flex:1;min-width:0;min-height:0;overflow:auto;background:#131418;position:relative;background-image:radial-gradient(rgba(255,255,255,.045) 1px,transparent 1px);background-size:22px 22px}
+.canvas-wrap{position:relative;width:1200px;height:800px;margin:18px auto;background:#fff;box-shadow:0 8px 34px rgba(0,0,0,.5);border-radius:2px}
 .grid{position:absolute;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(#eee 1px,transparent 1px),linear-gradient(90deg,#eee 1px,transparent 1px);background-size:20px 20px}
 .canvas-container{position:absolute!important;left:0!important;top:0!important;z-index:2}
-.rightbar{width:320px;background:#fff;border-left:1px solid #d7d9dc;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
-.panel-title{height:38px;display:flex;align-items:center;padding:0 12px;border-bottom:1px solid #ddd;font-size:13px;font-weight:700}
+#loadingOverlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(10,10,14,.45);color:#fff;font-size:14px;font-weight:700;letter-spacing:.08em;z-index:50}
+#dropHint{position:absolute;inset:10px;display:none;align-items:center;justify-content:center;border:2px dashed #5b7fff;border-radius:10px;background:rgba(91,127,255,.10);color:#aebfff;font-size:15px;font-weight:700;z-index:40;pointer-events:none}
+.rightbar{width:322px;background:#1f2126;border-left:1px solid #33363f;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
+.panel-title{height:40px;display:flex;align-items:center;padding:0 13px;border-bottom:1px solid #33363f;font-size:13px;font-weight:700;letter-spacing:.04em}
 .properties{flex:1;overflow:auto}
-.section{padding:10px 12px;border-bottom:1px solid #e1e2e4}
-.section-title{font-size:11px;font-weight:700;color:#666;margin-bottom:8px}
-.row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.properties::-webkit-scrollbar,.layer-list::-webkit-scrollbar{width:9px}
+.properties::-webkit-scrollbar-thumb,.layer-list::-webkit-scrollbar-thumb{background:#3a3d46;border-radius:5px}
+.section{padding:11px 13px;border-bottom:1px solid #2b2e36}
+.section-title{font-size:11px;font-weight:700;color:#9aa0aa;margin-bottom:9px;letter-spacing:.06em}
+.row{display:flex;align-items:center;gap:7px;margin-bottom:7px}
 .row:last-child{margin-bottom:0}
-.label{width:70px;flex-shrink:0;font-size:11px;color:#555}
-input[type="text"],input[type="number"],select{width:100%;height:30px;border:1px solid #cdd1d5;background:#fff;border-radius:4px;padding:0 7px;font-size:11px;outline:none}
-input[type="color"]{width:40px;height:30px;border:1px solid #ccc;padding:2px;background:#fff;border-radius:4px;cursor:pointer}
-input[type="range"]{flex:1}
-.range-value{width:36px;text-align:right;color:#666;font-size:10px}
-.check{display:flex;align-items:center;gap:6px;margin-bottom:7px;font-size:11px}
-.color-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
-.color-row span{width:40px;font-size:11px;color:#555}
-.gradient-preview{width:100%;height:26px;border:1px solid #ccc;border-radius:4px;margin-top:6px}
-.small-btn{height:30px;border:1px solid #ccd0d4;background:#fff;border-radius:4px;padding:0 8px;font-size:11px}
-.small-btn:hover{background:#f0f2f4}
-.btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
-.no-selection{padding:22px 12px;color:#888;font-size:11px;line-height:1.7}
-.layers{height:190px;border-top:1px solid #d7d9dc;flex-shrink:0;display:flex;flex-direction:column}
+.label{width:70px;flex-shrink:0;font-size:11px;color:#a7abb5}
+input[type="text"],input[type="number"],select{width:100%;height:31px;border:1px solid #3a3d46;background:#26282f;color:#eef0f3;border-radius:6px;padding:0 8px;font-size:12px;outline:none}
+input[type="text"]:focus,input[type="number"]:focus,select:focus{border-color:#5b7fff}
+input[type="color"]{width:42px;height:31px;border:1px solid #3a3d46;padding:2px;background:#26282f;border-radius:6px;cursor:pointer}
+input[type="range"]{flex:1;accent-color:#5b7fff}
+.range-value{width:38px;text-align:right;color:#9aa0aa;font-size:10px}
+.check{display:flex;align-items:center;gap:7px;margin-bottom:8px;font-size:12px;cursor:pointer}
+.check input{accent-color:#5b7fff;width:15px;height:15px}
+.color-row{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.color-row span{width:40px;font-size:11px;color:#a7abb5}
+.gradient-preview{width:100%;height:26px;border:1px solid #3a3d46;border-radius:6px;margin-top:7px}
+.small-btn{height:31px;border:1px solid #3a3d46;background:#26282f;color:#e8e9eb;border-radius:6px;padding:0 10px;font-size:11px;transition:background .15s}
+.small-btn:hover{background:#2f323b}
+.btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.no-selection{padding:22px 13px;color:#8b9099;font-size:11px;line-height:1.8}
+.layers{height:192px;border-top:1px solid #33363f;flex-shrink:0;display:flex;flex-direction:column}
 .layer-list{flex:1;overflow:auto}
-.layer-item{height:30px;display:flex;align-items:center;gap:6px;padding:0 8px;border-bottom:1px solid #eee;font-size:11px;cursor:pointer}
-.layer-item:hover{background:#f3f4f5}
-.layer-item.selected{background:#e7ebef}
-.layer-icon{width:18px;text-align:center}
+.layer-item{height:31px;display:flex;align-items:center;gap:7px;padding:0 9px;border-bottom:1px solid #26282f;font-size:11px;cursor:pointer;color:#d6d8dc}
+.layer-item:hover{background:#26282f}
+.layer-item.selected{background:rgba(91,127,255,.18)}
+.layer-icon{width:18px;text-align:center;color:#9aa0aa}
 .layer-name{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.statusbar{height:26px;background:#fff;border-top:1px solid #d7d9dc;display:flex;align-items:center;gap:14px;padding:0 10px;font-size:10px;color:#666;flex-shrink:0}
-.modal-bg{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.35);z-index:1000}
-.modal{width:360px;background:#fff;border-radius:8px;box-shadow:0 10px 35px rgba(0,0,0,.25);overflow:hidden}
-.modal-head{padding:12px 14px;border-bottom:1px solid #ddd;font-size:14px;font-weight:700}
-.modal-body{padding:14px}
-.modal-foot{padding:10px 14px;border-top:1px solid #ddd;display:flex;justify-content:flex-end;gap:6px}
-.primary{background:#222;color:#fff;border-color:#222}
-.context-menu{position:fixed;display:none;width:170px;background:#fff;border:1px solid #ccc;box-shadow:0 4px 16px rgba(0,0,0,.18);border-radius:5px;z-index:2000;padding:4px 0}
-.context-menu button{width:100%;height:30px;border:0;background:#fff;text-align:left;padding:0 12px;font-size:11px}
-.context-menu button:hover{background:#eef0f2}
-.mobile-toggle-btn{display:none;position:fixed;top:10px;right:10px;z-index:3000;height:34px;padding:0 12px;background:#222;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600}
-.shape-picker{display:none;position:fixed;background:#fff;border:1px solid #ccc;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.15);padding:8px;z-index:2600;grid-template-columns:repeat(3,1fr);gap:6px}
+.statusbar{height:27px;background:#1f2126;border-top:1px solid #33363f;display:flex;align-items:center;gap:15px;padding:0 11px;font-size:10px;color:#9aa0aa;flex-shrink:0}
+.modal-bg{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);z-index:1000}
+.modal{width:360px;background:#23252c;border:1px solid #3a3d46;border-radius:12px;box-shadow:0 14px 44px rgba(0,0,0,.5);overflow:hidden;color:#e8e9eb}
+.modal-head{padding:13px 15px;border-bottom:1px solid #33363f;font-size:14px;font-weight:700}
+.modal-body{padding:15px}
+.modal-foot{padding:11px 15px;border-top:1px solid #33363f;display:flex;justify-content:flex-end;gap:7px}
+.primary{background:#5b7fff;color:#fff;border-color:#5b7fff;font-weight:700}
+.primary:hover{background:#6d8bff}
+.context-menu{position:fixed;display:none;width:176px;background:#23252c;border:1px solid #3a3d46;box-shadow:0 8px 24px rgba(0,0,0,.45);border-radius:9px;z-index:2000;padding:5px 0}
+.context-menu button{width:100%;height:31px;border:0;background:transparent;color:#e8e9eb;text-align:left;padding:0 13px;font-size:11px}
+.context-menu button:hover{background:#2f323b}
+.mobile-toggle-btn{display:none;position:fixed;top:10px;right:10px;z-index:3000;height:35px;padding:0 13px;background:#5b7fff;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.shape-picker{display:none;position:fixed;background:#23252c;border:1px solid #3a3d46;border-radius:11px;box-shadow:0 10px 28px rgba(0,0,0,.45);padding:9px;z-index:2600;grid-template-columns:repeat(3,1fr);gap:7px}
 .shape-picker.open{display:grid}
-.shape-picker button{width:56px;height:52px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px}
-.shape-picker button:hover{background:#f0f2f4;border-color:#bbb}
+.shape-picker button{width:58px;height:54px;border:1px solid #3a3d46;border-radius:8px;background:#26282f;color:#e8e9eb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px}
+.shape-picker button:hover{background:#2f323b;border-color:#5b7fff}
 .shape-picker .icon{font-size:20px}
 @media (max-width:900px){
-.leftbar{width:52px}
-.left-tool{width:46px;min-height:42px;font-size:9px}
+.leftbar{width:54px}
+.left-tool{width:46px;min-height:44px;font-size:9px}
 .left-tool .icon{font-size:16px}
-.rightbar{position:fixed;top:0;right:0;bottom:0;width:290px;max-width:86vw;z-index:2500;transform:translateX(100%);transition:transform .22s ease;box-shadow:-4px 0 18px rgba(0,0,0,.18)}
+.rightbar{position:fixed;top:0;right:0;bottom:0;width:292px;max-width:86vw;z-index:2500;transform:translateX(100%);transition:transform .22s ease;box-shadow:-6px 0 22px rgba(0,0,0,.4)}
 .rightbar.open{transform:translateX(0)}
 .mobile-toggle-btn{display:block}
 .canvas-wrap{margin:10px auto}
-.topbar{padding-right:100px}
+.topbar{padding-right:104px}
 }
 </style>
 </head>
@@ -125,7 +140,9 @@ input[type="range"]{flex:1}
 <div class="zoom-value" id="zoomValue">100%</div>
 <button onclick="changeZoom(0.1)">＋</button>
 </div>
-<button class="tool-btn" onclick="openExport()">PNG出力</button>
+<button class="tool-btn" onclick="newProject()">新規</button>
+<button class="tool-btn" id="installBtn" style="display:none" onclick="installApp()">インストール</button>
+<button class="tool-btn primary-btn" onclick="openExport()">PNG出力</button>
 </header>
 <button class="mobile-toggle-btn" onclick="toggleRightPanel()">プロパティ</button>
 <main class="main">
@@ -135,10 +152,12 @@ input[type="range"]{flex:1}
 <button class="left-tool" data-tool="shape" onclick="toggleShapePicker(event)" id="shapeToolBtn"><span class="icon">◇</span>図形</button>
 <div class="tool-separator"></div>
 <button class="left-tool" data-tool="pen" onclick="setTool('pen')"><span class="icon">✎</span>ペン</button>
-<button class="left-tool" data-tool="image" onclick="setTool('image')"><span class="icon">▧</span>画像</button>
+<button class="left-tool" data-tool="image" onclick="pickImage()"><span class="icon">▧</span>画像</button>
 <input type="file" id="imageInput" accept="image/*" style="display:none">
 </aside>
 <section class="canvas-area" id="canvasArea">
+<div id="dropHint">画像をドロップして追加できます</div>
+<div id="loadingOverlay">読み込み中…</div>
 <div class="canvas-wrap">
 <div class="grid"></div>
 <canvas id="logoCanvas" width="1200" height="800"></canvas>
@@ -283,7 +302,38 @@ canvas.on("mouse:down",function(opt){
 });
 
 canvas.on("path:created",function(e){e.path.set({stroke:canvas.freeDrawingBrush.color,strokeWidth:canvas.freeDrawingBrush.width,fill:null});saveHistory();updateUI()});
-document.getElementById("imageInput").addEventListener("change",function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=function(e){fabric.Image.fromURL(e.target.result,function(img){img.set({left:canvasWidth/2,top:canvasHeight/2,originX:"center",originY:"center",scaleX:Math.min(1,480/img.width),scaleY:Math.min(1,480/img.height)});canvas.add(img);canvas.setActiveObject(img);canvas.requestRenderAll();saveHistory()})};r.readAsDataURL(f);this.value=""});
+function pickImage(){document.getElementById("imageInput").click()}
+function showLoading(on){document.getElementById("loadingOverlay").style.display=on?"flex":"none"}
+function loadImageFile(file){
+  if(!file||!file.type||!file.type.startsWith("image/"))return;
+  showLoading(true);
+  const url=URL.createObjectURL(file);
+  const probe=new Image();
+  probe.onload=function(){
+    const maxSide=1600;const w=probe.naturalWidth,h=probe.naturalHeight;
+    const ratio=Math.min(1,maxSide/Math.max(w,h));
+    let src=url;
+    if(ratio<1){
+      const c=document.createElement("canvas");c.width=Math.round(w*ratio);c.height=Math.round(h*ratio);
+      c.getContext("2d").drawImage(probe,0,0,c.width,c.height);
+      src=c.toDataURL(file.type==="image/png"?"image/png":"image/jpeg",0.92);
+      URL.revokeObjectURL(url);
+    }
+    fabric.Image.fromURL(src,function(img){
+      const s=Math.min(1,480/img.width,480/img.height);
+      img.set({left:canvasWidth/2,top:canvasHeight/2,originX:"center",originY:"center",scaleX:s,scaleY:s});
+      canvas.add(img);canvas.setActiveObject(img);canvas.requestRenderAll();saveHistory();showLoading(false);
+    });
+  };
+  probe.onerror=function(){showLoading(false);URL.revokeObjectURL(url);alert("画像を読み込めませんでした")};
+  probe.src=url;
+}
+document.getElementById("imageInput").addEventListener("change",function(){const f=this.files[0];this.value="";if(f)loadImageFile(f)});
+const canvasAreaEl=document.getElementById("canvasArea");
+canvasAreaEl.addEventListener("dragover",function(e){e.preventDefault();document.getElementById("dropHint").style.display="flex"});
+canvasAreaEl.addEventListener("dragleave",function(){document.getElementById("dropHint").style.display="none"});
+canvasAreaEl.addEventListener("drop",function(e){e.preventDefault();document.getElementById("dropHint").style.display="none";const f=[...e.dataTransfer.files].find(x=>x.type.startsWith("image/"));if(f)loadImageFile(f)});
+document.addEventListener("paste",function(e){if(!e.clipboardData)return;const imgItem=[...e.clipboardData.items].find(i=>i.type.startsWith("image/"));if(imgItem){const f=imgItem.getAsFile();if(f)loadImageFile(f)}});
 canvas.on("selection:created",updateUI);canvas.on("selection:updated",updateUI);canvas.on("selection:cleared",updateUI);
 canvas.on("object:modified",function(){saveHistory();updateUI()});
 canvas.on("object:moving",function(e){snapObject(e.target);updateStatus()});
@@ -381,23 +431,26 @@ function toggleItalic(en){const o=selectedObject();if(!o)return;o.fontStyle=en?"
 function setRound(v){const o=selectedObject();if(!o||o.type!=="rect")return;o.rx=o.ry=Number(v);canvas.requestRenderAll()}
 function commitRound(){saveHistory()}
 function updateGradientPreview(o){const p=document.getElementById("gradientPreview");if(!p)return;const c1=o._gradientColor1||"#fff",c2=o._gradientColor2||"#555";let d="to bottom";if(gradientMode==="horizontal")d="to right";if(gradientMode==="diagonal")d="to bottom right";p.style.background=`linear-gradient(${d},${c1},${c2})`}
-function alignLeft(){const os=selectedObjects();if(os.length<2)return;const m=Math.min(...os.map(o=>o.left));os.forEach(o=>{o.left=m;o.setCoords()});canvas.requestRenderAll();saveHistory()}
-function alignCenter(){const os=selectedObjects();if(os.length<2)return;const a=os.reduce((s,o)=>s+o.left,0)/os.length;os.forEach(o=>{o.left=a;o.setCoords()});canvas.requestRenderAll();saveHistory()}
-function alignRight(){const os=selectedObjects();if(os.length<2)return;const m=Math.max(...os.map(o=>o.left+o.getScaledWidth()));os.forEach(o=>{o.left=m-o.getScaledWidth();o.setCoords()});canvas.requestRenderAll();saveHistory()}
+function alignLeft(){const os=selectedObjects();if(!os.length)return;const target=os.length===1?0:Math.min(...os.map(o=>o.getBoundingRect().left));os.forEach(o=>{const br=o.getBoundingRect();o.left+=target-br.left;o.setCoords()});canvas.requestRenderAll();saveHistory();updateUI()}
+function alignCenter(){const os=selectedObjects();if(!os.length)return;const target=os.length===1?canvasWidth/2:os.reduce((s,o)=>{const br=o.getBoundingRect();return s+br.left+br.width/2},0)/os.length;os.forEach(o=>{const br=o.getBoundingRect();o.left+=target-(br.left+br.width/2);o.setCoords()});canvas.requestRenderAll();saveHistory();updateUI()}
+function alignRight(){const os=selectedObjects();if(!os.length)return;const target=os.length===1?canvasWidth:Math.max(...os.map(o=>{const br=o.getBoundingRect();return br.left+br.width}));os.forEach(o=>{const br=o.getBoundingRect();o.left+=target-(br.left+br.width);o.setCoords()});canvas.requestRenderAll();saveHistory();updateUI()}
 function centerObject(){const o=selectedObject();if(!o)return;o.set({left:canvasWidth/2,top:canvasHeight/2,originX:"center",originY:"center"});o.setCoords();canvas.requestRenderAll();saveHistory();updateUI()}
 function updateLayers(){const list=document.getElementById("layerList");list.innerHTML="";const objs=canvas.getObjects();const active=selectedObject();[...objs].reverse().forEach(obj=>{const item=document.createElement("div");item.className="layer-item";if(active&&(active===obj||(active.type==="activeSelection"&&active.getObjects().includes(obj))))item.classList.add("selected");let icon="□";if(obj.type==="i-text")icon="T";if(obj.type==="circle")icon="○";if(obj.type==="triangle")icon="△";if(obj.type==="path")icon="✎";if(obj.type==="image")icon="▧";item.innerHTML=`<span class="layer-icon">${icon}</span><span class="layer-name">${obj.type==="i-text"?(obj.text||"文字"):typeName(obj)}</span>`;item.onclick=()=>{canvas.setActiveObject(obj);canvas.requestRenderAll();updateUI()};list.appendChild(item)})}
-function copyObject(){const o=selectedObject();if(!o)return;o.clone(c=>clipboard=c)}
-function pasteObject(){if(!clipboard)return;clipboard.clone(c=>{canvas.discardActiveObject();c.set({left:(c.left||0)+25,top:(c.top||0)+25,evented:true});if(c.type==="activeSelection"){c.canvas=canvas;c.forEachObject(o=>canvas.add(o));c.setCoords()}else canvas.add(c);canvas.setActiveObject(c);canvas.requestRenderAll();saveHistory()})}
-function duplicateObject(){copyObject();pasteObject()}
+function copyObject(){const o=selectedObject();if(!o)return;o.clone(c=>clipboard=c,["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"])}
+function pasteObject(){if(!clipboard)return;clipboard.clone(c=>{canvas.discardActiveObject();c.set({left:(c.left||0)+25,top:(c.top||0)+25,evented:true});if(c.type==="activeSelection"){c.canvas=canvas;c.forEachObject(o=>canvas.add(o));c.setCoords()}else canvas.add(c);canvas.setActiveObject(c);canvas.requestRenderAll();saveHistory()},["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"])}
+function duplicateObject(){const o=selectedObject();if(!o)return;o.clone(function(c){c.set({left:(c.left||0)+25,top:(c.top||0)+25,evented:true});if(c.type==="activeSelection"){c.canvas=canvas;c.forEachObject(x=>canvas.add(x));c.setCoords()}else canvas.add(c);canvas.setActiveObject(c);canvas.requestRenderAll();saveHistory();updateUI()},["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"])}
 function deleteObject(){const os=selectedObjects();if(!os.length)return;os.forEach(o=>canvas.remove(o));canvas.discardActiveObject();canvas.requestRenderAll();saveHistory();updateUI()}
 function bringFront(){const o=selectedObject();if(!o)return;canvas.bringToFront(o);canvas.requestRenderAll();saveHistory();updateUI()}
 function sendBack(){const o=selectedObject();if(!o)return;canvas.sendToBack(o);canvas.requestRenderAll();saveHistory();updateUI()}
-function saveHistory(){if(restoringHistory)return;const json=JSON.stringify(canvas.toJSON(["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"]));if(historyIndex>=0&&history[historyIndex]===json)return;history=history.slice(0,historyIndex+1);history.push(json);historyIndex=history.length-1}
+function saveHistory(){if(restoringHistory)return;const json=JSON.stringify(canvas.toJSON(["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"]));if(historyIndex>=0&&history[historyIndex]===json)return;history=history.slice(0,historyIndex+1);history.push(json);if(history.length>60)history.shift();historyIndex=history.length-1;schedulePersist()}
+let persistTimer=null;
+function schedulePersist(){clearTimeout(persistTimer);persistTimer=setTimeout(persistProject,700)}
+function persistProject(){try{localStorage.setItem("logomaker-autosave",JSON.stringify(canvas.toJSON(["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"])));localStorage.setItem("logomaker-size",canvasWidth+"x"+canvasHeight)}catch(e){}}
 function undo(){if(historyIndex<=0)return;historyIndex--;restoreHistory(history[historyIndex])}
 function redo(){if(historyIndex>=history.length-1)return;historyIndex++;restoreHistory(history[historyIndex])}
 function restoreHistory(json){restoringHistory=true;canvas.loadFromJSON(json,()=>{canvas.renderAll();canvas.discardActiveObject();restoringHistory=false;updateUI()})}
-function changeZoom(d){zoom+=d;zoom=Math.max(0.25,Math.min(2,zoom));canvas.setZoom(zoom);canvas.setDimensions({width:canvasWidth*zoom,height:canvasHeight*zoom});document.getElementById("zoomValue").textContent=Math.round(zoom*100)+"%"}
-function resizeCanvas(w,h){w=Math.max(200,Math.min(3000,Number(w)||canvasWidth));h=Math.max(200,Math.min(2000,Number(h)||canvasHeight));canvasWidth=w;canvasHeight=h;canvas.setWidth(w);canvas.setHeight(h);canvas.setDimensions({width:w*zoom,height:h*zoom});const wrap=document.querySelector(".canvas-wrap");if(wrap){wrap.style.width=w+"px";wrap.style.height=h+"px"}canvas.calcOffset();canvas.requestRenderAll();saveHistory()}
+function changeZoom(d){zoom+=d;zoom=Math.max(0.25,Math.min(2,zoom));canvas.setZoom(zoom);canvas.setDimensions({width:canvasWidth*zoom,height:canvasHeight*zoom});const wrap=document.querySelector(".canvas-wrap");if(wrap){wrap.style.width=(canvasWidth*zoom)+"px";wrap.style.height=(canvasHeight*zoom)+"px"}const grid=document.querySelector(".grid");if(grid)grid.style.backgroundSize=(20*zoom)+"px "+(20*zoom)+"px";document.getElementById("zoomValue").textContent=Math.round(zoom*100)+"%"}
+function resizeCanvas(w,h){w=Math.max(200,Math.min(3000,Number(w)||canvasWidth));h=Math.max(200,Math.min(2000,Number(h)||canvasHeight));canvasWidth=w;canvasHeight=h;canvas.setWidth(w);canvas.setHeight(h);canvas.setDimensions({width:w*zoom,height:h*zoom});const wrap=document.querySelector(".canvas-wrap");if(wrap){wrap.style.width=(w*zoom)+"px";wrap.style.height=(h*zoom)+"px"}canvas.calcOffset();canvas.requestRenderAll();saveHistory()}
 function openExport(){document.getElementById("exportModal").style.display="flex"}
 function closeExport(){document.getElementById("exportModal").style.display="none"}
 function exportPNG(){const scale=Number(document.getElementById("exportScale").value);const transparent=document.getElementById("transparentExport").checked;const old=canvas.backgroundColor;if(transparent)canvas.backgroundColor=null;canvas.discardActiveObject();canvas.renderAll();const data=canvas.toDataURL({format:"png",multiplier:scale,enableRetinaScaling:true});canvas.backgroundColor=old;canvas.renderAll();const a=document.createElement("a");a.href=data;a.download="logo-"+Date.now()+".png";a.click();closeExport()}
@@ -411,7 +464,29 @@ function toggleRightPanel(){document.getElementById("rightbar").classList.toggle
 document.addEventListener("click",function(e){const panel=document.getElementById("rightbar");const btn=document.querySelector(".mobile-toggle-btn");if(!panel||!panel.classList.contains("open"))return;if(panel.contains(e.target)||(btn&&btn.contains(e.target)))return;if(window.innerWidth<=900)panel.classList.remove("open")});
 document.addEventListener("keydown",function(e){const active=document.activeElement;if(active&&(active.tagName==="INPUT"||active.tagName==="TEXTAREA"||active.tagName==="SELECT"))return;if(e.ctrlKey&&e.key.toLowerCase()==="z"){e.preventDefault();undo();return}if(e.ctrlKey&&e.key.toLowerCase()==="y"){e.preventDefault();redo();return}if(e.ctrlKey&&e.key.toLowerCase()==="c"){e.preventDefault();copyObject();return}if(e.ctrlKey&&e.key.toLowerCase()==="v"){e.preventDefault();pasteObject();return}if(e.ctrlKey&&e.key.toLowerCase()==="d"){e.preventDefault();duplicateObject();return}if(e.key==="Delete"||e.key==="Backspace"){if(selectedObject()){e.preventDefault();deleteObject()}return}const o=selectedObject();if(!o)return;const step=e.shiftKey?10:1;if(e.key==="ArrowLeft"){e.preventDefault();o.left-=step}if(e.key==="ArrowRight"){e.preventDefault();o.left+=step}if(e.key==="ArrowUp"){e.preventDefault();o.top-=step}if(e.key==="ArrowDown"){e.preventDefault();o.top+=step}o.setCoords();canvas.requestRenderAll();updateStatus()});
 canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);canvas.freeDrawingBrush.color="#222";canvas.freeDrawingBrush.width=8;
-setTool("select");saveHistory();updateUI();
+(function restoreProject(){
+  try{
+    const saved=localStorage.getItem("logomaker-autosave");
+    if(saved){const data=JSON.parse(saved);
+      if(data&&data.objects&&data.objects.length){
+        restoringHistory=true;
+        const size=(localStorage.getItem("logomaker-size")||"").split("x");
+        if(size.length===2&&(Number(size[0])!==canvasWidth||Number(size[1])!==canvasHeight)){
+          document.getElementById("canvasW").value=size[0];document.getElementById("canvasH").value=size[1];
+          resizeCanvas(Number(size[0]),Number(size[1]));
+        }
+        canvas.loadFromJSON(saved,function(){canvas.renderAll();restoringHistory=false;setTool("select");saveHistory();updateUI()});
+        return;
+      }
+    }
+  }catch(e){}
+  setTool("select");saveHistory();updateUI();
+})();
+function newProject(){if(!confirm("キャンバスを白紙に戻しますか？（「元に戻す」で戻せます）"))return;canvas.clear();canvas.backgroundColor="#fff";canvas.renderAll();saveHistory();updateUI()}
+let deferredInstallPrompt=null;
+window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferredInstallPrompt=e;document.getElementById("installBtn").style.display=""});
+function installApp(){if(!deferredInstallPrompt)return;deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.then(function(){deferredInstallPrompt=null;document.getElementById("installBtn").style.display="none"})}
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});
 </script>
 </body>
 </html>
