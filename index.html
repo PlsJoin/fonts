@@ -4,503 +4,813 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ロゴメーカー</title>
+<meta name="theme-color" content="#0a0a0b">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#17181c">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=BIZ+UDPMincho:wght@400;700&family=Dela+Gothic+One&family=DotGothic16&family=Hachi+Maru+Pop&family=Kaisei+Decol:wght@400;700&family=Kaisei+HarunoUmi:wght@400;700&family=Kaisei+Tokumin:wght@400;700;800&family=Klee+One:wght@400;600&family=Kosugi&family=Kosugi+Maru&family=M+PLUS+1p:wght@400;500;700;800;900&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Mochiy+Pop+One&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;500;700;900&family=New+Tegomin&family=Nikukyu&family=Potta+One&family=Rampart+One&family=Reggae+One&family=RocknRoll+One&family=Sawarabi+Gothic&family=Sawarabi+Mincho&family=Shippori+Mincho:wght@400;500;700;800&family=Stick&family=Train+One&family=Yusei+Magic&family=Yuji+Boku&family=Yuji+Mai&family=Zen+Antique&family=Zen+Antique+Soft&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;700;800&family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Kosugi+Maru&family=Shippori+Mincho:wght@400;700;800&family=Zen+Maru+Gothic:wght@400;700;900&family=Kaisei+Decol:wght@400;700&family=Hina+Mincho&family=Yuji+Syuku&family=DotGothic16&family=Kiwi+Maru:wght@400;500&family=Mochiy+Pop+One&family=Stick&family=Train+One&family=Monospace&family=Arial&family=Georgia&display=swap" rel="stylesheet">
 <script src="fabric.min.js"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;height:100%;overflow:hidden;font-family:"Noto Sans JP",sans-serif;background:#17181c;color:#e8e9eb}
-button,input,select{font-family:inherit}
-button{cursor:pointer;border:none;background:none;color:inherit}
-.app{width:100%;height:100%;display:flex;flex-direction:column}
-.topbar{height:54px;background:#1b1d23;border-bottom:1px solid #33363f;display:flex;align-items:center;padding:0 12px;gap:8px;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
-.topbar::-webkit-scrollbar{display:none}
-.logo{font-size:15px;font-weight:800;margin-right:10px;white-space:nowrap;letter-spacing:.02em}
-.logo span{font-size:10px;color:#9aa0aa;font-weight:400;margin-left:5px}
-.toolbar-group{display:flex;align-items:center;gap:3px;padding-right:8px;margin-right:2px;border-right:1px solid #33363f}
-.tool-btn{height:34px;min-width:34px;padding:0 10px;border:1px solid transparent;background:transparent;border-radius:2px;color:#d6d8dc;font-size:12px;transition:background .15s,color .15s}
-.tool-btn:hover{background:#2c2f37;color:#fff}
-.tool-btn.danger:hover{color:#ff8a80;background:rgba(255,90,80,.12)}
-.tool-btn.primary-btn{background:#2563eb;border-color:#2563eb;color:#fff;font-weight:700}
-.tool-btn.primary-btn:hover{background:#3a77f5}
-#installBtn{background:#2563eb;border-color:#2563eb;color:#fff;font-weight:700}
-#installBtn:hover{background:#3a77f5}
-#installBanner{display:none;align-items:center;gap:14px;padding:10px 16px;background:#2563eb;color:#fff;flex-shrink:0}
-#installBanner .ib-text{font-size:12.5px;line-height:1.5;flex:1}
-#installBanner .ib-text b{font-size:13.5px}
-#bannerInstallBtn{background:#fff;color:#2563eb;font-weight:800;font-size:13px;padding:9px 18px;border-radius:2px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-#bannerInstallBtn:hover{background:#eaf1fe}
-#bannerClose{background:transparent;color:#fff;font-size:18px;line-height:1;padding:4px 6px;opacity:.85}
-#bannerClose:hover{opacity:1}
-.zoom-box{display:flex;align-items:center;gap:5px;margin-left:auto}
-.zoom-box button{width:29px;height:29px;border:1px solid #3a3d46;background:#26282f;color:#e8e9eb;border-radius:2px}
-.zoom-box button:hover{background:#2f323b}
-.zoom-value{min-width:44px;text-align:center;font-size:11px;color:#c6c9cf}
-.main{flex:1;min-height:0;display:flex}
-.leftbar{width:68px;background:#1b1d23;border-right:1px solid #33363f;padding:8px 5px;flex-shrink:0;display:flex;flex-direction:column;gap:4px}
-.left-tool{width:58px;min-height:48px;border:1px solid transparent;background:transparent;border-radius:3px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;font-size:10px;color:#c6c9cf;transition:background .15s,color .15s}
-.left-tool:hover{background:#2c2f37;color:#fff}
-.left-tool.active{background:#2563eb;border-color:#2563eb;color:#fff}
-.left-tool .icon{font-size:18px;line-height:1}
-.tool-separator{height:1px;background:#33363f;margin:5px 8px}
-.canvas-area{flex:1;min-width:0;min-height:0;overflow:auto;background:#131418;position:relative;background-image:radial-gradient(rgba(255,255,255,.045) 1px,transparent 1px);background-size:22px 22px}
-.canvas-wrap{position:relative;width:1200px;height:800px;margin:18px auto;background:#fff;box-shadow:0 8px 34px rgba(0,0,0,.5);border-radius:0}
-.grid{position:absolute;inset:0;pointer-events:none;z-index:3;background-image:linear-gradient(rgba(0,0,0,.30) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.30) 1px,transparent 1px),linear-gradient(rgba(0,0,0,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.13) 1px,transparent 1px);background-size:100px 100px,100px 100px,20px 20px,20px 20px}
-.canvas-container{position:absolute!important;left:0!important;top:0!important;z-index:2}
-#loadingOverlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(10,10,14,.45);color:#fff;font-size:14px;font-weight:700;letter-spacing:.08em;z-index:50}
-#dropHint{position:absolute;inset:10px;display:none;align-items:center;justify-content:center;border:2px dashed #2563eb;border-radius:3px;background:rgba(91,127,255,.10);color:#aebfff;font-size:15px;font-weight:700;z-index:40;pointer-events:none}
-.rightbar{width:322px;background:#1b1d23;border-left:1px solid #33363f;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
-.panel-title{height:40px;display:flex;align-items:center;padding:0 13px;border-bottom:1px solid #33363f;font-size:13px;font-weight:700;letter-spacing:.04em}
-.properties{flex:1;overflow:auto}
-.properties::-webkit-scrollbar,.layer-list::-webkit-scrollbar{width:9px}
-.properties::-webkit-scrollbar-thumb,.layer-list::-webkit-scrollbar-thumb{background:#3a3d46;border-radius:5px}
-.section{padding:11px 13px;border-bottom:1px solid #2b2e36}
-.section-title{font-size:12px;font-weight:700;color:#9aa0aa;margin-bottom:9px;letter-spacing:.06em}
-.row{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+:root{--bg:#0a0a0b;--panel:#131315;--panel2:#1b1b1e;--panel3:#232327;--border:#26262c;--border2:#33333a;--text:#ececf1;--muted:#9c9ca6;--accent:#0d99ff;--accent-d:#0b85dd;--danger:#ff5c5c}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+button{font-family:inherit;cursor:pointer;color:inherit;background:none;border:none}
+input,select,textarea{font-family:inherit;color:var(--text)}
+.app{display:flex;height:100vh;height:100dvh}
+/* ===== 左レール ===== */
+.rail{width:66px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:2px;z-index:30;overflow-y:auto;overflow-x:hidden}
+.rail::-webkit-scrollbar{width:0}
+.rail-brand{width:38px;height:38px;background:var(--accent);color:#fff;font-size:19px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;flex-shrink:0}
+.rail-btn{width:56px;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--muted);border-radius:3px;position:relative;flex-shrink:0;padding:5px 0}
+.rail-btn .ic{font-size:17px;line-height:1}
+.rail-btn .lb{font-size:9px;line-height:1;letter-spacing:.02em}
+.rail-btn:hover{background:var(--panel2);color:var(--text)}
+.rail-btn.active{color:var(--accent)}
+.rail-btn.active::before{content:"";position:absolute;left:-5px;top:8px;bottom:8px;width:3px;background:var(--accent)}
+.rail-btn:disabled{opacity:.32;cursor:default;background:none;color:var(--muted)}
+.rail-sep{width:36px;height:1px;background:var(--border2);margin:7px 0;flex-shrink:0}
+.rail-spacer{flex:1;min-height:8px}
+.rail-btn.primary{background:var(--accent);color:#fff}
+.rail-btn.primary:hover{background:var(--accent-d);color:#fff}
+.rail-btn.danger:hover{background:#3a1d1d;color:var(--danger)}
+/* ===== ワークスペース ===== */
+.workspace{flex:1;position:relative;overflow:auto;background-color:#080809;background-image:linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;display:flex;align-items:center;justify-content:center;min-width:0}
+.canvas-wrap{position:relative;box-shadow:0 10px 44px rgba(0,0,0,.65);flex-shrink:0;margin:auto}
+.zoom-pill{position:absolute;left:14px;bottom:14px;z-index:20;display:flex;align-items:center;gap:2px;background:rgba(19,19,21,.94);border:1px solid var(--border2);border-radius:3px;padding:3px}
+.zoom-pill button{height:28px;min-width:28px;padding:0 8px;font-size:12px;color:var(--muted);border-radius:2px}
+.zoom-pill button:hover{background:var(--panel3);color:var(--text)}
+.zoom-pill .zv{min-width:46px;text-align:center;font-size:12px;color:var(--text)}
+.panel-toggle{display:none;position:absolute;top:12px;right:12px;z-index:25;background:rgba(19,19,21,.94);border:1px solid var(--border2);color:var(--text);height:36px;padding:0 14px;font-size:12px;border-radius:3px}
+.save-toast{position:absolute;left:50%;bottom:16px;transform:translateX(-50%) translateY(8px);z-index:20;background:rgba(19,19,21,.94);border:1px solid var(--border2);color:var(--muted);font-size:11.5px;padding:7px 14px;border-radius:3px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+.save-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#installCard{display:none;position:absolute;right:14px;bottom:14px;z-index:24;width:302px;max-width:calc(100vw - 110px);background:var(--accent);color:#fff;padding:14px 15px 13px;border-radius:3px;box-shadow:0 12px 34px rgba(0,0,0,.55)}
+#installCard .ic-title{font-size:14.5px;font-weight:800;margin-bottom:5px}
+#installCard .ic-text{font-size:12px;line-height:1.65;opacity:.94}
+#installCard .ic-row{display:flex;gap:8px;margin-top:11px;align-items:center}
+#installCardBtn{background:#fff;color:var(--accent-d);font-weight:800;font-size:13px;padding:9px 16px;border-radius:2px;flex:1}
+#installCardBtn:hover{background:#eaf5ff}
+#installCardClose{background:transparent;color:#fff;font-size:17px;line-height:1;padding:5px 7px;opacity:.85}
+#installCardClose:hover{opacity:1}
+#dropHint{display:none;position:absolute;inset:14px;z-index:26;border:2px dashed var(--accent);background:rgba(13,153,255,.10);color:#bfe3ff;font-size:16px;font-weight:700;align-items:center;justify-content:center;pointer-events:none;border-radius:3px}
+/* ===== 右サイドバー ===== */
+.side{width:290px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;z-index:30;min-height:0}
+.side-scroll{flex:1;overflow-y:auto;min-height:0}
+.side-scroll::-webkit-scrollbar{width:9px}
+.side-scroll::-webkit-scrollbar-thumb{background:#2c2c32;border-radius:5px}
+.sec{padding:13px 14px 15px;border-bottom:1px solid var(--border)}
+.sec-title{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.09em;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .row:last-child{margin-bottom:0}
-.label{width:70px;flex-shrink:0;font-size:12px;color:#a7abb5}
-input[type="text"],input[type="number"],select{width:100%;height:31px;border:1px solid #3a3d46;background:#26282f;color:#eef0f3;border-radius:2px;padding:0 8px;font-size:12px;outline:none}
-input[type="text"]:focus,input[type="number"]:focus,select:focus{border-color:#2563eb}
-input[type="color"]{width:42px;height:31px;border:1px solid #3a3d46;padding:2px;background:#26282f;border-radius:2px;cursor:pointer}
-input[type="range"]{flex:1;accent-color:#2563eb}
-.range-value{width:38px;text-align:right;color:#9aa0aa;font-size:10px}
-.check{display:flex;align-items:center;gap:7px;margin-bottom:8px;font-size:12px;cursor:pointer}
-.check input{accent-color:#2563eb;width:15px;height:15px}
-.color-row{display:flex;align-items:center;gap:7px;margin-bottom:7px}
-.color-row span{width:40px;font-size:11px;color:#a7abb5}
-.gradient-preview{width:100%;height:26px;border:1px solid #3a3d46;border-radius:2px;margin-top:7px}
-.small-btn{height:33px;border:1px solid #3a3d46;background:#26282f;color:#e8e9eb;border-radius:2px;padding:0 10px;font-size:11px;transition:background .15s}
-.small-btn:hover{background:#2f323b}
+.label{width:64px;flex-shrink:0;font-size:12px;color:var(--muted)}
+input[type=text],input[type=number],select,textarea{flex:1;min-width:0;height:31px;padding:0 8px;background:var(--panel2);border:1px solid var(--border2);border-radius:2px;font-size:12.5px;outline:none}
+textarea{height:auto;padding:7px 8px;resize:vertical;line-height:1.5}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+input[type=color]{width:40px;height:31px;padding:2px;background:var(--panel2);border:1px solid var(--border2);border-radius:2px;cursor:pointer;flex-shrink:0}
+input[type=range]{flex:1;accent-color:var(--accent);min-width:0}
+.num{width:58px;flex:none;height:31px;padding:0 6px;background:var(--panel2);border:1px solid var(--border2);border-radius:2px;font-size:12px;outline:none}
+.num:focus{border-color:var(--accent)}
+.btn{height:31px;padding:0 11px;background:var(--panel3);border:1px solid var(--border2);border-radius:2px;font-size:12px;color:var(--text);white-space:nowrap}
+.btn:hover{border-color:#4a4a54;background:#2a2a2f}
+.btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.btn.primary:hover{background:var(--accent-d)}
 .btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.no-selection{padding:22px 13px;color:#8b9099;font-size:12px;line-height:1.8}
-.layers{height:192px;border-top:1px solid #33363f;flex-shrink:0;display:flex;flex-direction:column}
-.layer-list{flex:1;overflow:auto}
-.layer-item{height:31px;display:flex;align-items:center;gap:7px;padding:0 9px;border-bottom:1px solid #26282f;font-size:11px;cursor:pointer;color:#d6d8dc}
-.layer-item:hover{background:#26282f}
-.layer-item.selected{background:rgba(91,127,255,.18)}
-.layer-icon{width:18px;text-align:center;color:#9aa0aa}
-.layer-name{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.statusbar{height:27px;background:#1b1d23;border-top:1px solid #33363f;display:flex;align-items:center;gap:15px;padding:0 11px;font-size:10px;color:#9aa0aa;flex-shrink:0}
-.modal-bg{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);z-index:1000}
-.modal{width:360px;background:#23252c;border:1px solid #3a3d46;border-radius:3px;box-shadow:0 14px 44px rgba(0,0,0,.5);overflow:hidden;color:#e8e9eb}
-.modal-head{padding:13px 15px;border-bottom:1px solid #33363f;font-size:14px;font-weight:700}
-.modal-body{padding:15px}
-.modal-foot{padding:11px 15px;border-top:1px solid #33363f;display:flex;justify-content:flex-end;gap:7px}
-.primary{background:#2563eb;color:#fff;border-color:#2563eb;font-weight:700}
-.primary:hover{background:#3a77f5}
-.context-menu{position:fixed;display:none;width:176px;background:#23252c;border:1px solid #3a3d46;box-shadow:0 8px 24px rgba(0,0,0,.45);border-radius:3px;z-index:2000;padding:5px 0}
-.context-menu button{width:100%;height:31px;border:0;background:transparent;color:#e8e9eb;text-align:left;padding:0 13px;font-size:11px}
-.context-menu button:hover{background:#2f323b}
-.mobile-toggle-btn{display:none;position:fixed;top:10px;right:10px;z-index:3000;height:35px;padding:0 13px;background:#2563eb;color:#fff;border:none;border-radius:2px;font-size:12px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.4)}
-.shape-picker{display:none;position:fixed;background:#23252c;border:1px solid #3a3d46;border-radius:3px;box-shadow:0 10px 28px rgba(0,0,0,.45);padding:9px;z-index:2600;grid-template-columns:repeat(3,1fr);gap:7px}
-.shape-picker.open{display:grid}
-.shape-picker button{width:58px;height:54px;border:1px solid #3a3d46;border-radius:2px;background:#26282f;color:#e8e9eb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px}
-.shape-picker button:hover{background:#2f323b;border-color:#2563eb}
-.shape-picker .icon{font-size:20px}
+.btn-grid .btn{width:100%}
+.btn-row{display:flex;gap:6px}
+.btn-row .btn{flex:1}
+.gradient-preview{height:26px;border:1px solid var(--border2);border-radius:2px;margin-bottom:8px}
+.hint{font-size:11px;color:var(--muted);line-height:1.7}
+.lock-note{background:#2b2113;border:1px solid #57451d;color:#f0c56b;font-size:11.5px;padding:8px 10px;border-radius:2px;line-height:1.6}
+/* レイヤー */
+.layers-sec{display:flex;flex-direction:column;max-height:46%}
+.layer-list{overflow-y:auto;min-height:60px}
+.layer-list::-webkit-scrollbar{width:9px}
+.layer-list::-webkit-scrollbar-thumb{background:#2c2c32;border-radius:5px}
+.layer-item{display:flex;align-items:center;gap:3px;padding:5px 6px;border-left:3px solid transparent;cursor:pointer;user-select:none}
+.layer-item:hover{background:var(--panel2)}
+.layer-item.active{background:rgba(13,153,255,.13);border-left-color:var(--accent)}
+.layer-item .lname{flex:1;min-width:0;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:3px 4px}
+.layer-item .lname-input{flex:1;min-width:0;height:26px;padding:0 6px;background:var(--panel2);border:1px solid var(--accent);border-radius:2px;font-size:12.5px;outline:none}
+.lbtn{width:25px;height:25px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);border-radius:2px}
+.lbtn:hover{background:var(--panel3);color:var(--text)}
+.lbtn.off{color:#55555e}
+.lbtn.del:hover{background:#3a1d1d;color:var(--danger)}
+.layer-empty{font-size:11.5px;color:var(--muted);padding:8px 4px;line-height:1.7}
+/* 図形ピッカー */
+.shape-picker{position:fixed;z-index:200;background:var(--panel);border:1px solid var(--border2);border-radius:3px;box-shadow:0 14px 38px rgba(0,0,0,.6);padding:8px;display:none;grid-template-columns:repeat(3,64px);gap:5px}
+.shape-picker button{height:52px;background:var(--panel2);border:1px solid var(--border);border-radius:2px;font-size:19px;color:var(--text);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.shape-picker button span{font-size:9.5px;color:var(--muted)}
+.shape-picker button:hover{border-color:var(--accent);color:var(--accent)}
+/* 右クリックメニュー */
+.context-menu{position:fixed;z-index:300;background:#1c1c1f;border:1px solid #3a3a41;border-radius:3px;box-shadow:0 14px 38px rgba(0,0,0,.65);padding:5px;display:none;min-width:216px}
+.context-menu button{display:flex;width:100%;align-items:center;gap:9px;padding:8px 10px;font-size:12.5px;color:var(--text);border-radius:2px;text-align:left}
+.context-menu button:hover:not(:disabled){background:var(--accent);color:#fff}
+.context-menu button:disabled{opacity:.35;cursor:default}
+.context-menu button .sc{margin-left:auto;font-size:10.5px;color:var(--muted)}
+.context-menu button:hover .sc{color:rgba(255,255,255,.75)}
+.context-menu .sep{height:1px;background:#33333a;margin:5px 4px}
+.context-menu .danger{color:#ff8080}
+.context-menu .danger:hover{background:#a02c2c;color:#fff}
+/* モーダル */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:400;align-items:center;justify-content:center;padding:18px}
+.modal-bg.open{display:flex}
+.modal{background:var(--panel);border:1px solid var(--border2);border-radius:3px;width:100%;max-width:400px;padding:20px;box-shadow:0 22px 55px rgba(0,0,0,.6)}
+.modal h2{margin:0 0 6px;font-size:16px}
+.modal p{margin:0 0 14px;font-size:12.5px;color:var(--muted);line-height:1.7}
+.modal .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.check{display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer}
+.check input{width:16px;height:16px;accent-color:var(--accent)}
 @media (max-width:900px){
-.leftbar{width:54px}
-.left-tool{width:46px;min-height:44px;font-size:9px}
-.left-tool .icon{font-size:16px}
-.rightbar{position:fixed;top:0;right:0;bottom:0;width:292px;max-width:86vw;z-index:2500;transform:translateX(100%);transition:transform .22s ease;box-shadow:-6px 0 22px rgba(0,0,0,.4)}
-.rightbar.open{transform:translateX(0)}
-.mobile-toggle-btn{display:block}
-.canvas-wrap{margin:10px auto}
-.topbar{padding-right:104px}
+  .side{position:fixed;top:0;right:0;bottom:0;transform:translateX(105%);transition:transform .25s;box-shadow:-14px 0 34px rgba(0,0,0,.5);width:min(300px,86vw)}
+  .side.open{transform:translateX(0)}
+  .panel-toggle{display:block}
+  .zoom-pill{left:10px;bottom:10px}
+  #installCard{right:10px;bottom:52px}
 }
 </style>
 </head>
 <body>
 <div class="app">
-<header class="topbar">
-<div class="logo">ロゴメーカー <span>Logo Editor</span></div>
-<div class="toolbar-group">
-<button class="tool-btn" onclick="undo()" title="元に戻す (Ctrl+Z)">↶</button>
-<button class="tool-btn" onclick="redo()" title="やり直す (Ctrl+Y)">↷</button>
-</div>
-<div class="toolbar-group">
-<button class="tool-btn" onclick="copyObject()" title="コピー (Ctrl+C)">コピー</button>
-<button class="tool-btn" onclick="pasteObject()" title="貼り付け (Ctrl+V)">貼り付け</button>
-<button class="tool-btn" onclick="duplicateObject()" title="複製 (Ctrl+D)">複製</button>
-<button class="tool-btn danger" onclick="deleteObject()" title="削除 (Delete)">削除</button>
-</div>
-<div class="toolbar-group">
-<button class="tool-btn" onclick="bringFront()" title="最前面へ">最前面</button>
-<button class="tool-btn" onclick="sendBack()" title="最背面へ">最背面</button>
-</div>
-<div class="toolbar-group">
-<button class="tool-btn" onclick="alignLeft()">左</button>
-<button class="tool-btn" onclick="alignCenter()">中央</button>
-<button class="tool-btn" onclick="alignRight()">右</button>
-<button class="tool-btn" onclick="centerObject()">中心へ</button>
-</div>
-<div class="toolbar-group" style="margin-left:auto;border:none;gap:3px">
-<span style="font-size:11px;color:#666">W</span>
-<input type="number" id="canvasW" value="1200" min="200" max="3000" style="width:54px;height:28px;font-size:11px" onchange="resizeCanvas(this.value,document.getElementById('canvasH').value)">
-<span style="font-size:11px;color:#666">H</span>
-<input type="number" id="canvasH" value="800" min="200" max="2000" style="width:54px;height:28px;font-size:11px" onchange="resizeCanvas(document.getElementById('canvasW').value,this.value)">
-</div>
-<div class="zoom-box">
-<button onclick="fitZoom()" title="キャンバス全体を表示" style="width:auto;padding:0 9px;font-size:11px">全体表示</button>
-<button onclick="changeZoom(-0.1)">−</button>
-<div class="zoom-value" id="zoomValue">100%</div>
-<button onclick="changeZoom(0.1)">＋</button>
-</div>
-<button class="tool-btn" onclick="newProject()">新規</button>
-<button class="tool-btn" id="installBtn" style="display:none" onclick="installApp()">⬇ アプリをインストール</button>
-<button class="tool-btn primary-btn" onclick="openExport()">PNG出力</button>
-</header>
-<div id="installBanner">
-<div class="ib-text"><b>アプリ版がおすすめ！</b>　インストールすると全画面で広々使えて、ネットがなくても開けます。作品は自動保存されるので、続きからすぐ再開できます。</div>
-<button id="bannerInstallBtn" onclick="installApp()">今すぐインストール</button>
-<button id="bannerClose" onclick="dismissBanner()" title="閉じる">×</button>
-</div>
-<button class="mobile-toggle-btn" onclick="toggleRightPanel()">プロパティ</button>
-<main class="main">
-<aside class="leftbar">
-<button class="left-tool active" data-tool="select" onclick="setTool('select')"><span class="icon">↖</span>選択</button>
-<button class="left-tool" data-tool="text" onclick="quickAddText()"><span class="icon">T</span>文字</button>
-<button class="left-tool" data-tool="shape" onclick="toggleShapePicker(event)" id="shapeToolBtn"><span class="icon">◇</span>図形</button>
-<div class="tool-separator"></div>
-<button class="left-tool" data-tool="pen" onclick="setTool('pen')"><span class="icon">✎</span>ペン</button>
-<button class="left-tool" data-tool="image" onclick="pickImage()"><span class="icon">▧</span>画像</button>
-<input type="file" id="imageInput" accept="image/*" style="display:none">
-</aside>
-<section class="canvas-area" id="canvasArea">
-<div id="dropHint">画像をドロップして追加できます</div>
-<div id="loadingOverlay">読み込み中…</div>
-<div class="canvas-wrap">
-<div class="grid"></div>
-<canvas id="logoCanvas" width="1200" height="800"></canvas>
-</div>
-</section>
-<aside class="rightbar" id="rightbar">
-<div class="panel-title">プロパティ</div>
-<div class="properties" id="properties">
-<div class="no-selection">読み込み中…</div>
-</div>
-<div class="layers">
-<div class="panel-title">レイヤー</div>
-<div class="layer-list" id="layerList"></div>
-</div>
-</aside>
-</main>
-<footer class="statusbar">
-<span id="objectStatus">オブジェクトなし</span>
-<span id="positionStatus">X: -　Y: -</span>
-<span id="sizeStatus">W: -　H: -</span>
-<span id="toolStatus">選択ツール</span>
-</footer>
+  <!-- 左レール -->
+  <nav class="rail">
+    <div class="rail-brand">★</div>
+    <button class="rail-btn active" data-tool="select" onclick="setTool('select')"><span class="ic">↖</span><span class="lb">選択</span></button>
+    <button class="rail-btn" data-tool="text" onclick="quickAddText()"><span class="ic">T</span><span class="lb">文字</span></button>
+    <button class="rail-btn" data-tool="shape" id="shapeToolBtn" onclick="toggleShapePicker(event)"><span class="ic">◆</span><span class="lb">図形</span></button>
+    <button class="rail-btn" data-tool="image" onclick="pickImage()"><span class="ic">▦</span><span class="lb">画像</span></button>
+    <button class="rail-btn" data-tool="pen" onclick="setTool('pen')"><span class="ic">✎</span><span class="lb">ペン</span></button>
+    <div class="rail-sep"></div>
+    <button class="rail-btn" id="undoBtn" onclick="undo()"><span class="ic">↶</span><span class="lb">戻す</span></button>
+    <button class="rail-btn" id="redoBtn" onclick="redo()"><span class="ic">↷</span><span class="lb">進む</span></button>
+    <button class="rail-btn" onclick="duplicateObject()"><span class="ic">⧉</span><span class="lb">複製</span></button>
+    <button class="rail-btn danger" onclick="deleteObject()"><span class="ic">✕</span><span class="lb">削除</span></button>
+    <div class="rail-spacer"></div>
+    <button class="rail-btn" id="installBtn" style="display:none" onclick="installApp()"><span class="ic">⬇</span><span class="lb">アプリ版</span></button>
+    <button class="rail-btn" onclick="newProject()"><span class="ic">＋</span><span class="lb">新規</span></button>
+    <button class="rail-btn primary" onclick="openExport()"><span class="ic">↓</span><span class="lb">PNG出力</span></button>
+  </nav>
+
+  <!-- ワークスペース -->
+  <div class="workspace" id="canvasArea">
+    <div class="canvas-wrap" id="canvasWrap"><canvas id="canvas"></canvas></div>
+    <div class="zoom-pill">
+      <button onclick="fitZoom()" title="全体表示">全体表示</button>
+      <button onclick="changeZoom(-0.1)" title="縮小">−</button>
+      <span class="zv" id="zoomValue">100%</span>
+      <button onclick="changeZoom(0.1)" title="拡大">＋</button>
+    </div>
+    <button class="panel-toggle" id="panelToggle" onclick="togglePanel()">パネル</button>
+    <div class="save-toast" id="saveToast">自動保存しました</div>
+    <div id="installCard">
+      <div class="ic-title">アプリ版がおすすめ！</div>
+      <div class="ic-text">インストールすると全画面で広々使えて、ネットがなくても開けます。作品は自動保存されるので、続きからすぐ再開できます。</div>
+      <div class="ic-row">
+        <button id="installCardBtn" onclick="installApp()">今すぐインストール</button>
+        <button id="installCardClose" onclick="dismissInstallCard()" title="閉じる">×</button>
+      </div>
+    </div>
+    <div id="dropHint">画像をドロップして追加</div>
+  </div>
+
+  <!-- 右サイドバー -->
+  <aside class="side" id="rightbar">
+    <div class="side-scroll">
+      <div class="sec">
+        <div class="sec-title">キャンバス</div>
+        <div class="row"><span class="label">背景色</span><input type="color" id="canvasBg" value="#ffffff" onchange="setCanvasBg(this.value)"><span class="hint">アートボードの色</span></div>
+        <div class="row"><span class="label">サイズ</span><input type="number" class="num" id="canvasW" value="1200" min="100" max="4000" style="flex:1"><span style="color:var(--muted);font-size:12px">×</span><input type="number" class="num" id="canvasH" value="800" min="100" max="4000" style="flex:1"><button class="btn" onclick="applyCanvasSize()">適用</button></div>
+      </div>
+      <div class="sec" id="properties"></div>
+    </div>
+    <div class="sec layers-sec" style="border-bottom:none">
+      <div class="sec-title"><span>レイヤー</span><span class="hint" style="letter-spacing:0">上が前面 ／ ドラッグで移動</span></div>
+      <div class="layer-list" id="layerList"></div>
+    </div>
+  </aside>
 </div>
 
+<!-- 図形ピッカー -->
 <div class="shape-picker" id="shapePicker">
-<button onclick="pickShape('rect')"><span class="icon">□</span>四角</button>
-<button onclick="pickShape('circle')"><span class="icon">○</span>円</button>
-<button onclick="pickShape('triangle')"><span class="icon">△</span>三角</button>
-<button onclick="pickShape('star')"><span class="icon">☆</span>星</button>
-<button onclick="pickShape('line')"><span class="icon">／</span>線</button>
+  <button onclick="pickShape('rect')">■<span>四角</span></button>
+  <button onclick="pickShape('circle')">●<span>丸</span></button>
+  <button onclick="pickShape('triangle')">▲<span>三角</span></button>
+  <button onclick="pickShape('star')">★<span>星</span></button>
+  <button onclick="pickShape('line')">―<span>線</span></button>
 </div>
 
-<div class="modal-bg" id="exportModal">
-<div class="modal">
-<div class="modal-head">PNGとして書き出す</div>
-<div class="modal-body">
-<div class="row"><div class="label">倍率</div>
-<select id="exportScale">
-<option value="1">1倍</option>
-<option value="2" selected>2倍</option>
-<option value="3">3倍</option>
-<option value="4">4倍</option>
-</select>
-</div>
-<label class="check"><input type="checkbox" id="transparentExport" checked>背景を透明にする</label>
-</div>
-<div class="modal-foot">
-<button class="small-btn" onclick="closeExport()">キャンセル</button>
-<button class="small-btn primary" onclick="exportPNG()">PNGを書き出す</button>
-</div>
-</div>
-</div>
-
+<!-- 右クリックメニュー -->
 <div class="context-menu" id="contextMenu">
-<button onclick="contextCopy()">コピー</button>
-<button onclick="contextPaste()">貼り付け</button>
-<button onclick="duplicateObject();hideContext()">複製</button>
-<button onclick="deleteObject();hideContext()">削除</button>
-<button onclick="bringFront();hideContext()">最前面へ</button>
-<button onclick="sendBack();hideContext()">最背面へ</button>
-<button onclick="centerObject();hideContext()">中心へ</button>
+  <button data-act="copy">コピー<span class="sc">Ctrl+C</span></button>
+  <button data-act="paste">貼り付け<span class="sc">Ctrl+V</span></button>
+  <button data-act="duplicate">複製<span class="sc">Ctrl+D</span></button>
+  <button data-act="rename">名前を変更</button>
+  <div class="sep"></div>
+  <button data-act="front">最前面へ</button>
+  <button data-act="back">最背面へ</button>
+  <button data-act="lock">ロック / 解除</button>
+  <div class="sep"></div>
+  <button data-act="delete" class="danger">削除<span class="sc">Delete</span></button>
 </div>
 
+<!-- PNG書き出しモーダル -->
+<div class="modal-bg" id="exportModal">
+  <div class="modal">
+    <h2>PNGで書き出し</h2>
+    <p>ロゴを画像として保存します。倍率を上げると大きな画像になります。</p>
+    <div class="row"><span class="label">倍率</span>
+      <select id="exportScale">
+        <option value="1">1倍（そのまま）</option>
+        <option value="2" selected>2倍</option>
+        <option value="3">3倍</option>
+        <option value="4">4倍</option>
+      </select>
+    </div>
+    <label class="check"><input type="checkbox" id="transparentBg">背景を透明にする</label>
+    <div class="actions">
+      <button class="btn" onclick="closeExport()">キャンセル</button>
+      <button class="btn primary" onclick="downloadPNG()">ダウンロード</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="fileInput" accept="image/*" style="display:none">
 <script>
-const canvas = new fabric.Canvas("logoCanvas",{width:1200,height:800,selection:true,preserveObjectStacking:true,selectionColor:"rgba(50,100,255,.12)",selectionBorderColor:"#4d72ff",selectionLineWidth:1,backgroundColor:"#fff"});
-let currentTool = "select";
-let currentShape = "rect";
-let clipboard = null;
-let history = [];
-let historyIndex = -1;
-let restoringHistory = false;
-let zoom = 1;
-let penColor = "#222222";
-let penWidth = 8;
-let canvasWidth = 1200;
-let canvasHeight = 800;
+const canvas = new fabric.Canvas("canvas", { preserveObjectStacking: true, backgroundColor: "#ffffff", selectionColor: "rgba(13,153,255,0.12)", selectionBorderColor: "#0d99ff", selectionLineWidth: 1 });
+fabric.Object.prototype.set({ transparentCorners: false, cornerColor: "#ffffff", cornerStrokeColor: "#0d99ff", cornerSize: 9, cornerStyle: "rect", borderColor: "#0d99ff", borderScaleFactor: 1.4, padding: 0 });
+fabric.Object.prototype.customType = "";
+let canvasWidth = 1200, canvasHeight = 800;
+canvas.setWidth(canvasWidth); canvas.setHeight(canvasHeight);
+let currentTool = "select", currentShape = "rect", clipboard = null, copiedStyleSource = null;
+let history = [], historyIndex = -1, isLoadingHistory = false, zoom = 1;
 let gradientMode = "vertical";
-let layerDragObj = null;
-
-const fonts = [["Noto Sans JP","Noto Sans JP","標準・万能"],["Noto Serif JP","Noto Serif JP","明朝・上品"],["Zen Kaku Gothic New","Zen Kaku Gothic New","現代・すっきり"],["Zen Maru Gothic","Zen Maru Gothic","丸文字・やわらか"],["Dela Gothic One","Dela Gothic One","極太・インパクト"],["M PLUS Rounded 1c","M PLUS Rounded 1c","丸文字・ポップ"],["Mochiy Pop One","Mochiy Pop One","ポップ・太文字"],["Shippori Mincho","Shippori Mincho","明朝・高級感"],["Yuji Boku","Yuji Boku","筆文字・和風"],["Train One","Train One","アウトライン"],["RocknRoll One","RocknRoll One","ロック・太文字"],["Rampart One","Rampart One","立体・装飾"],["DotGothic16","DotGothic16","ドット・ゲーム風"],["Hachi Maru Pop","Hachi Maru Pop","手書き・ゆるい"],["Klee One","Klee One","手書き・自然"],["sans-serif","sans-serif","標準"],["serif","serif","明朝"]];
-
-function selectedObject(){return canvas.getActiveObject()}
-function selectedObjects(){const o=canvas.getActiveObject();if(!o)return[];return o.type==="activeSelection"?o.getObjects():[o]}
-function escapeHtml(t){return String(t).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;")}
-function getColor(v){return (typeof v==="string"&&v.startsWith("#"))?v:"#222222"}
-
+let layerDragObj = null, renamingObj = null;
+const FONT_OPTIONS = ["Noto Sans JP","M PLUS 1p","Noto Serif JP","Shippori Mincho","Kosugi Maru","Zen Maru Gothic","Kaisei Decol","Hina Mincho","Yuji Syuku","DotGothic16","Kiwi Maru","Mochiy Pop One","Stick","Train One","Arial","Georgia","Monospace","sans-serif","serif"];
+function fontOptionsHTML(selected){return FONT_OPTIONS.map(f=>`<option value="${f}" ${f===selected?"selected":""} style="font-family:'${f}'">${f}</option>`).join("")}
+function esc(s){return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+/* ========= ツール ========= */
 function setTool(tool){
-  currentTool=tool;
-  document.querySelectorAll(".left-tool").forEach(b=>b.classList.toggle("active",b.dataset.tool===tool));
-  canvas.isDrawingMode=tool==="pen";
-  canvas.selection=tool==="select";
-  canvas.defaultCursor=tool==="select"?"default":"crosshair";
+  currentTool = tool;
+  document.querySelectorAll(".rail-btn[data-tool]").forEach(b=>b.classList.toggle("active", b.dataset.tool===tool));
+  hideShapePicker();
   if(tool==="pen"){
-    if(!canvas.freeDrawingBrush)canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);
-    canvas.freeDrawingBrush.color=penColor;
-    canvas.freeDrawingBrush.width=penWidth;
+    canvas.isDrawingMode = true;
+    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+    canvas.freeDrawingBrush.width = 5; canvas.freeDrawingBrush.color = "#111111";
+  } else {
+    canvas.isDrawingMode = false;
   }
-  if(tool!=="shape") hideShapePicker();
-  const names={select:"選択ツール",text:"文字ツール",shape:"図形ツール",pen:"ペンツール",image:"画像ツール"};
-  document.getElementById("toolStatus").textContent=names[tool]||tool;
-  updateUI();
+  updateProperties();
 }
-
+function togglePanel(){document.getElementById("rightbar").classList.toggle("open")}
 function toggleShapePicker(e){
-  e.stopPropagation();
-  const picker=document.getElementById("shapePicker");
-  const btn=document.getElementById("shapeToolBtn");
-  if(picker.classList.contains("open")){hideShapePicker();return}
-  setTool("shape");
-  const r=btn.getBoundingClientRect();
-  picker.style.left=(r.right+6)+"px";
-  picker.style.top=r.top+"px";
-  picker.classList.add("open");
+  if(e)e.stopPropagation();
+  const picker = document.getElementById("shapePicker");
+  if(picker.style.display==="grid"){hideShapePicker();return}
+  const btn = document.getElementById("shapeToolBtn"), r = btn.getBoundingClientRect();
+  picker.style.display = "grid";
+  picker.style.left = (r.right + 10) + "px";
+  picker.style.top = Math.max(8, r.top - 4) + "px";
 }
-
-function hideShapePicker(){document.getElementById("shapePicker").classList.remove("open")}
+function hideShapePicker(){document.getElementById("shapePicker").style.display = "none"}
+document.addEventListener("pointerdown", e=>{
+  const picker = document.getElementById("shapePicker");
+  if(picker.style.display==="grid" && !picker.contains(e.target) && e.target.id!=="shapeToolBtn" && !document.getElementById("shapeToolBtn").contains(e.target)) hideShapePicker();
+});
 function pickShape(type){currentShape=type;hideShapePicker();addShapeAt(canvasWidth/2,canvasHeight/2,type);setTool("select")}
 function addShapeAt(x,y,type){if(type==="rect")addRect(x,y);else if(type==="circle")addCircle(x,y);else if(type==="triangle")addTriangle(x,y);else if(type==="star")addStar(x,y);else if(type==="line")addLine(x,y)}
-
-function quickAddText(){addText(canvasWidth/2,canvasHeight/2);setTool("select")}
-function addText(x,y){
-  const t=new fabric.IText("ロゴ",{left:x,top:y,fontFamily:"Dela Gothic One",fontSize:140,fontWeight:"700",fill:"#222",originX:"center",originY:"center",editable:true,padding:4});
-  canvas.add(t);canvas.setActiveObject(t);t.enterEditing();t.selectAll();canvas.requestRenderAll();saveHistory();
-}
-function addRect(x,y){const o=new fabric.Rect({left:x,top:y,width:240,height:140,fill:"#222",rx:8,ry:8,originX:"center",originY:"center"});canvas.add(o);canvas.setActiveObject(o);saveHistory()}
-function addCircle(x,y){const o=new fabric.Circle({left:x,top:y,radius:90,fill:"#222",originX:"center",originY:"center"});canvas.add(o);canvas.setActiveObject(o);saveHistory()}
-function addTriangle(x,y){const o=new fabric.Triangle({left:x,top:y,width:200,height:180,fill:"#222",originX:"center",originY:"center"});canvas.add(o);canvas.setActiveObject(o);saveHistory()}
-function createStarPoints(){const p=[];const outer=100,inner=42;for(let i=0;i<10;i++){const a=(-90+i*36)*Math.PI/180;const r=i%2===0?outer:inner;p.push({x:Math.cos(a)*r,y:Math.sin(a)*r})}return p}
-function addStar(x,y){const o=new fabric.Polygon(createStarPoints(),{left:x,top:y,fill:"#222",originX:"center",originY:"center"});canvas.add(o);canvas.setActiveObject(o);saveHistory()}
-function addLine(x,y){const o=new fabric.Line([x-120,y,x+120,y],{stroke:"#222",strokeWidth:10});canvas.add(o);canvas.setActiveObject(o);saveHistory()}
-
-canvas.on("mouse:down",function(opt){
-  if(currentTool==="select"||currentTool==="pen")return;
-  const p=canvas.getPointer(opt.e);
-  if(currentTool==="text"){addText(p.x,p.y);setTool("select");return}
-  if(currentTool==="shape"){addShapeAt(p.x,p.y,currentShape);setTool("select");return}
-  if(currentTool==="image"){document.getElementById("imageInput").click();setTool("select")}
+canvas.on("mouse:down", function(opt){
+  if(currentTool==="text"){const p=canvas.getPointer(opt.e);addText(p.x,p.y);setTool("select");return}
+  if(currentTool==="shape"){const p=canvas.getPointer(opt.e);addShapeAt(p.x,p.y,currentShape);setTool("select");return}
 });
-
-canvas.on("path:created",function(e){e.path.set({stroke:canvas.freeDrawingBrush.color,strokeWidth:canvas.freeDrawingBrush.width,fill:null});saveHistory();updateUI()});
-function pickImage(){document.getElementById("imageInput").click()}
-function showLoading(on){document.getElementById("loadingOverlay").style.display=on?"flex":"none"}
-function loadImageFile(file){
-  if(!file||!file.type||!file.type.startsWith("image/"))return;
-  showLoading(true);
-  const url=URL.createObjectURL(file);
-  const probe=new Image();
-  probe.onload=function(){
-    const maxSide=1600;const w=probe.naturalWidth,h=probe.naturalHeight;
-    const ratio=Math.min(1,maxSide/Math.max(w,h));
-    let src=url;
-    if(ratio<1){
-      const c=document.createElement("canvas");c.width=Math.round(w*ratio);c.height=Math.round(h*ratio);
-      c.getContext("2d").drawImage(probe,0,0,c.width,c.height);
-      src=c.toDataURL(file.type==="image/png"?"image/png":"image/jpeg",0.92);
-      URL.revokeObjectURL(url);
-    }
-    fabric.Image.fromURL(src,function(img){
-      const s=Math.min(1,480/img.width,480/img.height);
-      img.set({left:canvasWidth/2,top:canvasHeight/2,originX:"center",originY:"center",scaleX:s,scaleY:s});
-      canvas.add(img);canvas.setActiveObject(img);canvas.requestRenderAll();saveHistory();showLoading(false);
-    });
+document.getElementById("canvasArea").addEventListener("click", function(e){
+  if(e.target.id==="canvasArea") canvas.discardActiveObject().renderAll();
+});
+/* ========= 追加 ========= */
+function finishAdd(obj){obj.customType = obj.customType || obj.type;canvas.add(obj);canvas.setActiveObject(obj);canvas.renderAll();saveHistory();updateUI()}
+function quickAddText(){addText(canvasWidth/2, canvasHeight/2); setTool("select")}
+function addText(x,y){
+  const t = new fabric.IText("テキスト", { left:x, top:y, originX:"center", originY:"center", fontFamily:"Noto Sans JP", fontSize:64, fontWeight:800, fill:"#111111" });
+  t.customType = "text"; finishAdd(t);
+  setTimeout(()=>{ try{ t.enterEditing(); t.selectAll(); }catch(e){} }, 60);
+}
+function addRect(x,y){const o=new fabric.Rect({left:x,top:y,originX:"center",originY:"center",width:220,height:150,fill:"#0d99ff"});o.customType="rect";finishAdd(o)}
+function addCircle(x,y){const o=new fabric.Circle({left:x,top:y,originX:"center",originY:"center",radius:90,fill:"#ff5a76"});o.customType="circle";finishAdd(o)}
+function addTriangle(x,y){const o=new fabric.Triangle({left:x,top:y,originX:"center",originY:"center",width:190,height:170,fill:"#ffb020"});o.customType="triangle";finishAdd(o)}
+function starPoints(cx,cy,spikes,outer,inner){const pts=[];let rot=Math.PI/2*3;const step=Math.PI/spikes;let px=cx,py=cy-outer;pts.push(new fabric.Point(px,py));for(let i=0;i<spikes;i++){px=cx+Math.cos(rot)*outer;py=cy+Math.sin(rot)*outer;pts.push(new fabric.Point(px,py));rot+=step;px=cx+Math.cos(rot)*inner;py=cy+Math.sin(rot)*inner;pts.push(new fabric.Point(px,py));rot+=step}pts.push(new fabric.Point(cx,cy-outer));return pts}
+function addStar(x,y){const o=new fabric.Polygon(starPoints(0,0,5,100,44),{left:x,top:y,originX:"center",originY:"center",fill:"#7c5cff"});o.customType="star";finishAdd(o)}
+function addLine(x,y){const o=new fabric.Line([x-110,y,x+110,y],{stroke:"#111111",strokeWidth:7,originX:"center",originY:"center"});o.customType="line";finishAdd(o)}
+function pickImage(){document.getElementById("fileInput").click()}
+function loadImageFile(file, cx, cy){
+  if(!file || !file.type || !file.type.startsWith("image/")) return;
+  const reader = new FileReader();
+  reader.onload = function(){
+    const img = new Image();
+    img.onload = function(){
+      const MAX = 1600; let w = img.width, h = img.height;
+      if(Math.max(w,h) > MAX){ const s = MAX/Math.max(w,h); w = Math.round(w*s); h = Math.round(h*s); }
+      const tmp = document.createElement("canvas"); tmp.width = w; tmp.height = h;
+      tmp.getContext("2d").drawImage(img, 0, 0, w, h);
+      fabric.Image.fromURL(tmp.toDataURL("image/png"), function(fimg){
+        const maxSide = 460, scale = Math.min(1, maxSide/Math.max(fimg.width, fimg.height));
+        fimg.set({ left: cx||canvasWidth/2, top: cy||canvasHeight/2, originX:"center", originY:"center", scaleX: scale, scaleY: scale });
+        fimg.customType = "image"; finishAdd(fimg);
+      });
+    };
+    img.src = reader.result;
   };
-  probe.onerror=function(){showLoading(false);URL.revokeObjectURL(url);alert("画像を読み込めませんでした")};
-  probe.src=url;
+  reader.readAsDataURL(file);
 }
-document.getElementById("imageInput").addEventListener("change",function(){const f=this.files[0];this.value="";if(f)loadImageFile(f)});
-const canvasAreaEl=document.getElementById("canvasArea");
-canvasAreaEl.addEventListener("dragover",function(e){e.preventDefault();document.getElementById("dropHint").style.display="flex"});
-canvasAreaEl.addEventListener("dragleave",function(){document.getElementById("dropHint").style.display="none"});
-canvasAreaEl.addEventListener("drop",function(e){e.preventDefault();document.getElementById("dropHint").style.display="none";const f=[...e.dataTransfer.files].find(x=>x.type.startsWith("image/"));if(f)loadImageFile(f)});
-document.addEventListener("paste",function(e){if(!e.clipboardData)return;const imgItem=[...e.clipboardData.items].find(i=>i.type.startsWith("image/"));if(imgItem){const f=imgItem.getAsFile();if(f)loadImageFile(f)}});
-canvas.on("selection:created",updateUI);canvas.on("selection:updated",updateUI);canvas.on("selection:cleared",updateUI);
-canvas.on("object:modified",function(){saveHistory();updateUI()});
-canvas.on("object:moving",function(e){snapObject(e.target);updateStatus()});
-canvas.on("object:scaling",updateStatus);canvas.on("object:rotating",updateStatus);
-
-function snapObject(obj){if(!obj||obj.type==="activeSelection")return;const g=10;obj.set({left:Math.round(obj.left/g)*g,top:Math.round(obj.top/g)*g})}
-function updateUI(){updateProperties();updateLayers();updateStatus()}
-function updateStatus(){const obj=selectedObject();if(!obj){document.getElementById("objectStatus").textContent="オブジェクトなし";document.getElementById("positionStatus").textContent="X: -　Y: -";document.getElementById("sizeStatus").textContent="W: -　H: -";return}document.getElementById("objectStatus").textContent=typeName(obj);document.getElementById("positionStatus").textContent="X: "+Math.round(obj.left)+"　Y: "+Math.round(obj.top);document.getElementById("sizeStatus").textContent="W: "+Math.round(obj.getScaledWidth())+"　H: "+Math.round(obj.getScaledHeight())}
-function typeName(obj){const n={"i-text":"文字","rect":"四角形","circle":"円","triangle":"三角形","polygon":"図形","line":"線","path":"ペン","image":"画像","activeSelection":"複数選択"};return n[obj.type]||obj.type}
-
+document.getElementById("fileInput").addEventListener("change", function(){ loadImageFile(this.files[0]); this.value=""; });
+/* ========= プロパティパネル ========= */
+function getActive(){return canvas.getActiveObject()}
+function isTextObj(o){return o && (o.type==="i-text" || o.type==="text" || o.customType==="text")}
+function isShapeObj(o){return o && !isTextObj(o) && o.type!=="image" && o.type!=="path" && o.type!=="group" && o.type!=="activeSelection"}
+function fillValue(o){if(!o) return "#000000"; if(typeof o.fill==="string") return o.fill; if(o.fill && o.fill.colorStops && o.fill.colorStops[0]) return o.fill.colorStops[0].color; return "#000000"}
+function updateUI(){updateProperties();updateLayers();updateUndoBtns()}
 function updateProperties(){
-  const area=document.getElementById("properties");const obj=selectedObject();
-  if(!obj){if(currentTool==="pen"){area.innerHTML=penToolPanel();return}area.innerHTML=`<div class="section"><div class="section-title">追加する</div><div class="btn-grid"><button class="small-btn" onclick="quickAddText()">＋ 文字</button><button class="small-btn" onclick="document.getElementById('shapeToolBtn').click()">＋ 図形</button><button class="small-btn" onclick="pickImage()">＋ 画像</button><button class="small-btn" onclick="setTool('pen')">✎ ペンで描く</button></div></div><div class="no-selection">オブジェクトを選択すると、ここで色や大きさを編集できます。<br>追加したものはドラッグで移動できます。</div>`;return}
-  if(obj.type==="activeSelection"){area.innerHTML=`<div class="section"><div class="section-title">複数選択</div><div class="no-selection" style="padding:4px 0">${obj.getObjects().length}個選択中</div></div><div class="section"><div class="section-title">整列</div><div class="btn-grid"><button class="small-btn" onclick="alignLeft()">左</button><button class="small-btn" onclick="alignCenter()">中央</button><button class="small-btn" onclick="alignRight()">右</button><button class="small-btn" onclick="centerObject()">中心へ</button></div></div>`;return}
-  let html=`<div class="section"><div class="section-title">基本</div>
-<div class="row"><div class="label">X</div><input type="number" value="${Math.round(obj.left)}" onchange="setProp('left',this.value)"></div>
-<div class="row"><div class="label">Y</div><input type="number" value="${Math.round(obj.top)}" onchange="setProp('top',this.value)"></div>
-<div class="row"><div class="label">幅</div><input type="number" value="${Math.round(obj.getScaledWidth())}" onchange="setWidth(this.value)"></div>
-<div class="row"><div class="label">高さ</div><input type="number" value="${Math.round(obj.getScaledHeight())}" onchange="setHeight(this.value)"></div>
-<div class="row"><div class="label">回転</div><input type="number" value="${Math.round(obj.angle||0)}" onchange="setProp('angle',this.value)"></div>
-<div class="row"><div class="label">不透明度</div><input type="range" min="0" max="100" value="${Math.round((obj.opacity??1)*100)}" oninput="setOpacity(this.value)" onchange="saveHistory()"><div class="range-value" id="opacityValue">${Math.round((obj.opacity??1)*100)}%</div></div>
-</div>`;
-  if(obj.type==="i-text")html+=textPanel(obj);
-  if(["rect","circle","triangle","polygon","line"].includes(obj.type))html+=shapePanel(obj);
-  if(obj.type==="path")html+=penPanel(obj);
-  if(obj.type==="image")html+=imagePanel();
-  area.innerHTML=html;updateGradientPreview(obj);
+  const area = document.getElementById("properties");
+  const obj = getActive();
+  if(currentTool==="pen" && !obj){ area.innerHTML = penPanel(); return; }
+  if(!obj){
+    area.innerHTML = `<div class="sec-title">追加する</div>
+    <div class="btn-grid">
+      <button class="btn" onclick="quickAddText()">＋ 文字</button>
+      <button class="btn" onclick="document.getElementById('shapeToolBtn').click()">＋ 図形</button>
+      <button class="btn" onclick="pickImage()">＋ 画像</button>
+      <button class="btn" onclick="setTool('pen')">✎ ペンで描く</button>
+    </div>
+    <p class="hint" style="margin:10px 0 0">オブジェクトを選択すると、ここで色・大きさ・位置を編集できます。右クリックでも操作できます。</p>`;
+    return;
+  }
+  let html = "";
+  if(obj.lockMovementX) html += `<div class="lock-note" style="margin-bottom:10px">このオブジェクトはロック中です。レイヤーの鍵ボタン、または右クリックから解除できます。</div>`;
+  if(isTextObj(obj)) html += textPanel(obj);
+  else if(obj.type==="image") html += imagePanel(obj);
+  else if(isShapeObj(obj)) html += shapePanel(obj);
+  else html += `<div class="sec-title">プロパティ</div><p class="hint">このオブジェクトは共通設定のみ編集できます。</p>`;
+  html += commonPanel(obj);
+  area.innerHTML = html;
 }
-
-function textPanel(obj){return `<div class="section"><div class="section-title">文字</div>
-<div class="row"><div class="label">フォント</div><select class="font-select" onchange="changeFont(this.value)">${fonts.map(f=>`<option value="${escapeHtml(f[1])}" ${obj.fontFamily===f[1]?"selected":""}>${escapeHtml(f[0])}（${escapeHtml(f[2])}）</option>`).join("")}</select></div>
-<div class="row"><div class="label">サイズ</div><input type="number" min="1" value="${Math.round(obj.fontSize||100)}" onchange="changeFontSize(this.value)"></div>
-<div class="row"><div class="label">文字色</div><input type="color" value="${getColor(obj._baseFill||obj.fill)}" onchange="changeFill(this.value)"></div>
-<div class="row"><div class="label">太さ</div><select onchange="setProp('fontWeight',this.value)"><option value="400" ${obj.fontWeight=="400"?"selected":""}>標準</option><option value="700" ${obj.fontWeight=="700"?"selected":""}>太字</option><option value="900" ${obj.fontWeight=="900"?"selected":""}>極太</option></select></div>
-<label class="check"><input type="checkbox" ${obj.fontStyle==="italic"?"checked":""} onchange="toggleItalic(this.checked)">斜体</label>
-</div>${gradientPanel(obj)}${strokePanel(obj)}${shadowPanel(obj)}`}
-function gradientPanel(obj){return `<div class="section"><div class="section-title">グラデーション</div>
-<label class="check"><input type="checkbox" ${obj._gradientEnabled?"checked":""} onchange="toggleGradient(this.checked)">使用する</label>
-<div class="color-row"><span>色1</span><input type="color" value="${obj._gradientColor1||'#ffffff'}" onchange="setGradientColor(1,this.value)"></div>
-<div class="color-row"><span>色2</span><input type="color" value="${obj._gradientColor2||'#555555'}" onchange="setGradientColor(2,this.value)"></div>
-<select onchange="setGradientDirection(this.value)"><option value="vertical">上→下</option><option value="horizontal">左→右</option><option value="diagonal">斜め</option></select>
-<div id="gradientPreview" class="gradient-preview"></div></div>`}
-function strokePanel(obj){return `<div class="section"><div class="section-title">縁取り</div>
-<div class="row"><div class="label">色</div><input type="color" value="${getColor(obj.stroke||'#000000')}" onchange="setStrokeColor(this.value)"></div>
-<div class="row"><div class="label">太さ</div><input type="range" min="0" max="50" value="${obj.strokeWidth||0}" oninput="setStrokeWidth(this.value)" onchange="commitStrokeWidth()"><div class="range-value" id="strokeValue">${obj.strokeWidth||0}</div></div></div>`}
-function shapePanel(obj){return `<div class="section"><div class="section-title">塗り</div>
-<div class="row"><div class="label">色</div><input type="color" value="${getColor(obj._baseFill||obj.fill)}" onchange="changeFill(this.value)"></div>
-<label class="check"><input type="checkbox" ${obj._gradientEnabled?"checked":""} onchange="toggleGradient(this.checked)">グラデーション</label>
-<div class="color-row"><span>色1</span><input type="color" value="${obj._gradientColor1||'#ffffff'}" onchange="setGradientColor(1,this.value)"></div>
-<div class="color-row"><span>色2</span><input type="color" value="${obj._gradientColor2||'#555555'}" onchange="setGradientColor(2,this.value)"></div>
-<select onchange="setGradientDirection(this.value)"><option value="vertical">上→下</option><option value="horizontal">左→右</option><option value="diagonal">斜め</option></select>
-<div id="gradientPreview" class="gradient-preview"></div></div>
-${strokePanel(obj)}
-${obj.type==="rect"?`<div class="section"><div class="section-title">角丸</div><div class="row"><div class="label">半径</div><input type="range" min="0" max="100" value="${obj.rx||0}" oninput="setRound(this.value)" onchange="commitRound()"></div></div>`:""}
-${shadowPanel(obj)}`}
-function shadowPanel(obj){const s=obj.shadow;return `<div class="section"><div class="section-title">影</div>
-<label class="check"><input type="checkbox" ${s?"checked":""} onchange="toggleShadow(this.checked)">使用する</label>
-<div class="row"><div class="label">色</div><input type="color" value="${s?.color||'#000000'}" onchange="changeShadowColor(this.value)"></div>
-<div class="row"><div class="label">X</div><input type="range" min="-50" max="50" value="${s?.offsetX||0}" oninput="changeShadowX(this.value)" onchange="saveHistory()"></div>
-<div class="row"><div class="label">Y</div><input type="range" min="-50" max="50" value="${s?.offsetY||0}" oninput="changeShadowY(this.value)" onchange="saveHistory()"></div>
-<div class="row"><div class="label">ぼかし</div><input type="range" min="0" max="50" value="${s?.blur||0}" oninput="changeShadowBlur(this.value)" onchange="saveHistory()"></div></div>`}
-function penToolPanel(){return `<div class="section"><div class="section-title">ペン設定</div>
-<div class="row"><div class="label">色</div><input type="color" value="${penColor}" oninput="changePenToolColor(this.value)"></div>
-<div class="row"><div class="label">太さ</div><input type="range" min="1" max="80" value="${penWidth}" oninput="changePenToolWidth(this.value)"><div class="range-value" id="penToolWidthValue">${penWidth}</div></div></div>`}
-function penPanel(obj){return `<div class="section"><div class="section-title">ペン</div>
-<div class="row"><div class="label">色</div><input type="color" value="${getColor(obj.stroke||'#222')}" onchange="changePenColor(this.value)"></div>
-<div class="row"><div class="label">太さ</div><input type="range" min="1" max="80" value="${obj.strokeWidth||8}" oninput="changePenWidth(this.value)" onchange="commitPenWidth()"><div class="range-value">${obj.strokeWidth||8}</div></div>${shadowPanel(obj)}</div>`}
-function imagePanel(){return `<div class="section"><div class="section-title">画像</div><div class="no-selection" style="padding:4px 0">位置・大きさ・透明度を基本設定から変更できます。</div></div>`}
-
-function changeFill(c){const o=selectedObject();if(!o)return;o._baseFill=c;o._gradientEnabled=false;o.set("fill",c);canvas.requestRenderAll();saveHistory();updateUI()}
-function toggleGradient(en){const o=selectedObject();if(!o)return;o._gradientEnabled=en;if(en){o._gradientColor1=o._gradientColor1||"#fff";o._gradientColor2=o._gradientColor2||"#555";applyGradient(o)}else o.set("fill",o._baseFill||"#222");canvas.requestRenderAll();saveHistory();updateUI()}
-function setGradientColor(n,c){const o=selectedObject();if(!o)return;if(n===1)o._gradientColor1=c;if(n===2)o._gradientColor2=c;if(o._gradientEnabled)applyGradient(o);canvas.requestRenderAll();saveHistory();updateUI()}
-function setGradientDirection(d){gradientMode=d;const o=selectedObject();if(o&&o._gradientEnabled)applyGradient(o);canvas.requestRenderAll()}
-function applyGradient(o){const c1=o._gradientColor1||"#fff",c2=o._gradientColor2||"#555";let coords;if(gradientMode==="horizontal")coords={x1:0,y1:0,x2:o.width||1,y2:0};else if(gradientMode==="diagonal")coords={x1:0,y1:0,x2:o.width||1,y2:o.height||1};else coords={x1:0,y1:0,x2:0,y2:o.height||1};o.set("fill",new fabric.Gradient({type:"linear",coords,colorStops:[{offset:0,color:c1},{offset:1,color:c2}]}))}
-function setStrokeColor(c){const o=selectedObject();if(!o)return;o.set("stroke",c);if(!o.strokeWidth)o.set("strokeWidth",2);canvas.requestRenderAll();saveHistory();updateUI()}
-function setStrokeWidth(v){const o=selectedObject();if(!o)return;o.set("strokeWidth",Number(v));canvas.requestRenderAll();const el=document.getElementById("strokeValue");if(el)el.textContent=v}
-function commitStrokeWidth(){saveHistory()}
-function toggleShadow(en){const o=selectedObject();if(!o)return;if(en){o.shadow=new fabric.Shadow({color:"rgba(0,0,0,.45)",blur:12,offsetX:6,offsetY:6})}else o.shadow=null;canvas.requestRenderAll();saveHistory();updateUI()}
-function changeShadowColor(c){const o=selectedObject();if(!o||!o.shadow)return;o.shadow.color=c;canvas.requestRenderAll()}
-function changeShadowX(v){const o=selectedObject();if(!o||!o.shadow)return;o.shadow.offsetX=Number(v);canvas.requestRenderAll()}
-function changeShadowY(v){const o=selectedObject();if(!o||!o.shadow)return;o.shadow.offsetY=Number(v);canvas.requestRenderAll()}
-function changeShadowBlur(v){const o=selectedObject();if(!o||!o.shadow)return;o.shadow.blur=Number(v);canvas.requestRenderAll()}
-function changePenColor(c){const o=selectedObject();if(o&&o.type==="path"){o.set("stroke",c);canvas.requestRenderAll();saveHistory()}if(canvas.freeDrawingBrush)canvas.freeDrawingBrush.color=c;updateUI()}
-function changePenToolColor(v){penColor=v;if(!canvas.freeDrawingBrush)canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);canvas.freeDrawingBrush.color=penColor}
-function changePenToolWidth(v){penWidth=Number(v);if(!canvas.freeDrawingBrush)canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);canvas.freeDrawingBrush.width=penWidth;const el=document.getElementById("penToolWidthValue");if(el)el.textContent=penWidth}
-function changePenWidth(v){const o=selectedObject();if(o&&o.type==="path"){o.set("strokeWidth",Number(v));canvas.requestRenderAll()}if(canvas.freeDrawingBrush)canvas.freeDrawingBrush.width=Number(v)}
-function commitPenWidth(){saveHistory()}
-function setProp(p,v){const o=selectedObject();if(!o)return;o.set(p,Number(v));canvas.requestRenderAll();saveHistory();updateUI()}
-function setWidth(v){const o=selectedObject();if(!o||o.width<=0)return;o.scaleX=Number(v)/o.width;canvas.requestRenderAll();saveHistory();updateUI()}
-function setHeight(v){const o=selectedObject();if(!o||o.height<=0)return;o.scaleY=Number(v)/o.height;canvas.requestRenderAll();saveHistory();updateUI()}
-function setOpacity(v){const o=selectedObject();if(!o)return;o.opacity=Number(v)/100;canvas.requestRenderAll();const el=document.getElementById("opacityValue");if(el)el.textContent=v+"%"}
-async function changeFont(font){const active=selectedObject();if(!active)return;const targets=active.type==="activeSelection"?active.getObjects().filter(o=>o.type==="i-text"):active.type==="i-text"?[active]:[];if(!targets.length)return;try{await document.fonts.load(`700 120px "${font}"`);await document.fonts.ready}catch(e){}targets.forEach(o=>{o.set("fontFamily",font);if(o.initDimensions)o.initDimensions();if(o.setCoords)o.setCoords();o.dirty=true});canvas.requestRenderAll();saveHistory();updateUI()}
-function changeFontSize(s){const o=selectedObject();if(!o||o.type!=="i-text")return;o.fontSize=Number(s);canvas.requestRenderAll();saveHistory();updateUI()}
-function toggleItalic(en){const o=selectedObject();if(!o)return;o.fontStyle=en?"italic":"normal";canvas.requestRenderAll();saveHistory()}
-function setRound(v){const o=selectedObject();if(!o||o.type!=="rect")return;o.rx=o.ry=Number(v);canvas.requestRenderAll()}
-function commitRound(){saveHistory()}
-function updateGradientPreview(o){const p=document.getElementById("gradientPreview");if(!p)return;const c1=o._gradientColor1||"#fff",c2=o._gradientColor2||"#555";let d="to bottom";if(gradientMode==="horizontal")d="to right";if(gradientMode==="diagonal")d="to bottom right";p.style.background=`linear-gradient(${d},${c1},${c2})`}
-function alignLeft(){const os=selectedObjects();if(!os.length)return;const target=os.length===1?0:Math.min(...os.map(o=>o.getBoundingRect().left));os.forEach(o=>{const br=o.getBoundingRect();o.left+=target-br.left;o.setCoords()});canvas.requestRenderAll();saveHistory();updateUI()}
-function alignCenter(){const os=selectedObjects();if(!os.length)return;const target=os.length===1?canvasWidth/2:os.reduce((s,o)=>{const br=o.getBoundingRect();return s+br.left+br.width/2},0)/os.length;os.forEach(o=>{const br=o.getBoundingRect();o.left+=target-(br.left+br.width/2);o.setCoords()});canvas.requestRenderAll();saveHistory();updateUI()}
-function alignRight(){const os=selectedObjects();if(!os.length)return;const target=os.length===1?canvasWidth:Math.max(...os.map(o=>{const br=o.getBoundingRect();return br.left+br.width}));os.forEach(o=>{const br=o.getBoundingRect();o.left+=target-(br.left+br.width);o.setCoords()});canvas.requestRenderAll();saveHistory();updateUI()}
-function centerObject(){const o=selectedObject();if(!o)return;o.set({left:canvasWidth/2,top:canvasHeight/2,originX:"center",originY:"center"});o.setCoords();canvas.requestRenderAll();saveHistory();updateUI()}
-function updateLayers(){const list=document.getElementById("layerList");list.innerHTML="";const objs=canvas.getObjects();const active=selectedObject();[...objs].reverse().forEach(obj=>{const item=document.createElement("div");item.className="layer-item";if(active&&(active===obj||(active.type==="activeSelection"&&active.getObjects().includes(obj))))item.classList.add("selected");let icon="□";if(obj.type==="i-text")icon="T";if(obj.type==="circle")icon="○";if(obj.type==="triangle")icon="△";if(obj.type==="path")icon="✎";if(obj.type==="image")icon="▧";item.innerHTML=`<span class="layer-icon">${icon}</span><span class="layer-name">${obj.type==="i-text"?(obj.text||"文字"):typeName(obj)}</span>`;item.onclick=()=>{canvas.setActiveObject(obj);canvas.requestRenderAll();updateUI()};item.draggable=true;item.title="ドラッグで重なり順を変更";item.addEventListener("dragstart",()=>{layerDragObj=obj});item.addEventListener("dragover",e=>e.preventDefault());item.addEventListener("drop",e=>{e.preventDefault();if(layerDragObj&&layerDragObj!==obj){canvas.moveTo(layerDragObj,canvas.getObjects().indexOf(obj));canvas.renderAll();saveHistory();updateLayers()}});list.appendChild(item)})}
-function copyObject(){const o=selectedObject();if(!o)return;o.clone(c=>clipboard=c,["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"])}
-function pasteObject(){if(!clipboard)return;clipboard.clone(c=>{canvas.discardActiveObject();c.set({left:(c.left||0)+25,top:(c.top||0)+25,evented:true});if(c.type==="activeSelection"){c.canvas=canvas;c.forEachObject(o=>canvas.add(o));c.setCoords()}else canvas.add(c);canvas.setActiveObject(c);canvas.requestRenderAll();saveHistory()},["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"])}
-function duplicateObject(){const o=selectedObject();if(!o)return;o.clone(function(c){c.set({left:(c.left||0)+25,top:(c.top||0)+25,evented:true});if(c.type==="activeSelection"){c.canvas=canvas;c.forEachObject(x=>canvas.add(x));c.setCoords()}else canvas.add(c);canvas.setActiveObject(c);canvas.requestRenderAll();saveHistory();updateUI()},["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"])}
-function deleteObject(){const os=selectedObjects();if(!os.length)return;os.forEach(o=>canvas.remove(o));canvas.discardActiveObject();canvas.requestRenderAll();saveHistory();updateUI()}
-function bringFront(){const o=selectedObject();if(!o)return;canvas.bringToFront(o);canvas.requestRenderAll();saveHistory();updateUI()}
-function sendBack(){const o=selectedObject();if(!o)return;canvas.sendToBack(o);canvas.requestRenderAll();saveHistory();updateUI()}
-function saveHistory(){if(restoringHistory)return;const json=JSON.stringify(canvas.toJSON(["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"]));if(historyIndex>=0&&history[historyIndex]===json)return;history=history.slice(0,historyIndex+1);history.push(json);if(history.length>60)history.shift();historyIndex=history.length-1;schedulePersist()}
-let persistTimer=null;
-function schedulePersist(){clearTimeout(persistTimer);persistTimer=setTimeout(persistProject,700)}
-function persistProject(){try{localStorage.setItem("logomaker-autosave",JSON.stringify(canvas.toJSON(["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"])));localStorage.setItem("logomaker-size",canvasWidth+"x"+canvasHeight)}catch(e){}}
-function undo(){if(historyIndex<=0)return;historyIndex--;restoreHistory(history[historyIndex])}
-function redo(){if(historyIndex>=history.length-1)return;historyIndex++;restoreHistory(history[historyIndex])}
-function restoreHistory(json){restoringHistory=true;canvas.loadFromJSON(json,()=>{canvas.renderAll();canvas.discardActiveObject();restoringHistory=false;updateUI()})}
-function applyZoom(){canvas.setZoom(zoom);canvas.setDimensions({width:canvasWidth*zoom,height:canvasHeight*zoom});const wrap=document.querySelector(".canvas-wrap");if(wrap){wrap.style.width=(canvasWidth*zoom)+"px";wrap.style.height=(canvasHeight*zoom)+"px"}const grid=document.querySelector(".grid");if(grid)grid.style.backgroundSize=(100*zoom)+"px "+(100*zoom)+"px,"+(100*zoom)+"px "+(100*zoom)+"px,"+(20*zoom)+"px "+(20*zoom)+"px,"+(20*zoom)+"px "+(20*zoom)+"px";document.getElementById("zoomValue").textContent=Math.round(zoom*100)+"%"}
-function changeZoom(d){zoom+=d;zoom=Math.max(0.25,Math.min(2,zoom));applyZoom()}
-function fitZoom(){const area=document.getElementById("canvasArea");if(!area)return;zoom=Math.max(0.1,Math.min((area.clientWidth-40)/canvasWidth,(area.clientHeight-40)/canvasHeight,1.5));applyZoom()}
-function resizeCanvas(w,h){w=Math.max(200,Math.min(3000,Number(w)||canvasWidth));h=Math.max(200,Math.min(2000,Number(h)||canvasHeight));canvasWidth=w;canvasHeight=h;canvas.setWidth(w);canvas.setHeight(h);canvas.setDimensions({width:w*zoom,height:h*zoom});const wrap=document.querySelector(".canvas-wrap");if(wrap){wrap.style.width=(w*zoom)+"px";wrap.style.height=(h*zoom)+"px"}canvas.calcOffset();canvas.requestRenderAll();saveHistory()}
-function openExport(){document.getElementById("exportModal").style.display="flex"}
-function closeExport(){document.getElementById("exportModal").style.display="none"}
-function exportPNG(){const scale=Number(document.getElementById("exportScale").value);const transparent=document.getElementById("transparentExport").checked;const old=canvas.backgroundColor;if(transparent)canvas.backgroundColor=null;canvas.discardActiveObject();canvas.renderAll();const data=canvas.toDataURL({format:"png",multiplier:scale,enableRetinaScaling:true});canvas.backgroundColor=old;canvas.renderAll();const a=document.createElement("a");a.href=data;a.download="logo-"+Date.now()+".png";a.click();closeExport()}
-const contextMenu=document.getElementById("contextMenu");
-canvas.upperCanvasEl.addEventListener("contextmenu",function(e){e.preventDefault();if(!selectedObject())return;contextMenu.style.display="block";contextMenu.style.left=e.clientX+"px";contextMenu.style.top=e.clientY+"px"});
-function hideContext(){contextMenu.style.display="none"}
-document.addEventListener("click",function(e){if(!contextMenu.contains(e.target))hideContext();if(!document.getElementById("shapePicker").contains(e.target)&&!document.getElementById("shapeToolBtn").contains(e.target))hideShapePicker()});
-function contextCopy(){copyObject();hideContext()}
-function contextPaste(){pasteObject();hideContext()}
-function toggleRightPanel(){document.getElementById("rightbar").classList.toggle("open")}
-document.addEventListener("click",function(e){const panel=document.getElementById("rightbar");const btn=document.querySelector(".mobile-toggle-btn");if(!panel||!panel.classList.contains("open"))return;if(panel.contains(e.target)||(btn&&btn.contains(e.target)))return;if(window.innerWidth<=900)panel.classList.remove("open")});
-document.addEventListener("keydown",function(e){const active=document.activeElement;if(active&&(active.tagName==="INPUT"||active.tagName==="TEXTAREA"||active.tagName==="SELECT"))return;if(e.ctrlKey&&e.key.toLowerCase()==="z"){e.preventDefault();undo();return}if(e.ctrlKey&&e.key.toLowerCase()==="y"){e.preventDefault();redo();return}if(e.ctrlKey&&e.key.toLowerCase()==="c"){e.preventDefault();copyObject();return}if(e.ctrlKey&&e.key.toLowerCase()==="v"){e.preventDefault();pasteObject();return}if(e.ctrlKey&&e.key.toLowerCase()==="d"){e.preventDefault();duplicateObject();return}if(e.key==="Delete"||e.key==="Backspace"){if(selectedObject()){e.preventDefault();deleteObject()}return}const o=selectedObject();if(!o)return;const step=e.shiftKey?10:1;if(e.key==="ArrowLeft"){e.preventDefault();o.left-=step}if(e.key==="ArrowRight"){e.preventDefault();o.left+=step}if(e.key==="ArrowUp"){e.preventDefault();o.top-=step}if(e.key==="ArrowDown"){e.preventDefault();o.top+=step}o.setCoords();canvas.requestRenderAll();updateStatus()});
-canvas.freeDrawingBrush=new fabric.PencilBrush(canvas);canvas.freeDrawingBrush.color="#222";canvas.freeDrawingBrush.width=8;
-(function restoreProject(){
-  try{
-    const saved=localStorage.getItem("logomaker-autosave");
-    if(saved){const data=JSON.parse(saved);
-      if(data&&data.objects&&data.objects.length){
-        restoringHistory=true;
-        const size=(localStorage.getItem("logomaker-size")||"").split("x");
-        if(size.length===2&&(Number(size[0])!==canvasWidth||Number(size[1])!==canvasHeight)){
-          document.getElementById("canvasW").value=size[0];document.getElementById("canvasH").value=size[1];
-          resizeCanvas(Number(size[0]),Number(size[1]));
-        }
-        canvas.loadFromJSON(saved,function(){canvas.renderAll();restoringHistory=false;setTool("select");saveHistory();updateUI()});
-        return;
-      }
+function penPanel(){
+  return `<div class="sec-title">ペン</div>
+  <div class="row"><span class="label">太さ</span><input type="range" min="1" max="60" value="${canvas.freeDrawingBrush?canvas.freeDrawingBrush.width:5}" oninput="setPenWidth(this.value)"><input class="num" type="number" value="${canvas.freeDrawingBrush?canvas.freeDrawingBrush.width:5}" onchange="setPenWidth(this.value)"></div>
+  <div class="row"><span class="label">色</span><input type="color" value="${canvas.freeDrawingBrush?canvas.freeDrawingBrush.color:'#111111'}" onchange="setPenColor(this.value)"></div>
+  <p class="hint">キャンバス上をドラッグすると線を描けます。描いた線はあとから選択して移動・削除できます。</p>`;
+}
+function setPenWidth(v){if(canvas.freeDrawingBrush)canvas.freeDrawingBrush.width=Number(v);updateProperties()}
+function setPenColor(v){if(canvas.freeDrawingBrush)canvas.freeDrawingBrush.color=v}
+function textPanel(o){
+  return `<div class="sec-title">文字</div>
+  <div class="row"><textarea rows="2" onchange="setTextContent(this.value)">${esc(o.text||"")}</textarea></div>
+  <div class="row"><span class="label">フォント</span><select onchange="setFont(this.value)">${fontOptionsHTML(o.fontFamily||"Noto Sans JP")}</select></div>
+  <div class="row"><span class="label">サイズ</span><input type="range" min="10" max="240" value="${Math.round(o.fontSize||48)}" oninput="setFontSize(this.value)"><input class="num" type="number" value="${Math.round(o.fontSize||48)}" onchange="setFontSize(this.value)"></div>
+  <div class="row"><span class="label">字間</span><input type="range" min="-50" max="300" value="${o.charSpacing||0}" oninput="setCharSpacing(this.value)"><input class="num" type="number" value="${o.charSpacing||0}" onchange="setCharSpacing(this.value)"></div>
+  <div class="row"><span class="label">行間</span><input type="range" min="0.6" max="2.5" step="0.05" value="${o.lineHeight||1.1}" oninput="setLineHeight(this.value)"><input class="num" type="number" step="0.05" value="${o.lineHeight||1.1}" onchange="setLineHeight(this.value)"></div>
+  <div class="row"><span class="label">スタイル</span><div class="btn-row" style="flex:1">
+    <button class="btn ${o.fontWeight==="bold"||Number(o.fontWeight)>=700?"on":""}" onclick="toggleBold()">太字</button>
+    <button class="btn ${o.fontStyle==="italic"?"on":""}" onclick="toggleItalic()">斜体</button>
+    <button class="btn ${o.underline?"on":""}" onclick="toggleUnderline()">下線</button>
+  </div></div>
+  ${fillPanel(o)}`;
+}
+function shapePanel(o){
+  return `<div class="sec-title">図形</div>
+  ${fillPanel(o)}
+  <div class="row"><span class="label">枠線の色</span><input type="color" value="${typeof o.stroke==='string'?o.stroke:'#000000'}" onchange="setStrokeColor(this.value)"></div>
+  <div class="row"><span class="label">枠線の太さ</span><input type="range" min="0" max="40" value="${o.strokeWidth||0}" oninput="setStrokeWidth(this.value)"><input class="num" type="number" value="${o.strokeWidth||0}" onchange="setStrokeWidth(this.value)"></div>`;
+}
+function imagePanel(o){
+  return `<div class="sec-title">画像</div>
+  <div class="row"><span class="label">角丸</span><input type="range" min="0" max="200" value="${o.rx||0}" oninput="setImageRadius(this.value)"><input class="num" type="number" value="${Math.round(o.rx||0)}" onchange="setImageRadius(this.value)"></div>
+  <div class="row"><span class="label">枠線の色</span><input type="color" value="${typeof o.stroke==='string'?o.stroke:'#000000'}" onchange="setStrokeColor(this.value)"></div>
+  <div class="row"><span class="label">枠線の太さ</span><input type="range" min="0" max="40" value="${o.strokeWidth||0}" oninput="setStrokeWidth(this.value)"><input class="num" type="number" value="${o.strokeWidth||0}" onchange="setStrokeWidth(this.value)"></div>`;
+}
+function fillPanel(o){
+  const isGrad = o.fill && typeof o.fill==="object";
+  let gradColors = ["#ff5a76","#ffb020"];
+  if(isGrad && o.fill.colorStops && o.fill.colorStops.length>=2) gradColors = [o.fill.colorStops[0].color, o.fill.colorStops[1].color];
+  let html = `<div class="row"><span class="label">塗り</span><div class="btn-row" style="flex:1">
+    <button class="btn ${!isGrad?"on":""}" onclick="setFillMode('solid')">単色</button>
+    <button class="btn ${isGrad?"on":""}" onclick="setFillMode('gradient')">グラデ</button>
+  </div></div>`;
+  if(!isGrad){
+    html += `<div class="row"><span class="label">色</span><input type="color" value="${fillValue(o)}" onchange="setFill(this.value)"></div>`;
+  } else {
+    const preview = `background:linear-gradient(${gradientMode==="radial"?"circle":"to right"},${gradColors[0]},${gradColors[1]})`;
+    html += `<div class="gradient-preview" style="${preview}"></div>
+    <div class="row"><span class="label">色 1</span><input type="color" value="${gradColors[0]}" onchange="setGradientColor(0,this.value)"><span class="label" style="width:auto">色 2</span><input type="color" value="${gradColors[1]}" onchange="setGradientColor(1,this.value)"></div>
+    <div class="row"><span class="label">向き</span><div class="btn-row" style="flex:1">
+      <button class="btn ${gradientMode==="vertical"?"on":""}" onclick="setGradientMode('vertical')">縦</button>
+      <button class="btn ${gradientMode==="horizontal"?"on":""}" onclick="setGradientMode('horizontal')">横</button>
+      <button class="btn ${gradientMode==="radial"?"on":""}" onclick="setGradientMode('radial')">円</button>
+    </div></div>`;
+  }
+  return html;
+}
+function shadowPanel(o){
+  const sh = o.shadow;
+  const color = sh ? sh.color : "#000000";
+  const blur = sh ? sh.blur : 0;
+  const off = sh ? sh.offsetX : 0;
+  return `<div class="sec-title" style="margin-top:14px">影</div>
+  <div class="row"><span class="label">色</span><input type="color" value="${color}" onchange="setShadow()"></div>
+  <div class="row"><span class="label">ぼかし</span><input type="range" min="0" max="60" value="${blur}" oninput="setShadowLive()" onchange="setShadow()"></div>
+  <div class="row"><span class="label">ずれ</span><input type="range" min="-40" max="40" value="${off}" oninput="setShadowLive()" onchange="setShadow()"></div>`;
+}
+function commonPanel(o){
+  return `${shadowPanel(o)}
+  <div class="sec-title" style="margin-top:14px">配置</div>
+  <div class="row"><span class="label">位置 X / Y</span><input class="num" type="number" value="${Math.round(o.left||0)}" onchange="setPos('left',this.value)" style="flex:1"><input class="num" type="number" value="${Math.round(o.top||0)}" onchange="setPos('top',this.value)" style="flex:1"></div>
+  <div class="row"><span class="label">回転</span><input type="range" min="0" max="360" value="${Math.round(o.angle||0)}" oninput="setAngle(this.value)"><input class="num" type="number" value="${Math.round(o.angle||0)}" onchange="setAngle(this.value)"></div>
+  <div class="row"><span class="label">透明度</span><input type="range" min="5" max="100" value="${Math.round((o.opacity==null?1:o.opacity)*100)}" oninput="setOpacity(this.value)"><input class="num" type="number" value="${Math.round((o.opacity==null?1:o.opacity)*100)}" onchange="setOpacity(this.value)"></div>
+  <div class="btn-grid" style="margin-bottom:6px">
+    <button class="btn" onclick="alignObj('left')">左揃え</button>
+    <button class="btn" onclick="alignObj('center')">中央揃え</button>
+    <button class="btn" onclick="alignObj('right')">右揃え</button>
+    <button class="btn" onclick="alignObj('middle')">上下中央</button>
+    <button class="btn" onclick="bringFront()">最前面へ</button>
+    <button class="btn" onclick="sendBack()">最背面へ</button>
+    <button class="btn" onclick="flipObj('flipX')">左右反転</button>
+    <button class="btn" onclick="flipObj('flipY')">上下反転</button>
+  </div>`;
+}
+/* ========= プロパティ変更 ========= */
+function refresh(o){o.setCoords();canvas.renderAll()}
+function setTextContent(v){const o=getActive();if(!o)return;o.set("text",v);refresh(o);saveHistory();updateLayers()}
+function setFont(v){const o=getActive();if(!o)return;o.set("fontFamily",v);refresh(o);saveHistory();updateProperties()}
+function setFontSize(v){const o=getActive();if(!o)return;o.set("fontSize",Number(v));refresh(o);saveHistory()}
+function setCharSpacing(v){const o=getActive();if(!o)return;o.set("charSpacing",Number(v));refresh(o);saveHistory()}
+function setLineHeight(v){const o=getActive();if(!o)return;o.set("lineHeight",Number(v));refresh(o);saveHistory()}
+function toggleBold(){const o=getActive();if(!o)return;const bold=o.fontWeight==="bold"||Number(o.fontWeight)>=700;o.set("fontWeight",bold?"normal":"bold");refresh(o);saveHistory();updateProperties()}
+function toggleItalic(){const o=getActive();if(!o)return;o.set("fontStyle",o.fontStyle==="italic"?"normal":"italic");refresh(o);saveHistory();updateProperties()}
+function toggleUnderline(){const o=getActive();if(!o)return;o.set("underline",!o.underline);refresh(o);saveHistory();updateProperties()}
+function setFill(v){const o=getActive();if(!o)return;o.set("fill",v);refresh(o);saveHistory()}
+function setFillMode(mode){
+  const o=getActive();if(!o)return;
+  if(mode==="solid"){ o.set("fill", fillValue(o)); }
+  else { applyGradient(o, [fillValue(o), "#ffb020"]); }
+  refresh(o); saveHistory(); updateProperties();
+}
+function applyGradient(o, colors){
+  const w = Math.max(1,(o.width||100)*(o.scaleX||1)), h = Math.max(1,(o.height||100)*(o.scaleY||1));
+  let grad;
+  if(gradientMode==="radial") grad = new fabric.Gradient({type:"radial",gradientUnits:"pixels",coords:{x1:w/2,y1:h/2,r1:10,x2:w/2,y2:h/2,r2:Math.max(w,h)/1.4},colorStops:[{offset:0,color:colors[0]},{offset:1,color:colors[1]}]});
+  else if(gradientMode==="horizontal") grad = new fabric.Gradient({type:"linear",gradientUnits:"pixels",coords:{x1:0,y1:0,x2:w,y2:0},colorStops:[{offset:0,color:colors[0]},{offset:1,color:colors[1]}]});
+  else grad = new fabric.Gradient({type:"linear",gradientUnits:"pixels",coords:{x1:0,y1:0,x2:0,y2:h},colorStops:[{offset:0,color:colors[0]},{offset:1,color:colors[1]}]});
+  o.set("fill", grad);
+}
+function currentGradColors(o){ if(o.fill && o.fill.colorStops && o.fill.colorStops.length>=2) return [o.fill.colorStops[0].color, o.fill.colorStops[1].color]; return [fillValue(o),"#ffb020"]; }
+function setGradientColor(idx, v){const o=getActive();if(!o)return;const c=currentGradColors(o);c[idx]=v;applyGradient(o,c);refresh(o);saveHistory();updateProperties()}
+function setGradientMode(m){gradientMode=m;const o=getActive();if(!o)return;applyGradient(o,currentGradColors(o));refresh(o);saveHistory();updateProperties()}
+function setStrokeColor(v){const o=getActive();if(!o)return;o.set("stroke",v);if(!o.strokeWidth)o.set("strokeWidth",1);refresh(o);saveHistory();updateProperties()}
+function setStrokeWidth(v){const o=getActive();if(!o)return;o.set("strokeWidth",Number(v));refresh(o);saveHistory()}
+function setImageRadius(v){const o=getActive();if(!o)return;o.set("rx",Number(v));o.set("ry",Number(v));refresh(o);saveHistory()}
+function setOpacity(v){const o=getActive();if(!o)return;o.set("opacity",Number(v)/100);refresh(o);saveHistory()}
+function setAngle(v){const o=getActive();if(!o)return;o.set("angle",Number(v));refresh(o);saveHistory()}
+function setPos(prop,v){const o=getActive();if(!o)return;o.set(prop,Number(v)||0);refresh(o);saveHistory()}
+function flipObj(prop){const o=getActive();if(!o)return;o.set(prop,!o[prop]);refresh(o);saveHistory()}
+function shadowControls(){
+  const titles=[...document.querySelectorAll("#properties .sec-title")];
+  const t=titles.find(el=>el.textContent.trim()==="影");
+  if(!t) return null;
+  const rows=[]; let el=t.nextElementSibling;
+  while(el && !el.classList.contains("sec-title") && rows.length<3){ rows.push(el); el=el.nextElementSibling; }
+  if(rows.length<3) return null;
+  return { color: rows[0].querySelector("input"), blur: rows[1].querySelector("input"), off: rows[2].querySelector("input") };
+}
+function applyShadowFromPanel(withHistory){
+  const o=getActive(); if(!o) return;
+  const c=shadowControls(); if(!c) return;
+  o.set("shadow", new fabric.Shadow({ color:c.color.value, blur:Number(c.blur.value), offsetX:Number(c.off.value), offsetY:Number(c.off.value) }));
+  refresh(o); if(withHistory) saveHistory();
+}
+function setShadow(){applyShadowFromPanel(true)}
+function setShadowLive(){applyShadowFromPanel(false)}
+function alignObj(mode){
+  const o=getActive(); if(!o) return;
+  const r=o.getBoundingRect();
+  if(mode==="left") o.left += (0 - r.left);
+  else if(mode==="center") o.left += (canvasWidth/2 - (r.left + r.width/2));
+  else if(mode==="right") o.left += (canvasWidth - (r.left + r.width));
+  else if(mode==="middle") o.top += (canvasHeight/2 - (r.top + r.height/2));
+  refresh(o); saveHistory(); updateProperties();
+}
+function bringFront(){const o=getActive();if(!o)return;canvas.bringToFront(o);canvas.renderAll();saveHistory();updateLayers()}
+function sendBack(){const o=getActive();if(!o)return;canvas.sendToBack(o);canvas.renderAll();saveHistory();updateLayers()}
+/* ========= レイヤー ========= */
+const ICONS = {
+  eye: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+  eyeOff: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21"/></svg>',
+  lock: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="11"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>',
+  unlock: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="11"/><path d="M8 10V7a4 4 0 0 1 7.7-2.3"/></svg>',
+  trash: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M9 7V5h6v2m-8 0l1 13h8l1-13"/></svg>'
+};
+function getObjectLabel(o){
+  if(o.customName) return o.customName;
+  if(isTextObj(o)) return (o.text||"テキスト").split("\n")[0].slice(0,14) || "テキスト";
+  switch(o.customType){
+    case "image": return "画像"; case "rect": return "四角"; case "circle": return "丸";
+    case "triangle": return "三角"; case "star": return "星"; case "line": return "線";
+    case "path": return "ペンの線"; default: return o.type==="group" ? "グループ" : "オブジェクト";
+  }
+}
+function updateLayers(){
+  const list = document.getElementById("layerList");
+  list.innerHTML = "";
+  const objs = canvas.getObjects();
+  if(!objs.length){ list.innerHTML = '<div class="layer-empty">まだ何もありません。左のツールから文字や図形を追加できます。</div>'; return; }
+  const active = getActive();
+  [...objs].reverse().forEach(obj=>{
+    const item = document.createElement("div");
+    item.className = "layer-item" + (obj===active ? " active" : "");
+    const editing = obj===renamingObj;
+    item.draggable = !editing;
+    const eye = document.createElement("button");
+    eye.className = "lbtn" + (obj.visible===false ? " off" : "");
+    eye.innerHTML = obj.visible===false ? ICONS.eyeOff : ICONS.eye;
+    eye.title = obj.visible===false ? "表示する" : "隠す";
+    eye.onclick = e=>{ e.stopPropagation(); toggleVisible(obj); };
+    item.appendChild(eye);
+    const lock = document.createElement("button");
+    lock.className = "lbtn" + (obj.lockMovementX ? "" : " off");
+    lock.innerHTML = obj.lockMovementX ? ICONS.lock : ICONS.unlock;
+    lock.title = obj.lockMovementX ? "ロックを解除" : "ロックする";
+    lock.onclick = e=>{ e.stopPropagation(); toggleLock(obj); };
+    item.appendChild(lock);
+    if(editing){
+      const inp = document.createElement("input");
+      inp.className = "lname-input"; inp.type = "text";
+      inp.value = obj.customName || getObjectLabel(obj);
+      inp.onclick = e=>e.stopPropagation();
+      inp.onkeydown = e=>{ if(e.key==="Enter") commitRename(inp); if(e.key==="Escape"){ renamingObj=null; updateLayers(); } };
+      inp.onblur = ()=>{ if(renamingObj===obj) commitRename(inp); };
+      item.appendChild(inp);
+    } else {
+      const name = document.createElement("span");
+      name.className = "lname"; name.textContent = getObjectLabel(obj);
+      name.title = getObjectLabel(obj) + "（ダブルクリックで名前を変更）";
+      name.ondblclick = e=>{ e.stopPropagation(); startRename(obj); };
+      item.appendChild(name);
     }
+    const del = document.createElement("button");
+    del.className = "lbtn del"; del.innerHTML = ICONS.trash; del.title = "削除";
+    del.onclick = e=>{ e.stopPropagation(); deleteLayerObj(obj); };
+    item.appendChild(del);
+    item.onclick = ()=>{ if(obj.visible!==false){ canvas.setActiveObject(obj); canvas.requestRenderAll(); updateUI(); } };
+    item.addEventListener("dragstart", ()=>{ layerDragObj = obj; });
+    item.addEventListener("dragover", e=>e.preventDefault());
+    item.addEventListener("drop", e=>{
+      e.preventDefault();
+      if(layerDragObj && layerDragObj!==obj){
+        canvas.moveTo(layerDragObj, canvas.getObjects().indexOf(obj));
+        canvas.renderAll(); saveHistory(); updateLayers();
+      }
+      layerDragObj = null;
+    });
+    list.appendChild(item);
+  });
+}
+function startRename(obj){ renamingObj = obj; updateLayers(); const inp = document.querySelector(".lname-input"); if(inp){ inp.focus(); inp.select(); } }
+function commitRename(inp){
+  const obj = renamingObj; if(!obj){ renamingObj = null; return; }
+  const v = inp.value.trim(); if(v) obj.set("customName", v);
+  renamingObj = null; updateLayers(); saveHistory();
+}
+function toggleVisible(obj){
+  obj.visible = obj.visible===false ? true : false;
+  if(obj.visible===false && getActive()===obj) canvas.discardActiveObject();
+  canvas.renderAll(); saveHistory(); updateLayers(); updateProperties();
+}
+function toggleLock(obj){
+  const on = !obj.lockMovementX;
+  obj.set({ lockMovementX:on, lockMovementY:on, lockRotation:on, lockScalingX:on, lockScalingY:on, lockScalingFlip:on, hasControls:!on });
+  canvas.renderAll(); saveHistory(); updateLayers(); updateProperties();
+}
+function deleteLayerObj(obj){
+  if(renamingObj===obj) renamingObj = null;
+  canvas.remove(obj); canvas.renderAll(); saveHistory(); updateUI();
+}
+/* ========= 履歴 ========= */
+function saveHistory(){
+  if(isLoadingHistory) return;
+  const json = JSON.stringify(canvas.toJSON(["customType","customName"]));
+  history = history.slice(0, historyIndex+1);
+  history.push(json);
+  if(history.length > 60) history.shift();
+  historyIndex = history.length - 1;
+  updateUndoBtns(); saveProject();
+}
+function loadHistory(json){
+  isLoadingHistory = true;
+  canvas.loadFromJSON(json, function(){
+    canvas.getObjects().forEach(o=>{ if(o.lockMovementX) o.hasControls = false; });
+    canvas.renderAll(); isLoadingHistory = false; updateUI();
+  });
+}
+function undo(){ if(historyIndex<=0) return; historyIndex--; loadHistory(history[historyIndex]); updateUndoBtns(); }
+function redo(){ if(historyIndex>=history.length-1) return; historyIndex++; loadHistory(history[historyIndex]); updateUndoBtns(); }
+function updateUndoBtns(){
+  const u = document.getElementById("undoBtn"), r = document.getElementById("redoBtn");
+  if(u) u.disabled = historyIndex<=0;
+  if(r) r.disabled = historyIndex>=history.length-1;
+}
+/* ========= コピー・複製・削除 ========= */
+function copyObject(){ const o=getActive(); if(!o) return; o.clone(function(c){ clipboard=c; copiedStyleSource=o; }, ["customType","customName"]); }
+function pasteObject(){
+  if(!clipboard) return;
+  clipboard.clone(function(c){
+    c.set({ left:(c.left||0)+24, top:(c.top||0)+24, evented:true });
+    if(c.lockMovementX) c.hasControls = false;
+    canvas.add(c); canvas.setActiveObject(c); canvas.renderAll(); saveHistory(); updateUI();
+  }, ["customType","customName"]);
+}
+function duplicateObject(){ copyObject(); setTimeout(pasteObject, 60); }
+function deleteObject(){ const o=getActive(); if(!o) return; canvas.remove(o); canvas.discardActiveObject(); canvas.renderAll(); saveHistory(); updateUI(); }
+/* ========= ズーム・キャンバス ========= */
+function applyZoom(){
+  canvas.setZoom(zoom);
+  canvas.setDimensions({ width: canvasWidth*zoom, height: canvasHeight*zoom });
+  const wrap = document.getElementById("canvasWrap");
+  if(wrap){ wrap.style.width = (canvasWidth*zoom)+"px"; wrap.style.height = (canvasHeight*zoom)+"px"; }
+  document.getElementById("zoomValue").textContent = Math.round(zoom*100)+"%";
+}
+function changeZoom(d){ zoom += d; zoom = Math.max(0.1, Math.min(3, zoom)); applyZoom(); }
+function fitZoom(){
+  const area = document.getElementById("canvasArea"); if(!area) return;
+  zoom = Math.max(0.1, Math.min((area.clientWidth-56)/canvasWidth, (area.clientHeight-56)/canvasHeight, 1.5));
+  applyZoom();
+}
+function setCanvasBg(v){ canvas.setBackgroundColor(v, canvas.renderAll.bind(canvas)); saveProject(); }
+function applyCanvasSize(){
+  const w = Math.max(100, Math.min(4000, Number(document.getElementById("canvasW").value)||1200));
+  const h = Math.max(100, Math.min(4000, Number(document.getElementById("canvasH").value)||800));
+  canvasWidth = w; canvasHeight = h;
+  canvas.setWidth(w); canvas.setHeight(h);
+  applyZoom(); saveHistory();
+}
+/* ========= 書き出し ========= */
+function openExport(){ document.getElementById("exportModal").classList.add("open"); }
+function closeExport(){ document.getElementById("exportModal").classList.remove("open"); }
+document.getElementById("exportModal").addEventListener("click", function(e){ if(e.target===this) closeExport(); });
+function downloadPNG(){
+  const scale = Number(document.getElementById("exportScale").value)||2;
+  const transparent = document.getElementById("transparentBg").checked;
+  const oldZoom = zoom;
+  canvas.setZoom(1); canvas.setDimensions({ width: canvasWidth, height: canvasHeight });
+  canvas.discardActiveObject(); canvas.renderAll();
+  const oldBg = canvas.backgroundColor;
+  if(transparent) canvas.backgroundColor = null;
+  const url = canvas.toDataURL({ format:"png", multiplier: scale });
+  canvas.backgroundColor = oldBg;
+  zoom = oldZoom; applyZoom(); canvas.renderAll();
+  const a = document.createElement("a"); a.href = url; a.download = "logo.png"; a.click();
+  closeExport();
+}
+/* ========= 右クリックメニュー ========= */
+const contextMenu = document.getElementById("contextMenu");
+let contextTarget = null;
+function showContextMenu(x, y){
+  const has = !!contextTarget;
+  contextMenu.querySelectorAll("button").forEach(b=>{ b.disabled = b.dataset.act==="paste" ? !clipboard : !has; });
+  contextMenu.style.display = "block";
+  const mw = 230, mh = 330;
+  contextMenu.style.left = Math.min(x, window.innerWidth-mw) + "px";
+  contextMenu.style.top = Math.min(y, window.innerHeight-mh) + "px";
+}
+function hideContextMenu(){ contextMenu.style.display = "none"; }
+document.getElementById("canvasArea").addEventListener("contextmenu", function(e){
+  e.preventDefault();
+  let target = null;
+  try{ target = canvas.findTarget(e); }catch(err){}
+  if(target && target!==canvas){ contextTarget = target; canvas.setActiveObject(target); canvas.renderAll(); updateUI(); }
+  else contextTarget = getActive();
+  showContextMenu(e.clientX, e.clientY);
+});
+document.addEventListener("pointerdown", function(e){ if(!contextMenu.contains(e.target)) hideContextMenu(); });
+contextMenu.querySelectorAll("button").forEach(b=>{
+  b.addEventListener("click", function(){
+    const act = b.dataset.act, o = contextTarget;
+    hideContextMenu();
+    if(act==="paste"){ pasteObject(); return; }
+    if(!o) return;
+    if(act==="copy"){ canvas.setActiveObject(o); copyObject(); }
+    else if(act==="duplicate"){ canvas.setActiveObject(o); duplicateObject(); }
+    else if(act==="delete"){ canvas.setActiveObject(o); deleteObject(); }
+    else if(act==="front"){ canvas.setActiveObject(o); bringFront(); }
+    else if(act==="back"){ canvas.setActiveObject(o); sendBack(); }
+    else if(act==="lock"){ toggleLock(o); }
+    else if(act==="rename"){ canvas.setActiveObject(o); updateUI(); startRename(o); document.getElementById("rightbar").classList.add("open"); }
+  });
+});
+/* ========= キーボード ========= */
+document.addEventListener("keydown", function(e){
+  const tag = (e.target.tagName||"").toLowerCase();
+  if(tag==="input" || tag==="textarea" || tag==="select" || e.target.isContentEditable) return;
+  const mod = e.ctrlKey || e.metaKey;
+  if(mod && e.key.toLowerCase()==="z" && !e.shiftKey){ e.preventDefault(); undo(); }
+  else if(mod && (e.key.toLowerCase()==="y" || (e.key.toLowerCase()==="z" && e.shiftKey))){ e.preventDefault(); redo(); }
+  else if(mod && e.key.toLowerCase()==="c"){ copyObject(); }
+  else if(mod && e.key.toLowerCase()==="v"){ pasteObject(); }
+  else if(mod && e.key.toLowerCase()==="d"){ e.preventDefault(); duplicateObject(); }
+  else if(mod && e.key.toLowerCase()==="s"){ e.preventDefault(); openExport(); }
+  else if(e.key==="Delete" || e.key==="Backspace"){ const o=getActive(); if(o && !o.isEditing){ e.preventDefault(); deleteObject(); } }
+});
+/* ========= ドラッグ&ドロップ / 貼り付け ========= */
+const area = document.getElementById("canvasArea"), dropHint = document.getElementById("dropHint");
+area.addEventListener("dragover", function(e){ e.preventDefault(); dropHint.style.display = "flex"; });
+area.addEventListener("dragleave", function(e){ if(e.target===area) dropHint.style.display = "none"; });
+area.addEventListener("drop", function(e){
+  e.preventDefault(); dropHint.style.display = "none";
+  const file = e.dataTransfer.files && e.dataTransfer.files[0]; if(!file) return;
+  const rect = canvas.upperCanvas.getBoundingClientRect();
+  const p = canvas.getPointer({ clientX:e.clientX, clientY:e.clientY, preventDefault:function(){} });
+  loadImageFile(file, p.x, p.y);
+});
+document.addEventListener("paste", function(e){
+  const tag = (e.target.tagName||"").toLowerCase();
+  if(tag==="input" || tag==="textarea" || tag==="select" || e.target.isContentEditable) return;
+  const items = e.clipboardData && e.clipboardData.items;
+  if(!items) return;
+  for(const it of items){ if(it.type && it.type.startsWith("image/")){ loadImageFile(it.getAsFile()); break; } }
+});
+/* ========= インストール ========= */
+let deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", function(e){
+  e.preventDefault(); deferredInstallPrompt = e;
+  document.getElementById("installBtn").style.display = "";
+  if(localStorage.getItem("logomaker-card-dismissed")!=="1") document.getElementById("installCard").style.display = "block";
+});
+function installApp(){
+  if(!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.then(function(){
+    deferredInstallPrompt = null;
+    document.getElementById("installBtn").style.display = "none";
+    document.getElementById("installCard").style.display = "none";
+  });
+}
+function dismissInstallCard(){ document.getElementById("installCard").style.display = "none"; localStorage.setItem("logomaker-card-dismissed", "1"); }
+window.addEventListener("appinstalled", function(){
+  document.getElementById("installCard").style.display = "none";
+  document.getElementById("installBtn").style.display = "none";
+});
+/* ========= 新規・保存・復元 ========= */
+function newProject(){
+  if(!confirm("今の作品を消して、まっさらな状態から始めますか？")) return;
+  isLoadingHistory = true;
+  canvas.clear(); canvas.setBackgroundColor("#ffffff", canvas.renderAll.bind(canvas));
+  document.getElementById("canvasBg").value = "#ffffff";
+  isLoadingHistory = false;
+  history = []; historyIndex = -1;
+  saveHistory(); updateUI();
+}
+let toastDelay = null, toastTimer = null;
+function showSaveToast(){
+  const t = document.getElementById("saveToast");
+  clearTimeout(toastDelay);
+  toastDelay = setTimeout(()=>{
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>t.classList.remove("show"), 1500);
+  }, 700);
+}
+function saveProject(){
+  try{
+    localStorage.setItem("logo-maker-autosave-v1", JSON.stringify({
+      json: canvas.toJSON(["customType","customName"]),
+      width: canvasWidth, height: canvasHeight,
+      bg: typeof canvas.backgroundColor==="string" ? canvas.backgroundColor : "#ffffff"
+    }));
+    if(!isLoadingHistory) showSaveToast();
   }catch(e){}
-  setTool("select");saveHistory();updateUI();
+}
+(function restoreProject(){
+  let data = null;
+  try{ data = JSON.parse(localStorage.getItem("logo-maker-autosave-v1")); }catch(e){}
+  if(data && data.json){
+    isLoadingHistory = true;
+    if(data.width){ canvasWidth = data.width; document.getElementById("canvasW").value = data.width; }
+    if(data.height){ canvasHeight = data.height; document.getElementById("canvasH").value = data.height; }
+    canvas.setWidth(canvasWidth); canvas.setHeight(canvasHeight);
+    if(data.bg) document.getElementById("canvasBg").value = data.bg;
+    canvas.loadFromJSON(data.json, function(){
+      canvas.getObjects().forEach(o=>{ if(o.lockMovementX) o.hasControls = false; });
+      canvas.renderAll(); isLoadingHistory = false;
+      history = []; historyIndex = -1; saveHistory(); updateUI();
+    });
+  } else { saveHistory(); updateUI(); }
 })();
-function newProject(){if(!confirm("キャンバスを白紙に戻しますか？（「元に戻す」で戻せます）"))return;canvas.clear();canvas.backgroundColor="#fff";canvas.renderAll();saveHistory();updateUI()}
-let deferredInstallPrompt=null;
-window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferredInstallPrompt=e;document.getElementById("installBtn").style.display="";if(localStorage.getItem("logomaker-banner-dismissed")!=="1")document.getElementById("installBanner").style.display="flex"});
-function installApp(){if(!deferredInstallPrompt)return;deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.then(function(){deferredInstallPrompt=null;document.getElementById("installBtn").style.display="none";document.getElementById("installBanner").style.display="none"})}
-function dismissBanner(){document.getElementById("installBanner").style.display="none";localStorage.setItem("logomaker-banner-dismissed","1")}
-window.addEventListener("appinstalled",function(){document.getElementById("installBanner").style.display="none";document.getElementById("installBtn").style.display="none"});
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});
-setTimeout(fitZoom,60);
+canvas.on("object:added", function(){ if(!isLoadingHistory){ saveHistory(); updateLayers(); } });
+canvas.on("object:removed", function(){ if(!isLoadingHistory){ saveHistory(); updateLayers(); } });
+canvas.on("object:modified", function(){ if(!isLoadingHistory){ saveHistory(); updateProperties(); } });
+canvas.on("path:created", function(e){ if(e.path){ e.path.customType = "path"; } if(!isLoadingHistory){ saveHistory(); updateLayers(); } });
+canvas.on("selection:created", updateUI);
+canvas.on("selection:updated", updateUI);
+canvas.on("selection:cleared", updateUI);
+canvas.on("text:changed", function(){ updateLayers(); });
+if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
+setTimeout(fitZoom, 60);
 </script>
 </body>
 </html>
