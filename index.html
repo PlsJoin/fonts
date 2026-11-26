@@ -51,10 +51,10 @@ button{cursor:pointer;border:none;background:none;color:inherit}
 .properties::-webkit-scrollbar,.layer-list::-webkit-scrollbar{width:9px}
 .properties::-webkit-scrollbar-thumb,.layer-list::-webkit-scrollbar-thumb{background:#3a3d46;border-radius:5px}
 .section{padding:11px 13px;border-bottom:1px solid #2b2e36}
-.section-title{font-size:11px;font-weight:700;color:#9aa0aa;margin-bottom:9px;letter-spacing:.06em}
+.section-title{font-size:12px;font-weight:700;color:#9aa0aa;margin-bottom:9px;letter-spacing:.06em}
 .row{display:flex;align-items:center;gap:7px;margin-bottom:7px}
 .row:last-child{margin-bottom:0}
-.label{width:70px;flex-shrink:0;font-size:11px;color:#a7abb5}
+.label{width:70px;flex-shrink:0;font-size:12px;color:#a7abb5}
 input[type="text"],input[type="number"],select{width:100%;height:31px;border:1px solid #3a3d46;background:#26282f;color:#eef0f3;border-radius:6px;padding:0 8px;font-size:12px;outline:none}
 input[type="text"]:focus,input[type="number"]:focus,select:focus{border-color:#5b7fff}
 input[type="color"]{width:42px;height:31px;border:1px solid #3a3d46;padding:2px;background:#26282f;border-radius:6px;cursor:pointer}
@@ -65,10 +65,10 @@ input[type="range"]{flex:1;accent-color:#5b7fff}
 .color-row{display:flex;align-items:center;gap:7px;margin-bottom:7px}
 .color-row span{width:40px;font-size:11px;color:#a7abb5}
 .gradient-preview{width:100%;height:26px;border:1px solid #3a3d46;border-radius:6px;margin-top:7px}
-.small-btn{height:31px;border:1px solid #3a3d46;background:#26282f;color:#e8e9eb;border-radius:6px;padding:0 10px;font-size:11px;transition:background .15s}
+.small-btn{height:33px;border:1px solid #3a3d46;background:#26282f;color:#e8e9eb;border-radius:6px;padding:0 10px;font-size:11px;transition:background .15s}
 .small-btn:hover{background:#2f323b}
 .btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.no-selection{padding:22px 13px;color:#8b9099;font-size:11px;line-height:1.8}
+.no-selection{padding:22px 13px;color:#8b9099;font-size:12px;line-height:1.8}
 .layers{height:192px;border-top:1px solid #33363f;flex-shrink:0;display:flex;flex-direction:column}
 .layer-list{flex:1;overflow:auto}
 .layer-item{height:31px;display:flex;align-items:center;gap:7px;padding:0 9px;border-bottom:1px solid #26282f;font-size:11px;cursor:pointer;color:#d6d8dc}
@@ -110,18 +110,18 @@ input[type="range"]{flex:1;accent-color:#5b7fff}
 <header class="topbar">
 <div class="logo">ロゴメーカー <span>Logo Editor</span></div>
 <div class="toolbar-group">
-<button class="tool-btn" onclick="undo()">↶</button>
-<button class="tool-btn" onclick="redo()">↷</button>
+<button class="tool-btn" onclick="undo()" title="元に戻す (Ctrl+Z)">↶</button>
+<button class="tool-btn" onclick="redo()" title="やり直す (Ctrl+Y)">↷</button>
 </div>
 <div class="toolbar-group">
-<button class="tool-btn" onclick="copyObject()">コピー</button>
-<button class="tool-btn" onclick="pasteObject()">貼り付け</button>
-<button class="tool-btn" onclick="duplicateObject()">複製</button>
-<button class="tool-btn danger" onclick="deleteObject()">削除</button>
+<button class="tool-btn" onclick="copyObject()" title="コピー (Ctrl+C)">コピー</button>
+<button class="tool-btn" onclick="pasteObject()" title="貼り付け (Ctrl+V)">貼り付け</button>
+<button class="tool-btn" onclick="duplicateObject()" title="複製 (Ctrl+D)">複製</button>
+<button class="tool-btn danger" onclick="deleteObject()" title="削除 (Delete)">削除</button>
 </div>
 <div class="toolbar-group">
-<button class="tool-btn" onclick="bringFront()">最前面</button>
-<button class="tool-btn" onclick="sendBack()">最背面</button>
+<button class="tool-btn" onclick="bringFront()" title="最前面へ">最前面</button>
+<button class="tool-btn" onclick="sendBack()" title="最背面へ">最背面</button>
 </div>
 <div class="toolbar-group">
 <button class="tool-btn" onclick="alignLeft()">左</button>
@@ -136,6 +136,7 @@ input[type="range"]{flex:1;accent-color:#5b7fff}
 <input type="number" id="canvasH" value="800" min="200" max="2000" style="width:54px;height:28px;font-size:11px" onchange="resizeCanvas(document.getElementById('canvasW').value,this.value)">
 </div>
 <div class="zoom-box">
+<button onclick="fitZoom()" title="キャンバス全体を表示" style="width:auto;padding:0 9px;font-size:11px">全体表示</button>
 <button onclick="changeZoom(-0.1)">−</button>
 <div class="zoom-value" id="zoomValue">100%</div>
 <button onclick="changeZoom(0.1)">＋</button>
@@ -148,7 +149,7 @@ input[type="range"]{flex:1;accent-color:#5b7fff}
 <main class="main">
 <aside class="leftbar">
 <button class="left-tool active" data-tool="select" onclick="setTool('select')"><span class="icon">↖</span>選択</button>
-<button class="left-tool" data-tool="text" onclick="setTool('text')"><span class="icon">T</span>文字</button>
+<button class="left-tool" data-tool="text" onclick="quickAddText()"><span class="icon">T</span>文字</button>
 <button class="left-tool" data-tool="shape" onclick="toggleShapePicker(event)" id="shapeToolBtn"><span class="icon">◇</span>図形</button>
 <div class="tool-separator"></div>
 <button class="left-tool" data-tool="pen" onclick="setTool('pen')"><span class="icon">✎</span>ペン</button>
@@ -166,7 +167,7 @@ input[type="range"]{flex:1;accent-color:#5b7fff}
 <aside class="rightbar" id="rightbar">
 <div class="panel-title">プロパティ</div>
 <div class="properties" id="properties">
-<div class="no-selection">オブジェクトを選択してください。<br>文字や図形を選ぶとここから編集できます。</div>
+<div class="no-selection">読み込み中…</div>
 </div>
 <div class="layers">
 <div class="panel-title">レイヤー</div>
@@ -235,6 +236,7 @@ let penWidth = 8;
 let canvasWidth = 1200;
 let canvasHeight = 800;
 let gradientMode = "vertical";
+let layerDragObj = null;
 
 const fonts = [["Noto Sans JP","Noto Sans JP","標準・万能"],["Noto Serif JP","Noto Serif JP","明朝・上品"],["Zen Kaku Gothic New","Zen Kaku Gothic New","現代・すっきり"],["Zen Maru Gothic","Zen Maru Gothic","丸文字・やわらか"],["Dela Gothic One","Dela Gothic One","極太・インパクト"],["M PLUS Rounded 1c","M PLUS Rounded 1c","丸文字・ポップ"],["Mochiy Pop One","Mochiy Pop One","ポップ・太文字"],["Shippori Mincho","Shippori Mincho","明朝・高級感"],["Yuji Boku","Yuji Boku","筆文字・和風"],["Train One","Train One","アウトライン"],["RocknRoll One","RocknRoll One","ロック・太文字"],["Rampart One","Rampart One","立体・装飾"],["DotGothic16","DotGothic16","ドット・ゲーム風"],["Hachi Maru Pop","Hachi Maru Pop","手書き・ゆるい"],["Klee One","Klee One","手書き・自然"],["sans-serif","sans-serif","標準"],["serif","serif","明朝"]];
 
@@ -273,8 +275,10 @@ function toggleShapePicker(e){
 }
 
 function hideShapePicker(){document.getElementById("shapePicker").classList.remove("open")}
-function pickShape(type){currentShape=type;hideShapePicker();setTool("shape")}
+function pickShape(type){currentShape=type;hideShapePicker();addShapeAt(canvasWidth/2,canvasHeight/2,type);setTool("select")}
+function addShapeAt(x,y,type){if(type==="rect")addRect(x,y);else if(type==="circle")addCircle(x,y);else if(type==="triangle")addTriangle(x,y);else if(type==="star")addStar(x,y);else if(type==="line")addLine(x,y)}
 
+function quickAddText(){addText(canvasWidth/2,canvasHeight/2);setTool("select")}
 function addText(x,y){
   const t=new fabric.IText("ロゴ",{left:x,top:y,fontFamily:"Dela Gothic One",fontSize:140,fontWeight:"700",fill:"#222",originX:"center",originY:"center",editable:true,padding:4});
   canvas.add(t);canvas.setActiveObject(t);t.enterEditing();t.selectAll();canvas.requestRenderAll();saveHistory();
@@ -290,14 +294,7 @@ canvas.on("mouse:down",function(opt){
   if(currentTool==="select"||currentTool==="pen")return;
   const p=canvas.getPointer(opt.e);
   if(currentTool==="text"){addText(p.x,p.y);setTool("select");return}
-  if(currentTool==="shape"){
-    if(currentShape==="rect")addRect(p.x,p.y);
-    else if(currentShape==="circle")addCircle(p.x,p.y);
-    else if(currentShape==="triangle")addTriangle(p.x,p.y);
-    else if(currentShape==="star")addStar(p.x,p.y);
-    else if(currentShape==="line")addLine(p.x,p.y);
-    setTool("select");return;
-  }
+  if(currentTool==="shape"){addShapeAt(p.x,p.y,currentShape);setTool("select");return}
   if(currentTool==="image"){document.getElementById("imageInput").click();setTool("select")}
 });
 
@@ -346,7 +343,7 @@ function typeName(obj){const n={"i-text":"文字","rect":"四角形","circle":"�
 
 function updateProperties(){
   const area=document.getElementById("properties");const obj=selectedObject();
-  if(!obj){if(currentTool==="pen"){area.innerHTML=penToolPanel();return}area.innerHTML=`<div class="no-selection">オブジェクトを選択してください。<br>文字や図形を選ぶとここから編集できます。</div>`;return}
+  if(!obj){if(currentTool==="pen"){area.innerHTML=penToolPanel();return}area.innerHTML=`<div class="section"><div class="section-title">追加する</div><div class="btn-grid"><button class="small-btn" onclick="quickAddText()">＋ 文字</button><button class="small-btn" onclick="document.getElementById('shapeToolBtn').click()">＋ 図形</button><button class="small-btn" onclick="pickImage()">＋ 画像</button><button class="small-btn" onclick="setTool('pen')">✎ ペンで描く</button></div></div><div class="no-selection">オブジェクトを選択すると、ここで色や大きさを編集できます。<br>追加したものはドラッグで移動できます。</div>`;return}
   if(obj.type==="activeSelection"){area.innerHTML=`<div class="section"><div class="section-title">複数選択</div><div class="no-selection" style="padding:4px 0">${obj.getObjects().length}個選択中</div></div><div class="section"><div class="section-title">整列</div><div class="btn-grid"><button class="small-btn" onclick="alignLeft()">左</button><button class="small-btn" onclick="alignCenter()">中央</button><button class="small-btn" onclick="alignRight()">右</button><button class="small-btn" onclick="centerObject()">中心へ</button></div></div>`;return}
   let html=`<div class="section"><div class="section-title">基本</div>
 <div class="row"><div class="label">X</div><input type="number" value="${Math.round(obj.left)}" onchange="setProp('left',this.value)"></div>
@@ -435,7 +432,7 @@ function alignLeft(){const os=selectedObjects();if(!os.length)return;const targe
 function alignCenter(){const os=selectedObjects();if(!os.length)return;const target=os.length===1?canvasWidth/2:os.reduce((s,o)=>{const br=o.getBoundingRect();return s+br.left+br.width/2},0)/os.length;os.forEach(o=>{const br=o.getBoundingRect();o.left+=target-(br.left+br.width/2);o.setCoords()});canvas.requestRenderAll();saveHistory();updateUI()}
 function alignRight(){const os=selectedObjects();if(!os.length)return;const target=os.length===1?canvasWidth:Math.max(...os.map(o=>{const br=o.getBoundingRect();return br.left+br.width}));os.forEach(o=>{const br=o.getBoundingRect();o.left+=target-(br.left+br.width);o.setCoords()});canvas.requestRenderAll();saveHistory();updateUI()}
 function centerObject(){const o=selectedObject();if(!o)return;o.set({left:canvasWidth/2,top:canvasHeight/2,originX:"center",originY:"center"});o.setCoords();canvas.requestRenderAll();saveHistory();updateUI()}
-function updateLayers(){const list=document.getElementById("layerList");list.innerHTML="";const objs=canvas.getObjects();const active=selectedObject();[...objs].reverse().forEach(obj=>{const item=document.createElement("div");item.className="layer-item";if(active&&(active===obj||(active.type==="activeSelection"&&active.getObjects().includes(obj))))item.classList.add("selected");let icon="□";if(obj.type==="i-text")icon="T";if(obj.type==="circle")icon="○";if(obj.type==="triangle")icon="△";if(obj.type==="path")icon="✎";if(obj.type==="image")icon="▧";item.innerHTML=`<span class="layer-icon">${icon}</span><span class="layer-name">${obj.type==="i-text"?(obj.text||"文字"):typeName(obj)}</span>`;item.onclick=()=>{canvas.setActiveObject(obj);canvas.requestRenderAll();updateUI()};list.appendChild(item)})}
+function updateLayers(){const list=document.getElementById("layerList");list.innerHTML="";const objs=canvas.getObjects();const active=selectedObject();[...objs].reverse().forEach(obj=>{const item=document.createElement("div");item.className="layer-item";if(active&&(active===obj||(active.type==="activeSelection"&&active.getObjects().includes(obj))))item.classList.add("selected");let icon="□";if(obj.type==="i-text")icon="T";if(obj.type==="circle")icon="○";if(obj.type==="triangle")icon="△";if(obj.type==="path")icon="✎";if(obj.type==="image")icon="▧";item.innerHTML=`<span class="layer-icon">${icon}</span><span class="layer-name">${obj.type==="i-text"?(obj.text||"文字"):typeName(obj)}</span>`;item.onclick=()=>{canvas.setActiveObject(obj);canvas.requestRenderAll();updateUI()};item.draggable=true;item.title="ドラッグで重なり順を変更";item.addEventListener("dragstart",()=>{layerDragObj=obj});item.addEventListener("dragover",e=>e.preventDefault());item.addEventListener("drop",e=>{e.preventDefault();if(layerDragObj&&layerDragObj!==obj){canvas.moveTo(layerDragObj,canvas.getObjects().indexOf(obj));canvas.renderAll();saveHistory();updateLayers()}});list.appendChild(item)})}
 function copyObject(){const o=selectedObject();if(!o)return;o.clone(c=>clipboard=c,["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"])}
 function pasteObject(){if(!clipboard)return;clipboard.clone(c=>{canvas.discardActiveObject();c.set({left:(c.left||0)+25,top:(c.top||0)+25,evented:true});if(c.type==="activeSelection"){c.canvas=canvas;c.forEachObject(o=>canvas.add(o));c.setCoords()}else canvas.add(c);canvas.setActiveObject(c);canvas.requestRenderAll();saveHistory()},["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"])}
 function duplicateObject(){const o=selectedObject();if(!o)return;o.clone(function(c){c.set({left:(c.left||0)+25,top:(c.top||0)+25,evented:true});if(c.type==="activeSelection"){c.canvas=canvas;c.forEachObject(x=>canvas.add(x));c.setCoords()}else canvas.add(c);canvas.setActiveObject(c);canvas.requestRenderAll();saveHistory();updateUI()},["_gradientEnabled","_gradientColor1","_gradientColor2","_baseFill"])}
@@ -449,7 +446,9 @@ function persistProject(){try{localStorage.setItem("logomaker-autosave",JSON.str
 function undo(){if(historyIndex<=0)return;historyIndex--;restoreHistory(history[historyIndex])}
 function redo(){if(historyIndex>=history.length-1)return;historyIndex++;restoreHistory(history[historyIndex])}
 function restoreHistory(json){restoringHistory=true;canvas.loadFromJSON(json,()=>{canvas.renderAll();canvas.discardActiveObject();restoringHistory=false;updateUI()})}
-function changeZoom(d){zoom+=d;zoom=Math.max(0.25,Math.min(2,zoom));canvas.setZoom(zoom);canvas.setDimensions({width:canvasWidth*zoom,height:canvasHeight*zoom});const wrap=document.querySelector(".canvas-wrap");if(wrap){wrap.style.width=(canvasWidth*zoom)+"px";wrap.style.height=(canvasHeight*zoom)+"px"}const grid=document.querySelector(".grid");if(grid)grid.style.backgroundSize=(20*zoom)+"px "+(20*zoom)+"px";document.getElementById("zoomValue").textContent=Math.round(zoom*100)+"%"}
+function applyZoom(){canvas.setZoom(zoom);canvas.setDimensions({width:canvasWidth*zoom,height:canvasHeight*zoom});const wrap=document.querySelector(".canvas-wrap");if(wrap){wrap.style.width=(canvasWidth*zoom)+"px";wrap.style.height=(canvasHeight*zoom)+"px"}const grid=document.querySelector(".grid");if(grid)grid.style.backgroundSize=(20*zoom)+"px "+(20*zoom)+"px";document.getElementById("zoomValue").textContent=Math.round(zoom*100)+"%"}
+function changeZoom(d){zoom+=d;zoom=Math.max(0.25,Math.min(2,zoom));applyZoom()}
+function fitZoom(){const area=document.getElementById("canvasArea");if(!area)return;zoom=Math.max(0.1,Math.min((area.clientWidth-40)/canvasWidth,(area.clientHeight-40)/canvasHeight,1.5));applyZoom()}
 function resizeCanvas(w,h){w=Math.max(200,Math.min(3000,Number(w)||canvasWidth));h=Math.max(200,Math.min(2000,Number(h)||canvasHeight));canvasWidth=w;canvasHeight=h;canvas.setWidth(w);canvas.setHeight(h);canvas.setDimensions({width:w*zoom,height:h*zoom});const wrap=document.querySelector(".canvas-wrap");if(wrap){wrap.style.width=(w*zoom)+"px";wrap.style.height=(h*zoom)+"px"}canvas.calcOffset();canvas.requestRenderAll();saveHistory()}
 function openExport(){document.getElementById("exportModal").style.display="flex"}
 function closeExport(){document.getElementById("exportModal").style.display="none"}
@@ -487,6 +486,7 @@ let deferredInstallPrompt=null;
 window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferredInstallPrompt=e;document.getElementById("installBtn").style.display=""});
 function installApp(){if(!deferredInstallPrompt)return;deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.then(function(){deferredInstallPrompt=null;document.getElementById("installBtn").style.display="none"})}
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});
+setTimeout(fitZoom,60);
 </script>
 </body>
 </html>
